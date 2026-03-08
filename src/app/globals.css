@@ -1,25 +1,20 @@
 @import "tailwindcss";
 @plugin "tailwindcss-animate";
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+@theme {
+  --color-background: #f9f5f0;
+  --color-foreground: #8b3a3a;
   --font-sans: var(--font-inter);
   --font-serif: var(--font-playfair);
 }
 
-:root {
-  --background: #000000;
-  --foreground: #ffffff;
-}
-
 @layer utilities {
-  @keyframes scroll {
+  @keyframes scroll-x {
     0% {
-      transform: translateY(-100%);
+      transform: translateX(0);
     }
     100% {
-      transform: translateY(100%);
+      transform: translateX(-50%);
     }
   }
 }
