@@ -57,12 +57,12 @@ export default function Home() {
                 />
               </div>
 
-              <div className="flex flex-col items-center gap-4 text-center">
-                <p className="font-serif text-2xl md:text-3xl lg:text-4xl text-foreground font-light tracking-wide leading-tight mt-6">
+              <div className="flex flex-col items-center gap-6 text-center">
+                <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground font-normal tracking-wide leading-tight mt-8">
                   Rooting for Khadi
-                </p>
-                <div className="w-12 h-px bg-foreground/30"></div>
-                <p className="text-foreground/70 uppercase tracking-[0.2em] text-[10px] md:text-xs">
+                </h1>
+                <div className="w-12 h-px bg-foreground/40"></div>
+                <p className="text-foreground uppercase tracking-[0.3em] font-medium text-[9px] md:text-[11px]">
                   Slow fashion. Sustainable soul.
                 </p>
               </div>
@@ -82,7 +82,7 @@ export default function Home() {
           </div>
 
           {/* Scroll Indicator */}
-          <div className="absolute bottom-12 flex flex-col items-center gap-3 animate-pulse opacity-60 mt-auto md:mt-12">
+          <div className="absolute bottom-6 flex flex-col items-center gap-3 animate-pulse opacity-60">
             <span className="text-[9px] uppercase tracking-[0.4em] text-foreground">
               Explore
             </span>
@@ -93,22 +93,22 @@ export default function Home() {
         </section>
 
         {/* About Section */}
-        <section className="w-full flex flex-col lg:flex-row items-center justify-center gap-16 px-6 lg:px-24 py-32 border-t border-foreground/10 relative">
+        <section className="w-full flex flex-col lg:flex-row items-center justify-center gap-16 px-6 lg:px-24 py-32 mt-12 relative">
           {/* Section Label */}
-          <div className="absolute top-16 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
             <span className="text-[10px] uppercase tracking-[0.5em] text-foreground/50">
               Our Roots
             </span>
-            <div className="w-px h-8 bg-foreground/20"></div>
+            <div className="w-px h-12 bg-foreground/20"></div>
           </div>
 
           {/* Story Content */}
           <div className="flex flex-col w-full lg:w-1/2 space-y-10 lg:pl-12 mt-16 lg:mt-0 z-10 order-1 lg:order-2">
-            <h2 className="font-serif text-3xl md:text-5xl text-foreground tracking-widest font-light leading-tight">
+            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-foreground font-normal tracking-wide leading-[1.1]">
               Crafting <br /> The Foundation.
             </h2>
 
-            <div className="space-y-6 text-foreground/80 font-light tracking-wide leading-loose text-sm md:text-base max-w-lg">
+            <div className="space-y-8 text-foreground font-normal tracking-wide leading-[2em] text-[13px] md:text-sm max-w-lg mt-8">
               <p>
                 Every piece of fabric holds a story. At Sumclotico, we are
                 deeply rooted in celebrating India's rich textile heritage,
