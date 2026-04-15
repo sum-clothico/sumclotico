@@ -3,11 +3,51 @@
 .horizontal-words-section {
   position: relative;
   width: 100%;
+  z-index: 10;
   /* Keep section nicely sized so it takes up full viewport */
   height: 100vh;
   background-color: var(--bg-color);
   overflow: hidden;
   /* Removed flex to control absolute positioning manually */
+}
+
+/* ─── Corner Ornaments ────────────────────────────────────────────────── */
+.horizontal-words__corner-left {
+  position: absolute;
+  bottom: -2vh;
+  left: 20px;
+  width: 25vw;
+  max-width: 300px;
+  min-width: 150px;
+  z-index: 0;
+  pointer-events: none;
+  /* Initial state for GSAP wipe-up reveal */
+  clip-path: inset(100% 0% 0% 0%);
+  opacity: 0.45;
+  transform: rotate(12deg);
+  transform-origin: bottom left;
+}
+
+.horizontal-words__corner-left img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.horizontal-words__corner-right {
+  position: absolute;
+  top: -10vh;
+  right: -5vw;
+  z-index: 1; /* place behind the main text */
+  font-family: inherit;
+  font-size: clamp(20rem, 35vw, 40rem);
+  font-weight: 700;
+  -webkit-text-stroke: 3px rgba(26, 26, 26, 0.15); /* stroke effect */
+  color: transparent; /* transparent fill */
+  line-height: 1;
+  transform: rotate(15deg); /* tilt */
+  pointer-events: none;
+  user-select: none;
 }
 
 /* User provided CSS */
@@ -16,6 +56,7 @@
   padding-left: 25vw;
   padding-right: 25vw;
   position: absolute;
+  z-index: 10; /* Keep text above the flower ornament */
   /* Lock to track */
   top: 50%;
   transform: translateY(-50%);

@@ -1,0 +1,155 @@
+.story-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 700px;
+  background-color: var(--bg-color);
+  overflow: hidden;
+}
+
+.story-section__header-logo {
+  position: absolute;
+  top: 40px;
+  right: 60px;
+  z-index: 10;
+  font-family: serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--color-dark);
+}
+
+/* ─── LEFT PINNED PRODUCT (CLOTH) ────────────────────────── */
+.story-section__cloth {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: auto;
+  z-index: 5;
+  pointer-events: none;
+  display: flex;
+}
+
+/* Gradient to blend the sharp top edge of the cloth */
+.story-section__cloth::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 15%; /* Height of the fade */
+  background: linear-gradient(to bottom, var(--bg-color) 0%, transparent 100%);
+  z-index: 6;
+}
+
+.story-section__cloth img {
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+  object-position: left center;
+  filter: drop-shadow(20px 0 50px rgba(0, 0, 0, 0.12));
+}
+
+/* ─── TOP RIGHT TEXT ─────────────────────────────────────── */
+.story-section__container {
+  position: absolute;
+  top: 10%;
+  right: 5%;
+  z-index: 10;
+  width: 100%;
+  max-width: 1400px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.story-section__content {
+  max-width: 500px;
+  text-align: right;
+}
+
+.story-section__text {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.5rem;
+  line-height: 1.6;
+  color: var(--color-dark);
+  margin-bottom: 2rem;
+}
+
+.story-section__highlight {
+  font-family: serif;
+  font-style: italic;
+  font-size: 1.8rem;
+  font-weight: 500;
+}
+
+.story-section__heading {
+  font-family: "Poppins", sans-serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #3d2b1f;
+  line-height: 1.2;
+}
+
+/* ─── BOTTOM BACKGROUND IMAGE ───────────────────────────── */
+.story-section__bg {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60%;
+  z-index: 1;
+  opacity: 0.95;
+  mix-blend-mode: multiply;
+}
+
+.story-section__bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: bottom;
+}
+
+/* ─── SOFT VIGNETTE FADE (PREMIUM TOUCH) ───────────────── */
+.story-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 60%,
+    var(--bg-color) 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ─── MOBILE RESPONSIVE ─────────────────────────────────── */
+@media (max-width: 768px) {
+  .story-section {
+    height: auto;
+    padding: 100px 20px;
+  }
+
+  .story-section__container {
+    position: relative;
+    top: auto;
+    right: auto;
+    text-align: center;
+    margin-top: 200px;
+  }
+
+  .story-section__content {
+    text-align: center;
+  }
+
+  .story-section__drape {
+    width: 70vw;
+    top: -20px;
+    left: -10vw;
+  }
+
+  .story-section__bg {
+    height: 300px;
+  }
+}

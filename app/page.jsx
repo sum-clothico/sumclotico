@@ -13,6 +13,9 @@ import CursorBubble from "@/components/CursorBubble";
 import SmoothScroll from "@/components/SmoothScroll";
 
 import HorizontalWords from "@/components/HorizontalWords";
+import StorySection from "@/components/StorySection";
+import SplitSection from "@/components/SplitSection";
+import TravelingImage from "@/components/TravelingImage";
 
 export default function Home() {
   return (
@@ -25,6 +28,9 @@ export default function Home() {
         <VimeoHero />
       </header>
       <HorizontalWords />
+      <StorySection />
+      <SplitSection />
+      <TravelingImage />
       <img
         src="/assets/footer-dip.png"
         alt=""

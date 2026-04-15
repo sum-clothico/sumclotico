@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 // 11 images from /assets/img/
 const IMAGES = Array.from({ length: 11 }, (_, i) => ({
@@ -19,189 +18,148 @@ function shuffleArray(array) {
   return shuffled;
 }
 
-function buildImageTracks(isMobile) {
-  const tracks = [[], []];
-  const shuffled = shuffleArray(IMAGES);
-
-  // Split images across 2 tracks
-  shuffled.forEach((img, i) => {
-    tracks[i % 2].push(img);
-  });
-
-  // Duplicate for seamless looping (desktop only)
-  if (!isMobile) {
-    tracks[0] = [...tracks[0], ...tracks[0]];
-    tracks[1] = [...tracks[1], ...tracks[1]];
-  }
-
-  return tracks;
-}
-
 export default function DoubleMarquee() {
-  const [tracks, setTracks] = useState([[], []]);
-  const [isMobile, setIsMobile] = useState(false);
+  const trackRef = useRef(null);
+  const wrapperRef = useRef(null);
+  const rafRef = useRef(null);
 
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
+  // Apply arc rotation based on mathematical position (avoiding transform read/write feedback loop)
+  const updateArc = useCallback(() => {
+    if (!trackRef.current || !wrapperRef.current) return;
+    const track = trackRef.current;
+    const cards = track.querySelectorAll(".arc-marquee__item");
 
-    const mobile = window.matchMedia("(max-width: 768px)").matches;
-    setIsMobile(mobile);
-    setTracks(buildImageTracks(mobile));
+    // Get base position of the track
+    const trackRect = track.getBoundingClientRect();
+    const viewportCenter = window.innerWidth / 2;
+    // Tweak stringency of the curve
+    const curveRadius = window.innerWidth * 0.45;
 
-    // Arrow path animation
-    gsap.set(".marquee-left .marquee-svg-item:nth-child(2) path", {
-      strokeDashoffset: 1000,
+    cards.forEach((card) => {
+      // Store original offsetLeft to calculate un-transformed screen X
+      if (!card.hasAttribute("data-left")) {
+        card.setAttribute("data-left", card.offsetLeft);
+      }
+      const initialLeft = parseFloat(card.getAttribute("data-left"));
+
+      // Calculate true center of the card relative to viewport window
+      const cardCenter = trackRect.left + initialLeft + card.offsetWidth / 2;
+
+      // Distance from viewport center, normalized
+      const distFromCenter = (cardCenter - viewportCenter) / curveRadius;
+
+      // Use a cubic polynomial so the center cards stay flat, but the edge cards ramp up sharply
+      const cubicDist = Math.pow(distFromCenter, 3);
+      const clampedCubic = Math.max(-1.8, Math.min(1.8, cubicDist));
+
+      // Corrected 3D inward "framing" polarity:
+      // Left cards (- dist) -> positive rotateY -> left edge swings out toward camera.
+      // Right cards (+ dist) -> negative rotateY -> right edge swings out toward camera.
+      const rotateY = clampedCubic * -28;
+
+      // PULL TOWARDS CAMERA: Outer cards sweep inward and grow massive like the reference
+      const translateZ = Math.pow(Math.abs(distFromCenter), 2.5) * 200;
+
+      // Slight scale variation: cards actively grow as they move to the edges
+      const scale = 1 + Math.pow(Math.abs(distFromCenter), 2) * 0.005;
+
+      // Pull aggressively inwards to stitch the floating cards together and prevent V-shape gaps
+      // Left card (-dist) pushed right (+X). Right card (+dist) pushed left (-X).
+      const translateX =
+        Math.pow(Math.abs(distFromCenter), 2) * (distFromCenter < 0 ? 60 : -60);
+
+      card.style.transform = `translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`;
     });
 
-    const marqueeTl = gsap.timeline({
-      scrollTrigger: {
-        trigger: ".Double-marquee",
-        start: "top 70%",
-        toggleActions: "play none none reverse",
+    rafRef.current = requestAnimationFrame(updateArc);
+  }, []);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    const items = track.querySelectorAll(".arc-marquee__item");
+    if (!items.length) return;
+
+    // Calculate total width of one set (first half)
+    let singleSetWidth = 0;
+    const halfCount = items.length / 2;
+    items.forEach((item, i) => {
+      if (i < halfCount) {
+        singleSetWidth += item.offsetWidth + 20; // 20px gap
+      }
+    });
+
+    // GSAP infinite horizontal scroll
+    const tween = gsap.to(track, {
+      x: -singleSetWidth,
+      duration: 30,
+      ease: "none",
+      repeat: -1,
+      modifiers: {
+        x: gsap.utils.unitize((x) => parseFloat(x) % singleSetWidth),
       },
     });
 
-    marqueeTl
-      .to(".marquee-underline", {
-        scaleX: 1,
-        opacity: 1,
-        duration: 1,
-        ease: "power2.out",
-      })
-      .to(
-        ".marquee-left .marquee-svg-item:nth-child(1)",
-        {
-          scale: 1,
-          opacity: 1,
-          rotation: -10,
-          duration: 0.6,
-          ease: "back.out(1.7)",
-        },
-        "-=0.5",
-      )
-      .to(
-        ".marquee-left .marquee-svg-item:nth-child(2) path",
-        { strokeDashoffset: 0, duration: 1.5, ease: "power2.out" },
-        "-=0.3",
-      );
+    // Start the arc update loop
+    rafRef.current = requestAnimationFrame(updateArc);
 
     return () => {
-      ScrollTrigger.getAll().forEach((t) => {
-        if (t.vars.trigger === ".Double-marquee") t.kill();
-      });
+      tween.kill();
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, []);
+  }, [updateArc]);
+
+  // Duplicate images for seamless loop
+  const allImages = [...shuffleArray(IMAGES), ...shuffleArray(IMAGES)];
 
   return (
-    <>
-      {/* Left: Text + Blob + Instagram button */}
-      <div className="marquee-left">
-        <div className="marquee-text-container">
-          <h2>
-            follow us on
-            <br />
-            <span className="text-with">instagram:</span>
-          </h2>
+    <div className="arc-marquee-section">
+      {/* ─── Text content at top ─── */}
+      <div className="arc-marquee__text-block">
+        <p className="arc-marquee__label">Our Collection</p>
+        <h2 className="arc-marquee__heading">
+          Curious What We've
+          <br />
+          <em>Crafted?</em>
+        </h2>
+        <p className="arc-marquee__desc">
+          Explore our handwoven khadi textiles, sustainable fashion, and
+          artisanal home collections.
+        </p>
+        <a
+          href="https://www.instagram.com/sumclothico/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="arc-marquee__btn"
+        >
+          Visit Instagram
           <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="marquee-underline"
-            viewBox="0 0 132 5"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
             fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           >
-            <path
-              d="M1 2.08377C44.3458 3.90451 87.9791 5.71442 131 1"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
+            <line x1="7" y1="17" x2="17" y2="7" />
+            <polyline points="7 7 17 7 17 17" />
           </svg>
-          <a
-            href="https://www.instagram.com/sumclothico/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="marquee-instagram-btn"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-            </svg>
-            Visit Instagram
-          </a>
-        </div>
-        <div className="marquee-blob-container">
-          <img
-            src="/assets/Marquee-blob SVG/marquee-blob.svg"
-            className="marquee-blob"
-            alt=""
-            aria-hidden="true"
-          />
-          <div className="marquee-svg-container">
-            <div className="marquee-svg-item">
-              <img
-                src="/assets/Marquee-blob SVG/marquee-hand.svg"
-                width="100%"
-                alt=""
-                aria-hidden="true"
-              />
-            </div>
-            <div className="marquee-svg-item">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="100%"
-                viewBox="0 0 386 127"
-                fill="none"
-              >
-                <path
-                  d="M2 123C9 35.9999 84.5 17 124 25.9999C217.764 47.3635 207 115 177.5 123C105.777 142.45 110.737 1.99991 232.5 2C310.5 2.00006 366.5 79 376 118L356.5 105.5"
-                  stroke="currentColor"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M2 123C9 35.9999 84.5 17 124 25.9999C217.764 47.3635 207 115 177.5 123C105.777 142.45 110.737 1.99991 232.5 2C310.5 2.00006 366.5 79 376 118L384 97"
-                  stroke="currentColor"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
+        </a>
       </div>
 
-      {/* Right: Two scrolling columns of images */}
-      <div className="marquee-right">
-        {tracks.map((trackItems, colIndex) => (
-          <div key={colIndex} className="marquee-column">
-            <div className="marquee-track">
-              {trackItems.map((item, i) => (
-                <div key={i} className="marquee-item marquee-item--photo">
-                  <img
-                    src={item.src}
-                    loading="lazy"
-                    alt={item.alt}
-                    className="marquee-photo"
-                  />
-                </div>
-              ))}
+      {/* ─── Single curved marquee ─── */}
+      <div className="arc-marquee__wrapper" ref={wrapperRef}>
+        <div className="arc-marquee__track" ref={trackRef}>
+          {allImages.map((item, i) => (
+            <div key={`card-${i}`} className="arc-marquee__item">
+              <img src={item.src} loading="lazy" alt={item.alt} />
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </>
+    </div>
   );
 }

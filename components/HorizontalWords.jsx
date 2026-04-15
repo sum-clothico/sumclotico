@@ -131,6 +131,32 @@ const HorizontalWords = () => {
           });
         }
       });
+
+      // Animate Corner Ornaments (SVG and Hindi char)
+      gsap.to(".horizontal-words__corner-left", {
+        clipPath: "inset(0% 0% 0% 0%)",
+        ease: "none",
+        scrollTrigger: {
+          trigger: textRef,
+          containerAnimation: scrollTween,
+          start: "left 80%",
+          end: "right 90%", // Reveals completely quicker
+          scrub: true,
+        },
+      });
+
+      // Fade out alphabet as scrolled more
+      gsap.to(".horizontal-words__corner-right", {
+        opacity: 0,
+        ease: "none",
+        scrollTrigger: {
+          trigger: textRef,
+          containerAnimation: scrollTween,
+          start: "left 50%",
+          end: "right 60%",
+          scrub: true,
+        },
+      });
     }, sectionRef);
 
     return () => ctx.revert();
@@ -402,12 +428,19 @@ const HorizontalWords = () => {
 
       <div className="horizontal-words__bottom-text">
         <div className="horizontal-words__bottom-text-l">
-          Khadi is more than fabric — it is a <em>movement</em>.<br />
+          Khadi is more than fabric — it is a{" "}
+          <em className="story-section__highlight">movement</em>.<br />
           We bring the timeless craft of handloom weaving
           <br />
           to the modern conscious wardrobe.
         </div>
       </div>
+
+      {/* ─── Corner Ornaments ─── */}
+      <div className="horizontal-words__corner-left">
+        <img src="/assets/Asset 1.svg" alt="Botanical Line Art" />
+      </div>
+      <div className="horizontal-words__corner-right">स</div>
     </section>
   );
 };
