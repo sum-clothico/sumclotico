@@ -350,7 +350,7 @@ export default function Footer() {
               lineHeight: 1,
             }}
           >
-            SUM CLOTHICO
+            सम CLOTHICO
           </span>
         </div>
 

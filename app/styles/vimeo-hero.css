@@ -82,11 +82,12 @@
 }
 
 .vimeo-hero__title {
-  font-family: "Epilogue", sans-serif;
-  font-weight: 900;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
   font-size: clamp(2.5rem, 6.5vw, 6.5rem);
   line-height: 1;
-  letter-spacing: -3px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
   color: var(--color-white);
   display: flex;
   flex-wrap: wrap;
@@ -116,68 +117,19 @@
   position: relative;
 }
 
-/* Italic "advertising" */
+/* Lighter weight for contrast word ("tradition") */
 .vimeo-hero__title em {
-  font-family: "Times New Roman", Georgia, serif;
-  font-style: italic;
+  font-family: "Poppins", sans-serif;
+  font-style: normal;
   font-weight: 400;
-  letter-spacing: -1px;
+  letter-spacing: 0.03em;
 }
 
-/* ─── ⑤ Smiley — NO animation ─────────────────── */
-.home-header__smiley {
-  position: absolute;
-  top: -0.35em;
-  left: 0.4em;
-  width: 1em;
-  height: 1em;
-  pointer-events: none;
-  z-index: 10;
-  rotate: calc(-30deg);
-}
-
-.home-header__smiley-svg {
-  width: 100%;
-  height: 100%;
-}
-
-/* ─── ⑤ Pink star — NO spin animation ─────────── */
-.home-header__star {
-  position: absolute;
-  top: 10%;
-  right: -0.6em;
-  transform: translateY(-50%);
-  width: 0.8em;
-  height: 0.8em;
-  pointer-events: none;
-  rotate: calc(10deg);
-}
-
-.home-header__star-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.home-header__star-svg {
-  width: 100%;
-  height: 100%;
-}
-
-/* ─── Oval underline under "mainstream" ────────── */
+/* ─── Decorative elements — HIDDEN for minimal redesign ─── */
+.home-header__smiley,
+.home-header__star,
 .home-header__title-line-svg {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 120%;
-  height: 104%;
-  color: var(--color-white);
-  overflow: visible;
-  pointer-events: none;
+  display: none;
 }
 
 .home-header__title-line-path {
