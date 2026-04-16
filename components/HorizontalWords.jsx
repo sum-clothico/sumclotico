@@ -36,13 +36,16 @@ const HorizontalWords = () => {
       // To make letters start animating as we scroll down from VimeoHero,
       // we start the horizontal movement as soon as the section enters the viewport (top bottom).
       const entranceDistance = window.innerHeight;
-      const pinnedDistance = 2500;
+      const textScrollDistance = 2500; // How long the text takes to scroll
+      const extraPinForImage = 800;   // Extra pinned time for traveling image fade-in
+      const totalPinDistance = textScrollDistance + extraPinForImage;
 
+      // Text scroll timeline — ends when text finishes (before pin ends)
       const scrollTween = gsap.timeline({
         scrollTrigger: {
           trigger: container,
           start: "top bottom",
-          end: () => `+=${entranceDistance + pinnedDistance}`,
+          end: () => `+=${entranceDistance + textScrollDistance}`,
           scrub: 1,
           invalidateOnRefresh: true,
         },
@@ -52,7 +55,7 @@ const HorizontalWords = () => {
         .fromTo(
           textRef,
           {
-            x: window.innerWidth, // Start words off-screen right
+            x: window.innerWidth,
           },
           {
             x: window.innerWidth * 0.5,
@@ -63,14 +66,14 @@ const HorizontalWords = () => {
         .to(textRef, {
           x: () => -(textRef.scrollWidth - window.innerWidth * 0.5),
           ease: "none",
-          duration: pinnedDistance,
+          duration: textScrollDistance,
         });
 
-      // Separate pinning logic so it only locks when the section hits the top
+      // Pin lasts longer than text scroll — extra time for image fade-in
       ScrollTrigger.create({
         trigger: container,
         start: "top top",
-        end: () => `+=${pinnedDistance}`,
+        end: () => `+=${totalPinDistance}`,
         pin: true,
         pinSpacing: true,
         invalidateOnRefresh: true,

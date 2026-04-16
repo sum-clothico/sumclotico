@@ -1,13 +1,12 @@
 .traveling-image {
   position: fixed;
   z-index: 1000;
-  width: 250px;
-  height: 200px;
+  width: 220px;
+  height: 310px;
   pointer-events: none;
   overflow: hidden;
-  border-radius: 20px;
+  border-radius: 8px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-  transform: translate(-50%, -50%); /* Center on coordinates */
   will-change: transform, opacity, left, top;
 }
 
@@ -18,7 +17,6 @@
   display: block;
 }
 
-/* On mobile, we might want to hide it or simplify its movement */
 @media (max-width: 768px) {
   .traveling-image {
     display: none;
