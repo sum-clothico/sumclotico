@@ -163,19 +163,21 @@ export default function MotionCards() {
 
       <div className="horizontal-words__corner-right">म</div>
 
+      {/* ─── Section heading ─── */}
+      <p className="mc-heading">Where Khadi Fits in Your Life</p>
+
       {/* ─── Cycling Text ─── */}
       <div className="mc-texts">
         <p className="mc-phase-text">
-          Delicate embroidery, fluid silhouettes, and artisanal charm come
-          together to tell a story of heritage and modern femininity.
+          Khadi is not just "traditional wear" anymore. It works for daily wear
+          that feels light and breathable.
         </p>
         <p className="mc-phase-text">
-          Each piece is dyed with natural pigments, stitched by hand, and
-          finished with the quiet precision of generations past.
+          Work outfits that stay comfortable all day. Simple, minimal
+          wardrobes built around ease.
         </p>
         <p className="mc-phase-text">
-          From raw khadi to refined form — our collections honour the craft
-          while embracing the rhythm of contemporary life.
+          Travel, where comfort matters most. Easy, effortless, and real.
         </p>
       </div>
 

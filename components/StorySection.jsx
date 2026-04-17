@@ -5,7 +5,7 @@ import "../app/styles/story-section.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const PIN_DURATION = 4500;
+const PIN_DURATION = 7000;
 
 const phases = [
   {
@@ -13,7 +13,15 @@ const phases = [
     position: "right",
   },
   {
-    text: "It begins with cotton: soft, raw, untouched. It is spun into yarn on a simple wheel, one thread at a time.",
+    text: "Khadi comes from that time. It begins with cotton: soft, raw, untouched.",
+    position: "left",
+  },
+  {
+    text: "It is spun into yarn on a simple wheel, one thread at a time. That yarn is then woven on a loom, guided by skilled hands, not machines.",
+    position: "right",
+  },
+  {
+    text: "Every piece of Khadi carries hours of work, patience, and human touch.",
     position: "left",
   },
   {

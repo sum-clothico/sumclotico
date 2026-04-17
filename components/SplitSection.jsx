@@ -6,16 +6,39 @@ import "../app/styles/split-section.css";
 gsap.registerPlugin(ScrollTrigger);
 
 const PANELS = [
-  { reversed: false },
-  { reversed: true },
-  { reversed: false },
-  { reversed: true },
+  {
+    reversed: false,
+    title: ["It Breathes", "With You"],
+    why: "The yarn is hand-spun — slightly uneven and airy.",
+    how: "Air passes through easily, so the fabric stays cool in summer and comfortable in changing weather.",
+    label: ["KHADI", "VOL 1"],
+  },
+  {
+    reversed: true,
+    title: ["It Has a Life", "of Its Own"],
+    why: "Machines create perfect, uniform fabric. Hands don't.",
+    how: "Those tiny variations make each piece unique — it doesn't feel flat or lifeless.",
+    label: ["KHADI", "VOL 2"],
+  },
+  {
+    reversed: false,
+    title: ["Gentle on", "Your Skin"],
+    why: "Khadi is made with minimal chemical processing.",
+    how: "It feels soft, natural, and is suitable for long hours of wear.",
+    label: ["KHADI", "VOL 3"],
+  },
+  {
+    reversed: true,
+    title: ["Better for", "the Planet"],
+    why: "No heavy machines, low electricity, less industrial processing.",
+    how: "Lower environmental impact — making it a more sustainable choice.",
+    label: ["KHADI", "VOL 4"],
+  },
 ];
 
-const SplitPanel = ({ reversed }) => {
+const SplitPanel = ({ reversed, title, why, how, label }) => {
   const sectionRef = useRef(null);
   const modelRef = useRef(null);
-  const leftTextRef = useRef(null);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -38,7 +61,8 @@ const SplitPanel = ({ reversed }) => {
         },
       );
 
-      gsap.fromTo(modelRef.current,
+      gsap.fromTo(
+        modelRef.current,
         { x: 0 },
         {
           x: xTarget,
@@ -61,6 +85,18 @@ const SplitPanel = ({ reversed }) => {
         scrollTrigger: {
           trigger: section,
           start: "top 60%",
+        },
+      });
+
+      gsap.from(section.querySelectorAll(".split-section__why, .split-section__how"), {
+        opacity: 0,
+        y: 20,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: section,
+          start: "top 55%",
         },
       });
     }, sectionRef);
@@ -88,30 +124,29 @@ const SplitPanel = ({ reversed }) => {
       </svg>
 
       <div className="split-section__left">
-        <div ref={leftTextRef} className="split-section__content">
+        <div className="split-section__content">
           <div className="split-section__title">
-            <span>SUNLIT</span>
-            <br />
-            <span>ESSENTIALS</span>
+            {title.map((t, i) => (
+              <React.Fragment key={i}>
+                <span>{t}</span>
+                {i < title.length - 1 && <br />}
+              </React.Fragment>
+            ))}
           </div>
-          <p className="split-section__subtitle">
-            for carefree, Breezy days. Prints that
-            <br />
-            flow seamlessly from day to night.
+          <p className="split-section__why">
+            <span className="split-section__qa-label">Why?</span> {why}
+          </p>
+          <p className="split-section__how">
+            <span className="split-section__qa-label">How?</span> {how}
           </p>
         </div>
 
-        <div className="split-section__bottom-label">
-          SUMMER
-          <br />
-          VOL 2
-        </div>
       </div>
 
       <div className="split-section__right" />
 
       <div ref={modelRef} className="split-section__model">
-        <img src="/assets/model.png" alt="Summer Collection Model" />
+        <img src="/assets/model.png" alt="Khadi Model" />
       </div>
     </section>
   );
@@ -120,7 +155,7 @@ const SplitPanel = ({ reversed }) => {
 const SplitSection = () => (
   <>
     {PANELS.map((p, i) => (
-      <SplitPanel key={i} index={i} reversed={p.reversed} />
+      <SplitPanel key={i} {...p} />
     ))}
   </>
 );

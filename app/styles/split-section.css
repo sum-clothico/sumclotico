@@ -63,7 +63,7 @@
 
 .split-section__title {
   font-family: inherit;
-  font-size: clamp(3rem, 8vw, 6rem);
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
   font-weight: 600;
   line-height: 0.9;
   letter-spacing: -0.02em;
@@ -82,6 +82,26 @@
   color: var(--color-dark);
   opacity: 0.8;
   max-width: 400px;
+}
+
+.split-section__why,
+.split-section__how {
+  font-family: "Poppins", sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-dark);
+  opacity: 0.85;
+  max-width: 380px;
+  margin-bottom: 0.75rem;
+}
+
+.split-section__qa-label {
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.5;
+  margin-right: 6px;
 }
 
 .split-section__bottom-label {

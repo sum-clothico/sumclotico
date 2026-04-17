@@ -11,9 +11,9 @@ const STORY_PIN = 4500;
 
 const SPLIT_IMAGES = [
   "/assets/img/12.png",
-  "/assets/img/8.png",
-  "/assets/img/5.png",
-  "/assets/img/3.png",
+  "/assets/img/19.png",
+  "/assets/img/18.png",
+  "/assets/img/17.png",
 ];
 
 const TravelingImage = () => {
@@ -64,7 +64,11 @@ const TravelingImage = () => {
       gsap.set(hFrame, { strokeDasharray: len, strokeDashoffset: len });
       fadeInTl.to(
         hFrame,
-        { strokeDashoffset: 0, ease: "power2.inOut", duration: TOTAL_PIN_DISTANCE - TEXT_SCROLL_DISTANCE },
+        {
+          strokeDashoffset: 0,
+          ease: "power2.inOut",
+          duration: TOTAL_PIN_DISTANCE - TEXT_SCROLL_DISTANCE,
+        },
         "<",
       );
     }
@@ -79,7 +83,12 @@ const TravelingImage = () => {
       },
     });
     triggers.push(travelToStoryTl.scrollTrigger);
-    travelToStoryTl.to(el, { left: "50%", top: "50%", duration: 1, ease: "expo.inOut" });
+    travelToStoryTl.to(el, {
+      left: "50%",
+      top: "50%",
+      duration: 1,
+      ease: "expo.inOut",
+    });
 
     // ═══ PHASE 2 — Curtain reveal in StorySection ═══
     const curtain0 = el.querySelector(".curtain-0");
@@ -98,11 +107,19 @@ const TravelingImage = () => {
     gsap.set([curtain0, curtain1], { clipPath: "inset(0% 0% 0% 0%)" });
     splitTl.to({}, { duration: 0.3 });
     if (curtain0) {
-      splitTl.to(curtain0, { clipPath: "inset(100% 0% 0% 0%)", duration: 0.35, ease: "expo.inOut" });
+      splitTl.to(curtain0, {
+        clipPath: "inset(100% 0% 0% 0%)",
+        duration: 0.35,
+        ease: "expo.inOut",
+      });
     }
     splitTl.to({}, { duration: 0.3 });
     if (curtain1) {
-      splitTl.to(curtain1, { clipPath: "inset(100% 0% 0% 0%)", duration: 0.35, ease: "expo.inOut" });
+      splitTl.to(curtain1, {
+        clipPath: "inset(100% 0% 0% 0%)",
+        duration: 0.35,
+        ease: "expo.inOut",
+      });
     }
 
     // ═══ PHASE 3 — Travel through all split sections, swap image ═══
@@ -123,13 +140,23 @@ const TravelingImage = () => {
         },
       });
       triggers.push(travelTl.scrollTrigger);
-      travelTl.to(el, { left: targetLeft, top: "30%", scale: 1.02, duration: 1, ease: "expo.inOut" });
+      travelTl.to(el, {
+        left: targetLeft,
+        top: "30%",
+        scale: 1.02,
+        duration: 1,
+        ease: "expo.inOut",
+      });
 
       const frame = section.querySelector(".section-frame-path");
       if (frame) {
         const len = frame.getTotalLength();
         gsap.set(frame, { strokeDasharray: len, strokeDashoffset: len });
-        travelTl.to(frame, { strokeDashoffset: 0, ease: "power2.inOut", duration: 1 }, 0);
+        travelTl.to(
+          frame,
+          { strokeDashoffset: 0, ease: "power2.inOut", duration: 1 },
+          0,
+        );
       }
 
       // curtain reveal — same as Showreel split animation
@@ -187,7 +214,11 @@ const TravelingImage = () => {
 
   return (
     <div ref={containerRef} className="traveling-image">
-      <img className="traveling-image__base" src="/assets/img/12.png" alt="Khadi Product" />
+      <img
+        className="traveling-image__base"
+        src="/assets/img/12.png"
+        alt="Khadi Product"
+      />
       <div className="traveling-image__curtain curtain-1">
         <img src="/assets/img/5.png" alt="" />
       </div>
