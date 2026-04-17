@@ -76,7 +76,7 @@
 }
 
 .split-section__subtitle {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 1.1rem;
   line-height: 1.5;
   color: var(--color-dark);
@@ -98,7 +98,7 @@
 .split-section__model {
   position: absolute;
   bottom: 0;
-  left: 70%;
+  left: 55%;
   transform: translateX(-45%);
   height: 100%;
   width: auto;
@@ -112,6 +112,36 @@
   width: auto;
   object-fit: contain;
   filter: drop-shadow(30px 20px 60px rgba(0, 0, 0, 0.15));
+}
+
+/* ─── Reversed (text right, color left) ────────────────── */
+.split-section--reversed {
+  flex-direction: row-reverse;
+}
+
+.split-section--reversed .split-section__frame {
+  left: auto;
+  right: 18%;
+  transform: translate(50%, -50%);
+}
+
+.split-section--reversed .split-section__model {
+  left: auto;
+  right: 55%;
+  transform: translateX(45%);
+}
+
+.split-section--reversed .split-section__left {
+  align-items: flex-end;
+}
+
+.split-section--reversed .split-section__content {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.split-section--reversed .split-section__model img {
+  transform: scaleX(-1);
 }
 
 /* ─── Responsive ────────────────────────────────────────── */

@@ -65,6 +65,17 @@
   display: block;
 }
 
+/* ─── Split section cross-fade images ──────────────────── */
+.ti-split {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  z-index: 10;
+}
+
 /* ─── Mobile ────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .traveling-image {

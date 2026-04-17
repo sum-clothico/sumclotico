@@ -5,14 +5,23 @@ import "../app/styles/split-section.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const SplitSection = () => {
+const PANELS = [
+  { reversed: false },
+  { reversed: true },
+  { reversed: false },
+  { reversed: true },
+];
+
+const SplitPanel = ({ reversed }) => {
   const sectionRef = useRef(null);
   const modelRef = useRef(null);
   const leftTextRef = useRef(null);
 
   useEffect(() => {
+    const section = sectionRef.current;
+    const xTarget = section.classList.contains("split-section--reversed") ? -150 : 150;
+
     const ctx = gsap.context(() => {
-      // Model parallax effect (fade-in & slide-up)
       gsap.fromTo(
         modelRef.current,
         { scale: 0.95, y: 100, opacity: 0 },
@@ -23,44 +32,35 @@ const SplitSection = () => {
           duration: 1.5,
           ease: "power3.out",
           scrollTrigger: {
-            trigger: sectionRef.current,
+            trigger: section,
             start: "top 70%",
           },
         },
       );
 
-      // Model horizontal move on scroll
-      gsap.to(modelRef.current, {
-        x: 100,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true,
+      gsap.fromTo(modelRef.current,
+        { x: 0 },
+        {
+          x: xTarget,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
         },
-      });
+      );
 
-      // Typography entrance
-      gsap.from(".split-section__title span", {
+      gsap.from(section.querySelectorAll(".split-section__title span"), {
         y: 100,
         opacity: 0,
         duration: 1,
         stagger: 0.1,
         ease: "power4.out",
         scrollTrigger: {
-          trigger: sectionRef.current,
+          trigger: section,
           start: "top 60%",
-        },
-      });
-
-      gsap.from(".split-section__mahay", {
-        opacity: 0,
-        y: -30,
-        duration: 1,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 70%",
         },
       });
     }, sectionRef);
@@ -69,8 +69,10 @@ const SplitSection = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} className="split-section">
-      {/* SVG Frame for Traveling Image */}
+    <section
+      ref={sectionRef}
+      className={`split-section${reversed ? " split-section--reversed" : ""}`}
+    >
       <svg className="split-section__frame" viewBox="0 0 240 330">
         <rect
           className="section-frame-path"
@@ -106,9 +108,7 @@ const SplitSection = () => {
         </div>
       </div>
 
-      <div className="split-section__right">
-        {/* Warm colored background via CSS */}
-      </div>
+      <div className="split-section__right" />
 
       <div ref={modelRef} className="split-section__model">
         <img src="/assets/model.png" alt="Summer Collection Model" />
@@ -116,5 +116,13 @@ const SplitSection = () => {
     </section>
   );
 };
+
+const SplitSection = () => (
+  <>
+    {PANELS.map((p, i) => (
+      <SplitPanel key={i} index={i} reversed={p.reversed} />
+    ))}
+  </>
+);
 
 export default SplitSection;
