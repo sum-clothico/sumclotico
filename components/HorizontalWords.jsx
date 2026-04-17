@@ -37,7 +37,7 @@ const HorizontalWords = () => {
       // we start the horizontal movement as soon as the section enters the viewport (top bottom).
       const entranceDistance = window.innerHeight;
       const textScrollDistance = 2500; // How long the text takes to scroll
-      const extraPinForImage = 800;   // Extra pinned time for traveling image fade-in
+      const extraPinForImage = 800; // Extra pinned time for traveling image fade-in
       const totalPinDistance = textScrollDistance + extraPinForImage;
 
       // Text scroll timeline — ends when text finishes (before pin ends)
@@ -438,6 +438,21 @@ const HorizontalWords = () => {
           to the modern conscious wardrobe.
         </div>
       </div>
+
+      {/* ─── SVG Frame for Traveling Image ─── */}
+      <svg className="horizontal-words__frame" viewBox="0 0 240 330">
+        <rect
+          className="section-frame-path"
+          x="5"
+          y="5"
+          width="230"
+          height="320"
+          rx="8"
+          fill="none"
+          stroke="#3d2b1f"
+          strokeWidth="1.5"
+        />
+      </svg>
 
       {/* ─── Corner Ornaments ─── */}
       <div className="horizontal-words__corner-left">

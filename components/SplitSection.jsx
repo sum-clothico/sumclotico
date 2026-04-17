@@ -70,6 +70,21 @@ const SplitSection = () => {
 
   return (
     <section ref={sectionRef} className="split-section">
+      {/* SVG Frame for Traveling Image */}
+      <svg className="split-section__frame" viewBox="0 0 240 330">
+        <rect
+          className="section-frame-path"
+          x="5"
+          y="5"
+          width="230"
+          height="320"
+          rx="8"
+          fill="none"
+          stroke="#3d2b1f"
+          strokeWidth="1.5"
+        />
+      </svg>
+
       <div className="split-section__left">
         <div ref={leftTextRef} className="split-section__content">
           <div className="split-section__title">

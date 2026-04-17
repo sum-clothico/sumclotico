@@ -3,125 +3,149 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import ClipPathTitle from "@/components/ClipPathTitle";
-import VideoPinSection from "@/components/VideoPinSection";
+import "../app/styles/showreel.css";
+
+gsap.registerPlugin(ScrollTrigger);
+
+const STEPS = [
+  {
+    heading: "How Khadi Is Made",
+    body: "Khadi is not rushed. That's what makes it special.",
+    img: "/assets/img/1.png",
+  },
+  {
+    heading: "The Cotton",
+    body: "Natural cotton is cleaned and prepared — raw, unbleached, and full of life.",
+    img: "/assets/img/3.png",
+  },
+  {
+    heading: "Spinning",
+    body: "Spun by hand on a charkha. The fibers stay airy and alive.",
+    img: "/assets/img/5.png",
+  },
+  {
+    heading: "Weaving",
+    body: "Woven on handlooms — each movement controlled by hand, no automation.",
+    img: "/assets/img/7.png",
+  },
+  {
+    heading: "Fabric Comes to Life",
+    body: "A fabric that breathes, moves, and feels different from anything machine-made.",
+    img: "/assets/img/9.png",
+  },
+  {
+    heading: "The Beauty of Khadi",
+    body: "No two fabrics are the same. Uneven patterns, unmatched weaving, unmatched comfort.",
+    img: "/assets/img/11.png",
+  },
+];
 
 export default function Showreel() {
   const sectionRef = useRef(null);
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
+    const ctx = gsap.context(() => {
+      const PIN = STEPS.length * 1000;
 
-    const revealTl = gsap.timeline({
-      delay: 1,
-      scrollTrigger: {
+      ScrollTrigger.create({
         trigger: sectionRef.current,
-        start: "top 60%",
-        end: "top top",
-        scrub: 1.5,
-      },
-    });
-
-    revealTl
-      .to(".showreel-section .first-title", {
-        duration: 1,
-        opacity: 1,
-        clipPath: "polygon(0% 0%, 100% 0, 100% 100%, 0% 100%)",
-        ease: "circ.out",
-      })
-      .to(".showreel-section .second-title", {
-        duration: 1,
-        opacity: 1,
-        clipPath: "polygon(0% 0%, 100% 0, 100% 100%, 0% 100%)",
-        ease: "circ.out",
-      })
-      .to(".showreel-section .third-title", {
-        duration: 1,
-        opacity: 1,
-        clipPath: "polygon(0% 0%, 100% 0, 100% 100%, 0% 100%)",
-        ease: "circ.out",
-      })
-      .to(".showreel-section .fourth-title", {
-        duration: 1,
-        opacity: 1,
-        clipPath: "polygon(0% 0%, 100% 0, 100% 100%, 0% 100%)",
-        ease: "circ.out",
+        start: "top top",
+        end: `+=${PIN}`,
+        pin: true,
+        pinSpacing: true,
       });
 
-    return () => {
-      ScrollTrigger.getAll().forEach((t) => {
-        if (t.vars?.trigger === sectionRef.current) t.kill();
+      const slides = sectionRef.current.querySelectorAll(".sr-slide");
+      const images = sectionRef.current.querySelectorAll(".sr-img-layer");
+
+      // init: all hidden except first
+      gsap.set(slides, { opacity: 0, y: 40 });
+      gsap.set(slides[0], { opacity: 1, y: 0 });
+
+      // images: stack with clip-path, first visible
+      gsap.set(images, { clipPath: "inset(100% 0% 0% 0%)" });
+      gsap.set(images[0], { clipPath: "inset(0% 0% 0% 0%)" });
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: `+=${PIN}`,
+          scrub: 2,
+        },
       });
-    };
+
+      const seg = 1 / STEPS.length;
+
+      STEPS.forEach((_, i) => {
+        const start = i * seg;
+        const fadeOut = start + seg * 0.6;
+
+        if (i > 0) {
+          // text fade in
+          tl.fromTo(
+            slides[i],
+            { opacity: 0, y: 40 },
+            { opacity: 1, y: 0, duration: seg * 0.35, ease: "power3.out" },
+            start,
+          );
+          // image split reveal (top → bottom curtain)
+          tl.fromTo(
+            images[i],
+            { clipPath: "inset(100% 0% 0% 0%)" },
+            {
+              clipPath: "inset(0% 0% 0% 0%)",
+              duration: seg * 0.4,
+              ease: "power3.inOut",
+            },
+            start,
+          );
+        }
+
+        // fade out text only
+        if (i < STEPS.length - 1) {
+          tl.to(
+            slides[i],
+            { opacity: 0, y: -25, duration: seg * 0.25, ease: "power2.in" },
+            fadeOut,
+          );
+        }
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
   }, []);
 
   return (
     <section
-      className="showreel-section"
-      id="showreel-section"
       ref={sectionRef}
+      className="showreel-section sr-section"
+      id="showreel-section"
     >
-      <div className="showreel__container">
-        <div className="showreel__intro">
-          <div className="showreel__titles">
-            {/* Decorative stickers */}
-            <img
-              src="/assets/Card-Sticker SVG/sticker-smiley.svg"
-              alt=""
-              className="showreel__sticker showreel__sticker--smiley"
-              aria-hidden="true"
-            />
-            <img
-              src="/assets/Card-Sticker SVG/sticker-heart.svg"
-              alt=""
-              className="showreel__sticker showreel__sticker--heart"
-              aria-hidden="true"
-            />
-            <img
-              src="/assets/Card-Sticker SVG/sticker-hand.svg"
-              alt=""
-              className="showreel__sticker showreel__sticker--hand"
-              aria-hidden="true"
-            />
+      <div className="sr-bg" />
 
-            <ClipPathTitle
-              title="Handwoven with care"
-              color="#faeade"
-              bg="var(--color-green)"
-              className="first-title"
-              borderColor="var(--color-dark)"
-            />
-            <ClipPathTitle
-              title="100% Organic Khadi"
-              color="var(--color-dark)"
-              bg="var(--color-lightgreen)"
-              className="second-title"
-              borderColor="var(--color-dark)"
-            />
-            <ClipPathTitle
-              title="Sustainably crafted"
-              color="#faeade"
-              bg="var(--color-maroon)"
-              className="third-title"
-              borderColor="var(--color-dark)"
-            />
-            <ClipPathTitle
-              title="Fair trade certified"
-              color="var(--color-dark)"
-              bg="var(--color-orange)"
-              className="fourth-title"
-              borderColor="var(--color-dark)"
-            />
-          </div>
-
-          <div className="showreel__more">
-            <p>And much more ...</p>
+      <div className="sr-split">
+        {/* Left: text */}
+        <div className="sr-left">
+          <div className="sr-content-area">
+            {STEPS.map((s, i) => (
+              <div key={i} className="sr-slide">
+                <span className="sr-ornament">✦</span>
+                <h2 className="sr-heading">{s.heading}</h2>
+                <p className="sr-body">{s.body}</p>
+              </div>
+            ))}
           </div>
         </div>
-      </div>
 
-      <div className="showreel__video-area">
-        <VideoPinSection />
+        {/* Right: stacked images with split reveal */}
+        <div className="sr-right">
+          {STEPS.map((s, i) => (
+            <div key={i} className="sr-img-layer">
+              <img src={s.img} alt={s.heading} />
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

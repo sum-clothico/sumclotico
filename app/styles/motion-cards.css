@@ -16,62 +16,82 @@
   padding: 0;
 }
 
-/* ─── Part 1: Heading ────────────────────────────────────────────────────── */
-.motion-card__heading {
-  max-width: 900px;
-  margin: 0 auto 60px;
-  position: relative;
+/* ─── Logo ───────────────────────────────────────────────────────────────── */
+.mc-logo {
+  margin: 0 auto 30px;
 }
 
-.motion-card__title {
-  font-family: "Epilogue", sans-serif;
-  font-size: 7rem;
-  font-weight: 750;
-  line-height: 0.9;
-  letter-spacing: -5px;
-  color: var(--color-dark);
-  margin-bottom: 0;
-  cursor:
-    url("/assets/Cursor SVG/cursor-text.svg") 12 12,
-    auto;
-}
-
-.motion-card__subtitle {
-  font-family: "Times New Roman", "Georgia", serif;
-  font-style: italic;
-  font-weight: 400;
-  font-size: 7.5rem;
-  line-height: 1.15;
-  letter-spacing: -2px;
-  color: var(--color-dark);
-  position: relative;
-  display: inline-block;
-  top: -30px;
-}
-
-/* SVG sticker placeholder (top-right of subtitle) */
-.motion-card__sticker {
-  position: absolute;
-  display: inline-block;
-  pointer-events: none;
-}
-
-.motion-card__sticker--top {
-  top: -15px;
-  right: -25px;
-  width: 150px;
-  height: 80px;
-  rotate: calc(-10deg);
-  /* placeholder outline – remove once real SVG is inserted */
-}
-
-/* SVG underline under "from TV to TikTok." */
-.motion-card__underline-svg {
-  display: block;
-  max-width: 720px;
-  margin: -45px auto 0;
-  color: var(--color-dark);
+.mc-logo img {
+  width: 100px;
   height: auto;
+  display: block;
+  margin: 0 auto;
+  opacity: 0.85;
+}
+
+/* ─── Cycling Text ───────────────────────────────────────────────────────── */
+.mc-texts {
+  position: relative;
+  max-width: 460px;
+  min-height: 100px;
+  margin: 0 auto 40px;
+  text-align: center;
+}
+
+.mc-phase-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  opacity: 0;
+  font-family: "Poppins", sans-serif;
+  font-size: 1.1rem;
+  line-height: 1.75;
+  font-weight: 400;
+  color: var(--color-dark);
+  margin: 0;
+}
+
+/* ─── Corner Images ──────────────────────────────────────────────────────── */
+.mc-corner {
+  position: absolute;
+  overflow: hidden;
+  border-radius: 6px;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+  clip-path: inset(50% 50% 50% 50%);
+}
+
+.mc-corner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.mc-corner--left {
+  width: 160px;
+  height: 210px;
+  bottom: 15%;
+  left: 4%;
+}
+
+.mc-corner--right {
+  width: 160px;
+  height: 210px;
+  bottom: 12%;
+  right: 4%;
+}
+
+/* ─── Scribble Line ──────────────────────────────────────────────────────── */
+.mc-scribble {
+  position: absolute;
+  bottom: 32%;
+  left: 5%;
+  right: 5%;
+  width: 90%;
+  height: 40px;
+  z-index: 1;
+  pointer-events: none;
 }
 
 /* ─── Part 2: Cards Area ─────────────────────────────────────────────────── */
@@ -221,6 +241,18 @@
   background-color: #dcec9d;
   top: 46%;
   left: 89%;
+}
+
+/* ─── Pattern Decoration ────────────────────────────────────────────────── */
+.mc-pattern {
+  position: absolute;
+  bottom: -120px;
+  left: -120px;
+  width: 600px;
+  height: 600px;
+  opacity: 0.08;
+  pointer-events: none;
+  z-index: 0;
 }
 
 /* ─── Part 3: Bottom Text ────────────────────────────────────────────────── */

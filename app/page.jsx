@@ -2,7 +2,7 @@
 
 import SvgSymbols from "@/components/SvgSymbols";
 import Navbar from "@/components/Navbar";
-import VimeoHero from "@/components/VimeoHero";
+import ArchedHero from "@/components/ArchedHero";
 import ServiceCards from "@/components/ServiceCards";
 import MotionCards from "@/components/MotionCards";
 import Showreel from "@/components/Showreel";
@@ -25,7 +25,7 @@ export default function Home() {
       <CursorBubble />
       <header className="main-header">
         <Navbar />
-        <VimeoHero />
+        <ArchedHero />
       </header>
       <HorizontalWords />
       <StorySection />

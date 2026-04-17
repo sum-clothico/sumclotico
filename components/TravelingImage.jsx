@@ -7,6 +7,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const TEXT_SCROLL_DISTANCE = 2500;
 const TOTAL_PIN_DISTANCE = 3300;
+const STORY_PIN = 4500;
 
 const TravelingImage = () => {
   const containerRef = useRef(null);
@@ -22,7 +23,7 @@ const TravelingImage = () => {
     const triggers = [];
     let isLanded = false;
 
-    // ── Initial state: hidden, centered in viewport ──
+    // ── Initial state ──
     gsap.set(el, {
       opacity: 0,
       scale: 0.85,
@@ -32,9 +33,9 @@ const TravelingImage = () => {
       top: "40%",
     });
 
-    // ═══════════════════════════════════════════════════════════
-    // PHASE 0 — Elegant fade-in from center during extended pin
-    // ═══════════════════════════════════════════════════════════
+    // ═════════════════════════════════════════════════════════════
+    // PHASE 0 — Fade in during HorizontalWords extended pin
+    // ═════════════════════════════════════════════════════════════
     const fadeInTl = gsap.timeline({
       scrollTrigger: {
         trigger: hWords,
@@ -44,7 +45,6 @@ const TravelingImage = () => {
       },
     });
     triggers.push(fadeInTl.scrollTrigger);
-
     fadeInTl.to({}, { duration: TEXT_SCROLL_DISTANCE });
     fadeInTl.to(el, {
       opacity: 1,
@@ -53,30 +53,101 @@ const TravelingImage = () => {
       ease: "power3.out",
     });
 
-    // ═══════════════════════════════════════════════════════════
-    // PHASE 1 & 2 — Smooth travel to Story → Split
-    // ═══════════════════════════════════════════════════════════
-    const travelTl = gsap.timeline({
+    // ── HorizontalWords frame draw ──
+    const hFrame = hWords.querySelector(".section-frame-path");
+    if (hFrame) {
+      const len = hFrame.getTotalLength();
+      gsap.set(hFrame, { strokeDasharray: len, strokeDashoffset: len });
+      fadeInTl.to(
+        hFrame,
+        {
+          strokeDashoffset: 0,
+          ease: "power2.inOut",
+          duration: TOTAL_PIN_DISTANCE - TEXT_SCROLL_DISTANCE,
+        },
+        "<",
+      );
+    }
+
+    // ═════════════════════════════════════════════════════════════
+    // PHASE 1 — Travel to StorySection center
+    // ═════════════════════════════════════════════════════════════
+    const travelToStoryTl = gsap.timeline({
       scrollTrigger: {
         trigger: storySection,
         start: "top bottom",
-        endTrigger: splitSection,
-        end: "top 10%",
+        end: "top top",
         scrub: 1.5,
       },
     });
-    triggers.push(travelTl.scrollTrigger);
-
-    // Waypoint 1: Drift to StorySection center-left
-    travelTl.to(el, {
+    triggers.push(travelToStoryTl.scrollTrigger);
+    travelToStoryTl.to(el, {
       left: "50%",
       top: "50%",
       duration: 1,
       ease: "expo.inOut",
     });
 
-    // Waypoint 2: Settle onto SplitSection title area
-    travelTl.to(el, {
+    // ═════════════════════════════════════════════════════════════
+    // PHASE 2 — Single vertical reveal (bottom → top)
+    // ═════════════════════════════════════════════════════════════
+    const curtain0 = el.querySelector(".curtain-0");
+    const curtain1 = el.querySelector(".curtain-1");
+
+    const splitTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: storySection,
+        start: "top top",
+        end: `+=${STORY_PIN}`,
+        scrub: 1,
+      },
+    });
+    triggers.push(splitTl.scrollTrigger);
+
+    // Initial state
+    gsap.set([curtain0, curtain1], {
+      clipPath: "inset(0% 0% 0% 0%)",
+    });
+
+    // Phase A hold
+    splitTl.to({}, { duration: 0.3 });
+
+    // Reveal curtain 0 (bottom → top)
+    if (curtain0) {
+      splitTl.to(curtain0, {
+        clipPath: "inset(100% 0% 0% 0%)",
+        duration: 0.35,
+        ease: "expo.inOut",
+      });
+    }
+
+    // Phase B hold
+    splitTl.to({}, { duration: 0.3 });
+
+    // Reveal curtain 1 (bottom → top)
+    if (curtain1) {
+      splitTl.to(curtain1, {
+        clipPath: "inset(100% 0% 0% 0%)",
+        duration: 0.35,
+        ease: "expo.inOut",
+      });
+    }
+
+    // Phase C holds remainder
+
+    // ═════════════════════════════════════════════════════════════
+    // PHASE 3 — Travel from StorySection to SplitSection
+    // ═════════════════════════════════════════════════════════════
+    const travelToSplitTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: splitSection,
+        start: "top bottom",
+        end: "top 10%",
+        scrub: 1.5,
+      },
+    });
+    triggers.push(travelToSplitTl.scrollTrigger);
+    travelToSplitTl.to(el, {
       left: "18%",
       top: "30%",
       scale: 1.02,
@@ -84,41 +155,38 @@ const TravelingImage = () => {
       ease: "expo.inOut",
     });
 
-    // ═══════════════════════════════════════════════════════════
-    // PHASE 3 — Lock image to SplitSection so it scrolls away
-    //
-    // When the travel ends, reparent the element from body into
-    // the SplitSection as position:absolute. It now scrolls with
-    // the section naturally. On scroll-back, return to fixed.
-    // ═══════════════════════════════════════════════════════════
+    // ── SplitSection frame draw ──
+    const splitFrame = splitSection.querySelector(".section-frame-path");
+    if (splitFrame) {
+      const len = splitFrame.getTotalLength();
+      gsap.set(splitFrame, { strokeDasharray: len, strokeDashoffset: len });
+      travelToSplitTl.to(
+        splitFrame,
+        { strokeDashoffset: 0, ease: "power2.inOut", duration: 1.5 },
+        0,
+      );
+    }
+
+    // ═════════════════════════════════════════════════════════════
+    // PHASE 4 — Lock to SplitSection (reparent fixed → absolute)
+    // ═════════════════════════════════════════════════════════════
     const lockST = ScrollTrigger.create({
       trigger: splitSection,
       start: "top 2%",
       onEnter: () => {
         if (isLanded) return;
         isLanded = true;
-
         const elRect = el.getBoundingClientRect();
         const splitRect = splitSection.getBoundingClientRect();
-
-        // Place at exact visual position so reparent is invisible
         const absLeft = elRect.left + elRect.width / 2 - splitRect.left;
         const absTop = elRect.top + elRect.height / 2 - splitRect.top;
-
         splitSection.appendChild(el);
-        gsap.set(el, {
-          position: "absolute",
-          left: absLeft,
-          top: absTop,
-        });
+        gsap.set(el, { position: "absolute", left: absLeft, top: absTop });
       },
       onLeaveBack: () => {
         if (!isLanded) return;
         isLanded = false;
-
         const elRect = el.getBoundingClientRect();
-
-        // Reparent back to body as fixed
         document.body.appendChild(el);
         gsap.set(el, {
           position: "fixed",
@@ -129,16 +197,28 @@ const TravelingImage = () => {
     });
     triggers.push(lockST);
 
-    return () => {
-      triggers.forEach((st) => st && st.kill());
-      fadeInTl.kill();
-      travelTl.kill();
-    };
+    return () => triggers.forEach((st) => st && st.kill());
   }, []);
 
   return (
     <div ref={containerRef} className="traveling-image">
-      <img src="/assets/img/12.png" alt="Khadi Product" />
+      {/* Bottom: Phase C image */}
+      <img
+        className="traveling-image__base"
+        src="/assets/img/12.png"
+        alt="Khadi Product"
+      />
+
+      {/* Middle curtain: Phase B → splits to reveal Phase C */}
+      {/* Middle curtain */}
+      <div className="traveling-image__curtain curtain-1">
+        <img src="/assets/img/5.png" alt="" />
+      </div>
+
+      {/* Top curtain */}
+      <div className="traveling-image__curtain curtain-0">
+        <img src="/assets/img/8.png" alt="" />
+      </div>
     </div>
   );
 };

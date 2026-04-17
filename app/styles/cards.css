@@ -23,7 +23,10 @@
     padding: 3.5rem 1.5rem 1.5rem;
     cursor: pointer;
     border-radius: 10px;
-    color: var(--color-white);
+    color: var(--color-dark);
+    background-image: url("/assets/cardbg.png");
+    background-size: cover;
+    background-position: center;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
     transform-origin: center center;
     cursor: url("/assets/Cursor SVG/cursor-text.svg") 12 12, auto;
