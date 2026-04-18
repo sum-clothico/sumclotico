@@ -1,0 +1,95 @@
+.about-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* ─── BG ─── */
+.about-section__bg {
+  position: absolute;
+  inset: 0;
+  background-image: url("/assets/751.jpg");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.18;
+  z-index: 0;
+}
+
+/* ─── Card wrapper ─── */
+.about-section__card {
+  position: relative;
+  z-index: 1;
+  width: 600px;
+  height: 82vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* about.svg fills the card completely */
+.about-section__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+}
+
+/* ─── Inner content ─── */
+.about-section__inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.4rem;
+  padding: 10% 14%;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+}
+
+/* ─── Logo ─── */
+.about-section__logo {
+  width: 100px;
+  height: auto;
+  filter: brightness(0) invert(1);
+  opacity: 0.9;
+}
+
+/* ─── Text lines ─── */
+.about-section__lines {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.about-line {
+  font-family: 'DM Sans', sans-serif;
+  font-size: clamp(0.85rem, 1.5vw, 1.05rem);
+  line-height: 1.65;
+  color: #f5ede0;
+  letter-spacing: -0.1px;
+  opacity: 0;
+  margin: 0;
+}
+
+.about-line:first-child {
+  font-family: 'Epilogue', sans-serif;
+  font-size: clamp(1rem, 2vw, 1.35rem);
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 0.4rem;
+}
+
+.about-line:last-child {
+  font-style: italic;
+  opacity: 0;
+  margin-top: 0.5rem;
+}

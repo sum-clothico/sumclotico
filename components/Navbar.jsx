@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { gsap } from "gsap";
 import { WIGGLE_CONFIG } from "@/lib/data";
+import Link from "next/link";
 
 function initWiggle(element, intensity) {
   const target = element.querySelector("[data-wiggle-target]") || element;
@@ -37,10 +38,9 @@ export default function Navbar() {
     const contentSection = document.querySelector(".content-section");
     const footerEl = document.querySelector(".main-footer");
 
-    // ② Start white (on-dark) — video is dark background
     if (navbar) {
-      navbar.classList.add("on-dark");
-      navbar.classList.remove("on-light");
+      navbar.classList.add("on-light");
+      navbar.classList.remove("on-dark");
     }
 
     const updateNavbarColor = () => {
@@ -83,8 +83,8 @@ export default function Navbar() {
         navbar.classList.add("on-light");
         navbar.classList.remove("on-dark");
       } else {
-        navbar.classList.add("on-dark");
-        navbar.classList.remove("on-light");
+        navbar.classList.add("on-light");
+        navbar.classList.remove("on-dark");
       }
     };
 
@@ -400,15 +400,13 @@ export default function Navbar() {
         >
           <div className="nav-hover-trigger">
             <div className="logo-work-container">
-              <img
-                src="/assets/Navbar SVG/nav-work-blob.svg"
-                width="60"
-                height="55"
-                className="nav-bar__work-blob-svg"
-                alt=""
-                aria-hidden="true"
-              />
-              <span className="logo-work-text">shop</span>
+              <Link
+                target="__blank__"
+                href="https://www.instagram.com/sumclothico/"
+                className="logo-work-text"
+              >
+                shop
+              </Link>
             </div>
 
             {/* Pop-out Box for Left Side */}
@@ -417,7 +415,7 @@ export default function Navbar() {
                 <div className="nav-work-item">
                   <div className="nav-work-item__img-wrap">
                     <img
-                      src="https://cdn.prod.website-files.com/683863cbe1f5a81b667b9939/68a46f25779a71fac3a11903_SnapInsta.jpg"
+                      src="/assets/m2.png"
                       loading="eager"
                       alt="Khadi Kurtas Collection"
                       className="nav-work-item__img"
@@ -433,7 +431,7 @@ export default function Navbar() {
                 <div className="nav-work-item">
                   <div className="nav-work-item__img-wrap">
                     <img
-                      src="https://cdn.prod.website-files.com/683863cbe1f5a81b667b9939/6880a344675f3a6144ed04df_01_HEMA_Back2School.avif"
+                      src="/assets/m1.png"
                       loading="eager"
                       alt="Handwoven Sarees"
                       sizes="100vw"
@@ -449,7 +447,7 @@ export default function Navbar() {
                 <div className="nav-work-item">
                   <div className="nav-work-item__img-wrap">
                     <img
-                      src="https://cdn.prod.website-files.com/683863cbe1f5a81b667b9939/686b7e0ed3ab3045b28a2012_3.avif"
+                      src="/assets/m3.png"
                       loading="eager"
                       alt="Home Textiles"
                       sizes="100vw"
@@ -464,7 +462,10 @@ export default function Navbar() {
                     <h4 className="nav-work-title">home textiles range</h4>
                   </div>
                 </div>
-                <a href="#" className="nav-work-btn">
+                <a
+                  href="https://www.instagram.com/sumclothico/"
+                  className="nav-work-btn"
+                >
                   <span className="nav-work-btn__text">
                     View all collections
                   </span>

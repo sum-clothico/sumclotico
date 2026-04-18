@@ -36,13 +36,16 @@ const HorizontalWords = () => {
       // To make letters start animating as we scroll down from VimeoHero,
       // we start the horizontal movement as soon as the section enters the viewport (top bottom).
       const entranceDistance = window.innerHeight;
-      const pinnedDistance = 2500;
+      const textScrollDistance = 2500; // How long the text takes to scroll
+      const extraPinForImage = 800; // Extra pinned time for traveling image fade-in
+      const totalPinDistance = textScrollDistance + extraPinForImage;
 
+      // Text scroll timeline — ends when text finishes (before pin ends)
       const scrollTween = gsap.timeline({
         scrollTrigger: {
           trigger: container,
           start: "top bottom",
-          end: () => `+=${entranceDistance + pinnedDistance}`,
+          end: () => `+=${entranceDistance + textScrollDistance}`,
           scrub: 1,
           invalidateOnRefresh: true,
         },
@@ -52,7 +55,7 @@ const HorizontalWords = () => {
         .fromTo(
           textRef,
           {
-            x: window.innerWidth, // Start words off-screen right
+            x: window.innerWidth,
           },
           {
             x: window.innerWidth * 0.5,
@@ -63,14 +66,14 @@ const HorizontalWords = () => {
         .to(textRef, {
           x: () => -(textRef.scrollWidth - window.innerWidth * 0.5),
           ease: "none",
-          duration: pinnedDistance,
+          duration: textScrollDistance,
         });
 
-      // Separate pinning logic so it only locks when the section hits the top
+      // Pin lasts longer than text scroll — extra time for image fade-in
       ScrollTrigger.create({
         trigger: container,
         start: "top top",
-        end: () => `+=${pinnedDistance}`,
+        end: () => `+=${totalPinDistance}`,
         pin: true,
         pinSpacing: true,
         invalidateOnRefresh: true,
@@ -231,210 +234,49 @@ const HorizontalWords = () => {
 
           <h2
             className="display horizontal-words__h2"
-            aria-label="Handspun with love for the world"
+            aria-label="Made at home. Slowly. By hand."
           >
-            <div
-              className="letter"
-              aria-hidden="true"
-              style={{ position: "relative", display: "inline-block" }}
-            >
-              H
-            </div>
-            <div
-              className="letter"
-              aria-hidden="true"
-              style={{ position: "relative", display: "inline-block" }}
-            >
-              a
-            </div>
-            <div
-              className="letter"
-              aria-hidden="true"
-              style={{ position: "relative", display: "inline-block" }}
-            >
-              n
-            </div>
-            <div
-              className="letter"
-              aria-hidden="true"
-              style={{ position: "relative", display: "inline-block" }}
-            >
-              d
-            </div>
-            <div
-              className="letter"
-              aria-hidden="true"
-              style={{ position: "relative", display: "inline-block" }}
-            >
-              s
-            </div>
-            <div
-              className="letter"
-              aria-hidden="true"
-              style={{ position: "relative", display: "inline-block" }}
-            >
-              p
-            </div>
-            <div
-              className="letter"
-              aria-hidden="true"
-              style={{ position: "relative", display: "inline-block" }}
-            >
-              u
-            </div>
-            <div
-              className="letter"
-              aria-hidden="true"
-              style={{ position: "relative", display: "inline-block" }}
-            >
-              n
-            </div>{" "}
-            <div
-              className="letter"
-              aria-hidden="true"
-              style={{ position: "relative", display: "inline-block" }}
-            >
-              w
-            </div>
-            <div
-              className="letter"
-              aria-hidden="true"
-              style={{ position: "relative", display: "inline-block" }}
-            >
-              i
-            </div>
-            <div
-              className="letter"
-              aria-hidden="true"
-              style={{ position: "relative", display: "inline-block" }}
-            >
-              t
-            </div>
-            <div
-              className="letter"
-              aria-hidden="true"
-              style={{ position: "relative", display: "inline-block" }}
-            >
-              h
-            </div>{" "}
-            <div
-              className="letter"
-              aria-hidden="true"
-              style={{ position: "relative", display: "inline-block" }}
-            >
-              l
-            </div>
-            <div
-              className="letter"
-              aria-hidden="true"
-              style={{ position: "relative", display: "inline-block" }}
-            >
-              o
-            </div>
-            <div
-              className="letter"
-              aria-hidden="true"
-              style={{ position: "relative", display: "inline-block" }}
-            >
-              v
-            </div>
-            <div
-              className="letter"
-              aria-hidden="true"
-              style={{ position: "relative", display: "inline-block" }}
-            >
-              e
-            </div>{" "}
-            <div
-              className="letter"
-              aria-hidden="true"
-              style={{ position: "relative", display: "inline-block" }}
-            >
-              f
-            </div>
-            <div
-              className="letter"
-              aria-hidden="true"
-              style={{ position: "relative", display: "inline-block" }}
-            >
-              o
-            </div>
-            <div
-              className="letter"
-              aria-hidden="true"
-              style={{ position: "relative", display: "inline-block" }}
-            >
-              r
-            </div>{" "}
-            <div
-              className="letter"
-              aria-hidden="true"
-              style={{ position: "relative", display: "inline-block" }}
-            >
-              t
-            </div>
-            <div
-              className="letter"
-              aria-hidden="true"
-              style={{ position: "relative", display: "inline-block" }}
-            >
-              h
-            </div>
-            <div
-              className="letter"
-              aria-hidden="true"
-              style={{ position: "relative", display: "inline-block" }}
-            >
-              e
-            </div>{" "}
-            <div
-              className="letter"
-              aria-hidden="true"
-              style={{ position: "relative", display: "inline-block" }}
-            >
-              w
-            </div>
-            <div
-              className="letter"
-              aria-hidden="true"
-              style={{ position: "relative", display: "inline-block" }}
-            >
-              o
-            </div>
-            <div
-              className="letter"
-              aria-hidden="true"
-              style={{ position: "relative", display: "inline-block" }}
-            >
-              r
-            </div>
-            <div
-              className="letter"
-              aria-hidden="true"
-              style={{ position: "relative", display: "inline-block" }}
-            >
-              l
-            </div>
-            <div
-              className="letter"
-              aria-hidden="true"
-              style={{ position: "relative", display: "inline-block" }}
-            >
-              d
-            </div>
+            {"Made at home. Slowly. By hand.".split("").map((char, i) =>
+              char === " " ? (
+                <span key={i} aria-hidden="true" style={{ display: "inline-block", width: "0.35em" }} />
+              ) : (
+                <div
+                  key={i}
+                  className="letter"
+                  aria-hidden="true"
+                  style={{ position: "relative", display: "inline-block" }}
+                >
+                  {char}
+                </div>
+              )
+            )}
           </h2>
         </div>
       </div>
 
       <div className="horizontal-words__bottom-text">
         <div className="horizontal-words__bottom-text-l">
-          Khadi is more than fabric — it is a{" "}
-          <em className="story-section__highlight">movement</em>.<br />
-          We bring the timeless craft of handloom weaving
-          <br />
-          to the modern conscious wardrobe.
+          There was a time when fabric was not made in{" "}
+          <em className="story-section__highlight">factories</em>.<br />
+          It was made at home. Slowly. Carefully.{" "}
+          <em className="story-section__highlight">By hand.</em>
         </div>
       </div>
+
+      {/* ─── SVG Frame for Traveling Image ─── */}
+      <svg className="horizontal-words__frame" viewBox="0 0 240 330">
+        <rect
+          className="section-frame-path"
+          x="5"
+          y="5"
+          width="230"
+          height="320"
+          rx="8"
+          fill="none"
+          stroke="#3d2b1f"
+          strokeWidth="1.5"
+        />
+      </svg>
 
       {/* ─── Corner Ornaments ─── */}
       <div className="horizontal-words__corner-left">

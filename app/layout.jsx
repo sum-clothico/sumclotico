@@ -4,6 +4,9 @@ export const metadata = {
   title: "SUM CLOTHICO — Handcrafted Khadi Textiles",
   description:
     "SUM CLOTHICO is a textile brand rooted in the tradition of khadi, offering handcrafted fabrics and sustainable fashion for the conscious consumer.",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({ children }) {

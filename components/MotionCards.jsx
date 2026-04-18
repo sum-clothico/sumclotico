@@ -95,48 +95,56 @@ export default function MotionCards() {
         label.addEventListener("mouseleave", onLeave);
       });
 
-      // Entry Animations: Sticker Pop & Underline Draw
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 70%",
-          toggleActions: "play none none reverse",
-        },
+      // ── Pattern rotate + scale on scroll ──
+      const pattern = sectionRef.current.querySelector(".mc-pattern");
+      if (pattern) {
+        gsap.fromTo(
+          pattern,
+          { rotation: 0, scale: 0.7, opacity: 0 },
+          {
+            rotation: 120,
+            scale: 1.3,
+            opacity: 0.15,
+            ease: "none",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 2,
+            },
+          },
+        );
+      }
+
+      // ── Pin section & cycle text ──
+      const PIN = 3500;
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: "top top",
+        end: `+=${PIN}`,
+        pin: true,
+        pinSpacing: true,
       });
 
-      const topStickerImg = sectionRef.current.querySelector(
-        ".motion-card__sticker--top img",
-      );
-      if (topStickerImg) {
-        gsap.set(topStickerImg, { scale: 0, opacity: 0, rotation: -30 });
-        tl.to(
-          topStickerImg,
-          {
-            scale: 1,
-            opacity: 1,
-            rotation: 0,
-            duration: 1.7,
-            ease: "elastic.out(1, 0.4)",
-          },
-          0,
-        );
-      }
-
-      const underlinePath = sectionRef.current.querySelector(
-        ".motion-card__underline-path",
-      );
-      if (underlinePath) {
-        const pathLen = underlinePath.getTotalLength();
-        gsap.set(underlinePath, {
-          strokeDasharray: pathLen,
-          strokeDashoffset: pathLen,
-        });
-        tl.to(
-          underlinePath,
-          { strokeDashoffset: 0, duration: 1.5, ease: "power2.out" },
-          0.2,
-        );
-      }
+      const phaseTexts = sectionRef.current.querySelectorAll(".mc-phase-text");
+      const textTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: `+=${PIN}`,
+          scrub: 1,
+        },
+      });
+      phaseTexts.forEach((el) => {
+        textTl
+          .fromTo(
+            el,
+            { opacity: 0, y: 25 },
+            { opacity: 1, y: 0, duration: 0.1, ease: "power2.out" },
+          )
+          .to({}, { duration: 0.18 })
+          .to(el, { opacity: 0, y: -20, duration: 0.06, ease: "power2.in" });
+      });
     }, sectionRef);
 
     return () => ctx.revert();
@@ -148,59 +156,38 @@ export default function MotionCards() {
       className="motion-card-section"
       id="motion-card-section"
     >
-      {/* ─── Part 1: Bold Heading Text with SVG Sticker Placeholders ─── */}
-
-      <div className="motion-card__heading">
-        <h2 className="motion-card__title">
-          a brand woven
-          <br />
-          for tomorrow.
-        </h2>
-        <p className="motion-card__subtitle">
-          from loom to lifestyle.
-          {/* SVG sticker placeholder — top-right area */}
-          <span className="motion-card__sticker motion-card__sticker--top">
-            <img
-              src="/assets/Footer-Sticker SVG/footer-sticker-hands.svg"
-              alt="Green heart hands sticker"
-              className="motion-card__sticker-img"
-            />
-          </span>
-        </p>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="100%"
-          viewBox="0 0 634 28"
-          fill="none"
-          className="motion-card__underline-svg"
-        >
-          <path
-            className="motion-card__underline-path"
-            d="M2 26C41.0237 23.1556 79.9927 19.9419 118.634 15.5521C169.106 9.98633 227.314 2.42393 275.206 2C280.46 2.57436 264.768 4.99488 262.462 5.55556C257.837 6.43078 252.529 7.47009 247.317 8.59146C239.594 10.3556 212.496 15.8393 226.932 19.8051C239.594 22.6359 263.663 21.9521 280.978 21.3504C314.817 19.9829 349.311 16.7419 383.204 14.7863C465.931 9.5077 549.191 10.547 632 14.1436"
-            stroke="currentColor"
-            strokeWidth="3"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+      {/* ─── Logo ─── */}
+      <div className="mc-logo">
+        <img src="/assets/logo.svg" alt="Sum Clothico" />
       </div>
 
-      {/* ─── Part 2: Cards with Colorful Bars & Blue Blob ─── */}
-      <div className="motion-card__cards-area">
-        {/* Blue SVG blob behind everything */}
-        <div className="motion-card__blob">
-          <img
-            src="/assets/MotionCard SVG/motion-card-blob.svg"
-            alt=""
-            className="motion-card__blob-svg"
-          />
-        </div>
+      <div className="horizontal-words__corner-right">म</div>
 
+      {/* ─── Section heading ─── */}
+      <p className="mc-heading">Where Khadi Fits in Your Life</p>
+
+      {/* ─── Cycling Text ─── */}
+      <div className="mc-texts">
+        <p className="mc-phase-text">
+          Khadi is not just "traditional wear" anymore. It works for daily wear
+          that feels light and breathable.
+        </p>
+        <p className="mc-phase-text">
+          Work outfits that stay comfortable all day. Simple, minimal
+          wardrobes built around ease.
+        </p>
+        <p className="mc-phase-text">
+          Travel, where comfort matters most. Easy, effortless, and real.
+        </p>
+      </div>
+
+      {/* ─── Cards ─── */}
+      <div className="motion-card__cards-area">
         <div ref={containerRef} className="motion-card__cards">
           <div className="motion-card__card motion-card__card--1">
             <div className="motion-card__card-image">
               <img
-                src="/assets/videos/1.jpg"
+                src="/assets/img/13.png"
                 loading="lazy"
                 alt=""
                 className="cover-image"
@@ -210,12 +197,10 @@ export default function MotionCards() {
 
           <div className="motion-card__card motion-card__card--2">
             <div className="motion-card__card-image">
-              <video
-                src="/assets/videos/vid2.mp4"
-                autoPlay
-                loop
-                muted
-                playsInline
+              <img
+                src="/assets/img/14.png"
+                loading="lazy"
+                alt=""
                 className="cover-image"
               />
             </div>
@@ -223,12 +208,10 @@ export default function MotionCards() {
 
           <div className="motion-card__card motion-card__card--3">
             <div className="motion-card__card-image">
-              <video
-                src="/assets/videos/vid3.mp4"
-                autoPlay
-                loop
-                muted
-                playsInline
+              <img
+                src="/assets/img/15.png"
+                loading="lazy"
+                alt=""
                 className="cover-image"
               />
             </div>
@@ -237,7 +220,7 @@ export default function MotionCards() {
           <div className="motion-card__card motion-card__card--4">
             <div className="motion-card__card-image">
               <img
-                src="/assets/videos/2.jpg"
+                src="/assets/img/16.png"
                 loading="lazy"
                 alt=""
                 className="cover-image"
@@ -247,7 +230,7 @@ export default function MotionCards() {
         </div>
 
         {/* Floating labels — positioned freely over the cards area */}
-        <div ref={containerRef} className="motion-card__floating-labels">
+        {/* <div ref={containerRef} className="motion-card__floating-labels">
           <div className="motion-card__floating-label motion-card__floating-label--pink">
             <p className="motion-card__floating-text">
               every thread tells a story
@@ -261,18 +244,21 @@ export default function MotionCards() {
           <div className="motion-card__floating-label motion-card__floating-label--red">
             <p className="motion-card__floating-text">handmade = timeless</p>
           </div>
-        </div>
+        </div> */}
       </div>
 
+      {/* ─── Pattern Decoration ─── */}
+      <img src="/assets/pat1.svg" alt="" className="mc-pattern" />
+
       {/* ─── Part 3: Bottom Paragraph Text ─── */}
-      <div className="motion-card__footer-text">
+      {/* <div className="motion-card__footer-text">
         <p className="motion-card__description">
           From the spinning wheel to your wardrobe, every piece at SUM CLOTHICO
           is crafted by artisan hands. We work the full spectrum — from raw
           khadi fabric to finished garments, home textiles, and bespoke
           collections.
         </p>
-      </div>
+      </div> */}
     </section>
   );
 }

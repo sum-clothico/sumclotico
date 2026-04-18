@@ -8,6 +8,18 @@
   overflow: hidden;
 }
 
+/* ─── SVG Frame ─────────────────────────────────────────── */
+.split-section__frame {
+  position: absolute;
+  top: 30%;
+  left: 18%;
+  transform: translate(-50%, -50%);
+  width: 240px;
+  height: 330px;
+  z-index: 6;
+  pointer-events: none;
+}
+
 /* ─── Layout ────────────────────────────────────────────── */
 .split-section__left {
   position: relative;
@@ -51,7 +63,7 @@
 
 .split-section__title {
   font-family: inherit;
-  font-size: clamp(3rem, 8vw, 6rem);
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
   font-weight: 600;
   line-height: 0.9;
   letter-spacing: -0.02em;
@@ -64,12 +76,32 @@
 }
 
 .split-section__subtitle {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 1.1rem;
   line-height: 1.5;
   color: var(--color-dark);
   opacity: 0.8;
   max-width: 400px;
+}
+
+.split-section__why,
+.split-section__how {
+  font-family: "Poppins", sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-dark);
+  opacity: 0.85;
+  max-width: 380px;
+  margin-bottom: 0.75rem;
+}
+
+.split-section__qa-label {
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.5;
+  margin-right: 6px;
 }
 
 .split-section__bottom-label {
@@ -86,7 +118,7 @@
 .split-section__model {
   position: absolute;
   bottom: 0;
-  left: 70%;
+  left: 55%;
   transform: translateX(-45%);
   height: 100%;
   width: auto;
@@ -100,6 +132,36 @@
   width: auto;
   object-fit: contain;
   filter: drop-shadow(30px 20px 60px rgba(0, 0, 0, 0.15));
+}
+
+/* ─── Reversed (text right, color left) ────────────────── */
+.split-section--reversed {
+  flex-direction: row-reverse;
+}
+
+.split-section--reversed .split-section__frame {
+  left: auto;
+  right: 18%;
+  transform: translate(50%, -50%);
+}
+
+.split-section--reversed .split-section__model {
+  left: auto;
+  right: 55%;
+  transform: translateX(45%);
+}
+
+.split-section--reversed .split-section__left {
+  align-items: flex-end;
+}
+
+.split-section--reversed .split-section__content {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.split-section--reversed .split-section__model img {
+  transform: scaleX(-1);
 }
 
 /* ─── Responsive ────────────────────────────────────────── */

@@ -5,14 +5,50 @@ import "../app/styles/split-section.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const SplitSection = () => {
+const PANELS = [
+  {
+    reversed: false,
+    title: ["It Breathes", "With You"],
+    why: "The yarn is hand-spun — slightly uneven and airy.",
+    how: "Air passes through easily, so the fabric stays cool in summer and comfortable in changing weather.",
+    label: ["KHADI", "VOL 1"],
+    model: "/assets/model.png",
+  },
+  {
+    reversed: true,
+    title: ["It Has a Life", "of Its Own"],
+    why: "Machines create perfect, uniform fabric. Hands don't.",
+    how: "Those tiny variations make each piece unique — it doesn't feel flat or lifeless.",
+    label: ["KHADI", "VOL 2"],
+    model: "/assets/m2.png",
+  },
+  {
+    reversed: false,
+    title: ["Gentle on", "Your Skin"],
+    why: "Khadi is made with minimal chemical processing.",
+    how: "It feels soft, natural, and is suitable for long hours of wear.",
+    label: ["KHADI", "VOL 3"],
+    model: "/assets/m3.png",
+  },
+  {
+    reversed: true,
+    title: ["Better for", "the Planet"],
+    why: "No heavy machines, low electricity, less industrial processing.",
+    how: "Lower environmental impact — making it a more sustainable choice.",
+    label: ["KHADI", "VOL 4"],
+    model: "/assets/m1.png",
+  },
+];
+
+const SplitPanel = ({ reversed, title, why, how, label, model }) => {
   const sectionRef = useRef(null);
   const modelRef = useRef(null);
-  const leftTextRef = useRef(null);
 
   useEffect(() => {
+    const section = sectionRef.current;
+    const xTarget = section.classList.contains("split-section--reversed") ? -150 : 150;
+
     const ctx = gsap.context(() => {
-      // Model parallax effect (fade-in & slide-up)
       gsap.fromTo(
         modelRef.current,
         { scale: 0.95, y: 100, opacity: 0 },
@@ -23,44 +59,48 @@ const SplitSection = () => {
           duration: 1.5,
           ease: "power3.out",
           scrollTrigger: {
-            trigger: sectionRef.current,
+            trigger: section,
             start: "top 70%",
           },
         },
       );
 
-      // Model horizontal move on scroll
-      gsap.to(modelRef.current, {
-        x: 100,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true,
+      gsap.fromTo(
+        modelRef.current,
+        { x: 0 },
+        {
+          x: xTarget,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
         },
-      });
+      );
 
-      // Typography entrance
-      gsap.from(".split-section__title span", {
+      gsap.from(section.querySelectorAll(".split-section__title span"), {
         y: 100,
         opacity: 0,
         duration: 1,
         stagger: 0.1,
         ease: "power4.out",
         scrollTrigger: {
-          trigger: sectionRef.current,
+          trigger: section,
           start: "top 60%",
         },
       });
 
-      gsap.from(".split-section__mahay", {
+      gsap.from(section.querySelectorAll(".split-section__why, .split-section__how"), {
         opacity: 0,
-        y: -30,
-        duration: 1,
+        y: 20,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: "power3.out",
         scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 70%",
+          trigger: section,
+          start: "top 55%",
         },
       });
     }, sectionRef);
@@ -69,37 +109,59 @@ const SplitSection = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} className="split-section">
+    <section
+      ref={sectionRef}
+      className={`split-section${reversed ? " split-section--reversed" : ""}`}
+    >
+      <svg className="split-section__frame" viewBox="0 0 240 330">
+        <rect
+          className="section-frame-path"
+          x="5"
+          y="5"
+          width="230"
+          height="320"
+          rx="8"
+          fill="none"
+          stroke="#3d2b1f"
+          strokeWidth="1.5"
+        />
+      </svg>
+
       <div className="split-section__left">
-        <div ref={leftTextRef} className="split-section__content">
+        <div className="split-section__content">
           <div className="split-section__title">
-            <span>SUNLIT</span>
-            <br />
-            <span>ESSENTIALS</span>
+            {title.map((t, i) => (
+              <React.Fragment key={i}>
+                <span>{t}</span>
+                {i < title.length - 1 && <br />}
+              </React.Fragment>
+            ))}
           </div>
-          <p className="split-section__subtitle">
-            for carefree, Breezy days. Prints that
-            <br />
-            flow seamlessly from day to night.
+          <p className="split-section__why">
+            <span className="split-section__qa-label">Why?</span> {why}
+          </p>
+          <p className="split-section__how">
+            <span className="split-section__qa-label">How?</span> {how}
           </p>
         </div>
 
-        <div className="split-section__bottom-label">
-          SUMMER
-          <br />
-          VOL 2
-        </div>
       </div>
 
-      <div className="split-section__right">
-        {/* Warm colored background via CSS */}
-      </div>
+      <div className="split-section__right" />
 
       <div ref={modelRef} className="split-section__model">
-        <img src="/assets/model.png" alt="Summer Collection Model" />
+        <img src={model} alt="Khadi Model" />
       </div>
     </section>
   );
 };
+
+const SplitSection = () => (
+  <>
+    {PANELS.map((p, i) => (
+      <SplitPanel key={i} {...p} />
+    ))}
+  </>
+);
 
 export default SplitSection;
