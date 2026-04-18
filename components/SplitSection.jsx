@@ -12,6 +12,7 @@ const PANELS = [
     why: "The yarn is hand-spun — slightly uneven and airy.",
     how: "Air passes through easily, so the fabric stays cool in summer and comfortable in changing weather.",
     label: ["KHADI", "VOL 1"],
+    model: "/assets/model.png",
   },
   {
     reversed: true,
@@ -19,6 +20,7 @@ const PANELS = [
     why: "Machines create perfect, uniform fabric. Hands don't.",
     how: "Those tiny variations make each piece unique — it doesn't feel flat or lifeless.",
     label: ["KHADI", "VOL 2"],
+    model: "/assets/m2.png",
   },
   {
     reversed: false,
@@ -26,6 +28,7 @@ const PANELS = [
     why: "Khadi is made with minimal chemical processing.",
     how: "It feels soft, natural, and is suitable for long hours of wear.",
     label: ["KHADI", "VOL 3"],
+    model: "/assets/m3.png",
   },
   {
     reversed: true,
@@ -33,10 +36,11 @@ const PANELS = [
     why: "No heavy machines, low electricity, less industrial processing.",
     how: "Lower environmental impact — making it a more sustainable choice.",
     label: ["KHADI", "VOL 4"],
+    model: "/assets/m1.png",
   },
 ];
 
-const SplitPanel = ({ reversed, title, why, how, label }) => {
+const SplitPanel = ({ reversed, title, why, how, label, model }) => {
   const sectionRef = useRef(null);
   const modelRef = useRef(null);
 
@@ -146,7 +150,7 @@ const SplitPanel = ({ reversed, title, why, how, label }) => {
       <div className="split-section__right" />
 
       <div ref={modelRef} className="split-section__model">
-        <img src="/assets/model.png" alt="Khadi Model" />
+        <img src={model} alt="Khadi Model" />
       </div>
     </section>
   );

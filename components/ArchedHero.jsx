@@ -29,7 +29,11 @@ export default function ArchedHero() {
       <div className="arched-hero__noise" />
 
       {/* Right-aligned Background Image */}
-      <img src="/assets/herobgright.png" alt="" className="arched-hero__bg-right" />
+      <img
+        src="/assets/herobgright.png"
+        alt=""
+        className="arched-hero__bg-right"
+      />
 
       {/* Brand Name — Left Side */}
       <div className="arched-hero__brand-wrap">
@@ -48,7 +52,7 @@ export default function ArchedHero() {
           {/* ✅ REAL VIDEO ELEMENT */}
           <video
             className="arched-hero__video"
-            src="/assets/videos/vid2.mp4"
+            src="/assets/videos/vid1.mp4"
             autoPlay
             muted
             loop
@@ -82,7 +86,6 @@ export default function ArchedHero() {
           </clipPath>
         </defs>
       </svg>
-
     </section>
   );
 }
