@@ -1,187 +1,290 @@
-'use client';
+"use client";
 
-import React, { useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import '../app/styles/horizontal-words.css';
+import React, { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import "../app/styles/horizontal-words.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const HorizontalWords = () => {
-    const sectionRef = useRef(null);
+  const sectionRef = useRef(null);
 
-    useEffect(() => {
-        const ctx = gsap.context(() => {
-            const container = sectionRef.current;
-            const textRef = container.querySelector('.horizontal-words__relative');
-            const letters = container.querySelectorAll('.letter');
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const container = sectionRef.current;
+      const textRef = container.querySelector(".horizontal-words__relative");
+      const letters = container.querySelectorAll(".letter");
 
-            // Select the individual stickers instead of just the wrapper
-            // or we select the images directly if they are the elements we want to animate.
-            // The original logic animated .horizontal-words__sticker-svg, but since you have multiple images:
-            const stickers = container.querySelectorAll('.horizontal-words__sticker-watch, .horizontal-words__sticker-cursor, .horizontal-words__sticker-phone');
+      // Select the individual stickers instead of just the wrapper
+      // or we select the images directly if they are the elements we want to animate.
+      // The original logic animated .horizontal-words__sticker-svg, but since you have multiple images:
+      const stickers = container.querySelectorAll(
+        ".horizontal-words__sticker-watch, .horizontal-words__sticker-cursor, .horizontal-words__sticker-phone",
+      );
 
-            // Note: To animate SVG paths with strokeDashoffset, the SVG must be inlined in the HTML,
-            // not loaded via <img> tags. The current setup uses <img> tags, so direct path animation
-            // as written below will not work unless the SVGs are converted to inline <svg> elements.
-            // For the purpose of this exercise, we'll assume the intent is for inline SVGs or
-            // that the querySelectorAll will find nothing and the animation will gracefully skip.
-            const arrows = container.querySelectorAll('.horizontal-words__arrow-svg path, .horizontal-words__arrow-end-svg path');
+      // Note: To animate SVG paths with strokeDashoffset, the SVG must be inlined in the HTML,
+      // not loaded via <img> tags. The current setup uses <img> tags, so direct path animation
+      // as written below will not work unless the SVGs are converted to inline <svg> elements.
+      // For the purpose of this exercise, we'll assume the intent is for inline SVGs or
+      // that the querySelectorAll will find nothing and the animation will gracefully skip.
+      const arrows = container.querySelectorAll(
+        ".horizontal-words__arrow-svg path, .horizontal-words__arrow-end-svg path",
+      );
 
-            // --- ENTRANCE & PINNING LOGIC ---
-            // To make letters start animating as we scroll down from VimeoHero,
-            // we start the horizontal movement as soon as the section enters the viewport (top bottom).
-            const entranceDistance = window.innerHeight;
-            const pinnedDistance = 2500;
+      // --- ENTRANCE & PINNING LOGIC ---
+      // To make letters start animating as we scroll down from VimeoHero,
+      // we start the horizontal movement as soon as the section enters the viewport (top bottom).
+      const entranceDistance = window.innerHeight;
+      const textScrollDistance = 2500; // How long the text takes to scroll
+      const extraPinForImage = 800; // Extra pinned time for traveling image fade-in
+      const totalPinDistance = textScrollDistance + extraPinForImage;
 
-            const scrollTween = gsap.timeline({
-                scrollTrigger: {
-                    trigger: container,
-                    start: "top bottom",
-                    end: () => `+=${entranceDistance + pinnedDistance}`,
-                    scrub: 1,
-                    invalidateOnRefresh: true,
-                }
-            });
+      // Text scroll timeline — ends when text finishes (before pin ends)
+      const scrollTween = gsap.timeline({
+        scrollTrigger: {
+          trigger: container,
+          start: "top bottom",
+          end: () => `+=${entranceDistance + textScrollDistance}`,
+          scrub: 1,
+          invalidateOnRefresh: true,
+        },
+      });
 
-            scrollTween
-                .fromTo(textRef, {
-                    x: window.innerWidth // Start words off-screen right
-                }, {
-                    x: window.innerWidth * 0.5,
-                    ease: "none",
-                    duration: entranceDistance
-                })
-                .to(textRef, {
-                    x: () => -(textRef.scrollWidth - window.innerWidth * 0.5),
-                    ease: "none",
-                    duration: pinnedDistance
-                });
+      scrollTween
+        .fromTo(
+          textRef,
+          {
+            x: window.innerWidth,
+          },
+          {
+            x: window.innerWidth * 0.5,
+            ease: "none",
+            duration: entranceDistance,
+          },
+        )
+        .to(textRef, {
+          x: () => -(textRef.scrollWidth - window.innerWidth * 0.5),
+          ease: "none",
+          duration: textScrollDistance,
+        });
 
-            // Separate pinning logic so it only locks when the section hits the top
-            ScrollTrigger.create({
-                trigger: container,
-                start: "top top",
-                end: () => `+=${pinnedDistance}`,
-                pin: true,
-                pinSpacing: true,
-                invalidateOnRefresh: true
-            });
-            // ------------------------------------
+      // Pin lasts longer than text scroll — extra time for image fade-in
+      ScrollTrigger.create({
+        trigger: container,
+        start: "top top",
+        end: () => `+=${totalPinDistance}`,
+        pin: true,
+        pinSpacing: true,
+        invalidateOnRefresh: true,
+      });
+      // ------------------------------------
 
-            // Bounce each letter randomly
-            letters.forEach((letter) => {
-                gsap.from(letter, {
-                    yPercent: (Math.random() - 0.5) * 500,
-                    rotation: (Math.random() - 0.5) * 60,
-                    ease: "elastic.out(1.2, 1)",
-                    scrollTrigger: {
-                        trigger: letter,
-                        containerAnimation: scrollTween,
-                        start: 'left 90%',
-                        end: 'left 50%', // Finish as it reaches center
-                        scrub: 0.5
-                    }
-                });
-            });
+      // Bounce each letter randomly
+      letters.forEach((letter) => {
+        gsap.from(letter, {
+          yPercent: (Math.random() - 0.5) * 500,
+          rotation: (Math.random() - 0.5) * 60,
+          ease: "elastic.out(1.2, 1)",
+          scrollTrigger: {
+            trigger: letter,
+            containerAnimation: scrollTween,
+            start: "left 90%",
+            end: "left 50%", // Finish as it reaches center
+            scrub: 0.5,
+          },
+        });
+      });
 
-            // Bounce stickers
-            stickers.forEach((sticker) => {
-                gsap.from(sticker, {
-                    scale: 0,
-                    yPercent: (Math.random() - 0.5) * 400,
-                    rotation: (Math.random() - 0.5) * 60,
-                    ease: "elastic.out(1.2, 1)",
-                    scrollTrigger: {
-                        trigger: sticker,
-                        containerAnimation: scrollTween,
-                        start: 'left 90%',
-                        end: 'left 50%', // Finish as it reaches center
-                        scrub: 0.5
-                    }
-                });
-            });
+      // Bounce stickers
+      stickers.forEach((sticker) => {
+        gsap.from(sticker, {
+          scale: 0,
+          yPercent: (Math.random() - 0.5) * 400,
+          rotation: (Math.random() - 0.5) * 60,
+          ease: "elastic.out(1.2, 1)",
+          scrollTrigger: {
+            trigger: sticker,
+            containerAnimation: scrollTween,
+            start: "left 90%",
+            end: "left 50%", // Finish as it reaches center
+            scrub: 0.5,
+          },
+        });
+      });
 
-            // Animate Drawing SVG Arrows 
-            arrows.forEach((arrowPath) => {
-                if (arrowPath.getTotalLength) {
-                    const pathLen = arrowPath.getTotalLength();
-                    gsap.set(arrowPath, { strokeDasharray: pathLen, strokeDashoffset: pathLen });
-                    gsap.to(arrowPath, {
-                        strokeDashoffset: 0,
-                        duration: 1,
-                        scrollTrigger: {
-                            trigger: arrowPath.parentElement,
-                            containerAnimation: scrollTween,
-                            start: 'left 90%',
-                            end: 'left 50%', // This is the last arrow's end point
-                            scrub: 0.5
-                        }
-                    });
-                }
-            });
+      // Animate Drawing SVG Arrows
+      arrows.forEach((arrowPath) => {
+        if (arrowPath.getTotalLength) {
+          const pathLen = arrowPath.getTotalLength();
+          gsap.set(arrowPath, {
+            strokeDasharray: pathLen,
+            strokeDashoffset: pathLen,
+          });
+          gsap.to(arrowPath, {
+            strokeDashoffset: 0,
+            duration: 1,
+            scrollTrigger: {
+              trigger: arrowPath.parentElement,
+              containerAnimation: scrollTween,
+              start: "left 90%",
+              end: "left 50%", // This is the last arrow's end point
+              scrub: 0.5,
+            },
+          });
+        }
+      });
 
-        }, sectionRef);
+      // Animate Corner Ornaments (SVG and Hindi char)
+      gsap.to(".horizontal-words__corner-left", {
+        clipPath: "inset(0% 0% 0% 0%)",
+        ease: "none",
+        scrollTrigger: {
+          trigger: textRef,
+          containerAnimation: scrollTween,
+          start: "left 80%",
+          end: "right 90%", // Reveals completely quicker
+          scrub: true,
+        },
+      });
 
-        return () => ctx.revert();
-    }, []);
+      // Fade out alphabet as scrolled more
+      gsap.to(".horizontal-words__corner-right", {
+        opacity: 0,
+        ease: "none",
+        scrollTrigger: {
+          trigger: textRef,
+          containerAnimation: scrollTween,
+          start: "left 50%",
+          end: "right 60%",
+          scrub: true,
+        },
+      });
+    }, sectionRef);
 
-    return (
-        <section ref={sectionRef} className="horizontal-words-section content-section">
-            <div className="horizontal-words__relative">
-                <div className="horizontal-words__sticker-svg">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 386 127" fill="none" className="horizontal-words__arrow-svg"><path d="M2 123C9 35.9999 84.5 17 124 25.9999C217.764 47.3635 207 115 177.5 123C105.777 142.45 110.737 1.99991 232.5 2C310.5 2.00006 366.5 79 376 118L356.5 105.5" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" ></path><path d="M2 123C9 35.9999 84.5 17 124 25.9999C217.764 47.3635 207 115 177.5 123C105.777 142.45 110.737 1.99991 232.5 2C310.5 2.00006 366.5 79 376 118L384 97" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" ></path></svg>
-                    <img src="/assets/HorizontalWords SVG/horizontal-words-sticker-thumps-up.svg" className="horizontal-words__sticker-watch" alt="thumbs up sticker" />
-                    <img src="/assets/HorizontalWords SVG/horizontal-words-sticker-cursor.svg" className="horizontal-words__sticker-cursor" alt="cursor sticker" />
-                    <img src="/assets/HorizontalWords SVG/horizontal-words-sticker-phone.svg" className="horizontal-words__sticker-phone" alt="phone sticker" />
-                    <svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 140 127" fill="none" className="horizontal-words__arrow-end-svg"><path d="M2.03125 2.42188C100.469 2.42188 130.156 52.4219 118.437 125.078L99.6875 107.891" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" ></path><path d="M2.03125 2.42188C100.469 2.42188 130.156 52.4219 118.438 125.078L137.969 110.234" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" ></path></svg>
+    return () => ctx.revert();
+  }, []);
 
-                    <h2 className="display horizontal-words__h2" aria-label="Handspun with love for the world">
-                        <div className="letter" aria-hidden="true" style={{ position: "relative", display: "inline-block" }}>H</div>
-                        <div className="letter" aria-hidden="true" style={{ position: "relative", display: "inline-block" }}>a</div>
-                        <div className="letter" aria-hidden="true" style={{ position: "relative", display: "inline-block" }}>n</div>
-                        <div className="letter" aria-hidden="true" style={{ position: "relative", display: "inline-block" }}>d</div>
-                        <div className="letter" aria-hidden="true" style={{ position: "relative", display: "inline-block" }}>s</div>
-                        <div className="letter" aria-hidden="true" style={{ position: "relative", display: "inline-block" }}>p</div>
-                        <div className="letter" aria-hidden="true" style={{ position: "relative", display: "inline-block" }}>u</div>
-                        <div className="letter" aria-hidden="true" style={{ position: "relative", display: "inline-block" }}>n</div>
-                        {" "}
-                        <div className="letter" aria-hidden="true" style={{ position: "relative", display: "inline-block" }}>w</div>
-                        <div className="letter" aria-hidden="true" style={{ position: "relative", display: "inline-block" }}>i</div>
-                        <div className="letter" aria-hidden="true" style={{ position: "relative", display: "inline-block" }}>t</div>
-                        <div className="letter" aria-hidden="true" style={{ position: "relative", display: "inline-block" }}>h</div>
-                        {" "}
-                        <div className="letter" aria-hidden="true" style={{ position: "relative", display: "inline-block" }}>l</div>
-                        <div className="letter" aria-hidden="true" style={{ position: "relative", display: "inline-block" }}>o</div>
-                        <div className="letter" aria-hidden="true" style={{ position: "relative", display: "inline-block" }}>v</div>
-                        <div className="letter" aria-hidden="true" style={{ position: "relative", display: "inline-block" }}>e</div>
-                        {" "}
-                        <div className="letter" aria-hidden="true" style={{ position: "relative", display: "inline-block" }}>f</div>
-                        <div className="letter" aria-hidden="true" style={{ position: "relative", display: "inline-block" }}>o</div>
-                        <div className="letter" aria-hidden="true" style={{ position: "relative", display: "inline-block" }}>r</div>
-                        {" "}
-                        <div className="letter" aria-hidden="true" style={{ position: "relative", display: "inline-block" }}>t</div>
-                        <div className="letter" aria-hidden="true" style={{ position: "relative", display: "inline-block" }}>h</div>
-                        <div className="letter" aria-hidden="true" style={{ position: "relative", display: "inline-block" }}>e</div>
-                        {" "}
-                        <div className="letter" aria-hidden="true" style={{ position: "relative", display: "inline-block" }}>w</div>
-                        <div className="letter" aria-hidden="true" style={{ position: "relative", display: "inline-block" }}>o</div>
-                        <div className="letter" aria-hidden="true" style={{ position: "relative", display: "inline-block" }}>r</div>
-                        <div className="letter" aria-hidden="true" style={{ position: "relative", display: "inline-block" }}>l</div>
-                        <div className="letter" aria-hidden="true" style={{ position: "relative", display: "inline-block" }}>d</div>
-                    </h2>
+  return (
+    <section
+      ref={sectionRef}
+      className="horizontal-words-section content-section"
+    >
+      <div className="horizontal-words__relative">
+        <div className="horizontal-words__sticker-svg">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="100%"
+            viewBox="0 0 386 127"
+            fill="none"
+            className="horizontal-words__arrow-svg"
+          >
+            <path
+              d="M2 123C9 35.9999 84.5 17 124 25.9999C217.764 47.3635 207 115 177.5 123C105.777 142.45 110.737 1.99991 232.5 2C310.5 2.00006 366.5 79 376 118L356.5 105.5"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            ></path>
+            <path
+              d="M2 123C9 35.9999 84.5 17 124 25.9999C217.764 47.3635 207 115 177.5 123C105.777 142.45 110.737 1.99991 232.5 2C310.5 2.00006 366.5 79 376 118L384 97"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            ></path>
+          </svg>
+          <img
+            src="/assets/HorizontalWords SVG/horizontal-words-sticker-thumps-up.svg"
+            className="horizontal-words__sticker-watch"
+            alt="thumbs up sticker"
+          />
+          <img
+            src="/assets/HorizontalWords SVG/horizontal-words-sticker-cursor.svg"
+            className="horizontal-words__sticker-cursor"
+            alt="cursor sticker"
+          />
+          <img
+            src="/assets/HorizontalWords SVG/horizontal-words-sticker-phone.svg"
+            className="horizontal-words__sticker-phone"
+            alt="phone sticker"
+          />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="100%"
+            viewBox="0 0 140 127"
+            fill="none"
+            className="horizontal-words__arrow-end-svg"
+          >
+            <path
+              d="M2.03125 2.42188C100.469 2.42188 130.156 52.4219 118.437 125.078L99.6875 107.891"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            ></path>
+            <path
+              d="M2.03125 2.42188C100.469 2.42188 130.156 52.4219 118.438 125.078L137.969 110.234"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            ></path>
+          </svg>
+
+          <h2
+            className="display horizontal-words__h2"
+            aria-label="Made at home. Slowly. By hand."
+          >
+            {"Made at home. Slowly. By hand.".split("").map((char, i) =>
+              char === " " ? (
+                <span key={i} aria-hidden="true" style={{ display: "inline-block", width: "0.35em" }} />
+              ) : (
+                <div
+                  key={i}
+                  className="letter"
+                  aria-hidden="true"
+                  style={{ position: "relative", display: "inline-block" }}
+                >
+                  {char}
                 </div>
-            </div>
+              )
+            )}
+          </h2>
+        </div>
+      </div>
 
-            <div className="horizontal-words__bottom-text">
-                <div className="horizontal-words__bottom-text-l">
-                    Khadi is more than fabric — it is a <em>movement</em>.<br />
-                    We bring the timeless craft of handloom weaving<br />
-                    to the modern conscious wardrobe.
-                </div>
-            </div>
-        </section>
-    );
+      <div className="horizontal-words__bottom-text">
+        <div className="horizontal-words__bottom-text-l">
+          There was a time when fabric was not made in{" "}
+          <em className="story-section__highlight">factories</em>.<br />
+          It was made at home. Slowly. Carefully.{" "}
+          <em className="story-section__highlight">By hand.</em>
+        </div>
+      </div>
+
+      {/* ─── SVG Frame for Traveling Image ─── */}
+      <svg className="horizontal-words__frame" viewBox="0 0 240 330">
+        <rect
+          className="section-frame-path"
+          x="5"
+          y="5"
+          width="230"
+          height="320"
+          rx="8"
+          fill="none"
+          stroke="#3d2b1f"
+          strokeWidth="1.5"
+        />
+      </svg>
+
+      {/* ─── Corner Ornaments ─── */}
+      <div className="horizontal-words__corner-left">
+        <img src="/assets/Asset 1.svg" alt="Botanical Line Art" />
+      </div>
+      <div className="horizontal-words__corner-right">स</div>
+    </section>
+  );
 };
 
 export default HorizontalWords;

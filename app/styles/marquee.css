@@ -1,241 +1,140 @@
-/* ─── Double Marquee Section ─────────────────────────────────────────────── */
-.Double-marquee {
+/* ─── Section ────────────────────────────────────────────────────────────── */
+.marquee-section {
   background-color: var(--bg-color);
-  padding: 40px 60px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 60px;
-  min-height: 100vh;
+  padding: 100px 0;
+  overflow: hidden;
 }
 
-/* ─── Left Panel ─────────────────────────────────────────────────────────── */
-.marquee-left {
-  flex: 1;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  max-width: 600px;
+/* ─── Text Block ─────────────────────────────────────────────────────────── */
+.marquee-text-block {
+  text-align: center;
+  max-width: 550px;
+  margin: 0 auto 60px;
+  padding: 0 24px;
 }
 
-.marquee-text-container {
-  position: relative;
-  z-index: 5;
-  text-align: left;
-}
-
-.marquee-left h2 {
-  font-family: "Epilogue", sans-serif;
-  font-size: 4rem;
-  font-weight: 1000;
-  line-height: 0.95;
-  letter-spacing: -2px;
-  color: var(--color-black);
-  margin-bottom: 120px;
-  margin-right: 50px;
-  cursor:
-    url("/assets/Cursor SVG/cursor-text.svg") 12 12,
-    auto;
-}
-
-.text-with {
-  font-family: "Times New Roman", serif;
-  font-style: italic;
+.arc-marquee__label {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.85rem;
   font-weight: 400;
-  position: relative;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #5c6b3c;
+  margin-bottom: 14px;
 }
 
-.marquee-underline {
-  position: absolute;
-  top: 7.5rem;
-  right: 7.8rem;
-  width: 100px;
-  height: auto;
-  color: var(--color-black);
-  z-index: 6;
-  transform: scaleX(0);
-  opacity: 0;
-  transform-origin: left;
-}
-
-/* ─── Blob + Decorative SVGs ─────────────────────────────────────────────── */
-.marquee-blob-container {
-  position: absolute;
-  top: 55%;
-  left: 30%;
-  transform: translate(-50%, -50%);
-  width: 420px;
-  height: 500px;
-  z-index: 1;
-}
-
-.marquee-blob {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-}
-
-.marquee-svg-container {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: 2;
-}
-
-.marquee-svg-item {
-  position: absolute;
-}
-
-.marquee-svg-item:nth-child(1) {
-  bottom: 18%;
-  left: 68%;
-  width: 90px;
-  height: auto;
-  transform: translateX(-50%) scale(0) rotate(-20deg);
-  opacity: 0;
-  z-index: 2;
-}
-
-.marquee-svg-item:nth-child(2) {
-  bottom: 3%;
-  left: 70%;
-  width: 350px;
-  height: auto;
+.arc-marquee__heading {
+  font-family: "Poppins", sans-serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
   color: var(--color-dark);
-  transform: rotate(190deg) scaleX(-1);
-  z-index: 1;
+  margin-bottom: 18px;
 }
 
-.marquee-svg-item:nth-child(2) path {
-  stroke-dasharray: 1000;
-  stroke-dashoffset: 1000;
+.arc-marquee__heading em {
+  font-style: normal;
+  font-weight: 400;
 }
 
-/* ─── Right Panel — Scrolling Columns ────────────────────────────────────── */
-.marquee-right {
-  flex: 0 0 auto;
-  display: flex;
-  gap: 5px;
-  height: 850px;
-  position: relative;
+.arc-marquee__desc {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(26, 26, 26, 0.55);
+  margin-bottom: 28px;
+}
+
+.arc-marquee__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 30px;
+  background-color: var(--color-dark);
+  color: var(--color-white);
+  font-family: "Poppins", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.25s ease;
+  cursor: url("/assets/Cursor SVG/cursor-pointer.svg") 12 12, pointer;
+}
+
+.arc-marquee__btn:hover {
+  background-color: #5c6b3c;
+  transform: scale(1.04);
+}
+
+.arc-marquee__btn svg {
+  flex-shrink: 0;
+  transition: transform 0.25s ease;
+}
+
+.arc-marquee__btn:hover svg {
+  transform: translate(2px, -2px);
+}
+
+/* ─── Rows ───────────────────────────────────────────────────────────────── */
+.marquee-row {
   overflow: hidden;
-  width: 500px;
-  margin-right: 80px;
+  margin-bottom: 20px;
 }
 
-.marquee-column {
-  flex: 1;
-  position: relative;
-  overflow: hidden;
+.marquee-row:last-child {
+  margin-bottom: 0;
 }
 
-.marquee-column::before,
-.marquee-column::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 100px;
-  z-index: 2;
-  pointer-events: none;
-}
-
-.marquee-column::before {
-  top: 0;
-  background: linear-gradient(to bottom, var(--bg-color) 0%, transparent 100%);
-}
-
-.marquee-column::after {
-  bottom: 0;
-  background: linear-gradient(to top, var(--bg-color) 0%, transparent 100%);
-}
-
+/* ─── Track animation ────────────────────────────────────────────────────── */
 .marquee-track {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
+  gap: 16px;
+  width: max-content;
 }
 
-.marquee-column:nth-child(1) .marquee-track {
-  animation: marqueeUp 22s linear infinite;
+.marquee-row--left .marquee-track {
+  animation: marquee-left 35s linear infinite;
 }
 
-.marquee-column:nth-child(2) .marquee-track {
-  animation: marqueeDown 22s linear infinite;
+.marquee-row--right .marquee-track {
+  animation: marquee-right 35s linear infinite;
 }
 
-@keyframes marqueeUp {
-  0% {
-    transform: translateY(0);
-  }
-
-  100% {
-    transform: translateY(-50%);
-  }
+@keyframes marquee-left {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }
 
-@keyframes marqueeDown {
-  0% {
-    transform: translateY(-50%);
-  }
-
-  100% {
-    transform: translateY(0);
-  }
+@keyframes marquee-right {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
 }
 
-/* ─── Marquee Items ──────────────────────────────────────────────────────── */
+/* ─── Items ──────────────────────────────────────────────────────────────── */
 .marquee-item {
-  width: 90%;
-  height: 240px;
+  flex-shrink: 0;
+  width: 22vw;
+  max-width: 300px;
+  min-width: 180px;
+  aspect-ratio: 4 / 5;
   border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
 }
 
-.marquee-item--photo {
-  background-color: transparent;
-}
-
-.marquee-photo {
+.marquee-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 10px;
+  display: block;
+  pointer-events: none;
 }
 
-/* ─── Instagram Button ───────────────────────────────────────────────────── */
-.marquee-instagram-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 24px;
-  padding: 14px 28px;
-  background-color: var(--color-black);
-  color: var(--color-white);
-  font-family: "DM Sans", sans-serif;
-  font-size: 0.95rem;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  border-radius: 50px;
-  text-decoration: none;
-  transition:
-    background-color 0.3s ease,
-    transform 0.3s ease;
-  cursor: pointer;
-}
-
-.marquee-instagram-btn:hover {
-  background-color: var(--color-maroon, #a52a5f);
-  transform: scale(1.05);
-}
-
-.marquee-instagram-btn svg {
-  flex-shrink: 0;
+/* ─── Legacy wrapper ─────────────────────────────────────────────────────── */
+.Double-marquee {
+  background-color: var(--bg-color);
+  padding: 0;
+  display: block;
 }

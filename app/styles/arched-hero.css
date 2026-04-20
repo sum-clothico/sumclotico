@@ -1,0 +1,146 @@
+.arched-hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background-color: #cfc0ad;
+  min-height: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* ─── Parchment Texture ─── */
+.arched-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("https://www.transparenttextures.com/patterns/cloth-alike.png");
+  opacity: 0.2;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.arched-hero__noise {
+  position: absolute;
+  inset: 0;
+  background-image: url("/assets/herobg.jpg");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.08;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ─── The Arch Portal ─── */
+.arched-hero__portal {
+  position: relative;
+  width: min(85%, 420px);
+  aspect-ratio: 1242.74 / 2284.6; /* Perfectly match the SVG's ratio */
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.arched-hero__mask {
+  width: 100%;
+  height: 100%;
+  clip-path: url(#arch-mask-id);
+  background-color: #000;
+  overflow: hidden;
+}
+
+.arched-hero__video {
+  width: 100%;
+  height: 100%;
+  transform: scale(1.1); /* Slight zoom to fill arch better */
+}
+
+/* Video adjustments for the mask */
+.arched-hero__video iframe {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.arched-hero__border {
+  position: absolute;
+  inset: -15px; /* Added visible space between border and video */
+  pointer-events: none;
+  z-index: 11;
+  color: rgb(0, 0, 0);
+}
+
+.arched-hero__frame-svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── Tagline ─── */
+.arched-hero__tagline {
+  width: 100%;
+  text-align: right;
+  padding: 14px 0px 0 0;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  color: #2a1f14;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+/* ─── Right-aligned Background Image ─── */
+.arched-hero__bg-right {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: auto;
+  opacity: 0.8;
+  mix-blend-mode: multiply;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ─── Brand Wrap ─── */
+.arched-hero__brand-wrap {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  z-index: 20;
+  width: 36%;
+}
+
+/* ─── Brand Name Left ─── */
+.arched-hero__brand-left {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  background-color: #2a1f14;
+  padding: 28px 40px 28px 6%;
+}
+
+.arched-hero__hindi {
+  font-size: 7rem;
+  line-height: 1;
+  color: #f5ede3;
+  font-family: serif;
+}
+
+.arched-hero__latin {
+  font-size: 1rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: #f5ede3;
+  opacity: 0.85;
+}

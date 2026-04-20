@@ -1,0 +1,84 @@
+.traveling-image {
+  position: fixed;
+  z-index: 1000;
+  width: 220px;
+  height: 310px;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  will-change: transform, opacity, left, top;
+}
+
+/* ─── Base image (bottom layer) ─────────────────────────── */
+.traveling-image__base {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ─── Curtain layers (split animation) ──────────────────── */
+.traveling-image__curtain {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  will-change: clip-path;
+}
+
+.traveling-image__curtain img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.curtain-0 {
+  z-index: 3;
+}
+
+.curtain-left,
+.curtain-right {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  will-change: transform;
+}
+
+.curtain-left {
+  clip-path: inset(0 50% 0 0);
+}
+
+.curtain-right {
+  clip-path: inset(0 0 0 50%);
+}
+
+.curtain-left img,
+.curtain-right img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 220px;
+  height: 310px;
+  object-fit: cover;
+  display: block;
+}
+
+/* ─── Split section cross-fade images ──────────────────── */
+.ti-split {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  z-index: 10;
+}
+
+/* ─── Mobile ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .traveling-image {
+    display: none;
+  }
+}
