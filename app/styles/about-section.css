@@ -93,3 +93,30 @@
   opacity: 0;
   margin-top: 0.5rem;
 }
+
+/* ─── Mobile Responsiveness ─── */
+@media (max-width: 768px) {
+  .about-section__card {
+    width: 95vw;
+    height: 80vh;
+    min-height: 550px;
+  }
+  .about-section__inner {
+    padding: 20% 12%;
+    gap: 1rem;
+  }
+  .about-section__lines {
+    gap: 0.3rem;
+  }
+  .about-line {
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+  .about-line:first-child {
+    font-size: 1.1rem;
+  }
+  .about-section__logo {
+    width: 75px;
+    margin-bottom: 0.5rem;
+  }
+}

@@ -113,22 +113,36 @@
 /* ─── Mobile ────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .story-section {
-    height: auto;
-    padding: 100px 20px;
+    height: 100svh;
+    min-height: 600px;
+    padding: 0;
   }
 
   .story-phase-text {
-    position: relative;
-    top: auto;
-    transform: none;
-    left: auto !important;
+    position: absolute;
+    top: 50% !important;
+    left: 50% !important;
     right: auto !important;
+    transform: translate(-50%, -50%) !important;
     text-align: center !important;
-    max-width: 100%;
+    max-width: 90%;
+    width: 100%;
     padding: 0 20px;
+  }
+
+  .story-phase-text p {
+    font-size: 1.15rem;
   }
 
   .story-section__frame {
     display: none;
+  }
+
+  .story-section__bg {
+    height: 50%;
+  }
+
+  .story-section__cloth {
+    opacity: 0.5;
   }
 }

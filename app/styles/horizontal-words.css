@@ -61,21 +61,6 @@
   pointer-events: none;
   user-select: none;
 }
-.horizontal-words__corner-left {
-  position: absolute;
-  top: -10vh;
-  left: 5vw;
-  z-index: 1; /* place behind the main text */
-  font-family: inherit;
-  font-size: clamp(20rem, 35vw, 40rem);
-  font-weight: 700;
-  -webkit-text-stroke: 3px rgba(26, 26, 26, 0.15); /* stroke effect */
-  color: transparent; /* transparent fill */
-  line-height: 1;
-  transform: rotate(15deg); /* tilt */
-  pointer-events: none;
-  user-select: none;
-}
 
 /* User provided CSS */
 .horizontal-words__relative {
@@ -164,4 +149,40 @@
   position: relative;
   z-index: 2;
   white-space: nowrap;
+}
+
+/* ─── Mobile Responsiveness ─── */
+@media (max-width: 768px) {
+  .horizontal-words__h2 {
+    font-size: 14vw;
+  }
+  .horizontal-words__bottom-text {
+    width: 90%;
+    transform: translate(-50%, 6em);
+  }
+  .horizontal-words__bottom-text-l {
+    font-size: 0.95rem;
+  }
+  .horizontal-words__arrow-svg {
+    width: 12em;
+    transform: translate(-100%, -35%);
+  }
+  .horizontal-words__arrow-end-svg {
+    width: 6em;
+  }
+  .horizontal-words__frame {
+    display: none;
+  }
+  .horizontal-words__corner-left {
+    width: 50vw;
+    bottom: -2vh;
+    top: auto;
+    left: auto;
+    right: -5vw;
+  }
+  .horizontal-words__corner-right {
+    font-size: 12rem;
+    right: -10vw;
+    top: -5vh;
+  }
 }

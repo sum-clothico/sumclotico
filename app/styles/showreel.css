@@ -115,3 +115,27 @@
   object-fit: cover;
   display: block;
 }
+
+/* ─── Mobile Responsiveness ─── */
+@media (max-width: 768px) {
+  .sr-split {
+    flex-direction: column;
+    height: auto;
+    min-height: 80vh;
+  }
+  .sr-left {
+    padding: 40px 24px;
+    flex: none;
+  }
+  .sr-content-area {
+    height: 250px;
+  }
+  .sr-heading {
+    font-size: 1.8rem;
+  }
+  .sr-right {
+    flex: none;
+    height: 45vh;
+    min-height: 350px;
+  }
+}

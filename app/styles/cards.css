@@ -202,3 +202,32 @@
     right: var(--sticker-heart-right);
     transform: rotate(1deg);
 }
+
+/* ─── Mobile Responsiveness ─── */
+@media (max-width: 768px) {
+  .cards-wrapper {
+    height: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    margin: 60px auto !important;
+    gap: 30px !important;
+  }
+  .card {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+    width: 90vw !important;
+    height: auto !important;
+    min-height: 420px;
+    margin: 0 auto 20px auto !important;
+  }
+  .card-sticker {
+    display: none;
+  }
+  .sc-intro {
+    padding: 0 20px;
+    text-align: center;
+  }
+}
