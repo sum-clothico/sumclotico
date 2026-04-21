@@ -165,3 +165,36 @@
   z-index: 2;
   white-space: nowrap;
 }
+
+/* ─── Mobile Responsiveness ─── */
+@media (max-width: 768px) {
+  .horizontal-words__h2 {
+    font-size: 14vw;
+  }
+  .horizontal-words__bottom-text {
+    width: 90%;
+    transform: translate(-50%, 6em);
+  }
+  .horizontal-words__bottom-text-l {
+    font-size: 0.95rem;
+  }
+  .horizontal-words__arrow-svg {
+    width: 12em;
+    transform: translate(-100%, -35%);
+  }
+  .horizontal-words__arrow-end-svg {
+    width: 6em;
+  }
+  .horizontal-words__frame {
+    display: none;
+  }
+  .horizontal-words__corner-left {
+    width: 40vw;
+    bottom: -1vh;
+  }
+  .horizontal-words__corner-right {
+    font-size: 12rem;
+    right: -10vw;
+    top: -5vh;
+  }
+}

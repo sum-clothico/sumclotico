@@ -144,3 +144,57 @@
   color: #f5ede3;
   opacity: 0.85;
 }
+
+/* ─── Mobile Responsiveness ─── */
+@media (max-width: 768px) {
+  .arched-hero {
+    min-height: 100svh;
+    padding-top: 100px;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  
+  .arched-hero__bg-right {
+    opacity: 0.2;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .arched-hero__brand-wrap {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    width: 100%;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .arched-hero__brand-left {
+    width: auto;
+    padding: 16px 24px;
+    align-items: center;
+    border-radius: 8px;
+  }
+
+  .arched-hero__hindi {
+    font-size: 5rem;
+  }
+
+  .arched-hero__latin {
+    font-size: 0.85rem;
+    letter-spacing: 0.3em;
+  }
+
+  .arched-hero__tagline {
+    text-align: center;
+    padding-top: 1rem;
+    font-size: 0.75rem;
+  }
+
+  .arched-hero__portal {
+    width: 80%;
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+}
