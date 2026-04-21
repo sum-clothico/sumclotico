@@ -221,7 +221,7 @@
     width: 90vw !important;
     height: auto !important;
     min-height: 420px;
-    margin-bottom: 20px;
+    margin: 0 auto 20px auto !important;
   }
   .card-sticker {
     display: none;

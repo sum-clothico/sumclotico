@@ -181,8 +181,10 @@
     height: 400px;
   }
 
-  .split-section__model {
+  .split-section__model,
+  .split-section--reversed .split-section__model {
     left: 50%;
+    right: auto;
     transform: translateX(-50%);
     height: 600px;
   }
