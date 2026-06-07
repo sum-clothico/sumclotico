@@ -9,23 +9,15 @@ const PIN_DURATION = 7000;
 
 const phases = [
   {
-    text: "There was a time when fabric was not made in factories. It was made at home. Slowly. Carefully. By hand.",
+    text: "Fabric has evolved over time, from handmade craft to modern production.",
     position: "right",
   },
   {
-    text: "Khadi comes from that time. It begins with cotton: soft, raw, untouched.",
+    text: "Khadi is more than just fabric it represents India’s spirit of self-reliance and pride.",
     position: "left",
   },
   {
-    text: "It is spun into yarn on a simple wheel, one thread at a time. That yarn is then woven on a loom, guided by skilled hands, not machines.",
-    position: "right",
-  },
-  {
-    text: "Every piece of Khadi carries hours of work, patience, and human touch.",
-    position: "left",
-  },
-  {
-    text: "At Sum Clothico, we didn\u2019t want to change this story. We just wanted to continue it in a way that fits today\u2019s women.",
+    text: "Each piece is hand-spun and handwoven, carrying the warmth and authenticity of human touch.",
     position: "right",
   },
 ];
@@ -103,7 +95,7 @@ const StorySection = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} className="story-section">
+    <section ref={sectionRef} className="story-section" id="story">
       {/* SVG Frame */}
       <svg className="story-section__frame" viewBox="0 0 240 330">
         <rect
@@ -129,6 +121,11 @@ const StorySection = () => {
           <p>{phase.text}</p>
         </div>
       ))}
+
+      {/* Link to Our Story */}
+      <a href="/our-story" className="story-section__link">
+        Read Our Story →
+      </a>
 
       {/* Cloth image */}
       <div className="story-section__cloth">

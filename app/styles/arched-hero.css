@@ -2,7 +2,7 @@
   position: relative;
   width: 100%;
   height: 100vh;
-  background-color: #cfc0ad;
+  background-color: var(--bg-warm, #E8DFD0);
   min-height: 800px;
   display: flex;
   flex-direction: column;
@@ -83,14 +83,61 @@
 .arched-hero__tagline {
   width: 100%;
   text-align: right;
-  padding: 14px 0px 0 0;
+  padding: 14px 0 6px 0;
   font-family: inherit;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 400;
-  letter-spacing: 0.15em;
-  color: #2a1f14;
+  letter-spacing: 0.12em;
+  color: #111;
   text-transform: uppercase;
-  opacity: 0.75;
+  opacity: 0.85;
+}
+
+/* ─── CTA Row ─── */
+.arched-hero__cta-row {
+  display: flex;
+  gap: 12px;
+  padding-top: 14px;
+  width: 100%;
+  justify-content: flex-end;
+  opacity: 0;
+}
+
+.arched-hero__cta {
+  display: inline-block;
+  padding: 10px 20px;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 2px;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+/* Primary CTA — dark bg area (inside .arched-hero__brand-left dark block) */
+.arched-hero__cta--primary {
+  background-color: #f5ede3;
+  color: #2a1f14;
+  border: 1px solid transparent;
+}
+
+.arched-hero__cta--primary:hover {
+  background-color: #2a1f14;
+  color: #f5ede3;
+}
+
+.arched-hero__cta--secondary {
+  background-color: transparent;
+  color: #2a1f14;
+  border: 1.5px solid rgba(42, 31, 20, 0.55);
+}
+
+.arched-hero__cta--secondary:hover {
+  background-color: rgba(42, 31, 20, 0.08);
+  border-color: #2a1f14;
 }
 
 /* ─── Right-aligned Background Image ─── */
@@ -190,6 +237,16 @@
     text-align: center;
     padding-top: 1rem;
     font-size: 0.75rem;
+  }
+
+  .arched-hero__cta-row {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .arched-hero__cta {
+    font-size: 0.72rem;
+    padding: 8px 16px;
   }
 
   .arched-hero__portal {

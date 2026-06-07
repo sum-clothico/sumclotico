@@ -34,10 +34,20 @@
   --color-orange: #f5693c;
   --color-maroon: #a0325a;
   --color-pink: #f0befa;
-  --bg-color: #e6e4d7;
+
+  /* ─── Earthy Khadi Palette ─── */
+  --bg-color: #EDE8DC;           /* warm linen beige */
+  --bg-warm: #E8DFD0;            /* slightly darker beige for section alt */
+  --bg-cream: #F5F0E8;           /* lightest cream for cards */
+  --color-earth: #8B6F47;        /* warm terracotta brown */
+  --color-earth-dark: #5C4033;   /* deep earthy brown */
+  --color-khadi: #D4C4A8;        /* khadi cloth tone */
+  --color-jute: #BCA882;         /* jute/straw mid tone */
+
   --color-white: #ffffff;
   --color-black: #000000;
-  --color-dark: #1a1a1a;
+  --color-dark: #2C2016;         /* warm dark brown (not cold black) */
+  --color-dark-soft: #3D2E1E;
   --color-black-soft: #111111;
   --color-black-deep: #0a0a0a;
 }

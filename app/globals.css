@@ -5,10 +5,20 @@
 
 @import './styles/base.css';
 /* Fonts, CSS variables, reset, body/html  */
+@import './styles/arched-hero.css';
+/* ArchedHero section                       */
 @import './styles/navbar.css';
 /* Navbar, logos, header hero               */
 @import './styles/hero.css';
 /* Content section title + underline SVG    */
+@import './styles/horizontal-words.css';
+/* HorizontalWords scroll section           */
+@import './styles/story-section.css';
+/* Story section (What is Khadi)            */
+@import './styles/split-section.css';
+/* Why It Feels Different panels            */
+@import './styles/traveling-image.css';
+/* Traveling image transition               */
 @import './styles/motion-cards.css';
 /* MotionCard section (heading + cards + text)  */
 @import './styles/showreel.css';
@@ -17,6 +27,10 @@
 /* Service cards, stickers                  */
 @import './styles/marquee.css';
 /* Double marquee section + animations      */
+@import './styles/about-section.css';
+/* About / Philosophy section               */
+@import './styles/loader.css';
+/* Loading screen                           */
 @import './styles/footer.css';
 /* Footer layout, credits, stickers         */
 @import './styles/vimeo-hero.css';
@@ -25,3 +39,11 @@
 /* Custom cursor bubble + scribble overlay  */
 @import './styles/responsive.css';
 /* All media queries (tablet + mobile)      */
+@import './styles/our-story.css';
+/* Our Story page styles                    */
+@import './styles/fabric.css';
+/* Fabric page styles                       */
+@import './styles/about.css';
+/* About page styles                        */
+@import './styles/collection.css';
+/* Collection page styles                   */

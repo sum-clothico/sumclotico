@@ -1,15 +1,56 @@
 "use client";
 
 import gsap from "gsap";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { InertiaPlugin } from "gsap/InertiaPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(InertiaPlugin, ScrollTrigger);
 
+const PHASE_TEXTS = [
+  "Daily wear that feels light and breathable.",
+  "Work outfits that stay comfortable all day.",
+  "Simple, minimal wardrobes built around ease.",
+  "Travel, where comfort matters most.",
+  "It's easy, effortless, and real.",
+];
+
 export default function MotionCards() {
   const sectionRef = useRef(null);
   const containerRef = useRef(null);
+  const phaseTextRef = useRef(null);
+  const [phaseIndex, setPhaseIndex] = useState(0);
+  const isAnimating = useRef(false);
+
+  // Advance to next phase text on click
+  const handleTextClick = () => {
+    if (isAnimating.current) return;
+    isAnimating.current = true;
+
+    const el = phaseTextRef.current;
+    if (!el) return;
+
+    gsap.to(el, {
+      opacity: 0,
+      y: -16,
+      duration: 0.28,
+      ease: "power2.in",
+      onComplete: () => {
+        setPhaseIndex((prev) => (prev + 1) % PHASE_TEXTS.length);
+        gsap.fromTo(
+          el,
+          { opacity: 0, y: 18 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.38,
+            ease: "power2.out",
+            onComplete: () => { isAnimating.current = false; },
+          },
+        );
+      },
+    });
+  };
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -31,14 +72,12 @@ export default function MotionCards() {
           lastX = e.clientX;
           lastY = e.clientY;
         };
-
         const onEnter = (e) => {
           speedX = 0;
           speedY = 0;
           lastX = e.clientX;
           lastY = e.clientY;
         };
-
         const onLeave = () => {
           gsap.to(card, {
             inertia: {
@@ -52,47 +91,6 @@ export default function MotionCards() {
         card.addEventListener("mousemove", onMove);
         card.addEventListener("mouseenter", onEnter);
         card.addEventListener("mouseleave", onLeave);
-      });
-
-      // Inertia on floating labels
-      const labels = document.querySelectorAll(".motion-card__floating-label");
-      labels.forEach((label) => {
-        let lastX = 0;
-        let lastY = 0;
-        let speedX = 0;
-        let speedY = 0;
-
-        const startRotation = gsap.getProperty(label, "rotation");
-        const startX = gsap.getProperty(label, "x");
-        const startY = gsap.getProperty(label, "y");
-
-        const onMove = (e) => {
-          speedX = e.clientX - lastX;
-          speedY = e.clientY - lastY;
-          lastX = e.clientX;
-          lastY = e.clientY;
-        };
-
-        const onEnter = (e) => {
-          speedX = 0;
-          speedY = 0;
-          lastX = e.clientX;
-          lastY = e.clientY;
-        };
-
-        const onLeave = () => {
-          gsap.to(label, {
-            inertia: {
-              x: { velocity: speedX * 25, end: startX },
-              y: { velocity: speedY * 25, end: startY },
-              rotation: { velocity: speedX * 2, end: startRotation },
-            },
-          });
-        };
-
-        label.addEventListener("mousemove", onMove);
-        label.addEventListener("mouseenter", onEnter);
-        label.addEventListener("mouseleave", onLeave);
       });
 
       // ── Pattern rotate + scale on scroll ──
@@ -116,7 +114,7 @@ export default function MotionCards() {
         );
       }
 
-      // ── Pin section & cycle text ──
+      // ── Pin section ──
       const PIN = 3500;
       ScrollTrigger.create({
         trigger: sectionRef.current,
@@ -124,26 +122,6 @@ export default function MotionCards() {
         end: `+=${PIN}`,
         pin: true,
         pinSpacing: true,
-      });
-
-      const phaseTexts = sectionRef.current.querySelectorAll(".mc-phase-text");
-      const textTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: `+=${PIN}`,
-          scrub: 1,
-        },
-      });
-      phaseTexts.forEach((el) => {
-        textTl
-          .fromTo(
-            el,
-            { opacity: 0, y: 25 },
-            { opacity: 1, y: 0, duration: 0.1, ease: "power2.out" },
-          )
-          .to({}, { duration: 0.18 })
-          .to(el, { opacity: 0, y: -20, duration: 0.06, ease: "power2.in" });
       });
     }, sectionRef);
 
@@ -158,27 +136,28 @@ export default function MotionCards() {
     >
       {/* ─── Logo ─── */}
       <div className="mc-logo">
-        <img src="/assets/logo.svg" alt="Sum Clothico" />
+        <img src="/assets/logo.svg" alt="सम् Clothico" />
       </div>
 
       <div className="horizontal-words__corner-right">म</div>
 
       {/* ─── Section heading ─── */}
-      <p className="mc-heading">Where Khadi Fits in Your Life</p>
+      <p className="mc-heading">It works for:</p>
 
-      {/* ─── Cycling Text ─── */}
-      <div className="mc-texts">
-        <p className="mc-phase-text">
-          Khadi is not just "traditional wear" anymore. It works for daily wear
-          that feels light and breathable.
+      {/* ─── Click-to-cycle Text ─── */}
+      <div
+        className="mc-texts mc-texts--clickable"
+        onClick={handleTextClick}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => e.key === "Enter" && handleTextClick()}
+        aria-label="Click to see next use case"
+        title="Click to see more"
+      >
+        <p ref={phaseTextRef} className="mc-phase-text mc-phase-text--active">
+          {PHASE_TEXTS[phaseIndex]}
         </p>
-        <p className="mc-phase-text">
-          Work outfits that stay comfortable all day. Simple, minimal
-          wardrobes built around ease.
-        </p>
-        <p className="mc-phase-text">
-          Travel, where comfort matters most. Easy, effortless, and real.
-        </p>
+        <span className="mc-click-hint">tap to see more →</span>
       </div>
 
       {/* ─── Cards ─── */}
@@ -186,79 +165,29 @@ export default function MotionCards() {
         <div ref={containerRef} className="motion-card__cards">
           <div className="motion-card__card motion-card__card--1">
             <div className="motion-card__card-image">
-              <img
-                src="/assets/img/13.png"
-                loading="lazy"
-                alt=""
-                className="cover-image"
-              />
+              <img src="/assets/img/13.png" loading="lazy" alt="" className="cover-image" />
             </div>
           </div>
-
           <div className="motion-card__card motion-card__card--2">
             <div className="motion-card__card-image">
-              <img
-                src="/assets/img/14.png"
-                loading="lazy"
-                alt=""
-                className="cover-image"
-              />
+              <img src="/assets/img/14.png" loading="lazy" alt="" className="cover-image" />
             </div>
           </div>
-
           <div className="motion-card__card motion-card__card--3">
             <div className="motion-card__card-image">
-              <img
-                src="/assets/img/15.png"
-                loading="lazy"
-                alt=""
-                className="cover-image"
-              />
+              <img src="/assets/img/15.png" loading="lazy" alt="" className="cover-image" />
             </div>
           </div>
-
           <div className="motion-card__card motion-card__card--4">
             <div className="motion-card__card-image">
-              <img
-                src="/assets/img/16.png"
-                loading="lazy"
-                alt=""
-                className="cover-image"
-              />
+              <img src="/assets/img/16.png" loading="lazy" alt="" className="cover-image" />
             </div>
           </div>
         </div>
-
-        {/* Floating labels — positioned freely over the cards area */}
-        {/* <div ref={containerRef} className="motion-card__floating-labels">
-          <div className="motion-card__floating-label motion-card__floating-label--pink">
-            <p className="motion-card__floating-text">
-              every thread tells a story
-            </p>
-          </div>
-          <div className="motion-card__floating-label motion-card__floating-label--orange">
-            <p className="motion-card__floating-text">
-              khadi is the fabric of freedom
-            </p>
-          </div>
-          <div className="motion-card__floating-label motion-card__floating-label--red">
-            <p className="motion-card__floating-text">handmade = timeless</p>
-          </div>
-        </div> */}
       </div>
 
       {/* ─── Pattern Decoration ─── */}
       <img src="/assets/pat1.svg" alt="" className="mc-pattern" />
-
-      {/* ─── Part 3: Bottom Paragraph Text ─── */}
-      {/* <div className="motion-card__footer-text">
-        <p className="motion-card__description">
-          From the spinning wheel to your wardrobe, every piece at SUM CLOTHICO
-          is crafted by artisan hands. We work the full spectrum — from raw
-          khadi fabric to finished garments, home textiles, and bespoke
-          collections.
-        </p>
-      </div> */}
     </section>
   );
 }

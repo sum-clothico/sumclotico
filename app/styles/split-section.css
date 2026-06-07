@@ -36,7 +36,7 @@
   position: relative;
   width: 30%;
   height: 100%;
-  background: linear-gradient(135deg, #f49b6d 0%, #ffc885 100%);
+  background: linear-gradient(135deg, #D4B896 0%, #C8A87A 100%);
   z-index: 1;
 }
 
@@ -96,12 +96,27 @@
 }
 
 .split-section__qa-label {
-  font-weight: 700;
-  font-size: 0.75rem;
-  letter-spacing: 0.12em;
+  font-weight: 800;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  opacity: 0.5;
-  margin-right: 6px;
+  margin-right: 8px;
+  padding: 2px 8px;
+  border-radius: 2px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* WHY label — earthy terracotta */
+.split-section__why .split-section__qa-label {
+  background-color: var(--color-earth, #8B6F47);
+  color: #fff;
+}
+
+/* HOW label — dark brown */
+.split-section__how .split-section__qa-label {
+  background-color: var(--color-dark, #2C2016);
+  color: #f5ede3;
 }
 
 .split-section__bottom-label {

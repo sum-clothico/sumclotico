@@ -137,14 +137,15 @@ const SplitPanel = ({ reversed, title, why, how, label, model }) => {
               </React.Fragment>
             ))}
           </div>
-          <p className="split-section__why">
-            <span className="split-section__qa-label">Why?</span> {why}
-          </p>
-          <p className="split-section__how">
-            <span className="split-section__qa-label">How?</span> {how}
-          </p>
+          <div className="split-section__why">
+            <span style={{ fontWeight: 700, color: "#5C4033", display: "block", marginBottom: "4px" }}>WHY IT MATTERS</span>
+            {why}
+          </div>
+          <div className="split-section__how">
+            <span style={{ fontWeight: 700, color: "#5C4033", display: "block", marginBottom: "4px" }}>HOW IT FEELS</span>
+            {how}
+          </div>
         </div>
-
       </div>
 
       <div className="split-section__right" />

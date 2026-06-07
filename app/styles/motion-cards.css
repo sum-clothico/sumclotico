@@ -41,27 +41,45 @@
   max-width: 460px;
 }
 
-/* ─── Cycling Text ───────────────────────────────────────────────────────── */
+/* ─── Cycling Text (click-driven) ─────────────────────────────────────── */
 .mc-texts {
   position: relative;
-  max-width: 460px;
-  min-height: 100px;
-  margin: 0 auto 40px;
+  max-width: 480px;
+  min-height: 80px;
+  margin: 0 auto 20px;
   text-align: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.mc-texts--clickable:hover .mc-click-hint {
+  opacity: 1;
 }
 
 .mc-phase-text {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  opacity: 0;
   font-family: "Poppins", sans-serif;
   font-size: 1.1rem;
   line-height: 1.75;
   font-weight: 400;
   color: var(--color-dark);
-  margin: 0;
+  margin: 0 0 8px;
+  opacity: 1;
+}
+
+.mc-phase-text--active {
+  opacity: 1;
+}
+
+.mc-click-hint {
+  display: block;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-earth, #8B6F47);
+  opacity: 0.5;
+  margin-top: 6px;
+  transition: opacity 0.2s ease;
 }
 
 /* ─── Corner Images ──────────────────────────────────────────────────────── */

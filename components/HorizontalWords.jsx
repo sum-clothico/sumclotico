@@ -234,9 +234,9 @@ const HorizontalWords = () => {
 
           <h2
             className="display horizontal-words__h2"
-            aria-label="Made at home. Slowly. By hand."
+            aria-label="THE FEELING"
           >
-            {"Made at home. Slowly. By hand.".split("").map((char, i) =>
+            {"THE FEELING".split("").map((char, i) =>
               char === " " ? (
                 <span key={i} aria-hidden="true" style={{ display: "inline-block", width: "0.35em" }} />
               ) : (
@@ -256,10 +256,8 @@ const HorizontalWords = () => {
 
       <div className="horizontal-words__bottom-text">
         <div className="horizontal-words__bottom-text-l">
-          There was a time when fabric was not made in{" "}
-          <em className="story-section__highlight">factories</em>.<br />
-          It was made at home. Slowly. Carefully.{" "}
-          <em className="story-section__highlight">By hand.</em>
+          Some fabrics are made fast.<br />
+          <em className="story-section__highlight">This one is made with time.</em>
         </div>
       </div>
 

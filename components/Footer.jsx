@@ -312,7 +312,12 @@ export default function Footer() {
           <a href="mailto:hello@sumclotico.com" className="footer-email">
             hello@sumclotico.com
           </a>
-          <a href="#" className="footer-whatsapp">
+          <a
+            href="https://wa.me/+91XXXXXXXXXX"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="footer-whatsapp"
+          >
             send us a whatsapp
           </a>
           <p className="footer-note">
@@ -330,6 +335,29 @@ export default function Footer() {
                 dangerouslySetInnerHTML={{ __html: svg }}
               />
             ))}
+            {/* Facebook */}
+            <a
+              href="https://www.facebook.com/sumclotico"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="single-social w-inline-block"
+              aria-label="Facebook"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 40 40" fill="none">
+                <path d="M20 4C11.163 4 4 11.163 4 20C4 28.837 11.163 36 20 36C28.837 36 36 28.837 36 20C36 11.163 28.837 4 20 4ZM24.5 14H22C21.173 14 21 14.327 21 15.2V17H24.5L24 21H21V33H17V21H15V17H17V15.2C17 12.013 18.513 10 22 10C23.343 10 24.5 10.1 24.5 10.1V14Z" fill="currentColor"/>
+              </svg>
+            </a>
+            {/* Blogs */}
+            <a
+              href="/blogs"
+              className="single-social w-inline-block footer-blogs-link"
+              aria-label="Blogs"
+              title="Read our blog"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 40 40" fill="none">
+                <path d="M8 10C8 8.895 8.895 8 10 8H30C31.105 8 32 8.895 32 10V30C32 31.105 31.105 32 30 32H10C8.895 32 8 31.105 8 30V10ZM12 14V16H28V14H12ZM12 19V21H28V19H12ZM12 24V26H22V24H12Z" fill="currentColor"/>
+              </svg>
+            </a>
           </div>
         </div>
       </div>
@@ -350,7 +378,7 @@ export default function Footer() {
               lineHeight: 1,
             }}
           >
-            सम CLOTHICO
+            सम् CLOTHICO
           </span>
         </div>
 
@@ -458,6 +486,21 @@ export default function Footer() {
       <div className="footer-bottom-gradient"></div>
       <div className="footer-f1-overlay">
         <img src="/assets/f1.png" alt="" />
+      </div>
+
+      {/* Closing tagline + quick links */}
+      <div className="footer-closing-line">
+        <p className="footer-closing-tagline">Slowly made. Easy to wear. Hard to replace.</p>
+        <nav className="footer-quick-links" aria-label="Footer site links">
+          <a href="https://www.instagram.com/sumclothico/" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="/our-story">Our Story</a>
+          <a href="/fabric">Fabric</a>
+          <a href="https://wa.me/+91XXXXXXXXXX" target="_blank" rel="noopener noreferrer">Contact – Whatsapp</a>
+          <a href="https://www.facebook.com/sumclotico" target="_blank" rel="noopener noreferrer">Facebook</a>
+          <a href="https://wa.me/+91XXXXXXXXXX" target="_blank" rel="noopener noreferrer">Place an order</a>
+          <a href="mailto:hello@sumclotico.com">Gmail</a>
+          <a href="/blogs">Blogs Section</a>
+        </nav>
       </div>
     </div>
   );

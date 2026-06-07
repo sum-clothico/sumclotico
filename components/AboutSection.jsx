@@ -8,14 +8,11 @@ import "../app/styles/about-section.css";
 gsap.registerPlugin(ScrollTrigger);
 
 const LINES = [
-  "Sum Clothico is built on one idea",
-  "to bring handmade Khadi into everyday wardrobes.",
-  "We work with a fabric that already has meaning,",
-  "and we design it in a way that feels relevant today.",
-  "Simple. Thoughtful. Honest.",
+  "We don't change Khadi.",
+  "We design it for today.",
 ];
 
-const PIN_DISTANCE = 600 * LINES.length;
+const PIN_DISTANCE = 500 * LINES.length;
 
 export default function AboutSection() {
   const sectionRef = useRef(null);
@@ -59,16 +56,17 @@ export default function AboutSection() {
 
   return (
     <section ref={sectionRef} className="about-section">
-      {/* BG */}
+      {/* Earthy textured background */}
       <div className="about-section__bg" />
 
-      {/* Center card over about.svg */}
+      {/* Philosophy card — clean beige, no maroon SVG */}
       <div className="about-section__card">
-        <img className="about-section__svg" src="/assets/about.svg" alt="" />
-
         <div className="about-section__inner">
           {/* Logo */}
           <img className="about-section__logo" src="/assets/logo.svg" alt="Sum Clothico" />
+
+          {/* Divider */}
+          <div className="about-section__divider" />
 
           {/* Lines */}
           <div className="about-section__lines">
@@ -78,6 +76,11 @@ export default function AboutSection() {
               </p>
             ))}
           </div>
+
+          {/* Sub-label */}
+          <p className="about-section__sub">
+            A brand rooted in Khadi. Designed for how women live today.
+          </p>
         </div>
       </div>
     </section>

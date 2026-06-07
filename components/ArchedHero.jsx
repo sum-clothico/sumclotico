@@ -2,11 +2,11 @@
 
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import "../app/styles/arched-hero.css";
 
 export default function ArchedHero() {
   const containerRef = useRef(null);
   const taglineRef = useRef(null);
+  const ctaRef = useRef(null);
 
   useEffect(() => {
     // Entrance Animation
@@ -20,6 +20,12 @@ export default function ArchedHero() {
       taglineRef.current,
       { y: 20, opacity: 0 },
       { y: 0, opacity: 1, duration: 1.5, delay: 1, ease: "power3.out" },
+    );
+
+    gsap.fromTo(
+      ctaRef.current,
+      { y: 20, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1.5, delay: 1.4, ease: "power3.out" },
     );
   }, []);
 
@@ -38,18 +44,23 @@ export default function ArchedHero() {
       {/* Brand Name — Left Side */}
       <div className="arched-hero__brand-wrap">
         <div className="arched-hero__brand-left">
-          <span className="arched-hero__hindi">सम</span>
+          {/* सम् — with chandrabindu/anusvara to match logo */}
+          <span className="arched-hero__hindi">सम्</span>
           <span className="arched-hero__latin">CLOTHICO</span>
         </div>
         <div ref={taglineRef} className="arched-hero__tagline">
-          Handmade. Honest. For Everyday Women.
+          Made by hands. Worn with ease.
+        </div>
+        <div ref={ctaRef} className="arched-hero__cta-row">
+          <a href="#story" className="arched-hero__cta arched-hero__cta--secondary">
+            Explore the Story
+          </a>
         </div>
       </div>
 
-      {/* Arch */}
+      {/* Arch — replace /assets/videos/vid1.mp4 with charkha/weaving footage */}
       <div ref={containerRef} className="arched-hero__portal">
         <div className="arched-hero__mask">
-          {/* ✅ REAL VIDEO ELEMENT */}
           <video
             className="arched-hero__video"
             src="/assets/videos/vid1.mp4"
@@ -60,7 +71,7 @@ export default function ArchedHero() {
           />
         </div>
 
-        {/* Border using the exact same path */}
+        {/* Border SVG */}
         <div className="arched-hero__border">
           <svg viewBox="0 0 1242.74 2284.6" className="arched-hero__frame-svg">
             <path
@@ -74,10 +85,9 @@ export default function ArchedHero() {
         </div>
       </div>
 
-      {/* SVG ClipPath Definition using the path from arch.svg */}
+      {/* SVG ClipPath Definition */}
       <svg width="0" height="0" style={{ position: "absolute" }}>
         <defs>
-          {/* Note: we use userSpaceOnUse to match the viewBox 1242.74 2284.6 */}
           <clipPath id="arch-mask-id" clipPathUnits="objectBoundingBox">
             <path
               transform="scale(0.00080467, 0.00043771)"

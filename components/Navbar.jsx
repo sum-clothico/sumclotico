@@ -398,102 +398,32 @@ export default function Navbar() {
               "url('/assets/Cursor SVG/cursor-pointer.svg') 12 12, pointer",
           }}
         >
-          <div className="nav-hover-trigger">
-            <div className="logo-work-container">
-              <Link
-                target="__blank__"
-                href="https://www.instagram.com/sumclothico/"
-                className="logo-work-text"
-              >
-                shop
-              </Link>
-            </div>
-
-            {/* Pop-out Box for Left Side */}
-            <div className="nav-popout nav-work-box">
-              <div className="nav-popout-inner">
-                <div className="nav-work-item">
-                  <div className="nav-work-item__img-wrap">
-                    <img
-                      src="/assets/m2.png"
-                      loading="eager"
-                      alt="Khadi Kurtas Collection"
-                      className="nav-work-item__img"
-                    />
-                  </div>
-                  <div className="nav-work-item__text">
-                    <span className="nav-work-badge badge-maroon">
-                      new arrival
-                    </span>
-                    <h4 className="nav-work-title">khadi kurta collection</h4>
-                  </div>
-                </div>
-                <div className="nav-work-item">
-                  <div className="nav-work-item__img-wrap">
-                    <img
-                      src="/assets/m1.png"
-                      loading="eager"
-                      alt="Handwoven Sarees"
-                      sizes="100vw"
-                      srcSet="https://cdn.prod.website-files.com/683863cbe1f5a81b667b9939/6880a344675f3a6144ed04df_01_HEMA_Back2School-p-500.avif 500w, https://cdn.prod.website-files.com/683863cbe1f5a81b667b9939/6880a344675f3a6144ed04df_01_HEMA_Back2School.avif 1080w"
-                      className="nav-work-item__img"
-                    />
-                  </div>
-                  <div className="nav-work-item__text">
-                    <span className="nav-work-badge badge-pink">featured</span>
-                    <h4 className="nav-work-title">handwoven sarees</h4>
-                  </div>
-                </div>
-                <div className="nav-work-item">
-                  <div className="nav-work-item__img-wrap">
-                    <img
-                      src="/assets/m3.png"
-                      loading="eager"
-                      alt="Home Textiles"
-                      sizes="100vw"
-                      srcSet="https://cdn.prod.website-files.com/683863cbe1f5a81b667b9939/686b7e0ed3ab3045b28a2012_3-p-500.avif 500w, https://cdn.prod.website-files.com/683863cbe1f5a81b667b9939/686b7e0ed3ab3045b28a2012_3.avif 1080w"
-                      className="nav-work-item__img"
-                    />
-                  </div>
-                  <div className="nav-work-item__text">
-                    <span className="nav-work-badge badge-pink">
-                      bestseller
-                    </span>
-                    <h4 className="nav-work-title">home textiles range</h4>
-                  </div>
-                </div>
-                <a
-                  href="https://www.instagram.com/sumclothico/"
-                  className="nav-work-btn"
-                >
-                  <span className="nav-work-btn__text">
-                    View all collections
-                  </span>
-                </a>
-              </div>
-            </div>
+          <div className="nav-main-links">
+            <Link href="/collection">Collection</Link>
+            <Link href="/our-story">Our Story</Link>
+            <Link href="/fabric">Fabric</Link>
+            <Link href="/about">About</Link>
           </div>
         </div>
         <div
           className="nav-center"
-          style={{
-            cursor:
-              "url('/assets/Cursor SVG/cursor-pointer.svg') 12 12, pointer",
-          }}
         >
-          <span
+          <Link
+            href="/"
             className="logo-main"
             style={{
-              fontWeight: 700,
-              fontSize: "18px",
+              fontWeight: 800,
+              fontSize: "20px",
               letterSpacing: "0.15em",
               textTransform: "uppercase",
               whiteSpace: "nowrap",
               color: "currentColor",
+              textDecoration: "none",
+              cursor: "url('/assets/Cursor SVG/cursor-pointer.svg') 12 12, pointer",
             }}
           >
-            सम CLOTHICO
-          </span>
+            सम् CLOTHICO
+          </Link>
         </div>
         <div
           className="nav-right"

@@ -6,117 +6,117 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  background-color: var(--bg-warm, #E8DFD0);
 }
 
-/* ─── BG ─── */
+/* ─── Textured BG ─── */
 .about-section__bg {
   position: absolute;
   inset: 0;
   background-image: url("/assets/751.jpg");
   background-size: cover;
   background-position: center;
-  opacity: 0.18;
+  opacity: 0.08;
   z-index: 0;
 }
 
-/* ─── Card wrapper ─── */
+/* ─── Card wrapper — earthy, readable ─── */
 .about-section__card {
   position: relative;
   z-index: 1;
-  width: 600px;
-  height: 82vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* about.svg fills the card completely */
-.about-section__svg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: fill;
-  pointer-events: none;
+  width: min(600px, 90vw);
+  padding: 60px 56px;
+  background-color: var(--bg-cream, #F5F0E8);
+  border: 1px solid rgba(44, 32, 22, 0.12);
+  border-radius: 4px;
+  box-shadow:
+    0 2px 6px rgba(44, 32, 22, 0.06),
+    0 12px 40px rgba(44, 32, 22, 0.08);
 }
 
 /* ─── Inner content ─── */
 .about-section__inner {
-  position: relative;
-  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.4rem;
-  padding: 10% 14%;
+  gap: 1.2rem;
   text-align: center;
-  width: 100%;
-  height: 100%;
-  justify-content: center;
 }
 
 /* ─── Logo ─── */
 .about-section__logo {
-  width: 100px;
+  width: 90px;
   height: auto;
-  filter: brightness(0) invert(1);
-  opacity: 0.9;
+  opacity: 0.85;
+  /* Don't invert — logo should show on light beige */
+}
+
+/* ─── Divider ─── */
+.about-section__divider {
+  width: 48px;
+  height: 1px;
+  background-color: var(--color-earth, #8B6F47);
+  opacity: 0.5;
+  margin: 0 auto;
 }
 
 /* ─── Text lines ─── */
 .about-section__lines {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.4rem;
 }
 
 .about-line {
-  font-family: 'DM Sans', sans-serif;
-  font-size: clamp(0.85rem, 1.5vw, 1.05rem);
-  line-height: 1.65;
-  color: #f5ede0;
-  letter-spacing: -0.1px;
+  font-family: 'Epilogue', sans-serif;
+  font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+  line-height: 1.5;
+  /* Dark earthy brown — high contrast on light card */
+  color: var(--color-dark, #2C2016);
+  font-weight: 600;
+  letter-spacing: -0.3px;
   opacity: 0;
   margin: 0;
 }
 
-.about-line:first-child {
-  font-family: 'Epilogue', sans-serif;
-  font-size: clamp(1rem, 2vw, 1.35rem);
-  font-weight: 700;
-  letter-spacing: -0.5px;
-  margin-bottom: 0.4rem;
+.about-line:nth-child(2) {
+  font-style: italic;
+  font-weight: 400;
 }
 
 .about-line:last-child {
-  font-style: italic;
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(0.8rem, 1.2vw, 0.95rem);
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-earth, #8B6F47);
   opacity: 0;
-  margin-top: 0.5rem;
 }
 
-/* ─── Mobile Responsiveness ─── */
+/* ─── Sub-label ─── */
+.about-section__sub {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--color-dark-soft, #3D2E1E);
+  opacity: 0.6;
+  max-width: 340px;
+  margin: 0 auto;
+}
+
+/* ─── Mobile ─── */
 @media (max-width: 768px) {
   .about-section__card {
-    width: 95vw;
-    height: 80vh;
-    min-height: 550px;
+    padding: 40px 28px;
   }
-  .about-section__inner {
-    padding: 20% 12%;
-    gap: 1rem;
-  }
-  .about-section__lines {
-    gap: 0.3rem;
-  }
+
   .about-line {
-    font-size: 0.85rem;
-    line-height: 1.5;
+    font-size: 1.2rem;
   }
-  .about-line:first-child {
-    font-size: 1.1rem;
-  }
+
   .about-section__logo {
-    width: 75px;
-    margin-bottom: 0.5rem;
+    width: 70px;
   }
 }
