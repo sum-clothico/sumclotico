@@ -36,7 +36,7 @@ export default function ArchedHero() {
 
       {/* Right-aligned Background Image */}
       <img
-        src="/assets/herobgright.png"
+        src="/assets/chakra.jpg"
         alt=""
         className="arched-hero__bg-right"
       />

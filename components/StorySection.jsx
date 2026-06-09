@@ -38,6 +38,7 @@ const StorySection = () => {
         end: `+=${PIN_DURATION}`,
         pin: true,
         pinSpacing: true,
+        refreshPriority: 1,
       });
 
       // Frame stroke-draw

@@ -22,7 +22,7 @@ const PRODUCTS = [
     ],
     when: "You want to look cute without thinking twice.",
     oneLine: "Comfy, bright, and ready in seconds.",
-    images: ["/assets/img/13.png", "/assets/img/12.png", "/assets/img/17.png"]
+    images: ["/assets/img/14.png", "/assets/img/25.png", "/assets/img/20.png"]
   },
   {
     id: 2,
@@ -37,7 +37,7 @@ const PRODUCTS = [
     ],
     when: "You need one top that does it all—and does it well.",
     oneLine: "There's nothing extra about it—and that's the best part.",
-    images: ["/assets/img/14.png", "/assets/img/18.png", "/assets/img/19.png"]
+    images: ["/assets/img/22.png", "/assets/img/13.png", "/assets/img/18.png"]
   },
   {
     id: 3,
@@ -52,7 +52,7 @@ const PRODUCTS = [
     ],
     when: "You want a little attention—but on your terms.",
     oneLine: "Bright, effortless, and just enough to stand out.",
-    images: ["/assets/img/15.png", "/assets/img/12.png", "/assets/img/17.png"]
+    images: ["/assets/img/26.png", "/assets/img/27.png", "/assets/img/17.png"]
   },
   {
     id: 4,
@@ -69,7 +69,7 @@ const PRODUCTS = [
     ],
     when: "You want one dress that works for errands, work, and downtime.",
     oneLine: "Comfortable, practical, and effortlessly put-together—every single day.",
-    images: ["/assets/img/16.png", "/assets/img/18.png", "/assets/img/19.png"]
+    images: ["/assets/img/15.png", "/assets/img/23.png", "/assets/img/12.png"]
   }
 ];
 

@@ -93,25 +93,25 @@ export default function OurStoryClient() {
       title: "Step 1: The Cotton",
       text: "Natural cotton is cleaned and prepared.",
       position: "left",
-      img: "/assets/img/12.png"
+      img: "/assets/1.jpg"
     },
     {
       title: "Step 2: Spinning",
       text: "Hand-spun yarn created using traditional charkhas. This process keeps the fibers airy and alive.",
       position: "right",
-      img: "/assets/img/19.png"
+      img: "/assets/2.jpg"
     },
     {
       title: "Step 3: Weaving",
       text: "Handwoven fabric crafted on looms by skilled artisans. Each movement is controlled by hand — no automation.",
       position: "left",
-      img: "/assets/img/18.png"
+      img: "/assets/3.jpg"
     },
     {
       title: "Step 4: Fabric Comes to Life",
       text: "Naturally breathable and adaptable to climate. Minimal carbon footprint, making it a cornerstone of sustainable fashion.",
       position: "right",
-      img: "/assets/img/17.png"
+      img: "/assets/4.jpg"
     }
   ];
 

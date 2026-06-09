@@ -84,12 +84,17 @@ const TravelingImage = () => {
       },
     });
     triggers.push(travelToStoryTl.scrollTrigger);
-    travelToStoryTl.to(el, {
-      left: "50%",
-      top: "50%",
-      duration: 1,
-      ease: "expo.inOut",
-    });
+    travelToStoryTl.fromTo(
+      el,
+      { left: "50%", top: "40%", scale: 1 },
+      {
+        left: "50%",
+        top: "50%",
+        scale: 1,
+        duration: 1,
+        ease: "expo.inOut",
+      },
+    );
 
     // ═══ PHASE 2 — Curtain reveal in StorySection ═══
     const curtain0 = el.querySelector(".curtain-0");
@@ -132,6 +137,15 @@ const TravelingImage = () => {
       const isReversed = section.classList.contains("split-section--reversed");
       const targetLeft = isReversed ? "82%" : "18%";
 
+      const prevLeft =
+        i === 0
+          ? "50%"
+          : splitSections[i - 1].classList.contains("split-section--reversed")
+            ? "82%"
+            : "18%";
+      const prevTop = i === 0 ? "50%" : "30%";
+      const prevScale = i === 0 ? 1 : 1.02;
+
       const travelTl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
@@ -141,13 +155,17 @@ const TravelingImage = () => {
         },
       });
       triggers.push(travelTl.scrollTrigger);
-      travelTl.to(el, {
-        left: targetLeft,
-        top: "30%",
-        scale: 1.02,
-        duration: 1,
-        ease: "expo.inOut",
-      });
+      travelTl.fromTo(
+        el,
+        { left: prevLeft, top: prevTop, scale: prevScale },
+        {
+          left: targetLeft,
+          top: "30%",
+          scale: 1.02,
+          duration: 1,
+          ease: "expo.inOut",
+        },
+      );
 
       const frame = section.querySelector(".section-frame-path");
       if (frame) {
@@ -226,10 +244,10 @@ const TravelingImage = () => {
         alt="Khadi Product"
       />
       <div className="traveling-image__curtain curtain-1">
-        <img src="/assets/img/5.png" alt="" />
+        <img src="/assets/khadi.jpg" alt="" />
       </div>
       <div className="traveling-image__curtain curtain-0">
-        <img src="/assets/img/8.png" alt="" />
+        <img src="/assets/fabric.jpg" alt="" />
       </div>
       {SPLIT_IMAGES.map((src, i) => (
         <img key={i} className="ti-split" src={src} alt="" />

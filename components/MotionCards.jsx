@@ -45,7 +45,9 @@ export default function MotionCards() {
             y: 0,
             duration: 0.38,
             ease: "power2.out",
-            onComplete: () => { isAnimating.current = false; },
+            onComplete: () => {
+              isAnimating.current = false;
+            },
           },
         );
       },
@@ -157,7 +159,7 @@ export default function MotionCards() {
         <p ref={phaseTextRef} className="mc-phase-text mc-phase-text--active">
           {PHASE_TEXTS[phaseIndex]}
         </p>
-        <span className="mc-click-hint">this text should change with every click</span>
+        <span className="mc-click-hint">click</span>
       </div>
 
       {/* ─── Cards ─── */}
@@ -165,22 +167,42 @@ export default function MotionCards() {
         <div ref={containerRef} className="motion-card__cards">
           <div className="motion-card__card motion-card__card--1">
             <div className="motion-card__card-image">
-              <img src="/assets/img/13.png" loading="lazy" alt="" className="cover-image" />
+              <img
+                src="/assets/img/13.png"
+                loading="lazy"
+                alt=""
+                className="cover-image"
+              />
             </div>
           </div>
           <div className="motion-card__card motion-card__card--2">
             <div className="motion-card__card-image">
-              <img src="/assets/img/14.png" loading="lazy" alt="" className="cover-image" />
+              <img
+                src="/assets/img/14.png"
+                loading="lazy"
+                alt=""
+                className="cover-image"
+              />
             </div>
           </div>
           <div className="motion-card__card motion-card__card--3">
             <div className="motion-card__card-image">
-              <img src="/assets/img/15.png" loading="lazy" alt="" className="cover-image" />
+              <img
+                src="/assets/img/15.png"
+                loading="lazy"
+                alt=""
+                className="cover-image"
+              />
             </div>
           </div>
           <div className="motion-card__card motion-card__card--4">
             <div className="motion-card__card-image">
-              <img src="/assets/img/16.png" loading="lazy" alt="" className="cover-image" />
+              <img
+                src="/assets/img/16.png"
+                loading="lazy"
+                alt=""
+                className="cover-image"
+              />
             </div>
           </div>
         </div>

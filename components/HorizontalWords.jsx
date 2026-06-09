@@ -77,6 +77,7 @@ const HorizontalWords = () => {
         pin: true,
         pinSpacing: true,
         invalidateOnRefresh: true,
+        refreshPriority: 2,
       });
       // ------------------------------------
 
