@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "../app/styles/traveling-image.css";
@@ -19,8 +19,9 @@ const SPLIT_IMAGES = [
 const TravelingImage = () => {
   const containerRef = useRef(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const el = containerRef.current;
+    const originalParent = el?.parentElement;
     const hWords = document.querySelector(".horizontal-words-section");
     const storySection = document.querySelector(".story-section");
     const splitSections = document.querySelectorAll(".split-section");
@@ -209,7 +210,12 @@ const TravelingImage = () => {
     });
     triggers.push(lockST);
 
-    return () => triggers.forEach((st) => st && st.kill());
+    return () => {
+      triggers.forEach((st) => st && st.kill());
+      if (el && originalParent && el.parentElement !== originalParent) {
+        originalParent.appendChild(el);
+      }
+    };
   }, []);
 
   return (

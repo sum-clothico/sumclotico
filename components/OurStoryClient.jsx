@@ -31,25 +31,89 @@ export default function OurStoryClient() {
       );
 
       // Journey steps animation
-      gsap.fromTo(
-        ".os-step",
-        { opacity: 0, x: -30 },
-        {
-          opacity: 1,
-          x: 0,
-          duration: 0.8,
-          stagger: 0.2,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: ".os-journey",
-            start: "top 60%",
-          },
+      const journeySection = document.querySelector(".os-journey-scroll");
+      const pinContainer = journeySection.querySelector(".os-js-pin");
+      const textEls = journeySection.querySelectorAll(".os-js-text");
+      const imgs = journeySection.querySelectorAll(".os-js-img");
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: journeySection,
+          start: "top top",
+          end: "+=3000",
+          pin: true,
+          scrub: 1,
+        },
+      });
+
+      // Images are stacked. img-3 on top, img-0 on bottom.
+      // We will clipPath them away to reveal the one below.
+      // img[0] is base. img[1] is step 2, img[2] is step 3, img[3] is step 4.
+      // Let's set them all to visible initially via css, then animate clipPath
+      gsap.set(imgs, { clipPath: "inset(0% 0% 0% 0%)" });
+
+      const numPhases = 4;
+      const phaseDuration = 1 / numPhases;
+      const fadeDuration = phaseDuration * 0.15;
+      const holdDuration = phaseDuration * 0.7;
+
+      textEls.forEach((el, i) => {
+        const start = i * phaseDuration;
+        
+        // Text fade in/out
+        tl.fromTo(
+          el,
+          { opacity: 0, y: 40 },
+          { opacity: 1, y: 0, duration: fadeDuration, ease: "power2.out" },
+          start
+        ).to(
+          el,
+          { opacity: 0, y: -30, duration: fadeDuration, ease: "power2.in" },
+          start + fadeDuration + holdDuration
+        );
+
+        // Image swap (except for the last one which just stays)
+        if (i < numPhases - 1) {
+           // wait for text to be somewhat held, then reveal next image by clipping current one
+           const imgToHide = imgs[i];
+           tl.to(
+             imgToHide,
+             { clipPath: "inset(100% 0% 0% 0%)", duration: 0.2, ease: "expo.inOut" },
+             start + fadeDuration + holdDuration - 0.1
+           );
         }
-      );
+      });
 
     }, containerRef);
     return () => ctx.revert();
   }, []);
+
+  const journeyPhases = [
+    {
+      title: "Step 1: The Cotton",
+      text: "Natural cotton is cleaned and prepared.",
+      position: "left",
+      img: "/assets/img/12.png"
+    },
+    {
+      title: "Step 2: Spinning",
+      text: "Hand-spun yarn created using traditional charkhas. This process keeps the fibers airy and alive.",
+      position: "right",
+      img: "/assets/img/19.png"
+    },
+    {
+      title: "Step 3: Weaving",
+      text: "Handwoven fabric crafted on looms by skilled artisans. Each movement is controlled by hand — no automation.",
+      position: "left",
+      img: "/assets/img/18.png"
+    },
+    {
+      title: "Step 4: Fabric Comes to Life",
+      text: "Naturally breathable and adaptable to climate. Minimal carbon footprint, making it a cornerstone of sustainable fashion.",
+      position: "right",
+      img: "/assets/img/17.png"
+    }
+  ];
 
   return (
     <div ref={containerRef} className="our-story-page">
@@ -67,34 +131,52 @@ export default function OurStoryClient() {
         </div>
       </section>
 
-      {/* The Journey of Khadi */}
-      <section className="os-journey">
-        <h2 className="os-section-title">The Journey of Khadi</h2>
-        <p className="os-section-sub">From cotton fiber to finished garment, Khadi undergoes a process that is as mindful as it is beautiful:</p>
-        
-        <div className="os-steps-grid">
-          <div className="os-step">
-            <span className="os-step-num">Step 1</span>
-            <h3>The Cotton</h3>
-            <p>Natural cotton is cleaned and prepared.</p>
+      {/* The Journey of Khadi (Scrolling Section) */}
+      <section className="os-journey-scroll">
+        <div className="os-js-pin">
+          <div className="os-js-header">
+            <h2 className="os-section-title">The Journey of Khadi</h2>
+            <p className="os-section-sub">From cotton fiber to finished garment, Khadi undergoes a process that is as mindful as it is beautiful.</p>
           </div>
-          <div className="os-step">
-            <span className="os-step-num">Step 2</span>
-            <h3>Spinning</h3>
-            <p>Hand-spun yarn created using traditional charkhas. This process keeps the fibers airy and alive.</p>
+
+          <div className="os-js-content">
+            <div className="os-js-frame">
+              {journeyPhases.map((phase, i) => (
+                <img 
+                  key={i} 
+                  src={phase.img} 
+                  alt={phase.title} 
+                  className={`os-js-img`} 
+                  style={{ zIndex: journeyPhases.length - i }}
+                />
+              ))}
+              <svg
+                className="os-js-svg"
+                viewBox="0 0 300 400"
+                preserveAspectRatio="none"
+              >
+                <path
+                  d="M 10,10 L 290,10 L 290,390 L 10,390 Z"
+                  fill="none"
+                  stroke="#2C2016"
+                  strokeWidth="1"
+                />
+              </svg>
+            </div>
+
+            {journeyPhases.map((phase, i) => (
+              <div
+                key={i}
+                className={`os-js-text os-js-text--${phase.position}`}
+              >
+                <h3>{phase.title}</h3>
+                <p>{phase.text}</p>
+              </div>
+            ))}
           </div>
-          <div className="os-step">
-            <span className="os-step-num">Step 3</span>
-            <h3>Weaving</h3>
-            <p>Handwoven fabric crafted on looms by skilled artisans. Each movement is controlled by hand — no automation.</p>
-          </div>
-          <div className="os-step">
-            <span className="os-step-num">Step 4</span>
-            <h3>Fabric Comes to Life</h3>
-            <p>Naturally breathable and adaptable to climate. Minimal carbon footprint, making it a cornerstone of sustainable fashion.</p>
-          </div>
+
+          <p className="os-journey-footer">The result is a fabric that breathes, moves, and feels different from anything machine-made. This is not fast fashion. This is slow, intentional creation.</p>
         </div>
-        <p className="os-journey-footer">The result is a fabric that breathes, moves, and feels different from anything machine-made. This is not fast fashion. This is slow, intentional creation.</p>
       </section>
 
       {/* Why Khadi Matters & VS */}

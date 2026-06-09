@@ -142,7 +142,7 @@ export default function MotionCards() {
       <div className="horizontal-words__corner-right">म</div>
 
       {/* ─── Section heading ─── */}
-      <p className="mc-heading">It works for:</p>
+      <h2 className="mc-heading">Where Khadi Fits in Your Life</h2>
 
       {/* ─── Click-to-cycle Text ─── */}
       <div
@@ -157,7 +157,7 @@ export default function MotionCards() {
         <p ref={phaseTextRef} className="mc-phase-text mc-phase-text--active">
           {PHASE_TEXTS[phaseIndex]}
         </p>
-        <span className="mc-click-hint">tap to see more →</span>
+        <span className="mc-click-hint">this text should change with every click</span>
       </div>
 
       {/* ─── Cards ─── */}

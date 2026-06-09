@@ -1,6 +1,5 @@
-"use client";
-
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "../app/styles/about-section.css";
@@ -49,6 +48,17 @@ export default function AboutSection() {
           start,
         );
       });
+
+      // Animate CTA fading in at the end
+      const cta = sectionRef.current.querySelector(".about-cta");
+      if (cta) {
+        tl.fromTo(
+          cta,
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: seg * 0.5, ease: "power3.out" },
+          "+=0.1"
+        );
+      }
     }, sectionRef);
 
     return () => ctx.revert();
@@ -81,6 +91,19 @@ export default function AboutSection() {
           <p className="about-section__sub">
             A brand rooted in Khadi. Designed for how women live today.
           </p>
+        </div>
+      </div>
+
+      {/* Merged CTA */}
+      <div className="about-cta">
+        <h2 className="about-cta__title">Ready to experience Khadi?</h2>
+        <div className="about-cta__buttons">
+          <Link href="/collection" className="about-cta__btn about-cta__btn--primary">
+            Explore the Collection
+          </Link>
+          <Link href="/our-story" className="about-cta__btn about-cta__btn--secondary">
+            Read Our Story
+          </Link>
         </div>
       </div>
     </section>

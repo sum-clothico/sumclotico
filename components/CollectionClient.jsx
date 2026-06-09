@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "../app/styles/collection.css";
@@ -22,7 +22,7 @@ const PRODUCTS = [
     ],
     when: "You want to look cute without thinking twice.",
     oneLine: "Comfy, bright, and ready in seconds.",
-    img: "/assets/img/13.png"
+    images: ["/assets/img/13.png", "/assets/img/12.png", "/assets/img/17.png"]
   },
   {
     id: 2,
@@ -37,7 +37,7 @@ const PRODUCTS = [
     ],
     when: "You need one top that does it all—and does it well.",
     oneLine: "There's nothing extra about it—and that's the best part.",
-    img: "/assets/img/14.png"
+    images: ["/assets/img/14.png", "/assets/img/18.png", "/assets/img/19.png"]
   },
   {
     id: 3,
@@ -52,7 +52,7 @@ const PRODUCTS = [
     ],
     when: "You want a little attention—but on your terms.",
     oneLine: "Bright, effortless, and just enough to stand out.",
-    img: "/assets/img/15.png"
+    images: ["/assets/img/15.png", "/assets/img/12.png", "/assets/img/17.png"]
   },
   {
     id: 4,
@@ -69,9 +69,57 @@ const PRODUCTS = [
     ],
     when: "You want one dress that works for errands, work, and downtime.",
     oneLine: "Comfortable, practical, and effortlessly put-together—every single day.",
-    img: "/assets/img/16.png"
+    images: ["/assets/img/16.png", "/assets/img/18.png", "/assets/img/19.png"]
   }
 ];
+
+// Simple Image Slider Component
+function ImageSlider({ images, altText }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const handleNext = () => {
+    setCurrentIndex((prev) => (prev + 1) % images.length);
+  };
+
+  const handlePrev = () => {
+    setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  };
+
+  if (!images || images.length === 0) return null;
+
+  return (
+    <div className="slider-container">
+      <div 
+        className="slider-track" 
+        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+      >
+        {images.map((src, idx) => (
+          <img key={idx} src={src} alt={`${altText} ${idx + 1}`} loading="lazy" />
+        ))}
+      </div>
+      
+      {images.length > 1 && (
+        <>
+          <button className="slider-btn slider-btn-prev" onClick={handlePrev} aria-label="Previous image">
+            &#8249;
+          </button>
+          <button className="slider-btn slider-btn-next" onClick={handleNext} aria-label="Next image">
+            &#8250;
+          </button>
+          <div className="slider-dots">
+            {images.map((_, idx) => (
+              <span 
+                key={idx} 
+                className={`slider-dot ${idx === currentIndex ? "active" : ""}`}
+                onClick={() => setCurrentIndex(idx)}
+              />
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
 
 export default function CollectionClient() {
   const containerRef = useRef(null);
@@ -118,7 +166,7 @@ export default function CollectionClient() {
         {PRODUCTS.map((prod) => (
           <div key={prod.id} className="prod-card prod-fade">
             <div className="prod-img-wrapper">
-              <img src={prod.img} alt={prod.name} loading="lazy" />
+              <ImageSlider images={prod.images} altText={prod.name} />
             </div>
             <div className="prod-info">
               <span className="prod-sub">{prod.subtitle}</span>
@@ -141,8 +189,6 @@ export default function CollectionClient() {
               </div>
 
               <p className="prod-oneline">"{prod.oneLine}"</p>
-
-              <button className="prod-btn">View Details</button>
             </div>
           </div>
         ))}

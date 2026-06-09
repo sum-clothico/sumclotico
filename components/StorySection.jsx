@@ -96,6 +96,9 @@ const StorySection = () => {
 
   return (
     <section ref={sectionRef} className="story-section" id="story">
+      {/* Heading */}
+      <h2 className="story-section__heading">What is Khadi?</h2>
+
       {/* SVG Frame */}
       <svg className="story-section__frame" viewBox="0 0 240 330">
         <rect

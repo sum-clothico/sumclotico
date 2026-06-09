@@ -31,21 +31,22 @@ export default function FabricClient() {
       );
 
       // Stagger steps in How Khadi is Made
-      gsap.fromTo(
-        ".fab-step-card",
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          stagger: 0.2,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: ".fab-steps",
-            start: "top 60%",
-          },
-        }
-      );
+      gsap.utils.toArray(".fab-step-row").forEach((row) => {
+        gsap.fromTo(
+          row,
+          { opacity: 0, y: 40 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: row,
+              start: "top 80%",
+            },
+          }
+        );
+      });
 
     }, containerRef);
     return () => ctx.revert();
@@ -80,41 +81,64 @@ export default function FabricClient() {
       <section className="fab-section fab-steps">
         <h2 className="text-center mb-40">How Khadi Is Made<br/><span className="text-sm fw-normal">(And Why That Changes Everything)</span></h2>
         
-        <div className="fab-step-grid">
-          <div className="fab-step-card">
-            <span className="fab-step-num">Step 1: Cotton</span>
-            <p className="fab-step-desc">Raw cotton is cleaned and prepared.</p>
-            <hr />
+        <div className="fab-steps-list">
+          {/* Step 1 */}
+          <div className="fab-step-row">
+            <div className="fab-step-text">
+              <span className="fab-step-num">Step 1: Cotton</span>
+              <p className="fab-step-desc">Raw cotton is cleaned and prepared.</p>
+            </div>
+            <div className="fab-step-img">
+              <img src="/assets/img/12.png" alt="Raw cotton" loading="lazy" />
+            </div>
           </div>
 
-          <div className="fab-step-card">
-            <span className="fab-step-num">Step 2: Spinning by Hand</span>
-            <p className="fab-step-desc">The cotton is turned into yarn using a charkha.</p>
-            <hr />
-            <p className="fab-label">Why this matters:</p>
-            <p className="fab-sub">Hand spinning creates tiny irregular gaps in the yarn.</p>
-            <p className="fab-label">How it affects you:</p>
-            <p className="fab-sub">These gaps allow air to pass through making the fabric breathable.</p>
+          {/* Step 2 */}
+          <div className="fab-step-row fab-step-row--reverse">
+            <div className="fab-step-text">
+              <span className="fab-step-num">Step 2: Spinning by Hand</span>
+              <p className="fab-step-desc">The cotton is turned into yarn using a charkha.</p>
+              <hr />
+              <p className="fab-label">Why this matters:</p>
+              <p className="fab-sub">Hand spinning creates tiny irregular gaps in the yarn.</p>
+              <p className="fab-label">How it affects you:</p>
+              <p className="fab-sub">These gaps allow air to pass through making the fabric breathable.</p>
+            </div>
+            <div className="fab-step-img">
+              <img src="/assets/img/19.png" alt="Spinning" loading="lazy" />
+            </div>
           </div>
 
-          <div className="fab-step-card">
-            <span className="fab-step-num">Step 3: Hand Weaving</span>
-            <p className="fab-step-desc">The yarn is woven on a loom by artisans.</p>
-            <hr />
-            <p className="fab-label">Why this matters:</p>
-            <p className="fab-sub">There is no uniform pressure like machines.</p>
-            <p className="fab-label">How it affects you:</p>
-            <p className="fab-sub">The fabric feels softer, more flexible, and less stiff.</p>
+          {/* Step 3 */}
+          <div className="fab-step-row">
+            <div className="fab-step-text">
+              <span className="fab-step-num">Step 3: Hand Weaving</span>
+              <p className="fab-step-desc">The yarn is woven on a loom by artisans.</p>
+              <hr />
+              <p className="fab-label">Why this matters:</p>
+              <p className="fab-sub">There is no uniform pressure like machines.</p>
+              <p className="fab-label">How it affects you:</p>
+              <p className="fab-sub">The fabric feels softer, more flexible, and less stiff.</p>
+            </div>
+            <div className="fab-step-img">
+              <img src="/assets/img/18.png" alt="Hand weaving" loading="lazy" />
+            </div>
           </div>
 
-          <div className="fab-step-card">
-            <span className="fab-step-num">Step 4: The Final Fabric</span>
-            <p className="fab-step-desc">What you get is a fabric that is:</p>
-            <ul className="fab-list-minimal">
-              <li>Alive with texture</li>
-              <li>Light on the skin</li>
-              <li>Made slowly, not in bulk</li>
-            </ul>
+          {/* Step 4 */}
+          <div className="fab-step-row fab-step-row--reverse">
+            <div className="fab-step-text">
+              <span className="fab-step-num">Step 4: The Final Fabric</span>
+              <p className="fab-step-desc">What you get is a fabric that is:</p>
+              <ul className="fab-list-minimal">
+                <li>Alive with texture</li>
+                <li>Light on the skin</li>
+                <li>Made slowly, not in bulk</li>
+              </ul>
+            </div>
+            <div className="fab-step-img">
+              <img src="/assets/img/17.png" alt="Final fabric" loading="lazy" />
+            </div>
           </div>
         </div>
       </section>

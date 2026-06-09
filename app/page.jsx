@@ -10,7 +10,6 @@ import StorySection from "@/components/StorySection";
 import SplitSection from "@/components/SplitSection";
 import TravelingImage from "@/components/TravelingImage";
 import AboutSection from "@/components/AboutSection";
-import CtaSection from "@/components/CtaSection";
 import MotionCards from "@/components/MotionCards";
 import Footer from "@/components/Footer";
 import CursorBubble from "@/components/CursorBubble";
@@ -43,7 +42,6 @@ export default function Home() {
           <MotionCards />
         </div>
         <AboutSection />
-        <CtaSection />
       </main>
       <footer className="main-footer">
         <Footer />
