@@ -249,7 +249,6 @@ export default function Footer() {
       { selector: ".footer-column:first-child h3", key: "jobHeading" },
       { selector: ".footer-map-link span", key: "googleMap" },
       { selector: ".footer-email", key: "email" },
-      { selector: ".footer-whatsapp", key: "whatsapp" },
       { selector: ".credits-name", key: "socials" }, // Added wiggle target for names using social intensity
     ];
     wiggleTargets.forEach(({ selector, key }) => {
@@ -311,14 +310,6 @@ export default function Footer() {
           <span className="footer-badge">contact</span>
           <a href="mailto:hello@sumclotico.com" className="footer-email">
             hello@sumclotico.com
-          </a>
-          <a
-            href="https://wa.me/+91XXXXXXXXXX"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="footer-whatsapp"
-          >
-            send us a whatsapp
           </a>
           <p className="footer-note">
             we&apos;d love to hear from you — reach out anytime.
@@ -495,10 +486,9 @@ export default function Footer() {
           <a href="https://www.instagram.com/sumclothico/" target="_blank" rel="noopener noreferrer">Instagram</a>
           <a href="/our-story">Our Story</a>
           <a href="/fabric">Fabric</a>
-          <a href="https://wa.me/+91XXXXXXXXXX" target="_blank" rel="noopener noreferrer">Contact – Whatsapp</a>
+          <a href="/collection">Shop Collection</a>
           <a href="https://www.facebook.com/sumclotico" target="_blank" rel="noopener noreferrer">Facebook</a>
-          <a href="https://wa.me/+91XXXXXXXXXX" target="_blank" rel="noopener noreferrer">Place an order</a>
-          <a href="mailto:hello@sumclotico.com">Gmail</a>
+          <a href="mailto:hello@sumclotico.com">Contact Us</a>
           <a href="/blogs">Blogs Section</a>
         </nav>
       </div>

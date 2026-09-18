@@ -47,3 +47,7 @@
 /* About page styles                        */
 @import './styles/collection.css';
 /* Collection page styles                   */
+@import './styles/cart-and-checkout.css';
+/* Cart Drawer, Auth Modal, Checkout styles  */
+@import './styles/admin.css';
+/* Admin Portal & Analytics styles           */
