@@ -1,9 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useStore } from "@/context/StoreContext";
-import { FiShoppingBag, FiTrash2, FiPlus, FiMinus, FiX, FiArrowRight, FiShield } from "react-icons/fi";
+import { FiShoppingBag, FiTrash2, FiPlus, FiMinus, FiX, FiArrowRight, FiShield, FiTag, FiCheck } from "react-icons/fi";
+import { trackViewCart, trackBeginCheckout, trackEvent } from "@/lib/analytics";
 
 export default function CartDrawer() {
   const {
@@ -16,14 +17,34 @@ export default function CartDrawer() {
     cartTotalItems,
     isFreeShipping,
     shippingFee,
+    discountAmount,
     cartGrandTotal,
     shippingThreshold,
+    appliedCoupon,
+    couponFeedback,
+    applyCoupon,
+    removeCoupon,
   } = useStore();
+
+  const [couponCodeInput, setCouponCodeInput] = useState("");
+
+  useEffect(() => {
+    if (isCartOpen && cart.length > 0) {
+      trackViewCart(cart, cartGrandTotal);
+    }
+  }, [isCartOpen]);
 
   if (!isCartOpen) return null;
 
   const remainingForFreeShipping = Math.max(0, shippingThreshold - cartSubtotal);
   const progressPercent = Math.min(100, (cartSubtotal / shippingThreshold) * 100);
+
+  const handleApplyCoupon = (e) => {
+    e.preventDefault();
+    if (!couponCodeInput.trim()) return;
+    applyCoupon(couponCodeInput);
+    setCouponCodeInput("");
+  };
 
   return (
     <div className={`cart-drawer-overlay ${isCartOpen ? "open" : ""}`} onClick={() => setIsCartOpen(false)}>
@@ -171,122 +192,199 @@ export default function CartDrawer() {
               </Link>
             </div>
           ) : (
-            cart.map((item) => (
-              <div
-                key={`${item.id}-${item.selectedSize}-${item.selectedColor}`}
-                className="cart-item-row"
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "100px 1fr",
-                  gap: 20,
-                  padding: "20px 0",
-                  borderBottom: "1px solid #f3f4f6",
-                }}
-              >
-                {/* Large Product Thumbnail */}
+            <div>
+              {cart.map((item) => (
                 <div
+                  key={`${item.id}-${item.selectedSize}-${item.selectedColor}`}
+                  className="cart-item-row"
                   style={{
-                    width: 100,
-                    height: 130,
-                    borderRadius: 10,
-                    overflow: "hidden",
-                    background: "#f3f4f6",
-                    border: "1px solid #e5e7eb",
+                    display: "grid",
+                    gridTemplateColumns: "100px 1fr",
+                    gap: 20,
+                    padding: "20px 0",
+                    borderBottom: "1px solid #f3f4f6",
                   }}
                 >
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                  />
-                </div>
-
-                {/* Info & Quantity Controls */}
-                <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                  <div>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-                      <div style={{ fontSize: 16, fontWeight: 700, color: "#111827" }}>
-                        {item.name}
-                      </div>
-                      <button
-                        style={{
-                          background: "none",
-                          border: "none",
-                          color: "#9ca3af",
-                          cursor: "pointer",
-                          padding: 4,
-                          transition: "color 0.2s",
-                        }}
-                        onClick={() => removeFromCart(item.id, item.selectedSize, item.selectedColor)}
-                        title="Remove item"
-                      >
-                        <FiTrash2 size={16} />
-                      </button>
-                    </div>
-
-                    <div style={{ fontSize: 13, color: "#6b7280", marginTop: 4 }}>
-                      Size: <strong style={{ color: "#111827" }}>{item.selectedSize}</strong>
-                      {item.selectedColor ? ` | ${item.selectedColor}` : ""}
-                    </div>
+                  {/* Large Product Thumbnail */}
+                  <div
+                    style={{
+                      width: 100,
+                      height: 130,
+                      borderRadius: 10,
+                      overflow: "hidden",
+                      background: "#f3f4f6",
+                      border: "1px solid #e5e7eb",
+                    }}
+                  >
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                    />
                   </div>
 
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 12 }}>
-                    {/* Stepper */}
-                    <div
+                  {/* Info & Quantity Controls */}
+                  <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                    <div>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                        <div style={{ fontSize: 16, fontWeight: 700, color: "#111827" }}>
+                          {item.name}
+                        </div>
+                        <button
+                          style={{
+                            background: "none",
+                            border: "none",
+                            color: "#9ca3af",
+                            cursor: "pointer",
+                            padding: 4,
+                            transition: "color 0.2s",
+                          }}
+                          onClick={() => removeFromCart(item.id, item.selectedSize, item.selectedColor)}
+                          title="Remove item"
+                        >
+                          <FiTrash2 size={16} />
+                        </button>
+                      </div>
+
+                      <div style={{ fontSize: 13, color: "#6b7280", marginTop: 4 }}>
+                        Size: <strong style={{ color: "#111827" }}>{item.selectedSize}</strong>
+                        {item.selectedColor ? ` | ${item.selectedColor}` : ""}
+                      </div>
+                    </div>
+
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 12 }}>
+                      {/* Stepper */}
+                      <div
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          border: "1px solid #d1d5db",
+                          borderRadius: 6,
+                          overflow: "hidden",
+                          background: "#f9fafb",
+                        }}
+                      >
+                        <button
+                          style={{
+                            background: "none",
+                            border: "none",
+                            width: 30,
+                            height: 30,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => updateQuantity(item.id, item.selectedSize, item.selectedColor, -1)}
+                          aria-label="Decrease quantity"
+                        >
+                          <FiMinus size={12} color="#374151" />
+                        </button>
+                        <span style={{ padding: "0 10px", fontSize: 13, fontWeight: 700, minWidth: 24, textAlign: "center" }}>
+                          {item.quantity}
+                        </span>
+                        <button
+                          style={{
+                            background: "none",
+                            border: "none",
+                            width: 30,
+                            height: 30,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => updateQuantity(item.id, item.selectedSize, item.selectedColor, 1)}
+                          aria-label="Increase quantity"
+                        >
+                          <FiPlus size={12} color="#374151" />
+                        </button>
+                      </div>
+
+                      {/* Total Price for item */}
+                      <div style={{ fontSize: 16, fontWeight: 800, color: "#111827" }}>
+                        ₹{(item.price * item.quantity).toLocaleString("en-IN")}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              {/* Coupon Engine Input Box in Drawer */}
+              <div style={{ marginTop: 24, padding: "16px", background: "#f9fafb", borderRadius: 12, border: "1px solid #e5e7eb" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, fontWeight: 700, color: "#111827", marginBottom: 8 }}>
+                  <FiTag size={15} color="#f35c27" />
+                  <span>Apply Promotional Coupon</span>
+                </div>
+
+                {appliedCoupon ? (
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#ecfdf5", border: "1px solid #a7f3d0", padding: "8px 12px", borderRadius: 8 }}>
+                    <div>
+                      <div style={{ fontSize: 13, fontWeight: 700, color: "#065f46" }}>
+                        ✓ {appliedCoupon.code} Applied ({appliedCoupon.type === "percentage" ? `${appliedCoupon.value}% OFF` : `₹${appliedCoupon.value} OFF`})
+                      </div>
+                      <div style={{ fontSize: 11, color: "#047857" }}>
+                        Saving ₹{discountAmount.toLocaleString("en-IN")} on this order
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => {
+                        trackEvent("remove_coupon", { coupon_code: appliedCoupon?.code });
+                        removeCoupon();
+                      }}
+                      style={{ background: "none", border: "none", color: "#dc2626", fontSize: 12, fontWeight: 700, cursor: "pointer", textDecoration: "underline" }}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleApplyCoupon} style={{ display: "flex", gap: 8 }}>
+                    <input
+                      type="text"
+                      placeholder="e.g. KHADI10 or FIRST500"
+                      value={couponCodeInput}
+                      onChange={(e) => setCouponCodeInput(e.target.value)}
                       style={{
-                        display: "inline-flex",
-                        alignItems: "center",
+                        flex: 1,
+                        padding: "8px 12px",
                         border: "1px solid #d1d5db",
                         borderRadius: 6,
-                        overflow: "hidden",
-                        background: "#f9fafb",
+                        fontSize: 13,
+                        textTransform: "uppercase",
+                        outline: "none",
+                      }}
+                    />
+                    <button
+                      type="submit"
+                      style={{
+                        padding: "8px 16px",
+                        background: "#111111",
+                        color: "#ffffff",
+                        border: "none",
+                        borderRadius: 6,
+                        fontSize: 13,
+                        fontWeight: 700,
+                        cursor: "pointer",
                       }}
                     >
-                      <button
-                        style={{
-                          background: "none",
-                          border: "none",
-                          width: 30,
-                          height: 30,
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => updateQuantity(item.id, item.selectedSize, item.selectedColor, -1)}
-                        aria-label="Decrease quantity"
-                      >
-                        <FiMinus size={12} color="#374151" />
-                      </button>
-                      <span style={{ padding: "0 10px", fontSize: 13, fontWeight: 700, minWidth: 24, textAlign: "center" }}>
-                        {item.quantity}
-                      </span>
-                      <button
-                        style={{
-                          background: "none",
-                          border: "none",
-                          width: 30,
-                          height: 30,
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => updateQuantity(item.id, item.selectedSize, item.selectedColor, 1)}
-                        aria-label="Increase quantity"
-                      >
-                        <FiPlus size={12} color="#374151" />
-                      </button>
-                    </div>
+                      Apply
+                    </button>
+                  </form>
+                )}
 
-                    {/* Total Price for item */}
-                    <div style={{ fontSize: 16, fontWeight: 800, color: "#111827" }}>
-                      ₹{(item.price * item.quantity).toLocaleString("en-IN")}
-                    </div>
+                {couponFeedback && (
+                  <div
+                    style={{
+                      fontSize: 12,
+                      marginTop: 6,
+                      color: couponFeedback.type === "success" ? "#047857" : couponFeedback.type === "error" ? "#b91c1c" : "#4b5563",
+                    }}
+                  >
+                    {couponFeedback.message}
                   </div>
-                </div>
+                )}
               </div>
-            ))
+            </div>
           )}
         </div>
 
@@ -301,10 +399,18 @@ export default function CartDrawer() {
               boxShadow: "0 -8px 24px rgba(0, 0, 0, 0.05)",
             }}
           >
-            <div className="cart-summary-row" style={{ fontSize: 14, color: "#4b5563", marginBottom: 8, display: "flex", justifyContent: "space-between" }}>
+            <div className="cart-summary-row" style={{ fontSize: 14, color: "#4b5563", marginBottom: 6, display: "flex", justifyContent: "space-between" }}>
               <span>Items Subtotal</span>
               <span style={{ fontWeight: 700, color: "#111827" }}>₹{cartSubtotal.toLocaleString("en-IN")}</span>
             </div>
+
+            {discountAmount > 0 && (
+              <div className="cart-summary-row" style={{ fontSize: 14, color: "#15803d", marginBottom: 6, display: "flex", justifyContent: "space-between" }}>
+                <span>Coupon Discount ({appliedCoupon?.code})</span>
+                <span style={{ fontWeight: 700 }}>- ₹{discountAmount.toLocaleString("en-IN")}</span>
+              </div>
+            )}
+
             <div className="cart-summary-row" style={{ fontSize: 14, color: "#4b5563", marginBottom: 12, display: "flex", justifyContent: "space-between" }}>
               <span>Estimated Shipping</span>
               <span>
@@ -315,6 +421,7 @@ export default function CartDrawer() {
                 )}
               </span>
             </div>
+
             <div
               className="cart-summary-row cart-summary-total"
               style={{
@@ -350,7 +457,10 @@ export default function CartDrawer() {
                 textDecoration: "none",
                 boxShadow: "0 6px 20px rgba(0, 0, 0, 0.16)",
               }}
-              onClick={() => setIsCartOpen(false)}
+              onClick={() => {
+                trackBeginCheckout(cart, cartGrandTotal, appliedCoupon?.code);
+                setIsCartOpen(false);
+              }}
             >
               <span>Proceed to Checkout</span>
               <FiArrowRight size={18} />

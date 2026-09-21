@@ -1,11 +1,12 @@
 "use client";
 
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useStore } from "@/context/StoreContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { trackEvent } from "@/lib/analytics";
 
 function SuccessContent() {
   const searchParams = useSearchParams();
@@ -13,6 +14,18 @@ function SuccessContent() {
   const { orders } = useStore();
 
   const order = orders.find((o) => o.orderNumber === orderNumber) || orders[0];
+
+  useEffect(() => {
+    if (order) {
+      trackEvent("order_confirmation_view", {
+        order_number: order.orderNumber,
+        value: order.totalAmount,
+        currency: "INR",
+        items_count: order.items?.length,
+        payment_gateway: order.paymentGateway,
+      });
+    }
+  }, [order?.orderNumber]);
 
   return (
     <div style={{ background: "#ffffff", padding: "40px", borderRadius: 16, border: "1px solid #e8e8e8", boxShadow: "0 10px 40px rgba(0,0,0,0.04)" }}>
@@ -31,9 +44,32 @@ function SuccessContent() {
         <div>
           {/* Order Meta Banner */}
           <div style={{ background: "#f8f9fa", borderLeft: "4px solid #f35c27", padding: "14px 18px", borderRadius: 4, marginBottom: 24 }}>
-            <div style={{ fontSize: 13, color: "#666" }}>Order Reference:</div>
-            <strong style={{ fontSize: 16, color: "#111" }}>#{order.orderNumber}</strong>
-            <div style={{ fontSize: 12, color: "#888", marginTop: 4 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div>
+                <div style={{ fontSize: 13, color: "#666" }}>Order Reference:</div>
+                <strong style={{ fontSize: 16, color: "#111" }}>#{order.orderNumber}</strong>
+              </div>
+              <div style={{ textAlign: "right" }}>
+                <span
+                  style={{
+                    fontSize: 11,
+                    fontWeight: 700,
+                    padding: "4px 10px",
+                    borderRadius: 4,
+                    background: order.paymentGateway === "Razorpay" ? "#0c2340" : order.paymentGateway === "Cashfree" ? "#f35c27" : "#374151",
+                    color: "#ffffff",
+                  }}
+                >
+                  {order.paymentGateway || "Cashfree"}
+                </span>
+                {order.transactionId && (
+                  <div style={{ fontSize: 10, color: "#6b7280", marginTop: 4, fontFamily: "monospace" }}>
+                    Txn: {order.transactionId}
+                  </div>
+                )}
+              </div>
+            </div>
+            <div style={{ fontSize: 12, color: "#888", marginTop: 6 }}>
               Confirmation email dispatched via <strong>Resend</strong> to {order.customer?.email}
             </div>
           </div>
@@ -54,8 +90,18 @@ function SuccessContent() {
             ))}
           </div>
 
-          {/* Totals */}
+          {/* Payment & Totals */}
           <div style={{ marginBottom: 24 }}>
+            <div className="cart-summary-row">
+              <span>Payment Method</span>
+              <span style={{ fontWeight: 600 }}>{order.paymentMethod || "Online Payment"}</span>
+            </div>
+            <div className="cart-summary-row">
+              <span>Payment Status</span>
+              <span style={{ fontWeight: 700, color: order.paymentStatus === "PAID" ? "#2e7d32" : "#d97706" }}>
+                {order.paymentStatus || "PAID"}
+              </span>
+            </div>
             <div className="cart-summary-row">
               <span>Subtotal</span>
               <span>₹{order.subtotal?.toLocaleString("en-IN")}</span>

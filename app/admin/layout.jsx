@@ -4,12 +4,14 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useStore } from "@/context/StoreContext";
-import { FiBarChart2, FiBox, FiShoppingBag, FiUsers, FiExternalLink, FiLogOut, FiBell, FiPlus } from "react-icons/fi";
+import { FiBarChart2, FiBox, FiShoppingBag, FiUsers, FiExternalLink, FiLogOut, FiBell, FiPlus, FiClock, FiFileText } from "react-icons/fi";
 
 export default function AdminLayout({ children }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { adminUser, logoutAdmin, adminNotifications = [], setAdminNotifications } = useStore();
+  const { adminUser, logoutAdmin, adminNotifications = [], setAdminNotifications, abandonedCarts = [] } = useStore();
+
+  const pendingAbandonedCount = (abandonedCarts || []).filter((c) => c.status === "PENDING").length;
 
   // If viewing admin login page, render children directly
   if (pathname === "/admin/login") {
@@ -25,6 +27,15 @@ export default function AdminLayout({ children }) {
     { label: "Dashboard & Analytics", href: "/admin", icon: <FiBarChart2 size={16} /> },
     { label: "Product Management", href: "/admin/products", icon: <FiBox size={16} /> },
     { label: "Live Orders & CRM", href: "/admin/orders", icon: <FiShoppingBag size={16} /> },
+    {
+      label: "Abandoned Carts",
+      href: "/admin/abandoned-carts",
+      icon: <FiClock size={16} />,
+      badge: pendingAbandonedCount > 0 ? pendingAbandonedCount : null,
+    },
+    { label: "Coupons & Offers", href: "/admin/coupons", icon: <FiBox size={16} /> },
+    { label: "Campaign & Ref Links", href: "/admin/links", icon: <FiExternalLink size={16} /> },
+    { label: "Legal Policies & CMS", href: "/admin/policies", icon: <FiFileText size={16} /> },
     { label: "Customer Directory", href: "/admin/customers", icon: <FiUsers size={16} /> },
     { label: "View Storefront", href: "/", icon: <FiExternalLink size={16} /> },
   ];
@@ -44,9 +55,25 @@ export default function AdminLayout({ children }) {
               const isActive = pathname === item.href;
               return (
                 <li key={item.href} className={`admin-nav-item ${isActive ? "active" : ""}`}>
-                  <Link href={item.href} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    <span>{item.icon}</span>
-                    <span>{item.label}</span>
+                  <Link href={item.href} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                      <span>{item.icon}</span>
+                      <span>{item.label}</span>
+                    </div>
+                    {item.badge && (
+                      <span
+                        style={{
+                          background: "#f35c27",
+                          color: "#ffffff",
+                          fontSize: 10,
+                          fontWeight: 800,
+                          padding: "2px 7px",
+                          borderRadius: 999,
+                        }}
+                      >
+                        {item.badge}
+                      </span>
+                    )}
                   </Link>
                 </li>
               );
@@ -82,6 +109,10 @@ export default function AdminLayout({ children }) {
             {pathname === "/admin" && "Executive Dashboard & Sales Analytics"}
             {pathname === "/admin/products" && "Product Catalog & Inventory Uploader"}
             {pathname === "/admin/orders" && "Customer Orders & Fulfillment CRM"}
+            {pathname === "/admin/abandoned-carts" && "Abandoned Cart Recovery CRM & WhatsApp Reminders"}
+            {pathname === "/admin/coupons" && "Coupon Manager & Dynamic Discounts"}
+            {pathname === "/admin/links" && "Campaign & Affiliate Trackable Links"}
+            {pathname === "/admin/policies" && "Legal Policies & Compliance Content Editor (CMS)"}
             {pathname === "/admin/customers" && "Customer Directory & Lifetime Value"}
             {pathname === "/" && "Storefront Preview"}
           </div>

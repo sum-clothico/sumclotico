@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import Link from "next/link";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SOCIAL_ICONS, WIGGLE_CONFIG } from "@/lib/data";
@@ -155,94 +156,7 @@ export default function Footer() {
       creditsWrapper.addEventListener("mouseleave", onLeave);
     }
 
-    // ─── Footer sticker pop-up on scroll ───
-    const footerStickers = gsap.utils.toArray(".footer-sticker");
-    const stickerRotations = [12, -10, 8, -12, 10, -8];
-    gsap.set(footerStickers, {
-      scale: 0,
-      opacity: 0,
-      transformOrigin: "center bottom",
-    });
-    footerStickers.forEach((sticker, i) =>
-      gsap.set(sticker, {
-        rotation: stickerRotations[i % stickerRotations.length],
-      }),
-    );
 
-    gsap.to(footerStickers, {
-      scale: 1,
-      opacity: 1,
-      rotation: (i) => stickerRotations[i % stickerRotations.length] * 0.7,
-      duration: 0.7,
-      ease: "back.out(1.7)",
-      stagger: 0.12,
-      scrollTrigger: {
-        trigger: ".footer-stickers",
-        start: "top 80%",
-        toggleActions: "play none none reverse", // Play on enter, reverse on leave up
-      },
-    });
-
-    // ─── Sticker cursor-velocity push ───
-    footerStickers.forEach((sticker, i) => {
-      const baseRotation = stickerRotations[i % stickerRotations.length] * 0.7;
-      const PROXIMITY_RADIUS = 180,
-        STRENGTH = 4,
-        MAX_PUSH = 55,
-        MIN_SPEED = 3;
-      let prevX = 0,
-        prevY = 0;
-      const clamp = (v, max) => Math.max(-max, Math.min(max, v));
-
-      const onMove = (e) => {
-        const dx = e.clientX - prevX,
-          dy = e.clientY - prevY;
-        prevX = e.clientX;
-        prevY = e.clientY;
-        const rect = sticker.getBoundingClientRect();
-        const cx = rect.left + rect.width / 2,
-          cy = rect.top + rect.height / 2;
-        const dist = Math.hypot(e.clientX - cx, e.clientY - cy);
-        const onSticker =
-          e.clientX >= rect.left &&
-          e.clientX <= rect.right &&
-          e.clientY >= rect.top &&
-          e.clientY <= rect.bottom;
-        const speed = Math.hypot(dx, dy);
-
-        // Disable proximity push if the mouse is hovering over the open credits popup box
-        const isOverCreditsBox = e.target.closest(".credits-box") !== null;
-
-        if (
-          !onSticker &&
-          !isOverCreditsBox &&
-          dist < PROXIMITY_RADIUS &&
-          speed > MIN_SPEED
-        ) {
-          const falloff = 1 - dist / PROXIMITY_RADIUS;
-          const pushX = clamp(dx * STRENGTH * falloff, MAX_PUSH);
-          const pushY = clamp(dy * STRENGTH * falloff, MAX_PUSH);
-          gsap.killTweensOf(sticker);
-          gsap.to(sticker, {
-            x: pushX,
-            y: pushY,
-            rotation: baseRotation + pushX * 0.25,
-            duration: 0.18,
-            ease: "power3.out",
-          });
-          gsap.to(sticker, {
-            x: 0,
-            y: 0,
-            rotation: baseRotation,
-            duration: 1.1,
-            ease: "elastic.out(1, 0.35)",
-            delay: 0.18,
-          });
-        }
-      };
-      document.addEventListener("mousemove", onMove);
-      // No cleanup stored here to match original behaviour (lives for page lifetime)
-    });
 
     // ─── Wiggle on footer interactive elements ───
     const wiggleTargets = [
@@ -373,62 +287,7 @@ export default function Footer() {
           </span>
         </div>
 
-        {/* Stickers */}
-        <div className="footer-stickers">
-          <div className="footer-sticker sticker-smiley">
-            <img
-              src="/assets/Footer-Sticker SVG/footer-sticker-smiley.svg"
-              width="100%"
-              alt=""
-              data-scroll-animation-target=""
-              aria-hidden="true"
-            />
-          </div>
-          <div className="footer-sticker sticker-heart">
-            <img
-              src="/assets/Footer-Sticker SVG/footer-sticker-heart.svg"
-              width="100%"
-              alt=""
-              data-scroll-animation-target=""
-              aria-hidden="true"
-            />
-          </div>
-          <div className="footer-sticker sticker-hands">
-            <img
-              src="/assets/Footer-Sticker SVG/footer-sticker-hands.svg"
-              width="100%"
-              alt=""
-              data-scroll-animation-target=""
-              aria-hidden="true"
-            />
-          </div>
-          <div className="footer-sticker sticker-100">
-            <img
-              src="/assets/Footer-Sticker SVG/footer-sticker-100.svg"
-              width="100%"
-              alt=""
-              data-scroll-animation-target=""
-              aria-hidden="true"
-            />
-          </div>
-          <div className="footer-sticker sticker-camera">
-            <img
-              src="/assets/Footer-Sticker SVG/footer-sticker-camera.svg"
-              width="100%"
-              alt=""
-              aria-hidden="true"
-            />
-          </div>
-          <div className="footer-sticker sticker-boom">
-            <img
-              src="/assets/Footer-Sticker SVG/footer-sticker-boom.svg"
-              width="100%"
-              alt=""
-              data-scroll-animation-target=""
-              aria-hidden="true"
-            />
-          </div>
-        </div>
+
 
         {/* Bottom row: credits */}
         <div className="footer-bottom-row">
@@ -480,16 +339,47 @@ export default function Footer() {
       </div>
 
       {/* Closing tagline + quick links */}
-      <div className="footer-closing-line">
+      <div className="footer-closing-line" style={{ display: "flex", flexDirection: "column", gap: "16px", alignItems: "center" }}>
         <p className="footer-closing-tagline">Slowly made. Easy to wear. Hard to replace.</p>
+        
+        {/* Main Site Links */}
         <nav className="footer-quick-links" aria-label="Footer site links">
+          <Link href="/collection">Shop Collection</Link>
+          <Link href="/our-story">Our Story</Link>
+          <Link href="/fabric">Handloom Fabric</Link>
+          <Link href="/track-order">Track Order</Link>
+          <Link href="/faq">FAQs</Link>
+          <Link href="/blogs">Artisan Journal</Link>
           <a href="https://www.instagram.com/sumclothico/" target="_blank" rel="noopener noreferrer">Instagram</a>
-          <a href="/our-story">Our Story</a>
-          <a href="/fabric">Fabric</a>
-          <a href="/collection">Shop Collection</a>
-          <a href="https://www.facebook.com/sumclotico" target="_blank" rel="noopener noreferrer">Facebook</a>
           <a href="mailto:hello@sumclotico.com">Contact Us</a>
-          <a href="/blogs">Blogs Section</a>
+        </nav>
+
+        {/* Legal, Terms & Policies Links */}
+        <nav
+          className="footer-policy-links"
+          aria-label="Legal and policy links"
+          style={{
+            display: "flex",
+            gap: "16px",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            fontSize: "12px",
+            color: "rgba(255, 255, 255, 0.65)",
+            paddingTop: "6px",
+            borderTop: "1px solid rgba(255, 255, 255, 0.1)",
+            width: "100%",
+            maxWidth: "800px",
+          }}
+        >
+          <Link href="/policies/terms" style={{ color: "inherit", textDecoration: "none" }}>Terms & Conditions</Link>
+          <span>•</span>
+          <Link href="/policies/privacy" style={{ color: "inherit", textDecoration: "none" }}>Privacy Policy</Link>
+          <span>•</span>
+          <Link href="/policies/returns" style={{ color: "inherit", textDecoration: "none" }}>Returns & Exchange Policy</Link>
+          <span>•</span>
+          <Link href="/policies/shipping" style={{ color: "inherit", textDecoration: "none" }}>Shipping & Delivery</Link>
+          <span>•</span>
+          <Link href="/policies/cancellation" style={{ color: "inherit", textDecoration: "none" }}>Cancellation Policy</Link>
         </nav>
       </div>
     </div>

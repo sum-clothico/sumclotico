@@ -6,6 +6,7 @@ import SvgSymbols from "@/components/SvgSymbols";
 import Navbar from "@/components/Navbar";
 import ArchedHero from "@/components/ArchedHero";
 import HorizontalWords from "@/components/HorizontalWords";
+import FeaturedProductsSection from "@/components/FeaturedProductsSection";
 import StorySection from "@/components/StorySection";
 import SplitSection from "@/components/SplitSection";
 import TravelingImage from "@/components/TravelingImage";
@@ -28,6 +29,7 @@ export default function Home() {
         <Navbar />
         <ArchedHero />
       </header>
+      <FeaturedProductsSection />
       <HorizontalWords />
       <StorySection />
       <SplitSection />

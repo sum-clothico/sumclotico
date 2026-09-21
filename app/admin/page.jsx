@@ -5,10 +5,12 @@ import Link from "next/link";
 import { useStore } from "@/context/StoreContext";
 
 export default function AdminDashboardPage() {
-  const { orders = [], products = [], getAnalytics, updateOrderStatus } = useStore();
-  const analytics = getAnalytics ? getAnalytics() : { totalRevenue: 0, totalOrdersCount: 0, avgOrderValue: 0, pendingOrdersCount: 0, topSellers: [] };
-  const { totalRevenue = 0, totalOrdersCount = 0, avgOrderValue = 0, pendingOrdersCount = 0, topSellers = [] } = analytics;
+  const { orders = [], products = [], getAnalytics, updateOrderStatus, abandonedCarts = [], quickRestockProduct } = useStore();
+  const analytics = getAnalytics ? getAnalytics() : { totalRevenue: 0, totalOrdersCount: 0, avgOrderValue: 0, pendingOrdersCount: 0, lowStockCount: 0, pendingAbandonedCartsCount: 0, topSellers: [] };
+  const { totalRevenue = 0, totalOrdersCount = 0, avgOrderValue = 0, pendingOrdersCount = 0, lowStockCount = 0, pendingAbandonedCartsCount = 0, topSellers = [] } = analytics;
   const [filterStatus, setFilterStatus] = useState("ALL");
+
+  const lowStockProducts = products.filter((p) => (p.stock || 0) <= 5);
 
   const formatDate = (dateStr) => {
     if (!dateStr) return "Recent";
@@ -62,6 +64,38 @@ export default function AdminDashboardPage() {
 
   return (
     <div>
+      {/* Low-Stock Warning Banner if any items <= 5 */}
+      {lowStockProducts.length > 0 && (
+        <div
+          style={{
+            background: "linear-gradient(135deg, #450a0a 0%, #1f242d 100%)",
+            border: "1px solid #ef4444",
+            borderRadius: 10,
+            padding: "16px 20px",
+            marginBottom: 24,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            gap: 12,
+          }}
+        >
+          <div>
+            <div style={{ color: "#fca5a5", fontWeight: 800, fontSize: 14, display: "flex", alignItems: "center", gap: 8 }}>
+              <span>⚠️ LOW-STOCK AUTO ALERT: {lowStockProducts.length} {lowStockProducts.length === 1 ? "garment requires" : "garments require"} restocking</span>
+            </div>
+            <div style={{ color: "#d1d5db", fontSize: 12, marginTop: 4 }}>
+              Auto-notification email was sent to <strong>admin@sumclotico.com</strong>. Items: {lowStockProducts.map((p) => `${p.name} (${p.stock} left)`).join(", ")}.
+            </div>
+          </div>
+          <div style={{ display: "flex", gap: 8 }}>
+            <Link href="/admin/products" className="admin-btn" style={{ background: "#ef4444", color: "#fff", fontSize: 12, padding: "6px 14px" }}>
+              Replenish Inventory →
+            </Link>
+          </div>
+        </div>
+      )}
+
       {/* KPI Cards Grid */}
       <div className="admin-kpi-grid">
         <div className="admin-kpi-card">
@@ -83,11 +117,15 @@ export default function AdminDashboardPage() {
         </div>
 
         <div className="admin-kpi-card">
-          <div className="admin-kpi-label">Action Required</div>
-          <div className="admin-kpi-val" style={{ color: pendingOrdersCount > 0 ? "#fbbf24" : "#10b981" }}>
-            {pendingOrdersCount || 0}
+          <div className="admin-kpi-label">Abandoned Carts</div>
+          <div className="admin-kpi-val" style={{ color: pendingAbandonedCartsCount > 0 ? "#fbbf24" : "#34d399" }}>
+            {pendingAbandonedCartsCount || 0}
           </div>
-          <div className="admin-kpi-trend" style={{ color: "#fbbf24" }}>Pending shipments</div>
+          <div className="admin-kpi-trend">
+            <Link href="/admin/abandoned-carts" style={{ color: "#38bdf8", textDecoration: "underline" }}>
+              Recover via WhatsApp →
+            </Link>
+          </div>
         </div>
       </div>
 
@@ -111,6 +149,7 @@ export default function AdminDashboardPage() {
               <tr>
                 <th>Rank</th>
                 <th>Product</th>
+                <th>SKU</th>
                 <th>Category</th>
                 <th>Units Sold</th>
                 <th>Unit Price</th>
@@ -123,6 +162,7 @@ export default function AdminDashboardPage() {
               {topSellers.map((prod, idx) => {
                 const effectivePrice = prod.salePrice || prod.price || 0;
                 const totalRev = (prod.salesCount || 0) * effectivePrice;
+                const isLowStock = (prod.stock || 0) <= 5;
                 return (
                   <tr key={prod.id || idx}>
                     <td style={{ fontWeight: 800, color: idx === 0 ? "#f35c27" : "#e5e7eb" }}>
@@ -141,6 +181,11 @@ export default function AdminDashboardPage() {
                         </div>
                       </div>
                     </td>
+                    <td>
+                      <span style={{ fontFamily: "monospace", fontSize: 11, color: "#f35c27", fontWeight: 700 }}>
+                        {prod.sku || `SC-PRD-00${prod.id}`}
+                      </span>
+                    </td>
                     <td>{prod.category || "Tops"}</td>
                     <td style={{ fontWeight: 700, color: "#34d399" }}>{prod.salesCount || 0} units</td>
                     <td>₹{effectivePrice.toLocaleString("en-IN")}</td>
@@ -148,16 +193,16 @@ export default function AdminDashboardPage() {
                     <td>
                       <span
                         style={{
-                          color: (prod.stock || 0) < 15 ? "#ef4444" : "#e5e7eb",
-                          fontWeight: (prod.stock || 0) < 15 ? 700 : 400,
+                          color: isLowStock ? "#ef4444" : "#e5e7eb",
+                          fontWeight: isLowStock ? 800 : 400,
                         }}
                       >
                         {prod.stock || 0} left
                       </span>
                     </td>
                     <td>
-                      <span className={`admin-status-badge ${(prod.stock || 0) > 0 ? "status-delivered" : "status-processing"}`}>
-                        {(prod.stock || 0) > 0 ? "IN STOCK" : "LOW STOCK"}
+                      <span className={`admin-status-badge ${!isLowStock ? "status-delivered" : "status-processing"}`} style={isLowStock ? { background: "#fef2f2", color: "#dc2626" } : {}}>
+                        {!isLowStock ? "IN STOCK" : "⚠️ LOW STOCK"}
                       </span>
                     </td>
                   </tr>

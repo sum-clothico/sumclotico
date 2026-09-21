@@ -1,7 +1,3 @@
-/* ─────────────────────────────────────────────────────────────────────────────
-   globals.css — Entry point. Imports all partial stylesheets.
-   Edit individual files in app/styles/ for section-specific changes.
-───────────────────────────────────────────────────────────────────────────── */
 
 @import './styles/base.css';
 /* Fonts, CSS variables, reset, body/html  */

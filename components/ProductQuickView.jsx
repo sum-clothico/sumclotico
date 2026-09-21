@@ -1,11 +1,13 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import { useStore } from "@/context/StoreContext";
 import { FiShoppingBag, FiCheck, FiX, FiChevronLeft, FiChevronRight, FiShield, FiTruck, FiRefreshCw } from "react-icons/fi";
+import { trackViewItem, trackEvent } from "@/lib/analytics";
 
 export default function ProductQuickView() {
-  const { quickViewProduct, setQuickViewProduct, addToCart, setIsCartOpen } = useStore();
+  const { quickViewProduct, setQuickViewProduct, addToCart, setIsCartOpen, setIsSizeGuideOpen } = useStore();
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [selectedSize, setSelectedSize] = useState("M");
   const [selectedColor, setSelectedColor] = useState("");
@@ -16,11 +18,13 @@ export default function ProductQuickView() {
   useEffect(() => {
     if (quickViewProduct) {
       setActiveImageIndex(0);
-      setSelectedSize(quickViewProduct.sizes?.[0] || "M");
+      const initialSize = quickViewProduct.sizes?.[0] || "M";
+      setSelectedSize(initialSize);
       setSelectedColor(quickViewProduct.colors?.[0] || "");
       setQuantity(1);
       setIsAdded(false);
       setIsZoomed(false);
+      trackViewItem(quickViewProduct, initialSize);
     }
   }, [quickViewProduct]);
 
@@ -53,19 +57,20 @@ export default function ProductQuickView() {
   };
 
   const handleAdd = () => {
-    addToCart(quickViewProduct, selectedSize, selectedColor || quickViewProduct.colors?.[0] || "", quantity);
+    addToCart(quickViewProduct, selectedSize, selectedColor || quickViewProduct.colors?.[0] || "", quantity, false);
     setIsAdded(true);
     setTimeout(() => {
       setIsAdded(false);
       setQuickViewProduct(null);
-      setIsCartOpen(true);
     }, 600);
   };
 
-  const effectivePrice = quickViewProduct.salePrice || quickViewProduct.price;
+  const effectivePrice = (quickViewProduct.sizePrices && quickViewProduct.sizePrices[selectedSize])
+    ? Number(quickViewProduct.sizePrices[selectedSize])
+    : (quickViewProduct.salePrice || quickViewProduct.price);
   const hasDiscount = quickViewProduct.salePrice && quickViewProduct.salePrice < quickViewProduct.price;
   const discountPercent = hasDiscount
-    ? Math.round(((quickViewProduct.price - quickViewProduct.salePrice) / quickViewProduct.price) * 100)
+    ? Math.round(((quickViewProduct.price - (quickViewProduct.sizePrices?.[selectedSize] || quickViewProduct.salePrice)) / quickViewProduct.price) * 100)
     : 0;
 
   return (
@@ -346,30 +351,34 @@ export default function ProductQuickView() {
                 alignItems: "center",
                 justifyContent: "space-between",
                 marginBottom: 8,
+                flexWrap: "wrap",
+                gap: 6,
               }}
             >
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span
+                  style={{
+                    fontSize: 12,
+                    textTransform: "uppercase",
+                    letterSpacing: 1.5,
+                    color: "#6b7280",
+                    fontWeight: 700,
+                  }}
+                >
+                  Collection / {quickViewProduct.category || "Tops"}
+                </span>
+              </div>
               <span
                 style={{
-                  fontSize: 12,
-                  textTransform: "uppercase",
-                  letterSpacing: 1.5,
-                  color: "#6b7280",
-                  fontWeight: 700,
-                }}
-              >
-                Collection / {quickViewProduct.category || "Tops"}
-              </span>
-              <span
-                style={{
-                  background: "#dcfce7",
-                  color: "#15803d",
+                  background: (quickViewProduct.stock || 20) <= 5 ? "#fef2f2" : "#dcfce7",
+                  color: (quickViewProduct.stock || 20) <= 5 ? "#dc2626" : "#15803d",
                   fontSize: 11,
                   fontWeight: 700,
                   padding: "3px 10px",
                   borderRadius: 999,
                 }}
               >
-                In Stock ({quickViewProduct.stock || 20} units)
+                {(quickViewProduct.stock || 20) <= 5 ? `Only ${quickViewProduct.stock} Left` : `In Stock (${quickViewProduct.stock || 20} units)`}
               </span>
             </div>
 
@@ -455,11 +464,21 @@ export default function ProductQuickView() {
                 fontSize: 14,
                 color: "#4b5563",
                 lineHeight: 1.65,
-                margin: "0 0 24px",
+                margin: "0 0 16px",
               }}
             >
               {quickViewProduct.description}
             </p>
+
+            {/* Fabric & Care Note */}
+            <div style={{ background: "#f9fafb", padding: "10px 14px", borderRadius: 8, marginBottom: 20, border: "1px solid #f3f4f6" }}>
+              <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", color: "#6b7280", letterSpacing: 0.5 }}>
+                Fabric & Care
+              </div>
+              <div style={{ fontSize: 12, color: "#374151", marginTop: 2 }}>
+                {quickViewProduct.fabricCare || "100% Handspun Khadi Cotton. Machine wash gentle in cold water."}
+              </div>
+            </div>
 
             {/* Size Selector */}
             <div style={{ marginBottom: 20 }}>
@@ -482,19 +501,40 @@ export default function ProductQuickView() {
                 >
                   Select Size
                 </label>
-                <span style={{ fontSize: 12, color: "#6b7280" }}>Standard Relaxed Fit</span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsSizeGuideOpen(true);
+                    trackEvent("view_size_guide", { source: "quick_view_modal", product_id: quickViewProduct.id, product_name: quickViewProduct.name });
+                  }}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    fontSize: 12,
+                    color: "#f35c27",
+                    fontWeight: 700,
+                    cursor: "pointer",
+                    textDecoration: "underline",
+                  }}
+                >
+                  Size Chart Guide →
+                </button>
               </div>
               <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
                 {(quickViewProduct.sizes || ["XS", "S", "M", "L", "XL"]).map((size) => {
                   const isSelected = selectedSize === size;
+                  const customSizePrice = quickViewProduct.sizePrices?.[size];
                   return (
                     <button
                       key={size}
                       className={`quickview-size-pill ${isSelected ? "selected" : ""}`}
-                      onClick={() => setSelectedSize(size)}
+                      onClick={() => {
+                        setSelectedSize(size);
+                        trackEvent("select_variant", { product_id: quickViewProduct.id, variant_size: size, product_name: quickViewProduct.name });
+                      }}
                       style={{
-                        minWidth: 48,
-                        padding: "10px 16px",
+                        minWidth: 52,
+                        padding: "8px 14px",
                         fontSize: 13,
                         fontWeight: 700,
                         borderRadius: 8,
@@ -503,9 +543,18 @@ export default function ProductQuickView() {
                         color: isSelected ? "#ffffff" : "#1f2937",
                         cursor: "pointer",
                         transition: "all 0.15s ease",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        gap: 2,
                       }}
                     >
-                      {size}
+                      <span>{size}</span>
+                      {customSizePrice && (
+                        <span style={{ fontSize: 10, opacity: isSelected ? 0.9 : 0.65, fontWeight: 600 }}>
+                          ₹{customSizePrice}
+                        </span>
+                      )}
                     </button>
                   );
                 })}
@@ -535,7 +584,10 @@ export default function ProductQuickView() {
                       <button
                         key={color}
                         className={`quickview-size-pill ${isSelected ? "selected" : ""}`}
-                        onClick={() => setSelectedColor(color)}
+                        onClick={() => {
+                          setSelectedColor(color);
+                          trackEvent("select_variant_color", { product_id: quickViewProduct.id, color, product_name: quickViewProduct.name });
+                        }}
                         style={{
                           padding: "8px 16px",
                           fontSize: 13,
@@ -663,6 +715,23 @@ export default function ProductQuickView() {
                 </>
               )}
             </button>
+
+            <Link
+              href={`/product/${quickViewProduct.slug}`}
+              onClick={() => setQuickViewProduct(null)}
+              style={{
+                display: "block",
+                textAlign: "center",
+                fontSize: 13,
+                fontWeight: 700,
+                color: "#111111",
+                textDecoration: "underline",
+                marginBottom: 16,
+                cursor: "pointer",
+              }}
+            >
+              View Full Product Details &amp; Specifications →
+            </Link>
 
             {/* Assurance Badges */}
             <div
