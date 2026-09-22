@@ -4,7 +4,16 @@ import React, { useState } from "react";
 import { useStore } from "@/context/StoreContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { FiSearch, FiTruck, FiPackage, FiCheckCircle, FiClock, FiAlertCircle, FiRefreshCw, FiExternalLink } from "react-icons/fi";
+import {
+  FiSearch,
+  FiTruck,
+  FiPackage,
+  FiCheckCircle,
+  FiClock,
+  FiAlertCircle,
+  FiRefreshCw,
+  FiExternalLink,
+} from "react-icons/fi";
 import Link from "next/link";
 import { trackEvent } from "@/lib/analytics";
 
@@ -43,7 +52,7 @@ export default function TrackOrderPage() {
         o.orderNumber?.toLowerCase() === term ||
         o.orderNumber?.toLowerCase() === `sum-${term}` ||
         o.customer?.email?.toLowerCase() === term ||
-        o.trackingNumber?.toLowerCase() === term
+        o.trackingNumber?.toLowerCase() === term,
     );
 
     trackEvent("track_order_search", {
@@ -55,7 +64,9 @@ export default function TrackOrderPage() {
     if (found) {
       setActiveOrder(found);
     } else {
-      alert(`No order found matching "${searchTerm}". Please check your order reference (e.g. SUM-98214) or email.`);
+      alert(
+        `No order found matching "${searchTerm}". Please check your order reference (e.g. SUM-98214) or email.`,
+      );
     }
   };
 
@@ -77,23 +88,48 @@ export default function TrackOrderPage() {
     }, 2000);
   };
 
-  const currentStageIndex = activeOrder ? getStageIndex(activeOrder.orderStatus) : 0;
+  const currentStageIndex = activeOrder
+    ? getStageIndex(activeOrder.orderStatus)
+    : 0;
 
   return (
     <>
       <Navbar />
-      <div style={{ background: "#fbfbfc", minHeight: "100vh", padding: "140px 24px 80px", color: "#111827" }}>
+      <div
+        style={{
+          background: "#fbfbfc",
+          minHeight: "100vh",
+          padding: "140px 24px 80px",
+          color: "#111827",
+        }}
+      >
         <div style={{ maxWidth: 840, margin: "0 auto" }}>
           {/* Header */}
           <div style={{ textAlign: "center", marginBottom: 36 }}>
-            <span style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1.5, color: "#f35c27" }}>
+            <span
+              style={{
+                fontSize: 12,
+                fontWeight: 700,
+                textTransform: "uppercase",
+                letterSpacing: 1.5,
+                color: "#f35c27",
+              }}
+            >
               Live Fulfillment Center
             </span>
-            <h1 style={{ fontSize: 32, fontWeight: 800, margin: "6px 0 10px", letterSpacing: "-0.5px" }}>
+            <h1
+              style={{
+                fontSize: 32,
+                fontWeight: 800,
+                margin: "6px 0 10px",
+                letterSpacing: "-0.5px",
+              }}
+            >
               Track Your Order & Delivery
             </h1>
             <p style={{ color: "#6b7280", fontSize: 15, margin: 0 }}>
-              Enter your Order Reference (e.g. <strong>SUM-98214</strong>) or email address to view real-time shipping milestones.
+              Enter your Order Reference (e.g. <strong>SUM-98214</strong>) or
+              email address to view real-time shipping milestones.
             </p>
           </div>
 
@@ -115,7 +151,15 @@ export default function TrackOrderPage() {
               marginRight: "auto",
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", paddingLeft: 6, color: "#9ca3af", flexShrink: 0 }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                paddingLeft: 6,
+                color: "#9ca3af",
+                flexShrink: 0,
+              }}
+            >
               <FiSearch size={18} />
             </div>
             <input
@@ -178,19 +222,51 @@ export default function TrackOrderPage() {
                 }}
               >
                 <div>
-                  <div style={{ fontSize: 12, color: "#6b7280", textTransform: "uppercase", letterSpacing: 0.5 }}>
+                  <div
+                    style={{
+                      fontSize: 12,
+                      color: "#6b7280",
+                      textTransform: "uppercase",
+                      letterSpacing: 0.5,
+                    }}
+                  >
                     Order Reference
                   </div>
-                  <div style={{ fontSize: 22, fontWeight: 800, color: "#111827", marginTop: 2 }}>
+                  <div
+                    style={{
+                      fontSize: 22,
+                      fontWeight: 800,
+                      color: "#111827",
+                      marginTop: 2,
+                    }}
+                  >
                     #{activeOrder.orderNumber}
                   </div>
                 </div>
 
                 <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-                  <div style={{ background: "#ecfdf5", color: "#065f46", padding: "6px 12px", borderRadius: 999, fontSize: 12, fontWeight: 700 }}>
+                  <div
+                    style={{
+                      background: "#ecfdf5",
+                      color: "#065f46",
+                      padding: "6px 12px",
+                      borderRadius: 999,
+                      fontSize: 12,
+                      fontWeight: 700,
+                    }}
+                  >
                     Payment: {activeOrder.paymentStatus || "PAID"}
                   </div>
-                  <div style={{ background: "#fdf8f6", color: "#9a3412", padding: "6px 12px", borderRadius: 999, fontSize: 12, fontWeight: 700 }}>
+                  <div
+                    style={{
+                      background: "#fdf8f6",
+                      color: "#9a3412",
+                      padding: "6px 12px",
+                      borderRadius: 999,
+                      fontSize: 12,
+                      fontWeight: 700,
+                    }}
+                  >
                     Status: {activeOrder.orderStatus}
                   </div>
                 </div>
@@ -214,23 +290,41 @@ export default function TrackOrderPage() {
                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                   <FiTruck size={20} color="#111827" />
                   <div>
-                    <div style={{ fontSize: 14, fontWeight: 700, color: "#111827" }}>
+                    <div
+                      style={{
+                        fontSize: 14,
+                        fontWeight: 700,
+                        color: "#111827",
+                      }}
+                    >
                       Carrier: {activeOrder.carrier || "BlueDart Express"}
                     </div>
                     <div style={{ fontSize: 12, color: "#6b7280" }}>
-                      AWB / Tracking Number: <strong>{activeOrder.trackingNumber || "BD98214710IN"}</strong>
+                      AWB / Tracking Number:{" "}
+                      <strong>
+                        {activeOrder.trackingNumber || "BD98214710IN"}
+                      </strong>
                     </div>
                   </div>
                 </div>
 
-                <div style={{ fontSize: 13, color: "#059669", fontWeight: 700 }}>
-                  Estimated Delivery: {activeOrder.estimatedDelivery || "3-5 business days"}
+                <div
+                  style={{ fontSize: 13, color: "#059669", fontWeight: 700 }}
+                >
+                  Estimated Delivery:{" "}
+                  {activeOrder.estimatedDelivery || "3-5 business days"}
                 </div>
               </div>
 
               {/* ─── VISUAL STAGE TIMELINE STEPPER ─── */}
               <div style={{ marginBottom: 36 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", position: "relative" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    position: "relative",
+                  }}
+                >
                   {/* Progress Line */}
                   <div
                     style={{
@@ -284,15 +378,30 @@ export default function TrackOrderPage() {
                             fontWeight: 700,
                             fontSize: 14,
                             marginBottom: 8,
-                            boxShadow: isCurrent ? "0 0 0 4px rgba(21, 128, 61, 0.2)" : "none",
+                            boxShadow: isCurrent
+                              ? "0 0 0 4px rgba(21, 128, 61, 0.2)"
+                              : "none",
                           }}
                         >
                           {isPassed ? "✓" : idx + 1}
                         </div>
-                        <div style={{ fontSize: 13, fontWeight: isCurrent ? 800 : 600, color: isPassed ? "#111827" : "#9ca3af" }}>
+                        <div
+                          style={{
+                            fontSize: 13,
+                            fontWeight: isCurrent ? 800 : 600,
+                            color: isPassed ? "#111827" : "#9ca3af",
+                          }}
+                        >
                           {stage.label}
                         </div>
-                        <div style={{ fontSize: 11, color: "#6b7280", marginTop: 2, display: "none" }}>
+                        <div
+                          style={{
+                            fontSize: 11,
+                            color: "#6b7280",
+                            marginTop: 2,
+                            display: "none",
+                          }}
+                        >
                           {stage.desc}
                         </div>
                       </div>
@@ -302,12 +411,29 @@ export default function TrackOrderPage() {
               </div>
 
               {/* Items in Order */}
-              <div style={{ borderTop: "1px solid #f3f4f6", paddingTop: 24, marginBottom: 24 }}>
-                <h3 style={{ fontSize: 15, fontWeight: 700, textTransform: "uppercase", letterSpacing: 0.5, color: "#6b7280", marginBottom: 14 }}>
+              <div
+                style={{
+                  borderTop: "1px solid #f3f4f6",
+                  paddingTop: 24,
+                  marginBottom: 24,
+                }}
+              >
+                <h3
+                  style={{
+                    fontSize: 15,
+                    fontWeight: 700,
+                    textTransform: "uppercase",
+                    letterSpacing: 0.5,
+                    color: "#6b7280",
+                    marginBottom: 14,
+                  }}
+                >
                   Ordered Garments ({activeOrder.items?.length || 1})
                 </h3>
 
-                <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                <div
+                  style={{ display: "flex", flexDirection: "column", gap: 12 }}
+                >
                   {(activeOrder.items || []).map((item, idx) => (
                     <div
                       key={idx}
@@ -320,21 +446,41 @@ export default function TrackOrderPage() {
                         borderRadius: 8,
                       }}
                     >
-                      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 12,
+                        }}
+                      >
                         <img
                           src={item.image || "/assets/img/14.png"}
                           alt={item.title || item.name}
-                          style={{ width: 44, height: 54, objectFit: "cover", borderRadius: 6 }}
+                          style={{
+                            width: 44,
+                            height: 54,
+                            objectFit: "cover",
+                            borderRadius: 6,
+                          }}
                         />
                         <div>
-                          <strong style={{ fontSize: 14, color: "#111827" }}>{item.title || item.name}</strong>
+                          <strong style={{ fontSize: 14, color: "#111827" }}>
+                            {item.title || item.name}
+                          </strong>
                           <div style={{ fontSize: 12, color: "#6b7280" }}>
-                            Size: <strong>{item.selectedSize || "M"}</strong> {item.selectedColor ? `| ${item.selectedColor}` : ""} × {item.quantity || 1}
+                            Size: <strong>{item.selectedSize || "M"}</strong>{" "}
+                            {item.selectedColor
+                              ? `| ${item.selectedColor}`
+                              : ""}{" "}
+                            × {item.quantity || 1}
                           </div>
                         </div>
                       </div>
                       <span style={{ fontWeight: 700, fontSize: 14 }}>
-                        ₹{((item.price || 0) * (item.quantity || 1)).toLocaleString("en-IN")}
+                        ₹
+                        {(
+                          (item.price || 0) * (item.quantity || 1)
+                        ).toLocaleString("en-IN")}
                       </span>
                     </div>
                   ))}
@@ -354,13 +500,24 @@ export default function TrackOrderPage() {
                 }}
               >
                 <div>
-                  <div style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase", color: "#6b7280" }}>
+                  <div
+                    style={{
+                      fontSize: 12,
+                      fontWeight: 700,
+                      textTransform: "uppercase",
+                      color: "#6b7280",
+                    }}
+                  >
                     Shipping Destination
                   </div>
                   <div style={{ fontSize: 13, color: "#374151", marginTop: 4 }}>
-                    <strong>{activeOrder.customer?.name}</strong><br />
-                    {activeOrder.shippingAddress?.street}<br />
-                    {activeOrder.shippingAddress?.city}, {activeOrder.shippingAddress?.state} - {activeOrder.shippingAddress?.pincode}
+                    <strong>{activeOrder.customer?.name}</strong>
+                    <br />
+                    {activeOrder.shippingAddress?.street}
+                    <br />
+                    {activeOrder.shippingAddress?.city},{" "}
+                    {activeOrder.shippingAddress?.state} -{" "}
+                    {activeOrder.shippingAddress?.pincode}
                   </div>
                 </div>
 
@@ -444,17 +601,34 @@ export default function TrackOrderPage() {
               Initiate Return / Exchange
             </h3>
             <p style={{ margin: "0 0 20px", fontSize: 13, color: "#6b7280" }}>
-              Orders are eligible for hassle-free returns or size exchanges within 7 days of delivery.
+              Orders are eligible for hassle-free returns or size exchanges
+              within 7 days of delivery.
             </p>
 
             {returnFeedback ? (
-              <div style={{ background: "#ecfdf5", border: "1px solid #a7f3d0", color: "#065f46", padding: 14, borderRadius: 8, fontSize: 14 }}>
+              <div
+                style={{
+                  background: "#ecfdf5",
+                  border: "1px solid #a7f3d0",
+                  color: "#065f46",
+                  padding: 14,
+                  borderRadius: 8,
+                  fontSize: 14,
+                }}
+              >
                 {returnFeedback}
               </div>
             ) : (
               <form onSubmit={handleReturnSubmit}>
                 <div style={{ marginBottom: 16 }}>
-                  <label style={{ display: "block", fontSize: 13, fontWeight: 700, marginBottom: 6 }}>
+                  <label
+                    style={{
+                      display: "block",
+                      fontSize: 13,
+                      fontWeight: 700,
+                      marginBottom: 6,
+                    }}
+                  >
                     Reason for Return / Exchange
                   </label>
                   <select
@@ -469,10 +643,18 @@ export default function TrackOrderPage() {
                       outline: "none",
                     }}
                   >
-                    <option value="Size fit issue - Need smaller size">Size fit issue - Need smaller size</option>
-                    <option value="Size fit issue - Need larger size">Size fit issue - Need larger size</option>
-                    <option value="Fabric texture not as expected">Fabric texture not as expected</option>
-                    <option value="Defective / damaged item received">Defective / damaged item received</option>
+                    <option value="Size fit issue - Need smaller size">
+                      Size fit issue - Need smaller size
+                    </option>
+                    <option value="Size fit issue - Need larger size">
+                      Size fit issue - Need larger size
+                    </option>
+                    <option value="Fabric texture not as expected">
+                      Fabric texture not as expected
+                    </option>
+                    <option value="Defective / damaged item received">
+                      Defective / damaged item received
+                    </option>
                     <option value="Other">Other reasons</option>
                   </select>
                 </div>

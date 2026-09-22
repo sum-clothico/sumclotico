@@ -6,13 +6,47 @@ import { useStore } from "@/context/StoreContext";
 export default function AdminCustomersPage() {
   const { orders = [] } = useStore();
   const [search, setSearch] = useState("");
+  const [dbUsers, setDbUsers] = useState([]);
 
-  // Aggregate unique customers from orders
+  // Fetch registered users directly from MongoDB
+  React.useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const res = await fetch("http://127.0.0.1:5000/api/auth/users");
+        const data = await res.json();
+        if (data.success && Array.isArray(data.users)) {
+          setDbUsers(data.users);
+        }
+      } catch (err) {
+        console.warn("[AdminCustomers] Could not fetch DB users:", err);
+      }
+    };
+    fetchUsers();
+  }, []);
+
+  // Aggregate unique customers from registered DB users + orders
   const customerMap = {};
 
+  // 1. Seed with registered MongoDB users
+  dbUsers.forEach((u) => {
+    if (!u || !u.email) return;
+    const email = u.email.toLowerCase().trim();
+    customerMap[email] = {
+      name: u.name || "Customer",
+      email: u.email,
+      phone: u.phone || "N/A",
+      city: u.addresses?.[0]?.city || "N/A",
+      totalOrders: u.orderCount || 0,
+      lifetimeSpend: u.totalSpent || 0,
+      lastOrder: u.lastOrderDate || u.createdAt || new Date().toISOString(),
+      authProvider: u.authProvider || "clerk",
+    };
+  });
+
+  // 2. Merge order history
   (orders || []).forEach((o) => {
     if (!o) return;
-    const email = o.customer?.email || `cust-${o.id || Math.random().toString(36).slice(2)}`;
+    const email = (o.customer?.email || `cust-${o.id || Math.random().toString(36).slice(2)}`).toLowerCase().trim();
     if (!customerMap[email]) {
       customerMap[email] = {
         name: o.customer?.name || "Anonymous Customer",
@@ -22,10 +56,20 @@ export default function AdminCustomersPage() {
         totalOrders: 0,
         lifetimeSpend: 0,
         lastOrder: o.createdAt || new Date().toISOString(),
+        authProvider: "guest",
       };
     }
     customerMap[email].totalOrders += 1;
     customerMap[email].lifetimeSpend += Number(o.totalAmount) || 0;
+    if (o.customer?.name && customerMap[email].name === "Customer") {
+      customerMap[email].name = o.customer.name;
+    }
+    if (o.customer?.phone && customerMap[email].phone === "N/A") {
+      customerMap[email].phone = o.customer.phone;
+    }
+    if (o.shippingAddress?.city && customerMap[email].city === "N/A") {
+      customerMap[email].city = o.shippingAddress.city;
+    }
     if (o.createdAt && new Date(o.createdAt) > new Date(customerMap[email].lastOrder)) {
       customerMap[email].lastOrder = o.createdAt;
     }

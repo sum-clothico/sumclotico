@@ -10,6 +10,7 @@ import SizeGuideModal from "@/components/SizeGuideModal";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
 import WelcomePromoModal from "@/components/WelcomePromoModal";
 import CampaignTracker from "@/components/CampaignTracker";
+import UserSyncManager from "@/components/UserSyncManager";
 
 export const metadata = {
   metadataBase: new URL("https://sumclotico.com"),
@@ -80,6 +81,7 @@ export default function RootLayout({ children }) {
             <WhatsAppWidget />
             <WelcomePromoModal />
             <CampaignTracker />
+            <UserSyncManager />
           </StoreProvider>
         </body>
       </html>

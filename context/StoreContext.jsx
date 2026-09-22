@@ -1,6 +1,12 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
 import { AVAILABLE_COUPONS, validateAndApplyCoupon } from "@/lib/coupons";
 import { trackEvent } from "@/lib/analytics";
 
@@ -32,15 +38,16 @@ const SEED_PRODUCTS_FALLBACK = [
     slug: "sejus-top",
     subtitle: "The Throw-On Glow",
     hook: "Bright. Easy. Always works.",
-    description: "For days when you're running late but still want to look like you tried—this is the one. Lightweight, breathable, and instantly cheerful, it adds just the right pop without any effort.",
+    description:
+      "For days when you're running late but still want to look like you tried—this is the one. Lightweight, breathable, and instantly cheerful, it adds just the right pop without any effort.",
     price: 1899,
     salePrice: 1499,
     sizePrices: {
-      "XS": 1399,
-      "S": 1449,
-      "M": 1499,
-      "L": 1599,
-      "XL": 1699,
+      XS: 1399,
+      S: 1449,
+      M: 1499,
+      L: 1599,
+      XL: 1699,
     },
     category: "Tops",
     productType: "Top",
@@ -62,15 +69,16 @@ const SEED_PRODUCTS_FALLBACK = [
     neckType: "Round Neck",
     hasPockets: false,
     hasLining: false,
-    fabricCare: "100% Handspun Khadi Cotton. Machine wash gentle in cold water with mild detergent. Line dry in shade.",
+    fabricCare:
+      "100% Handspun Khadi Cotton. Machine wash gentle in cold water with mild detergent. Line dry in shade.",
     modelMeasurements: "Model is 5'6\", wearing size M",
     weight: 180,
     returnEligible: true,
     variants: [
       { size: "XS", color: "Sunny Orange", sku: "SC-SEJ-ORG-XS", stock: 6 },
-      { size: "S",  color: "Sunny Orange", sku: "SC-SEJ-ORG-S",  stock: 5 },
-      { size: "M",  color: "Sunny Orange", sku: "SC-SEJ-ORG-M",  stock: 7 },
-      { size: "L",  color: "Sunny Orange", sku: "SC-SEJ-ORG-L",  stock: 4 },
+      { size: "S", color: "Sunny Orange", sku: "SC-SEJ-ORG-S", stock: 5 },
+      { size: "M", color: "Sunny Orange", sku: "SC-SEJ-ORG-M", stock: 7 },
+      { size: "L", color: "Sunny Orange", sku: "SC-SEJ-ORG-L", stock: 4 },
       { size: "XL", color: "Sunny Orange", sku: "SC-SEJ-ORG-XL", stock: 2 },
     ],
     createdAt: new Date("2026-01-15").toISOString(),
@@ -81,13 +89,14 @@ const SEED_PRODUCTS_FALLBACK = [
     slug: "saumyas-top",
     subtitle: "The No-Extra Essential",
     hook: "Nothing extra. Everything right.",
-    description: "Clean, modern, and endlessly versatile—this is your everyday uniform upgrade. It works across plans, moods, and outfits without ever trying too hard.",
+    description:
+      "Clean, modern, and endlessly versatile—this is your everyday uniform upgrade. It works across plans, moods, and outfits without ever trying too hard.",
     price: 2199,
     salePrice: 1799,
     sizePrices: {
-      "S": 1749,
-      "M": 1799,
-      "L": 1899,
+      S: 1749,
+      M: 1799,
+      L: 1899,
     },
     category: "Tops",
     productType: "Top",
@@ -109,7 +118,8 @@ const SEED_PRODUCTS_FALLBACK = [
     neckType: "Boat Neck",
     hasPockets: false,
     hasLining: false,
-    fabricCare: "100% Khadi Cotton with natural plant-based indigo dye. Dry clean or hand wash cold separately.",
+    fabricCare:
+      "100% Khadi Cotton with natural plant-based indigo dye. Dry clean or hand wash cold separately.",
     modelMeasurements: "Model is 5'7\", wearing size M",
     weight: 200,
     returnEligible: true,
@@ -126,14 +136,15 @@ const SEED_PRODUCTS_FALLBACK = [
     slug: "orange-pop-top",
     subtitle: "The Effortless Pop",
     hook: "Bold mood. Zero effort.",
-    description: "Not too loud, never dull—this top brings just the right amount of color to brighten your day (and your outfit). It's your easy way to stand out without going overboard.",
+    description:
+      "Not too loud, never dull—this top brings just the right amount of color to brighten your day (and your outfit). It's your easy way to stand out without going overboard.",
     price: 1999,
     salePrice: 1599,
     sizePrices: {
-      "XS": 1499,
-      "S": 1549,
-      "M": 1599,
-      "L": 1699,
+      XS: 1499,
+      S: 1549,
+      M: 1599,
+      L: 1699,
     },
     category: "Tops",
     productType: "Top",
@@ -155,15 +166,16 @@ const SEED_PRODUCTS_FALLBACK = [
     neckType: "Round Neck",
     hasPockets: false,
     hasLining: false,
-    fabricCare: "Pure organic handspun cotton. Gentle cycle wash with similar colors.",
+    fabricCare:
+      "Pure organic handspun cotton. Gentle cycle wash with similar colors.",
     modelMeasurements: "Model is 5'6\", wearing size S",
     weight: 160,
     returnEligible: true,
     variants: [
       { size: "XS", color: "Vibrant Orange", sku: "SC-OPT-ORG-XS", stock: 8 },
-      { size: "S",  color: "Vibrant Orange", sku: "SC-OPT-ORG-S",  stock: 9 },
-      { size: "M",  color: "Vibrant Orange", sku: "SC-OPT-ORG-M",  stock: 8 },
-      { size: "L",  color: "Vibrant Orange", sku: "SC-OPT-ORG-L",  stock: 5 },
+      { size: "S", color: "Vibrant Orange", sku: "SC-OPT-ORG-S", stock: 9 },
+      { size: "M", color: "Vibrant Orange", sku: "SC-OPT-ORG-M", stock: 8 },
+      { size: "L", color: "Vibrant Orange", sku: "SC-OPT-ORG-L", stock: 5 },
     ],
     createdAt: new Date("2026-02-10").toISOString(),
   },
@@ -173,14 +185,15 @@ const SEED_PRODUCTS_FALLBACK = [
     slug: "meeras-dress",
     subtitle: "The Everyday Ease Dress",
     hook: "Simple. Breathable. Built for real days.",
-    description: "Designed for women who don't have time to overthink outfits, this easy-fit dress is all about comfort, function, and quiet style. Clean lines, soft fabric, and deep functional pockets.",
+    description:
+      "Designed for women who don't have time to overthink outfits, this easy-fit dress is all about comfort, function, and quiet style. Clean lines, soft fabric, and deep functional pockets.",
     price: 3499,
     salePrice: 2899,
     sizePrices: {
-      "S": 2799,
-      "M": 2899,
-      "L": 2999,
-      "XL": 3199,
+      S: 2799,
+      M: 2899,
+      L: 2999,
+      XL: 3199,
     },
     category: "Dresses",
     productType: "Dress",
@@ -202,14 +215,15 @@ const SEED_PRODUCTS_FALLBACK = [
     neckType: "V-Neck",
     hasPockets: true,
     hasLining: false,
-    fabricCare: "Double-woven Khadi Linen blend. Steam iron on reverse. Hand wash recommended.",
+    fabricCare:
+      "Double-woven Khadi Linen blend. Steam iron on reverse. Hand wash recommended.",
     modelMeasurements: "Model is 5'8\", wearing size M",
     weight: 320,
     returnEligible: true,
     variants: [
-      { size: "S",  color: "Forest Sage", sku: "SC-MEE-SGE-S",  stock: 3 },
-      { size: "M",  color: "Forest Sage", sku: "SC-MEE-SGE-M",  stock: 4 },
-      { size: "L",  color: "Forest Sage", sku: "SC-MEE-SGE-L",  stock: 3 },
+      { size: "S", color: "Forest Sage", sku: "SC-MEE-SGE-S", stock: 3 },
+      { size: "M", color: "Forest Sage", sku: "SC-MEE-SGE-M", stock: 4 },
+      { size: "L", color: "Forest Sage", sku: "SC-MEE-SGE-L", stock: 3 },
       { size: "XL", color: "Forest Sage", sku: "SC-MEE-SGE-XL", stock: 2 },
     ],
     createdAt: new Date("2026-01-20").toISOString(),
@@ -220,7 +234,15 @@ const SEED_PRODUCTS_FALLBACK = [
 const EMPTY_ORDERS = [];
 const EMPTY_ABANDONED_CARTS = [];
 
-const INITIAL_CATEGORIES = ["Tops", "Dresses", "Fabrics", "Accessories", "Co-ords", "Kurtas", "Stoles"];
+const INITIAL_CATEGORIES = [
+  "Tops",
+  "Dresses",
+  "Fabrics",
+  "Accessories",
+  "Co-ords",
+  "Kurtas",
+  "Stoles",
+];
 
 const INITIAL_POLICIES = {
   terms: {
@@ -232,17 +254,20 @@ const INITIAL_POLICIES = {
       {
         id: "sec-1",
         title: "1. Acceptance of Terms",
-        content: "By accessing and purchasing from sumclotico.com, you agree to be bound by these terms, our shipping policy, and return policies.",
+        content:
+          "By accessing and purchasing from sumclotico.com, you agree to be bound by these terms, our shipping policy, and return policies.",
       },
       {
         id: "sec-2",
         title: "2. Artisanal Handloom Nuances",
-        content: "Because our fabrics are spun by hand on traditional wooden looms and dyed with natural plant-based pigments, subtle variations in texture, yarn slubs, and color depth are natural hallmarks of authentic Indian khadi, not defects.",
+        content:
+          "Because our fabrics are spun by hand on traditional wooden looms and dyed with natural plant-based pigments, subtle variations in texture, yarn slubs, and color depth are natural hallmarks of authentic Indian khadi, not defects.",
       },
       {
         id: "sec-3",
         title: "3. Pricing & Currency",
-        content: "All prices displayed on the store are inclusive of applicable GST taxes and denominated in Indian Rupees (INR ₹).",
+        content:
+          "All prices displayed on the store are inclusive of applicable GST taxes and denominated in Indian Rupees (INR ₹).",
       },
     ],
   },
@@ -255,17 +280,20 @@ const INITIAL_POLICIES = {
       {
         id: "sec-1",
         title: "1. Information We Collect",
-        content: "We collect information you provide directly to us when creating a customer account via Clerk, making a purchase, applying promo coupons, or contacting our support team (such as your name, email address, phone number, and shipping destination).",
+        content:
+          "We collect information you provide directly to us when creating a customer account via Clerk, making a purchase, applying promo coupons, or contacting our support team (such as your name, email address, phone number, and shipping destination).",
       },
       {
         id: "sec-2",
         title: "2. Payment Security",
-        content: "All electronic transactions are processed through Cashfree Payments, a PCI-DSS certified gateway. Sum Clothico does not store or process your credit card numbers, CVV codes, or net banking passwords on our servers.",
+        content:
+          "All electronic transactions are processed through Cashfree Payments, a PCI-DSS certified gateway. Sum Clothico does not store or process your credit card numbers, CVV codes, or net banking passwords on our servers.",
       },
       {
         id: "sec-3",
         title: "3. How We Use Your Data",
-        content: "• To fulfill and ship your orders and send automated tracking notices.\n• To provide personalized customer service and sizing guidance.\n• We strictly never sell, rent, or trade your personal information to third parties.",
+        content:
+          "• To fulfill and ship your orders and send automated tracking notices.\n• To provide personalized customer service and sizing guidance.\n• We strictly never sell, rent, or trade your personal information to third parties.",
       },
     ],
   },
@@ -278,22 +306,26 @@ const INITIAL_POLICIES = {
       {
         id: "sec-1",
         title: "1. 7-Day Hassle-Free Returns & Exchanges",
-        content: "We want you to love the feel and drape of our handspun khadi. If your garment doesn't fit comfortably or meet expectations, you may request a free size exchange or return within 7 calendar days from the date of package delivery.",
+        content:
+          "We want you to love the feel and drape of our handspun khadi. If your garment doesn't fit comfortably or meet expectations, you may request a free size exchange or return within 7 calendar days from the date of package delivery.",
       },
       {
         id: "sec-2",
         title: "2. Eligibility Criteria",
-        content: "To qualify for a return or exchange:\n• The garment must be in its original, unworn, unwashed, and undamaged condition.\n• All original brand tags, labels, and craft packaging must be intact.\n• Custom tailored or bespoke length pieces are non-returnable unless defective.",
+        content:
+          "To qualify for a return or exchange:\n• The garment must be in its original, unworn, unwashed, and undamaged condition.\n• All original brand tags, labels, and craft packaging must be intact.\n• Custom tailored or bespoke length pieces are non-returnable unless defective.",
       },
       {
         id: "sec-3",
         title: "3. How to Initiate a Return",
-        content: "1. Visit our Order Tracking Page.\n2. Search for your Order Reference (e.g. SUM-98214).\n3. Click 'Return / Exchange' and select your reason.\n4. Our courier partner will pick up the package within 48 hours.",
+        content:
+          "1. Visit our Order Tracking Page.\n2. Search for your Order Reference (e.g. SUM-98214).\n3. Click 'Return / Exchange' and select your reason.\n4. Our courier partner will pick up the package within 48 hours.",
       },
       {
         id: "sec-4",
         title: "4. Refund Processing",
-        content: "Once your returned item passes quality inspection at our Kolkata studio, refunds are credited back to the original payment source (UPI / Card / NetBanking) within 5 to 7 business days.",
+        content:
+          "Once your returned item passes quality inspection at our Kolkata studio, refunds are credited back to the original payment source (UPI / Card / NetBanking) within 5 to 7 business days.",
       },
     ],
   },
@@ -306,22 +338,26 @@ const INITIAL_POLICIES = {
       {
         id: "sec-1",
         title: "1. Order Processing Timelines",
-        content: "All Sum Clothico pieces are handcrafted with mindful care. Orders are verified and dispatched within 24 to 48 business hours from our Kolkata studio (Monday through Saturday, excluding public holidays).",
+        content:
+          "All Sum Clothico pieces are handcrafted with mindful care. Orders are verified and dispatched within 24 to 48 business hours from our Kolkata studio (Monday through Saturday, excluding public holidays).",
       },
       {
         id: "sec-2",
         title: "2. Shipping Charges & Free Delivery Threshold",
-        content: "• Free Standard Express Shipping: Available on all orders of ₹1,999 and above across all serviceable PIN codes in India.\n• Standard Shipping Fee: A nominal flat fee of ₹99 is applied to orders below ₹1,999.",
+        content:
+          "• Free Standard Express Shipping: Available on all orders of ₹1,999 and above across all serviceable PIN codes in India.\n• Standard Shipping Fee: A nominal flat fee of ₹99 is applied to orders below ₹1,999.",
       },
       {
         id: "sec-3",
         title: "3. Estimated Delivery Windows",
-        content: "• Metro Cities (Bengaluru, Delhi NCR, Mumbai, Kolkata, Hyderabad, Chennai, Pune): 3 – 4 business days.\n• Rest of India: 4 – 6 business days.\n• Remote / North-East Regions: 5 – 7 business days.",
+        content:
+          "• Metro Cities (Bengaluru, Delhi NCR, Mumbai, Kolkata, Hyderabad, Chennai, Pune): 3 – 4 business days.\n• Rest of India: 4 – 6 business days.\n• Remote / North-East Regions: 5 – 7 business days.",
       },
       {
         id: "sec-4",
         title: "4. Carrier Partners & Live Tracking",
-        content: "We partner with premium tier-1 courier carriers including BlueDart Express, Delhivery, and DTDC. As soon as your shipment is picked up, an automated SMS/email with your Air Waybill (AWB) number is triggered, allowing real-time tracking via our Order Tracking Page.",
+        content:
+          "We partner with premium tier-1 courier carriers including BlueDart Express, Delhivery, and DTDC. As soon as your shipment is picked up, an automated SMS/email with your Air Waybill (AWB) number is triggered, allowing real-time tracking via our Order Tracking Page.",
       },
     ],
   },
@@ -334,17 +370,20 @@ const INITIAL_POLICIES = {
       {
         id: "sec-1",
         title: "1. Order Cancellation Window",
-        content: "You can cancel your order free of charge at any time prior to shipment dispatch (typically within 12-24 hours of placement). Once a package is handed over to our courier partner with an active AWB, it cannot be cancelled mid-transit and must follow our standard 7-day return procedure upon delivery.",
+        content:
+          "You can cancel your order free of charge at any time prior to shipment dispatch (typically within 12-24 hours of placement). Once a package is handed over to our courier partner with an active AWB, it cannot be cancelled mid-transit and must follow our standard 7-day return procedure upon delivery.",
       },
       {
         id: "sec-2",
         title: "2. How to Request Cancellation",
-        content: "To cancel an order before dispatch, please email hello@sumclotico.com or message our stylists on WhatsApp with your Order Reference (e.g. SUM-98214).",
+        content:
+          "To cancel an order before dispatch, please email hello@sumclotico.com or message our stylists on WhatsApp with your Order Reference (e.g. SUM-98214).",
       },
       {
         id: "sec-3",
         title: "3. Cancellation Refunds",
-        content: "For prepaid orders cancelled before dispatch, 100% of the transaction amount is instantly reversed and credited to your original payment account within 3 to 5 business days.",
+        content:
+          "For prepaid orders cancelled before dispatch, 100% of the transaction amount is instantly reversed and credited to your original payment account within 3 to 5 business days.",
       },
     ],
   },
@@ -369,7 +408,9 @@ export function StoreProvider({ children }) {
   const [couponFeedback, setCouponFeedback] = useState(null);
 
   // Marketing Campaign / Affiliate Trackable Links State
-  const [campaignLinks, setCampaignLinks] = useState(PLACEHOLDER_CAMPAIGN_LINKS);
+  const [campaignLinks, setCampaignLinks] = useState(
+    PLACEHOLDER_CAMPAIGN_LINKS,
+  );
 
   // Abandoned Carts State (start empty — real data from real user sessions)
   const [abandonedCarts, setAbandonedCarts] = useState([]);
@@ -395,7 +436,8 @@ export function StoreProvider({ children }) {
     {
       id: "notif-1",
       title: "Welcome to Sumclotico Admin Suite",
-      message: "Direct database persistence, low-stock auto-alerts, and abandoned cart recovery are active.",
+      message:
+        "Direct database persistence, low-stock auto-alerts, and abandoned cart recovery are active.",
       createdAt: new Date().toISOString(),
       isRead: false,
     },
@@ -410,19 +452,23 @@ export function StoreProvider({ children }) {
       try {
         console.log(
           "%c[Backend: Loading products from MongoDB...]",
-          "background: #7c3aed; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;"
+          "background: #7c3aed; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
         );
         const data = await apiFetch("/products");
-        if (data.success && Array.isArray(data.products) && data.products.length > 0) {
+        if (
+          data.success &&
+          Array.isArray(data.products) &&
+          data.products.length > 0
+        ) {
           setProducts(data.products);
           console.log(
             `%c[Backend: ✓ Loaded ${data.products.length} products from MongoDB]`,
-            "background: #16a34a; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;"
+            "background: #16a34a; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
           );
         } else {
           console.warn(
             "%c[Backend: DB empty — auto-seeding products...]",
-            "background: #d97706; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;"
+            "background: #d97706; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
           );
           // Auto-seed if DB is empty
           await apiFetch("/products/seed/init", { method: "POST" });
@@ -433,7 +479,7 @@ export function StoreProvider({ children }) {
         console.warn(
           "%c[Backend: ⚠ Could not load products (using localStorage fallback)]",
           "background: #d97706; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
-          err.message
+          err.message,
         );
         // Fallback: try localStorage
         try {
@@ -456,7 +502,7 @@ export function StoreProvider({ children }) {
       try {
         console.log(
           "%c[Backend: Loading orders from MongoDB...]",
-          "background: #7c3aed; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;"
+          "background: #7c3aed; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
         );
         const data = await apiFetch("/checkout/orders");
         if (data.success && Array.isArray(data.orders)) {
@@ -466,11 +512,14 @@ export function StoreProvider({ children }) {
           } catch {}
           console.log(
             `%c[Backend: ✓ Loaded ${data.orders.length} orders from MongoDB]`,
-            "background: #16a34a; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;"
+            "background: #16a34a; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
           );
         }
       } catch (err) {
-        console.warn("[Backend: ⚠ Could not load orders from MongoDB]", err.message);
+        console.warn(
+          "[Backend: ⚠ Could not load orders from MongoDB]",
+          err.message,
+        );
       }
     };
     loadOrders();
@@ -496,7 +545,7 @@ export function StoreProvider({ children }) {
       if (savedLinks) {
         const parsed = JSON.parse(savedLinks);
         const cleanLinks = (Array.isArray(parsed) ? parsed : []).filter(
-          (l) => l && !["link-1", "link-2"].includes(l.id)
+          (l) => l && !["link-1", "link-2"].includes(l.id),
         );
         setCampaignLinks(cleanLinks);
         localStorage.setItem("sum_campaign_links", JSON.stringify(cleanLinks));
@@ -516,7 +565,16 @@ export function StoreProvider({ children }) {
       if (savedOrders) {
         const parsed = JSON.parse(savedOrders);
         const cleanOrders = (Array.isArray(parsed) ? parsed : []).filter(
-          (o) => o && !["SUM-98214", "SUM-98215", "SUM-98216", "SUM-98217", "ord-101", "ord-102"].includes(o.id || o.orderNumber)
+          (o) =>
+            o &&
+            ![
+              "SUM-98214",
+              "SUM-98215",
+              "SUM-98216",
+              "SUM-98217",
+              "ord-101",
+              "ord-102",
+            ].includes(o.id || o.orderNumber),
         );
         setOrders(cleanOrders);
         localStorage.setItem("sum_orders", JSON.stringify(cleanOrders));
@@ -527,7 +585,8 @@ export function StoreProvider({ children }) {
       if (savedAbandoned) {
         const parsed = JSON.parse(savedAbandoned);
         const cleanCarts = (Array.isArray(parsed) ? parsed : []).filter(
-          (c) => c && !["cart-ab-101", "cart-ab-102", "cart-ab-103"].includes(c.id)
+          (c) =>
+            c && !["cart-ab-101", "cart-ab-102", "cart-ab-103"].includes(c.id),
         );
         setAbandonedCarts(cleanCarts);
         localStorage.setItem("sum_abandoned_carts", JSON.stringify(cleanCarts));
@@ -539,57 +598,86 @@ export function StoreProvider({ children }) {
 
   // Save Policies to localStorage
   useEffect(() => {
-    try { localStorage.setItem("sum_policies", JSON.stringify(policies)); } catch {}
+    try {
+      localStorage.setItem("sum_policies", JSON.stringify(policies));
+    } catch {}
   }, [policies]);
 
   // Save Categories to localStorage
   useEffect(() => {
-    try { localStorage.setItem("sum_categories", JSON.stringify(categories)); } catch {}
+    try {
+      localStorage.setItem("sum_categories", JSON.stringify(categories));
+    } catch {}
   }, [categories]);
 
   // Save Cart to localStorage (session state)
   useEffect(() => {
-    try { localStorage.setItem("sum_cart", JSON.stringify(cart)); } catch {}
+    try {
+      localStorage.setItem("sum_cart", JSON.stringify(cart));
+    } catch {}
   }, [cart]);
 
   // Cache products in localStorage as fallback
   useEffect(() => {
     if (products.length > 0) {
-      try { localStorage.setItem("sum_products", JSON.stringify(products)); } catch {}
+      try {
+        localStorage.setItem("sum_products", JSON.stringify(products));
+      } catch {}
     }
   }, [products]);
 
   // Save Coupons to localStorage
   useEffect(() => {
-    try { localStorage.setItem("sum_coupons", JSON.stringify(coupons)); } catch {}
+    try {
+      localStorage.setItem("sum_coupons", JSON.stringify(coupons));
+    } catch {}
   }, [coupons]);
 
   // Save Campaign Links to localStorage
   useEffect(() => {
-    try { localStorage.setItem("sum_campaign_links", JSON.stringify(campaignLinks)); } catch {}
+    try {
+      localStorage.setItem("sum_campaign_links", JSON.stringify(campaignLinks));
+    } catch {}
   }, [campaignLinks]);
 
   // Cache orders to localStorage
   useEffect(() => {
-    try { localStorage.setItem("sum_orders", JSON.stringify(orders)); } catch {}
+    try {
+      localStorage.setItem("sum_orders", JSON.stringify(orders));
+    } catch {}
   }, [orders]);
 
   // Cache abandoned carts to localStorage
   useEffect(() => {
-    try { localStorage.setItem("sum_abandoned_carts", JSON.stringify(abandonedCarts)); } catch {}
+    try {
+      localStorage.setItem(
+        "sum_abandoned_carts",
+        JSON.stringify(abandonedCarts),
+      );
+    } catch {}
   }, [abandonedCarts]);
 
   // ─── CART ACTIONS ──────────────────────────────────────────────────────────
 
-  const addToCart = (product, selectedSize = "M", selectedColor = "", quantity = 1, openCart = false) => {
-    const effectivePrice = product.sizePrices && product.sizePrices[selectedSize]
-      ? Number(product.sizePrices[selectedSize])
-      : (product.salePrice || product.price);
+  const addToCart = (
+    product,
+    selectedSize = "M",
+    selectedColor = "",
+    quantity = 1,
+    openCart = false,
+  ) => {
+    const effectivePrice =
+      product.sizePrices && product.sizePrices[selectedSize]
+        ? Number(product.sizePrices[selectedSize])
+        : product.salePrice || product.price;
     const itemImage = product.images?.[0] || "/assets/img/14.png";
 
     setCart((prev) => {
       const existingIdx = prev.findIndex(
-        (i) => i.id === product.id && i.selectedSize === selectedSize && i.selectedColor === selectedColor
+        (i) =>
+          i.id === product.id &&
+          i.selectedSize === selectedSize &&
+          i.selectedColor === selectedColor,
       );
 
       if (existingIdx > -1) {
@@ -600,7 +688,7 @@ export function StoreProvider({ children }) {
                 quantity: item.quantity + quantity,
                 price: effectivePrice,
               }
-            : item
+            : item,
         );
       }
 
@@ -617,7 +705,9 @@ export function StoreProvider({ children }) {
           quantity,
           image: itemImage,
           stock: product.stock || 20,
-          sku: product.sku || `SC-${(product.category || "PRD").toUpperCase().slice(0, 3)}-00${product.id}`,
+          sku:
+            product.sku ||
+            `SC-${(product.category || "PRD").toUpperCase().slice(0, 3)}-00${product.id}`,
         },
       ];
     });
@@ -644,7 +734,10 @@ export function StoreProvider({ children }) {
 
   const removeFromCart = (productId, selectedSize, selectedColor) => {
     const itemToRemove = cart.find(
-      (i) => i.id === productId && i.selectedSize === selectedSize && (selectedColor === undefined || i.selectedColor === selectedColor)
+      (i) =>
+        i.id === productId &&
+        i.selectedSize === selectedSize &&
+        (selectedColor === undefined || i.selectedColor === selectedColor),
     );
 
     if (itemToRemove) {
@@ -665,8 +758,13 @@ export function StoreProvider({ children }) {
 
     setCart((prev) =>
       prev.filter(
-        (i) => !(i.id === productId && i.selectedSize === selectedSize && i.selectedColor === selectedColor)
-      )
+        (i) =>
+          !(
+            i.id === productId &&
+            i.selectedSize === selectedSize &&
+            i.selectedColor === selectedColor
+          ),
+      ),
     );
   };
 
@@ -674,7 +772,11 @@ export function StoreProvider({ children }) {
     setCart((prev) => {
       return prev
         .map((i) => {
-          if (i.id === productId && i.selectedSize === selectedSize && i.selectedColor === selectedColor) {
+          if (
+            i.id === productId &&
+            i.selectedSize === selectedSize &&
+            i.selectedColor === selectedColor
+          ) {
             const nextQty = i.quantity + delta;
             return nextQty > 0 ? { ...i, quantity: nextQty } : null;
           }
@@ -699,7 +801,8 @@ export function StoreProvider({ children }) {
 
   // Free shipping threshold (INR ₹1,999)
   const shippingThreshold = 1999;
-  const isFreeShipping = cartSubtotal >= shippingThreshold || cartSubtotal === 0;
+  const isFreeShipping =
+    cartSubtotal >= shippingThreshold || cartSubtotal === 0;
   const shippingFee = isFreeShipping ? 0 : 99;
 
   // Calculate discount from coupon
@@ -707,7 +810,10 @@ export function StoreProvider({ children }) {
   if (appliedCoupon && cartSubtotal > 0) {
     if (appliedCoupon.type === "percentage") {
       discountAmount = Math.round((cartSubtotal * appliedCoupon.value) / 100);
-      if (appliedCoupon.maxDiscount && discountAmount > appliedCoupon.maxDiscount) {
+      if (
+        appliedCoupon.maxDiscount &&
+        discountAmount > appliedCoupon.maxDiscount
+      ) {
         discountAmount = appliedCoupon.maxDiscount;
       }
     } else if (appliedCoupon.type === "flat") {
@@ -715,7 +821,10 @@ export function StoreProvider({ children }) {
     }
   }
 
-  const cartGrandTotal = Math.max(0, cartSubtotal - discountAmount + shippingFee);
+  const cartGrandTotal = Math.max(
+    0,
+    cartSubtotal - discountAmount + shippingFee,
+  );
 
   // ─── COUPON ACTIONS ────────────────────────────────────────────────────────
 
@@ -727,7 +836,10 @@ export function StoreProvider({ children }) {
       try {
         localStorage.setItem("sum_coupon", JSON.stringify(result.coupon));
       } catch {}
-      trackEvent("apply_coupon", { coupon_code: result.coupon.code, discount: result.discountAmount });
+      trackEvent("apply_coupon", {
+        coupon_code: result.coupon.code,
+        discount: result.discountAmount,
+      });
     } else {
       setCouponFeedback({ type: "error", message: result.message });
     }
@@ -752,11 +864,17 @@ export function StoreProvider({ children }) {
       type: newCouponData.type || "percentage", // "percentage" | "flat"
       value: Number(newCouponData.value) || 10,
       minOrder: Number(newCouponData.minOrder) || 0,
-      maxDiscount: newCouponData.maxDiscount ? Number(newCouponData.maxDiscount) : null,
+      maxDiscount: newCouponData.maxDiscount
+        ? Number(newCouponData.maxDiscount)
+        : null,
       expiresAt: newCouponData.expiresAt || null,
       isActive: true,
       showInBanner: isBanner,
-      bannerText: newCouponData.bannerText || (newCouponData.title ? `${newCouponData.title.toUpperCase()} • CODE: ${cleanCode}` : `SPECIAL OFFER • USE CODE: ${cleanCode}`),
+      bannerText:
+        newCouponData.bannerText ||
+        (newCouponData.title
+          ? `${newCouponData.title.toUpperCase()} • CODE: ${cleanCode}`
+          : `SPECIAL OFFER • USE CODE: ${cleanCode}`),
       usageCount: 0,
       createdAt: new Date().toISOString(),
     };
@@ -773,7 +891,9 @@ export function StoreProvider({ children }) {
 
   const toggleCouponStatus = (couponCode) => {
     setCoupons((prev) =>
-      prev.map((c) => (c.code === couponCode ? { ...c, isActive: !c.isActive } : c))
+      prev.map((c) =>
+        c.code === couponCode ? { ...c, isActive: !c.isActive } : c,
+      ),
     );
   };
 
@@ -800,9 +920,23 @@ export function StoreProvider({ children }) {
 
   // ─── CAMPAIGN & REFERRAL LINKS MANAGEMENT ───────────────────────────────────
 
-  const createCampaignLink = ({ campaignName, slug, source, medium = "Direct", targetPage = "/collection" }) => {
-    const cleanSlug = slug ? slug.trim().toLowerCase().replace(/[^a-z0-9_-]+/g, "") : `camp_${Date.now()}`;
-    const baseUrl = typeof window !== "undefined" ? window.location.origin : "https://sumclotico.com";
+  const createCampaignLink = ({
+    campaignName,
+    slug,
+    source,
+    medium = "Direct",
+    targetPage = "/collection",
+  }) => {
+    const cleanSlug = slug
+      ? slug
+          .trim()
+          .toLowerCase()
+          .replace(/[^a-z0-9_-]+/g, "")
+      : `camp_${Date.now()}`;
+    const baseUrl =
+      typeof window !== "undefined"
+        ? window.location.origin
+        : "https://sumclotico.com";
     const fullUrl = `${baseUrl}${targetPage}?utm_source=${encodeURIComponent(source || "custom")}&utm_campaign=${encodeURIComponent(campaignName || "promo")}&ref=${cleanSlug}`;
 
     const newLink = {
@@ -834,8 +968,13 @@ export function StoreProvider({ children }) {
     if (!targetCart) return null;
 
     const phoneDigits = targetCart.customer.phone.replace(/[^0-9]/g, "");
-    const itemsList = targetCart.items.map((i) => `• ${i.name} (Size: ${i.selectedSize})`).join("\n");
-    const baseUrl = typeof window !== "undefined" ? window.location.origin : "https://sumclotico.com";
+    const itemsList = targetCart.items
+      .map((i) => `• ${i.name} (Size: ${i.selectedSize})`)
+      .join("\n");
+    const baseUrl =
+      typeof window !== "undefined"
+        ? window.location.origin
+        : "https://sumclotico.com";
     const checkoutLink = `${baseUrl}/collection?utm_source=whatsapp_recovery&cart_recover=${cartId}&coupon=COMEBACK10`;
 
     const message = `Namaste ${targetCart.customer.name},\n\nWe noticed you left some handcrafted Khadi pieces in your Sum Clothico bag:\n\n${itemsList}\n\nTotal: ₹${targetCart.subtotal.toLocaleString("en-IN")}\n\nTo help you complete your order, use exclusive promo code *COMEBACK10* for an extra 10% discount:\n${checkoutLink}\n\nIf you need sizing assistance, simply reply here!`;
@@ -851,8 +990,8 @@ export function StoreProvider({ children }) {
               status: "REMINDER_SENT",
               whatsappReminderSentAt: new Date().toISOString(),
             }
-          : c
-      )
+          : c,
+      ),
     );
 
     // Push system log
@@ -876,7 +1015,10 @@ export function StoreProvider({ children }) {
 
     // Send transactional email via API route
     try {
-      const baseUrl = typeof window !== "undefined" ? window.location.origin : "https://sumclotico.com";
+      const baseUrl =
+        typeof window !== "undefined"
+          ? window.location.origin
+          : "https://sumclotico.com";
       const recoveryUrl = `${baseUrl}/collection?utm_source=email_recovery&cart_recover=${cartId}&coupon=COMEBACK10`;
 
       fetch("/api/send-email", {
@@ -901,8 +1043,8 @@ export function StoreProvider({ children }) {
               status: "REMINDER_SENT",
               emailReminderSentAt: new Date().toISOString(),
             }
-          : c
-      )
+          : c,
+      ),
     );
 
     setAdminNotifications((prev) => [
@@ -921,7 +1063,11 @@ export function StoreProvider({ children }) {
 
   const markCartRecovered = (cartId) => {
     setAbandonedCarts((prev) =>
-      prev.map((c) => (c.id === cartId ? { ...c, status: "RECOVERED", recoveredAt: new Date().toISOString() } : c))
+      prev.map((c) =>
+        c.id === cartId
+          ? { ...c, status: "RECOVERED", recoveredAt: new Date().toISOString() }
+          : c,
+      ),
     );
   };
 
@@ -969,7 +1115,11 @@ export function StoreProvider({ children }) {
       console.log(
         "%c[Backend Sync: createOrder → MongoDB]",
         "background: #7c3aed; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
-        { orderNumber: order.orderNumber, totalAmount: order.totalAmount, itemCount: cartItems.length }
+        {
+          orderNumber: order.orderNumber,
+          totalAmount: order.totalAmount,
+          itemCount: cartItems.length,
+        },
       );
 
       const data = await apiFetch("/checkout/direct", {
@@ -981,22 +1131,25 @@ export function StoreProvider({ children }) {
         console.log(
           "%c[Backend Sync: ✓ Order persisted to MongoDB]",
           "background: #16a34a; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
-          { mongoOrderId: data.data.orderId, orderNumber: data.data.orderNumber }
+          {
+            mongoOrderId: data.data.orderId,
+            orderNumber: data.data.orderNumber,
+          },
         );
         // Link genuine MongoDB ObjectId to local order state
         setOrders((prev) =>
           prev.map((o) =>
             o.orderNumber === order.orderNumber
               ? { ...o, id: data.data.orderId, _mongoId: data.data.orderId }
-              : o
-          )
+              : o,
+          ),
         );
       }
     } catch (err) {
       console.warn(
         "%c[Backend Sync: ⚠ MongoDB persist failed (local state preserved)]",
         "background: #d97706; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
-        err.message
+        err.message,
       );
     }
   };
@@ -1015,8 +1168,8 @@ export function StoreProvider({ children }) {
       (paymentGateway === "Razorpay"
         ? `pay_${Math.random().toString(36).substring(2, 14)}`
         : paymentGateway === "Cashfree"
-        ? `cf_pay_${Math.floor(10000000 + Math.random() * 90000000)}`
-        : `cod_${Math.floor(100000 + Math.random() * 900000)}`);
+          ? `cf_pay_${Math.floor(10000000 + Math.random() * 90000000)}`
+          : `cod_${Math.floor(100000 + Math.random() * 900000)}`);
 
     const newOrder = {
       id: `ord-${Date.now()}`,
@@ -1046,7 +1199,10 @@ export function StoreProvider({ children }) {
       prev.map((p) => {
         const matchingCartItems = cart.filter((item) => item.id === p.id);
         if (matchingCartItems.length > 0) {
-          const totalBought = matchingCartItems.reduce((acc, c) => acc + c.quantity, 0);
+          const totalBought = matchingCartItems.reduce(
+            (acc, c) => acc + c.quantity,
+            0,
+          );
           const remainingStock = Math.max(0, (p.stock || 20) - totalBought);
           if (remainingStock <= 5) {
             lowStockAlerts.push({ ...p, remainingStock });
@@ -1058,7 +1214,7 @@ export function StoreProvider({ children }) {
           };
         }
         return p;
-      })
+      }),
     );
 
     setOrders((prev) => [newOrder, ...prev]);
@@ -1152,7 +1308,7 @@ export function StoreProvider({ children }) {
           return { ...p, stock: updatedStock };
         }
         return p;
-      })
+      }),
     );
 
     setAdminNotifications((prev) => [
@@ -1175,7 +1331,7 @@ export function StoreProvider({ children }) {
         });
         console.log(
           `%c[Backend: ✓ Stock updated to ${updatedStock} for ${updatedName}]`,
-          "background: #16a34a; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;"
+          "background: #16a34a; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
         );
       } catch (err) {
         console.warn("[Backend: ⚠ Stock sync failed]", err.message);
@@ -1191,10 +1347,13 @@ export function StoreProvider({ children }) {
               ...o,
               ...(newStatus ? { orderStatus: newStatus } : {}),
               carrier: carrierInfo.carrier || o.carrier || "BlueDart Express",
-              trackingNumber: carrierInfo.trackingNumber || o.trackingNumber || `TRK${Date.now().toString().slice(-8)}`,
+              trackingNumber:
+                carrierInfo.trackingNumber ||
+                o.trackingNumber ||
+                `TRK${Date.now().toString().slice(-8)}`,
             }
-          : o
-      )
+          : o,
+      ),
     );
 
     try {
@@ -1206,15 +1365,25 @@ export function StoreProvider({ children }) {
           trackingNumber: carrierInfo.trackingNumber,
         }),
       });
-      console.log(`%c[Backend: ✓ Order status updated in MongoDB for ${orderId}]`, "background: #16a34a; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;");
+      console.log(
+        `%c[Backend: ✓ Order status updated in MongoDB for ${orderId}]`,
+        "background: #16a34a; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
+      );
     } catch (err) {
-      console.warn("[Backend: ⚠ Could not update order status in DB]", err.message);
+      console.warn(
+        "[Backend: ⚠ Could not update order status in DB]",
+        err.message,
+      );
     }
   };
 
   const updatePaymentStatus = async (orderId, newPaymentStatus) => {
     setOrders((prev) =>
-      prev.map((o) => (o.id === orderId || o.orderNumber === orderId ? { ...o, paymentStatus: newPaymentStatus } : o))
+      prev.map((o) =>
+        o.id === orderId || o.orderNumber === orderId
+          ? { ...o, paymentStatus: newPaymentStatus }
+          : o,
+      ),
     );
 
     try {
@@ -1222,9 +1391,15 @@ export function StoreProvider({ children }) {
         method: "PUT",
         body: JSON.stringify({ paymentStatus: newPaymentStatus }),
       });
-      console.log(`%c[Backend: ✓ Payment status updated in MongoDB for ${orderId}]`, "background: #16a34a; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;");
+      console.log(
+        `%c[Backend: ✓ Payment status updated in MongoDB for ${orderId}]`,
+        "background: #16a34a; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
+      );
     } catch (err) {
-      console.warn("[Backend: ⚠ Could not update payment status in DB]", err.message);
+      console.warn(
+        "[Backend: ⚠ Could not update payment status in DB]",
+        err.message,
+      );
     }
   };
 
@@ -1240,16 +1415,22 @@ export function StoreProvider({ children }) {
           };
         }
         return o;
-      })
+      }),
     );
 
     try {
       await apiFetch(`/checkout/orders/${orderNumber}/status`, {
         method: "PUT",
-        body: JSON.stringify({ returnStatus: "REQUESTED", returnReason: reason }),
+        body: JSON.stringify({
+          returnStatus: "REQUESTED",
+          returnReason: reason,
+        }),
       });
     } catch (err) {
-      console.warn("[Backend: ⚠ Could not update return status in DB]", err.message);
+      console.warn(
+        "[Backend: ⚠ Could not update return status in DB]",
+        err.message,
+      );
     }
 
     setAdminNotifications((prev) => [
@@ -1263,14 +1444,21 @@ export function StoreProvider({ children }) {
       ...prev,
     ]);
 
-    return { success: true, message: `Return request submitted for #${orderNumber}. Our team will contact you within 24 hours.` };
+    return {
+      success: true,
+      message: `Return request submitted for #${orderNumber}. Our team will contact you within 24 hours.`,
+    };
   };
 
   // ─── ADMIN PRODUCT MANAGEMENT (Backend-integrated) ─────────────────────────
 
   const addProduct = async (prodData) => {
-    const slug = (prodData.slug || prodData.name).toLowerCase().replace(/[^a-z0-9]+/g, "-");
-    const sku = prodData.sku || `SC-${(prodData.category || "PRD").slice(0, 3).toUpperCase()}-${Math.floor(100 + Math.random() * 900)}`;
+    const slug = (prodData.slug || prodData.name)
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-");
+    const sku =
+      prodData.sku ||
+      `SC-${(prodData.category || "PRD").slice(0, 3).toUpperCase()}-${Math.floor(100 + Math.random() * 900)}`;
     const tempId = `prod-${Date.now()}`;
 
     // Optimistic update
@@ -1286,14 +1474,17 @@ export function StoreProvider({ children }) {
       lowStockThreshold: Number(prodData.lowStockThreshold) || 5,
       variants: prodData.variants || [],
       videoUrl: prodData.videoUrl || "",
-      fabricComposition: prodData.fabricComposition || "100% Handspun Khadi Cotton",
+      fabricComposition:
+        prodData.fabricComposition || "100% Handspun Khadi Cotton",
       fit: prodData.fit || "Regular",
       length: prodData.length || "Regular",
       sleeveType: prodData.sleeveType || "Half Sleeve",
       neckType: prodData.neckType || "Round Neck",
       hasPockets: Boolean(prodData.hasPockets),
       hasLining: Boolean(prodData.hasLining),
-      fabricCare: prodData.fabricCare || "100% Handspun Khadi Cotton. Machine wash gentle in cold water.",
+      fabricCare:
+        prodData.fabricCare ||
+        "100% Handspun Khadi Cotton. Machine wash gentle in cold water.",
       modelMeasurements: prodData.modelMeasurements || "",
       weight: Number(prodData.weight) || 0,
       returnEligible: prodData.returnEligible !== false,
@@ -1321,8 +1512,13 @@ export function StoreProvider({ children }) {
         productType: prodData.productType || "",
         collection: prodData.collection || "",
         status: prodData.status || "Active",
-        attributes: { sizes: prodData.sizes || [], colors: prodData.colors || [] },
-        images: (prodData.images || []).map((url) => (typeof url === "string" ? { url } : url)),
+        attributes: {
+          sizes: prodData.sizes || [],
+          colors: prodData.colors || [],
+        },
+        images: (prodData.images || []).map((url) =>
+          typeof url === "string" ? { url } : url,
+        ),
         videoUrl: prodData.videoUrl || "",
         isFeatured: prodData.isFeatured || false,
         fabricComposition: prodData.fabricComposition || "",
@@ -1332,7 +1528,9 @@ export function StoreProvider({ children }) {
         neckType: prodData.neckType || "",
         hasPockets: Boolean(prodData.hasPockets),
         hasLining: Boolean(prodData.hasLining),
-        fabricCare: prodData.fabricCare || "100% Handspun Khadi Cotton. Machine wash gentle in cold water.",
+        fabricCare:
+          prodData.fabricCare ||
+          "100% Handspun Khadi Cotton. Machine wash gentle in cold water.",
         modelMeasurements: prodData.modelMeasurements || "",
         weight: Number(prodData.weight) || 0,
         returnEligible: prodData.returnEligible !== false,
@@ -1343,10 +1541,13 @@ export function StoreProvider({ children }) {
       console.log(
         "%c[Backend: Creating product in MongoDB...]",
         "background: #7c3aed; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
-        payload.title
+        payload.title,
       );
 
-      const data = await apiFetch("/products", { method: "POST", body: JSON.stringify(payload) });
+      const data = await apiFetch("/products", {
+        method: "POST",
+        body: JSON.stringify(payload),
+      });
       if (data.success && data.product) {
         // Replace optimistic entry with real MongoDB document
         const realProduct = {
@@ -1374,7 +1575,8 @@ export function StoreProvider({ children }) {
           videoUrl: data.product.videoUrl || "",
           salesCount: 0,
           isFeatured: data.product.isFeatured,
-          fabricComposition: data.product.fabricComposition || prodData.fabricComposition || "",
+          fabricComposition:
+            data.product.fabricComposition || prodData.fabricComposition || "",
           fit: data.product.fit || prodData.fit || "",
           length: data.product.length || prodData.length || "",
           sleeveType: data.product.sleeveType || prodData.sleeveType || "",
@@ -1382,18 +1584,22 @@ export function StoreProvider({ children }) {
           hasPockets: data.product.hasPockets ?? prodData.hasPockets ?? false,
           hasLining: data.product.hasLining ?? prodData.hasLining ?? false,
           fabricCare: data.product.fabricCare || prodData.fabricCare,
-          modelMeasurements: data.product.modelMeasurements || prodData.modelMeasurements || "",
+          modelMeasurements:
+            data.product.modelMeasurements || prodData.modelMeasurements || "",
           weight: data.product.weight ?? prodData.weight ?? 0,
-          returnEligible: data.product.returnEligible ?? prodData.returnEligible ?? true,
+          returnEligible:
+            data.product.returnEligible ?? prodData.returnEligible ?? true,
           variants: data.product.variants || prodData.variants || [],
           isPublished: data.product.isPublished,
           createdAt: data.product.createdAt,
         };
-        setProducts((prev) => prev.map((p) => (p.id === tempId ? realProduct : p)));
+        setProducts((prev) =>
+          prev.map((p) => (p.id === tempId ? realProduct : p)),
+        );
         console.log(
           "%c[Backend: ✓ Product saved to MongoDB]",
           "background: #16a34a; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
-          realProduct.name
+          realProduct.name,
         );
         return realProduct;
       }
@@ -1401,7 +1607,7 @@ export function StoreProvider({ children }) {
       console.warn(
         "%c[Backend: ⚠ Product save failed (local only)]",
         "background: #d97706; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
-        err.message
+        err.message,
       );
     }
 
@@ -1416,11 +1622,13 @@ export function StoreProvider({ children }) {
           ? {
               ...p,
               ...updatedFields,
-              slug: updatedFields.name ? updatedFields.name.toLowerCase().replace(/[^a-z0-9]+/g, "-") : p.slug,
+              slug: updatedFields.name
+                ? updatedFields.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")
+                : p.slug,
               updatedAt: new Date().toISOString(),
             }
-          : p
-      )
+          : p,
+      ),
     );
 
     // Find the mongo ID (_mongoId or id if it's a real ObjectId-like string)
@@ -1431,55 +1639,117 @@ export function StoreProvider({ children }) {
       try {
         const payload = {
           ...(updatedFields.name && { title: updatedFields.name }),
-          ...(updatedFields.name && { slug: updatedFields.name.toLowerCase().replace(/[^a-z0-9]+/g, "-") }),
+          ...(updatedFields.name && {
+            slug: updatedFields.name.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+          }),
           ...(updatedFields.sku && { sku: updatedFields.sku }),
-          ...(updatedFields.subtitle !== undefined && { subtitle: updatedFields.subtitle }),
+          ...(updatedFields.subtitle !== undefined && {
+            subtitle: updatedFields.subtitle,
+          }),
           ...(updatedFields.hook !== undefined && { hook: updatedFields.hook }),
-          ...(updatedFields.description !== undefined && { description: updatedFields.description }),
-          ...(updatedFields.price !== undefined && { price: Number(updatedFields.price) }),
-          ...(updatedFields.salePrice !== undefined && { salePrice: Number(updatedFields.salePrice) }),
-          ...(updatedFields.stock !== undefined && { stock: Number(updatedFields.stock) }),
-          ...(updatedFields.lowStockThreshold !== undefined && { lowStockThreshold: Number(updatedFields.lowStockThreshold) }),
-          ...(updatedFields.gstPercent !== undefined && { gstPercent: Number(updatedFields.gstPercent) }),
+          ...(updatedFields.description !== undefined && {
+            description: updatedFields.description,
+          }),
+          ...(updatedFields.price !== undefined && {
+            price: Number(updatedFields.price),
+          }),
+          ...(updatedFields.salePrice !== undefined && {
+            salePrice: Number(updatedFields.salePrice),
+          }),
+          ...(updatedFields.stock !== undefined && {
+            stock: Number(updatedFields.stock),
+          }),
+          ...(updatedFields.lowStockThreshold !== undefined && {
+            lowStockThreshold: Number(updatedFields.lowStockThreshold),
+          }),
+          ...(updatedFields.gstPercent !== undefined && {
+            gstPercent: Number(updatedFields.gstPercent),
+          }),
           ...(updatedFields.category && { category: updatedFields.category }),
-          ...(updatedFields.productType !== undefined && { productType: updatedFields.productType }),
-          ...(updatedFields.collection !== undefined && { collection: updatedFields.collection }),
-          ...(updatedFields.status !== undefined && { status: updatedFields.status }),
-          ...(updatedFields.isFeatured !== undefined && { isFeatured: updatedFields.isFeatured }),
-          ...(updatedFields.sizePrices && { sizePrices: updatedFields.sizePrices }),
-          ...(updatedFields.sizes && { attributes: { sizes: updatedFields.sizes, colors: updatedFields.colors || product?.colors || [] } }),
-          ...(updatedFields.images && { images: updatedFields.images.map((img) => (typeof img === "string" ? { url: img } : img)) }),
-          ...(updatedFields.videoUrl !== undefined && { videoUrl: updatedFields.videoUrl }),
-          ...(updatedFields.fabricComposition !== undefined && { fabricComposition: updatedFields.fabricComposition }),
+          ...(updatedFields.productType !== undefined && {
+            productType: updatedFields.productType,
+          }),
+          ...(updatedFields.collection !== undefined && {
+            collection: updatedFields.collection,
+          }),
+          ...(updatedFields.status !== undefined && {
+            status: updatedFields.status,
+          }),
+          ...(updatedFields.isFeatured !== undefined && {
+            isFeatured: updatedFields.isFeatured,
+          }),
+          ...(updatedFields.sizePrices && {
+            sizePrices: updatedFields.sizePrices,
+          }),
+          ...(updatedFields.sizes && {
+            attributes: {
+              sizes: updatedFields.sizes,
+              colors: updatedFields.colors || product?.colors || [],
+            },
+          }),
+          ...(updatedFields.images && {
+            images: updatedFields.images.map((img) =>
+              typeof img === "string" ? { url: img } : img,
+            ),
+          }),
+          ...(updatedFields.videoUrl !== undefined && {
+            videoUrl: updatedFields.videoUrl,
+          }),
+          ...(updatedFields.fabricComposition !== undefined && {
+            fabricComposition: updatedFields.fabricComposition,
+          }),
           ...(updatedFields.fit !== undefined && { fit: updatedFields.fit }),
-          ...(updatedFields.length !== undefined && { length: updatedFields.length }),
-          ...(updatedFields.sleeveType !== undefined && { sleeveType: updatedFields.sleeveType }),
-          ...(updatedFields.neckType !== undefined && { neckType: updatedFields.neckType }),
-          ...(updatedFields.hasPockets !== undefined && { hasPockets: Boolean(updatedFields.hasPockets) }),
-          ...(updatedFields.hasLining !== undefined && { hasLining: Boolean(updatedFields.hasLining) }),
-          ...(updatedFields.fabricCare !== undefined && { fabricCare: updatedFields.fabricCare }),
-          ...(updatedFields.modelMeasurements !== undefined && { modelMeasurements: updatedFields.modelMeasurements }),
-          ...(updatedFields.weight !== undefined && { weight: Number(updatedFields.weight) }),
-          ...(updatedFields.returnEligible !== undefined && { returnEligible: Boolean(updatedFields.returnEligible) }),
-          ...(updatedFields.variants !== undefined && { variants: updatedFields.variants }),
+          ...(updatedFields.length !== undefined && {
+            length: updatedFields.length,
+          }),
+          ...(updatedFields.sleeveType !== undefined && {
+            sleeveType: updatedFields.sleeveType,
+          }),
+          ...(updatedFields.neckType !== undefined && {
+            neckType: updatedFields.neckType,
+          }),
+          ...(updatedFields.hasPockets !== undefined && {
+            hasPockets: Boolean(updatedFields.hasPockets),
+          }),
+          ...(updatedFields.hasLining !== undefined && {
+            hasLining: Boolean(updatedFields.hasLining),
+          }),
+          ...(updatedFields.fabricCare !== undefined && {
+            fabricCare: updatedFields.fabricCare,
+          }),
+          ...(updatedFields.modelMeasurements !== undefined && {
+            modelMeasurements: updatedFields.modelMeasurements,
+          }),
+          ...(updatedFields.weight !== undefined && {
+            weight: Number(updatedFields.weight),
+          }),
+          ...(updatedFields.returnEligible !== undefined && {
+            returnEligible: Boolean(updatedFields.returnEligible),
+          }),
+          ...(updatedFields.variants !== undefined && {
+            variants: updatedFields.variants,
+          }),
         };
 
         console.log(
           "%c[Backend: Updating product in MongoDB...]",
           "background: #7c3aed; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
-          mongoId
+          mongoId,
         );
-        await apiFetch(`/products/${mongoId}`, { method: "PUT", body: JSON.stringify(payload) });
+        await apiFetch(`/products/${mongoId}`, {
+          method: "PUT",
+          body: JSON.stringify(payload),
+        });
         console.log(
           "%c[Backend: ✓ Product updated in MongoDB]",
           "background: #16a34a; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
-          mongoId
+          mongoId,
         );
       } catch (err) {
         console.warn(
           "%c[Backend: ⚠ Product update failed (local only)]",
           "background: #d97706; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
-          err.message
+          err.message,
         );
       }
     }
@@ -1497,19 +1767,19 @@ export function StoreProvider({ children }) {
         console.log(
           "%c[Backend: Deleting product from MongoDB...]",
           "background: #7c3aed; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
-          mongoId
+          mongoId,
         );
         await apiFetch(`/products/${mongoId}`, { method: "DELETE" });
         console.log(
           "%c[Backend: ✓ Product deleted from MongoDB]",
           "background: #16a34a; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
-          mongoId
+          mongoId,
         );
       } catch (err) {
         console.warn(
           "%c[Backend: ⚠ Product delete failed (local only)]",
           "background: #d97706; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
-          err.message
+          err.message,
         );
       }
     }
@@ -1531,7 +1801,8 @@ export function StoreProvider({ children }) {
 
       if (willBeFeatured && currentlyFeaturedCount >= 6) {
         success = false;
-        message = "Maximum 6 products can be featured on the homepage. Please unfeature another garment first.";
+        message =
+          "Maximum 6 products can be featured on the homepage. Please unfeature another garment first.";
         return prev;
       }
 
@@ -1545,7 +1816,9 @@ export function StoreProvider({ children }) {
         ? `✓ "${target.name}" added to Homepage Showcase (${currentlyFeaturedCount + 1}/6).`
         : `✓ "${target.name}" removed from Homepage Showcase (${currentlyFeaturedCount - 1}/6).`;
 
-      return prev.map((p) => (p.id === prodId ? { ...p, isFeatured: willBeFeatured } : p));
+      return prev.map((p) =>
+        p.id === prodId ? { ...p, isFeatured: willBeFeatured } : p,
+      );
     });
 
     // Sync to MongoDB
@@ -1604,12 +1877,19 @@ export function StoreProvider({ children }) {
       .reduce((acc, o) => acc + (o.totalAmount || 0), 0);
 
     const totalOrdersCount = orders.length;
-    const avgOrderValue = totalOrdersCount > 0 ? Math.round(totalRevenue / totalOrdersCount) : 0;
-    const pendingOrdersCount = orders.filter((o) => o.orderStatus === "CONFIRMED" || o.orderStatus === "PROCESSING").length;
+    const avgOrderValue =
+      totalOrdersCount > 0 ? Math.round(totalRevenue / totalOrdersCount) : 0;
+    const pendingOrdersCount = orders.filter(
+      (o) => o.orderStatus === "CONFIRMED" || o.orderStatus === "PROCESSING",
+    ).length;
     const lowStockCount = products.filter((p) => (p.stock || 0) <= 5).length;
-    const pendingAbandonedCartsCount = abandonedCarts.filter((c) => c.status === "PENDING").length;
+    const pendingAbandonedCartsCount = abandonedCarts.filter(
+      (c) => c.status === "PENDING",
+    ).length;
 
-    const sortedProducts = [...products].sort((a, b) => (b.salesCount || 0) - (a.salesCount || 0));
+    const sortedProducts = [...products].sort(
+      (a, b) => (b.salesCount || 0) - (a.salesCount || 0),
+    );
 
     return {
       totalRevenue,
@@ -1632,7 +1912,10 @@ export function StoreProvider({ children }) {
         [policyKey]: {
           ...existing,
           ...updatedPolicyData,
-          lastUpdated: new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" }),
+          lastUpdated: new Date().toLocaleDateString("en-US", {
+            month: "long",
+            year: "numeric",
+          }),
         },
       };
       return next;
@@ -1656,7 +1939,8 @@ export function StoreProvider({ children }) {
     const clean = categoryName ? categoryName.trim() : "";
     if (!clean) return;
     setCategories((prev) => {
-      if (prev.some((c) => c.toLowerCase() === clean.toLowerCase())) return prev;
+      if (prev.some((c) => c.toLowerCase() === clean.toLowerCase()))
+        return prev;
       return [...prev, clean];
     });
     return clean;
