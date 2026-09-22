@@ -1,7 +1,3 @@
-/* ─────────────────────────────────────────────────────────────────────────────
-   globals.css — Entry point. Imports all partial stylesheets.
-   Edit individual files in app/styles/ for section-specific changes.
-───────────────────────────────────────────────────────────────────────────── */
 
 @import './styles/base.css';
 /* Fonts, CSS variables, reset, body/html  */
@@ -47,3 +43,7 @@
 /* About page styles                        */
 @import './styles/collection.css';
 /* Collection page styles                   */
+@import './styles/cart-and-checkout.css';
+/* Cart Drawer, Auth Modal, Checkout styles  */
+@import './styles/admin.css';
+/* Admin Portal & Analytics styles           */

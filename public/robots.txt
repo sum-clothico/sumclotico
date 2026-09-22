@@ -1,0 +1,8 @@
+# Sum Clothico robots.txt
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/*
+Disallow: /checkout/*
+
+Sitemap: https://sumclotico.com/sitemap.xml
