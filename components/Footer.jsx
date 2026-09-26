@@ -187,11 +187,11 @@ export default function Footer() {
         </div>
         {/* Studio */}
         <div className="footer-column">
-          <span className="footer-badge">studio</span>
+          <span className="footer-badge">textile studio</span>
           <address>
-            handloom district
+            khadi weaving cluster
             <br />
-            kolkata, india
+            madhya pradesh & kolkata, india
           </address>
           <a href="#" className="footer-map-link">
             <span>Google Maps</span>
@@ -222,8 +222,16 @@ export default function Footer() {
         {/* Contact */}
         <div className="footer-column">
           <span className="footer-badge">contact</span>
-          <a href="mailto:hello@sumclotico.com" className="footer-email">
-            hello@sumclotico.com
+          <a href="mailto:support@sumclothico.com" className="footer-email">
+            support@sumclothico.com
+          </a>
+          <a
+            href="https://wa.me/919329587707"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ display: "block", fontSize: "0.95rem", color: "inherit", textDecoration: "none", marginTop: 4, fontWeight: 600 }}
+          >
+            +91 9329587707
           </a>
           <p className="footer-note">
             we&apos;d love to hear from you — reach out anytime.
@@ -338,49 +346,65 @@ export default function Footer() {
         <img src="/assets/f1.png" alt="" />
       </div>
 
-      {/* Closing tagline + quick links */}
-      <div className="footer-closing-line" style={{ display: "flex", flexDirection: "column", gap: "16px", alignItems: "center" }}>
-        <p className="footer-closing-tagline">Slowly made. Easy to wear. Hard to replace.</p>
-        
-        {/* Main Site Links */}
-        <nav className="footer-quick-links" aria-label="Footer site links">
-          <Link href="/collection">Shop Collection</Link>
-          <Link href="/our-story">Our Story</Link>
-          <Link href="/fabric">Handloom Fabric</Link>
-          <Link href="/track-order">Track Order</Link>
-          <Link href="/faq">FAQs</Link>
-          <Link href="/blogs">Artisan Journal</Link>
-          <a href="https://www.instagram.com/sumclothico/" target="_blank" rel="noopener noreferrer">Instagram</a>
-          <a href="mailto:hello@sumclotico.com">Contact Us</a>
-        </nav>
+      {/* Closing tagline + categorized navigation */}
+      <div className="footer-closing-line" style={{ display: "flex", flexDirection: "column", gap: "24px", alignItems: "center", width: "100%", maxWidth: "1100px", margin: "0 auto", padding: "20px 20px 0" }}>
+        <p className="footer-closing-tagline" style={{ fontSize: "16px", letterSpacing: "1px", fontWeight: 600, color: "rgba(255,255,255,0.9)", margin: 0, textTransform: "uppercase" }}>
+          Made with time. Made for living.
+        </p>
 
-        {/* Legal, Terms & Policies Links */}
-        <nav
-          className="footer-policy-links"
-          aria-label="Legal and policy links"
-          style={{
-            display: "flex",
-            gap: "16px",
-            flexWrap: "wrap",
-            justifyContent: "center",
-            fontSize: "12px",
-            color: "rgba(255, 255, 255, 0.65)",
-            paddingTop: "6px",
-            borderTop: "1px solid rgba(255, 255, 255, 0.1)",
-            width: "100%",
-            maxWidth: "800px",
-          }}
-        >
-          <Link href="/policies/terms" style={{ color: "inherit", textDecoration: "none" }}>Terms & Conditions</Link>
-          <span>•</span>
-          <Link href="/policies/privacy" style={{ color: "inherit", textDecoration: "none" }}>Privacy Policy</Link>
-          <span>•</span>
-          <Link href="/policies/returns" style={{ color: "inherit", textDecoration: "none" }}>Returns & Exchange Policy</Link>
-          <span>•</span>
-          <Link href="/policies/shipping" style={{ color: "inherit", textDecoration: "none" }}>Shipping & Delivery</Link>
-          <span>•</span>
-          <Link href="/policies/cancellation" style={{ color: "inherit", textDecoration: "none" }}>Cancellation Policy</Link>
-        </nav>
+        {/* 4 Categorized Footer Navigation Columns */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "32px", width: "100%", textAlign: "left", padding: "16px 0", borderTop: "1px solid rgba(255,255,255,0.1)", borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
+          {/* Column 1: SHOP */}
+          <div>
+            <div style={{ fontSize: "11px", fontWeight: 800, letterSpacing: "1.5px", textTransform: "uppercase", color: "#f35c27", marginBottom: "12px" }}>Shop</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px", fontSize: "13px" }}>
+              <Link href="/shop" style={{ color: "rgba(255,255,255,0.75)", textDecoration: "none" }}>All Pieces</Link>
+              <Link href="/size-guide" style={{ color: "rgba(255,255,255,0.75)", textDecoration: "none" }}>Size Guide</Link>
+              <Link href="/fabric#care" style={{ color: "rgba(255,255,255,0.75)", textDecoration: "none" }}>Care Guide</Link>
+              <Link href="/track-order" style={{ color: "rgba(255,255,255,0.75)", textDecoration: "none" }}>Track Order</Link>
+            </div>
+          </div>
+
+          {/* Column 2: SUM */}
+          <div>
+            <div style={{ fontSize: "11px", fontWeight: 800, letterSpacing: "1.5px", textTransform: "uppercase", color: "#f35c27", marginBottom: "12px" }}>Sum</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px", fontSize: "13px" }}>
+              <Link href="/our-story" style={{ color: "rgba(255,255,255,0.75)", textDecoration: "none" }}>Our Story</Link>
+              <Link href="/fabric" style={{ color: "rgba(255,255,255,0.75)", textDecoration: "none" }}>Fabric & Origin</Link>
+              <Link href="/journal" style={{ color: "rgba(255,255,255,0.75)", textDecoration: "none" }}>Journal & Community</Link>
+              <Link href="/faq" style={{ color: "rgba(255,255,255,0.75)", textDecoration: "none" }}>FAQs</Link>
+            </div>
+          </div>
+
+          {/* Column 3: CONNECT */}
+          <div>
+            <div style={{ fontSize: "11px", fontWeight: 800, letterSpacing: "1.5px", textTransform: "uppercase", color: "#f35c27", marginBottom: "12px" }}>Connect</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px", fontSize: "13px" }}>
+              <Link href="/contact" style={{ color: "rgba(255,255,255,0.75)", textDecoration: "none" }}>Contact & Enquiries</Link>
+              <a href="https://wa.me/919329587707" target="_blank" rel="noopener noreferrer" style={{ color: "rgba(255,255,255,0.75)", textDecoration: "none" }}>WhatsApp: 9329587707</a>
+              <a href="mailto:support@sumclothico.com" style={{ color: "rgba(255,255,255,0.75)", textDecoration: "none" }}>support@sumclothico.com</a>
+              <a href="https://www.instagram.com/sumclothico/" target="_blank" rel="noopener noreferrer" style={{ color: "rgba(255,255,255,0.75)", textDecoration: "none" }}>Instagram</a>
+              <a href="https://youtube.com/@sumclothico" target="_blank" rel="noopener noreferrer" style={{ color: "rgba(255,255,255,0.75)", textDecoration: "none" }}>YouTube</a>
+              <a href="https://pinterest.com/sumclothico" target="_blank" rel="noopener noreferrer" style={{ color: "rgba(255,255,255,0.75)", textDecoration: "none" }}>Pinterest</a>
+            </div>
+          </div>
+
+          {/* Column 4: HELP & LEGAL */}
+          <div>
+            <div style={{ fontSize: "11px", fontWeight: 800, letterSpacing: "1.5px", textTransform: "uppercase", color: "#f35c27", marginBottom: "12px" }}>Help & Policies</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px", fontSize: "13px" }}>
+              <Link href="/policies/shipping" style={{ color: "rgba(255,255,255,0.75)", textDecoration: "none" }}>Shipping & Delivery</Link>
+              <Link href="/policies/returns" style={{ color: "rgba(255,255,255,0.75)", textDecoration: "none" }}>Returns & Exchange</Link>
+              <Link href="/policies/privacy" style={{ color: "rgba(255,255,255,0.75)", textDecoration: "none" }}>Privacy Policy</Link>
+              <Link href="/policies/terms" style={{ color: "rgba(255,255,255,0.75)", textDecoration: "none" }}>Terms & Conditions</Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Final Copyright */}
+        <div style={{ fontSize: "12px", color: "rgba(255,255,255,0.5)", textAlign: "center", paddingBottom: "12px" }}>
+          © Sum Clothico. All rights reserved. Handcrafted Indian Textiles.
+        </div>
       </div>
     </div>
   );

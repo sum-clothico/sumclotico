@@ -7,8 +7,10 @@ import "../app/styles/about-section.css";
 gsap.registerPlugin(ScrollTrigger);
 
 const LINES = [
-  "We don't change Khadi.",
-  "We design it for today.",
+  "We don't want to make more clothes.",
+  "We want to make better ones.",
+  "There is already enough clothing in the world.",
+  "Will you want to wear this again? If yes, we make it.",
 ];
 
 const PIN_DISTANCE = 500 * LINES.length;
@@ -89,17 +91,17 @@ export default function AboutSection() {
 
           {/* Sub-label */}
           <p className="about-section__sub">
-            A brand rooted in Khadi. Designed for how women live today.
+            A brand rooted in handwoven textiles. Designed for how women live today.
           </p>
         </div>
       </div>
 
       {/* Merged CTA */}
       <div className="about-cta">
-        <h2 className="about-cta__title">Ready to experience Khadi?</h2>
+        <h2 className="about-cta__title">Find something you&apos;ll want to live in.</h2>
         <div className="about-cta__buttons">
-          <Link href="/collection" className="about-cta__btn about-cta__btn--primary">
-            Explore the Collection
+          <Link href="/shop" className="about-cta__btn about-cta__btn--primary">
+            Shop All Pieces
           </Link>
           <Link href="/our-story" className="about-cta__btn about-cta__btn--secondary">
             Read Our Story

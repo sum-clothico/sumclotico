@@ -1,16 +1,5 @@
-import Navbar from "../../components/Navbar";
-import CollectionClient from "../../components/CollectionClient";
-
-export const metadata = {
-  title: "Collection - Sum Clothico",
-  description: "Pieces designed for how you live today.",
-};
+import { redirect } from "next/navigation";
 
 export default function CollectionPage() {
-  return (
-    <main>
-      <Navbar />
-      <CollectionClient />
-    </main>
-  );
+  redirect("/shop");
 }

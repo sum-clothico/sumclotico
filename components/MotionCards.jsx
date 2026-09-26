@@ -8,11 +8,11 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(InertiaPlugin, ScrollTrigger);
 
 const PHASE_TEXTS = [
-  "Daily wear that feels light and breathable.",
-  "Work outfits that stay comfortable all day.",
-  "Simple, minimal wardrobes built around ease.",
-  "Travel, where comfort matters most.",
-  "It's easy, effortless, and real.",
+  "Before it becomes your clothes, it passes through many hands.",
+  "From the textile we source to the hands that cut, stitch and finish each piece.",
+  "Sum is a collection of many small acts of making.",
+  "Clothes that keep up with you — from morning coffee runs to slow Sundays.",
+  "Made with time. Made for living.",
 ];
 
 export default function MotionCards() {

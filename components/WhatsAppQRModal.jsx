@@ -24,7 +24,7 @@ export default function WhatsAppQRModal({ isOpen, onClose }) {
     trackEvent("whatsapp_topic_select", { topic: p.label, prompt: p.text });
   };
 
-  const waUrl = `https://wa.me/919876543210?text=${encodeURIComponent(selectedPrompt)}`;
+  const waUrl = `https://wa.me/919329587707?text=${encodeURIComponent(selectedPrompt)}`;
   const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(waUrl)}&color=111111&bgcolor=ffffff&margin=1`;
 
   return (

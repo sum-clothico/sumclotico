@@ -266,11 +266,12 @@ export default function Navbar() {
         }}
       >
         <div className="nav-left">
-          <div className="nav-main-links desktop-only" style={{ display: "flex", gap: "24px" }}>
-            <Link href="/collection" style={{ textDecoration: "none", color: "#111", fontWeight: 600, fontSize: "13px", textTransform: "uppercase", letterSpacing: "0.5px" }}>Collection</Link>
+          <div className="nav-main-links desktop-only" style={{ display: "flex", gap: "22px" }}>
+            <Link href="/shop" style={{ textDecoration: "none", color: "#111", fontWeight: 600, fontSize: "13px", textTransform: "uppercase", letterSpacing: "0.5px" }}>Shop</Link>
             <Link href="/our-story" style={{ textDecoration: "none", color: "#111", fontWeight: 600, fontSize: "13px", textTransform: "uppercase", letterSpacing: "0.5px" }}>Our Story</Link>
             <Link href="/fabric" style={{ textDecoration: "none", color: "#111", fontWeight: 600, fontSize: "13px", textTransform: "uppercase", letterSpacing: "0.5px" }}>Fabric</Link>
-            <Link href="/about" style={{ textDecoration: "none", color: "#111", fontWeight: 600, fontSize: "13px", textTransform: "uppercase", letterSpacing: "0.5px" }}>About</Link>
+            <Link href="/journal" style={{ textDecoration: "none", color: "#111", fontWeight: 600, fontSize: "13px", textTransform: "uppercase", letterSpacing: "0.5px" }}>Journal</Link>
+            <Link href="/contact" style={{ textDecoration: "none", color: "#111", fontWeight: 600, fontSize: "13px", textTransform: "uppercase", letterSpacing: "0.5px" }}>Contact</Link>
           </div>
         </div>
 
@@ -608,13 +609,13 @@ export default function Navbar() {
       {/* Mobile Menu Overlay */}
       <div className={`nav-mobile-menu ${isMobileMenuOpen ? "is-open" : ""}`}>
         <div className="nav-mobile-menu-inner">
-          <Link href="/collection" onClick={() => setIsMobileMenuOpen(false)}>Collection</Link>
+          <Link href="/shop" onClick={() => setIsMobileMenuOpen(false)}>Shop</Link>
           <Link href="/our-story" onClick={() => setIsMobileMenuOpen(false)}>Our Story</Link>
           <Link href="/fabric" onClick={() => setIsMobileMenuOpen(false)}>Fabric</Link>
-          <Link href="/about" onClick={() => setIsMobileMenuOpen(false)}>About</Link>
+          <Link href="/journal" onClick={() => setIsMobileMenuOpen(false)}>Journal</Link>
+          <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
           <Link href="/track-order" onClick={() => setIsMobileMenuOpen(false)}>Track Order</Link>
           <Link href="/faq" onClick={() => setIsMobileMenuOpen(false)}>FAQs</Link>
-          <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact Us</Link>
           <button
             type="button"
             onClick={() => {
