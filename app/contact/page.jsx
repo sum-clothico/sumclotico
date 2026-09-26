@@ -1,163 +1,395 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { FiMail, FiPhone, FiMapPin, FiCheckCircle } from "react-icons/fi";
+import {
+  FiMail,
+  FiPhone,
+  FiCheckCircle,
+  FiSend,
+  FiArrowRight,
+  FiInstagram,
+  FiYoutube,
+  FiBookOpen,
+} from "react-icons/fi";
+import { FaWhatsapp } from "react-icons/fa";
 import { trackLead, trackEvent } from "@/lib/analytics";
+import "@/app/styles/contact.css";
+
+const CATEGORIES = [
+  "Order / Product",
+  "Collaboration",
+  "Wholesale / B2B",
+  "General",
+  "Other",
+];
 
 export default function ContactPage() {
-  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
+  const formRef = useRef(null);
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    category: "Order / Product",
+    message: "",
+  });
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const selectCategoryAndScroll = (cat) => {
+    setForm((prev) => ({ ...prev, category: cat }));
+    if (formRef.current) {
+      formRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!form.name || !form.email) return;
+    if (!form.name || !form.email || !form.message) return;
+
     trackLead("contact_form", {
       name: form.name,
       email: form.email,
-      phone: form.phone || undefined,
+      category: form.category,
     });
     trackEvent("contact_form_submit", {
+      category: form.category,
       has_message: Boolean(form.message),
     });
+
     setIsSubmitted(true);
   };
 
   return (
     <>
       <Navbar />
-      <div style={{ background: "#fbfbfc", minHeight: "100vh", padding: "140px 24px 80px", color: "#111827" }}>
-        <div style={{ maxWidth: 960, margin: "0 auto" }}>
-          {/* Header */}
-          <div style={{ textAlign: "center", marginBottom: 48 }}>
-            <span style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1.5, color: "#f35c27" }}>
-              Get In Touch
-            </span>
-            <h1 style={{ fontSize: 36, fontWeight: 800, margin: "8px 0 12px", letterSpacing: "-0.5px" }}>
-              We'd Love to Hear from You
-            </h1>
-            <p style={{ color: "#6b7280", fontSize: 16, margin: 0, maxWidth: 540, marginLeft: "auto", marginRight: "auto" }}>
-              Questions about custom orders, sizing, wholesale, or our artisanal handloom process? Drop us a note anytime.
+      <div className="contact-page">
+        <div className="contact-container">
+          
+          {/* ─── Hero ─── */}
+          <div className="contact-hero">
+            <h1 className="contact-hero__headline">Come say hello.</h1>
+            <p className="contact-hero__copy">
+              A question about a piece?
+              <br />
+              Need help finding your size?
+              <br />
+              Have an idea?
+              <br />
+              We&apos;re listening.
             </p>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1.1fr 1fr", gap: 40 }}>
-            {/* Contact Form */}
-            <div style={{ background: "#ffffff", padding: "36px", borderRadius: 16, border: "1px solid #e5e7eb", boxShadow: "0 4px 20px rgba(0,0,0,0.04)" }}>
+          {/* ─── Contact Options Cards ─── */}
+          <div className="contact-options-grid">
+            
+            {/* Card 1: Order & Product Help */}
+            <div className="contact-card">
+              <div>
+                <span className="contact-card__title">Order & Product Help</span>
+                <p style={{ fontSize: "0.85rem", color: "#7a6c5f", margin: "0 0 10px 0" }}>
+                  Questions about:
+                </p>
+                <ul className="contact-card__list">
+                  <li>Your order</li>
+                  <li>Size and fit</li>
+                  <li>Product availability</li>
+                  <li>Care</li>
+                  <li>Shipping</li>
+                </ul>
+              </div>
+              <button
+                type="button"
+                onClick={() => selectCategoryAndScroll("Order / Product")}
+                className="contact-card__btn"
+              >
+                Get Order Help <FiArrowRight />
+              </button>
+            </div>
+
+            {/* Card 2: Collaborate With Us */}
+            <div className="contact-card">
+              <div>
+                <span className="contact-card__title">Collaborate With Us</span>
+                <p style={{ fontSize: "0.85rem", color: "#7a6c5f", margin: "0 0 10px 0" }}>
+                  For:
+                </p>
+                <ul className="contact-card__list">
+                  <li>Creator collaborations</li>
+                  <li>Brand collaborations</li>
+                  <li>Creative partnerships</li>
+                  <li>Events</li>
+                  <li>Features</li>
+                </ul>
+              </div>
+              <button
+                type="button"
+                onClick={() => selectCategoryAndScroll("Collaboration")}
+                className="contact-card__btn"
+              >
+                Start a Conversation <FiArrowRight />
+              </button>
+            </div>
+
+            {/* Card 3: Wholesale / B2B */}
+            <div className="contact-card">
+              <div>
+                <span className="contact-card__title">Wholesale / B2B</span>
+                <p style={{ fontSize: "0.85rem", color: "#7a6c5f", margin: "0 0 10px 0" }}>
+                  Interested in:
+                </p>
+                <ul className="contact-card__list">
+                  <li>Stocking Sum</li>
+                  <li>Corporate requirements</li>
+                  <li>Bulk orders</li>
+                  <li>Manufacturing partnerships</li>
+                </ul>
+              </div>
+              <button
+                type="button"
+                onClick={() => selectCategoryAndScroll("Wholesale / B2B")}
+                className="contact-card__btn"
+              >
+                Business Enquiry <FiArrowRight />
+              </button>
+            </div>
+
+            {/* Card 4: Just Want to Talk? */}
+            <div className="contact-card">
+              <div>
+                <span className="contact-card__title">Just Want to Talk?</span>
+                <h3 className="contact-card__head">We&apos;re open to ideas.</h3>
+                <p className="contact-card__desc">
+                  If there&apos;s something we haven&apos;t covered, send us a message.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => selectCategoryAndScroll("General")}
+                className="contact-card__btn"
+              >
+                Send Us a Message <FiArrowRight />
+              </button>
+            </div>
+
+          </div>
+
+          {/* ─── Contact Form & Direct Contact ─── */}
+          <div ref={formRef} className="contact-main-grid">
+            
+            {/* Form */}
+            <div className="contact-form-box">
+              <h2 className="contact-form-box__title">Send a message</h2>
+              
               {isSubmitted ? (
                 <div style={{ textAlign: "center", padding: "40px 10px" }}>
-                  <div style={{ width: 60, height: 60, borderRadius: "50%", background: "#ecfdf5", color: "#065f46", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
-                    <FiCheckCircle size={32} />
+                  <div
+                    style={{
+                      width: 56,
+                      height: 56,
+                      borderRadius: "50%",
+                      background: "#e8f5e9",
+                      color: "#2e7d32",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      margin: "0 auto 16px",
+                    }}
+                  >
+                    <FiCheckCircle size={30} />
                   </div>
-                  <h3 style={{ fontSize: 22, fontWeight: 800, margin: "0 0 8px" }}>Message Received!</h3>
-                  <p style={{ color: "#6b7280", fontSize: 14 }}>
-                    Thank you for reaching out, {form.name}. Our team will respond to {form.email} within 24 business hours.
+                  <h3 style={{ fontFamily: "serif", fontSize: "1.4rem", margin: "0 0 10px" }}>
+                    Message Received
+                  </h3>
+                  <p style={{ color: "#55483d", fontSize: "0.95rem", lineHeight: 1.6, marginBottom: 24 }}>
+                    Thank you for reaching out, {form.name}. We will get back to you at {form.email} as soon as possible.
                   </p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsSubmitted(false);
+                      setForm({ name: "", email: "", category: "Order / Product", message: "" });
+                    }}
+                    className="contact-card__btn"
+                  >
+                    Send Another Message
+                  </button>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit}>
-                  <div style={{ marginBottom: 18 }}>
-                    <label style={{ display: "block", fontSize: 13, fontWeight: 700, marginBottom: 6 }}>Full Name</label>
+                  
+                  {/* Name */}
+                  <div className="contact-field">
+                    <label className="contact-label">Name *</label>
                     <input
                       type="text"
                       required
-                      placeholder="e.g. Radhika Sen"
+                      placeholder="Your name"
                       value={form.name}
                       onChange={(e) => setForm({ ...form, name: e.target.value })}
-                      style={{ width: "100%", padding: "12px 14px", borderRadius: 8, border: "1px solid #d1d5db", fontSize: 14, outline: "none" }}
+                      className="contact-input"
                     />
                   </div>
 
-                  <div style={{ marginBottom: 18 }}>
-                    <label style={{ display: "block", fontSize: 13, fontWeight: 700, marginBottom: 6 }}>Email Address</label>
+                  {/* Email */}
+                  <div className="contact-field">
+                    <label className="contact-label">Email *</label>
                     <input
                       type="email"
                       required
-                      placeholder="radhika@example.com"
+                      placeholder="Your email address"
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
-                      style={{ width: "100%", padding: "12px 14px", borderRadius: 8, border: "1px solid #d1d5db", fontSize: 14, outline: "none" }}
+                      className="contact-input"
                     />
                   </div>
 
-                  <div style={{ marginBottom: 18 }}>
-                    <label style={{ display: "block", fontSize: 13, fontWeight: 700, marginBottom: 6 }}>Phone Number (Optional)</label>
-                    <input
-                      type="tel"
-                      placeholder="+91 98765 43210"
-                      value={form.phone}
-                      onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                      style={{ width: "100%", padding: "12px 14px", borderRadius: 8, border: "1px solid #d1d5db", fontSize: 14, outline: "none" }}
-                    />
+                  {/* What can we help you with? */}
+                  <div className="contact-field">
+                    <label className="contact-label">What can we help you with? *</label>
+                    <div className="contact-radio-group">
+                      {CATEGORIES.map((cat) => (
+                        <button
+                          key={cat}
+                          type="button"
+                          onClick={() => setForm({ ...form, category: cat })}
+                          className={`contact-radio-pill ${form.category === cat ? "active" : ""}`}
+                        >
+                          {cat}
+                        </button>
+                      ))}
+                    </div>
                   </div>
 
-                  <div style={{ marginBottom: 24 }}>
-                    <label style={{ display: "block", fontSize: 13, fontWeight: 700, marginBottom: 6 }}>Your Message</label>
+                  {/* Message */}
+                  <div className="contact-field">
+                    <label className="contact-label">Message *</label>
                     <textarea
-                      rows="4"
                       required
-                      placeholder="Tell us what you're looking for or ask a question..."
+                      rows={5}
+                      placeholder="Tell us what you have in mind..."
                       value={form.message}
                       onChange={(e) => setForm({ ...form, message: e.target.value })}
-                      style={{ width: "100%", padding: "12px 14px", borderRadius: 8, border: "1px solid #d1d5db", fontSize: 14, outline: "none" }}
+                      className="contact-textarea"
                     />
                   </div>
 
-                  <button
-                    type="submit"
-                    style={{ width: "100%", padding: "14px", background: "#111111", color: "#ffffff", border: "none", borderRadius: 8, fontSize: 15, fontWeight: 700, cursor: "pointer" }}
-                  >
-                    Send Message →
+                  <button type="submit" className="contact-submit-btn">
+                    <FiSend size={15} /> Send
                   </button>
                 </form>
               )}
             </div>
 
-            {/* Studio Info & Direct Touchpoints */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-              <div style={{ background: "#ffffff", padding: "28px", borderRadius: 16, border: "1px solid #e5e7eb" }}>
-                <h3 style={{ fontSize: 18, fontWeight: 800, margin: "0 0 16px" }}>Our Handloom Studio</h3>
-                
-                <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
-                  <FiMapPin size={20} color="#f35c27" style={{ flexShrink: 0, marginTop: 2 }} />
-                  <div style={{ fontSize: 14, color: "#4b5563", lineHeight: 1.5 }}>
-                    <strong>Sum Clothico Studio</strong><br />
-                    Handloom Weavers District, Sector 4<br />
-                    Kolkata, West Bengal - 700091, India
-                  </div>
-                </div>
+            {/* Direct Contact */}
+            <div className="contact-direct-box">
+              <span className="contact-direct__title">Direct Contact</span>
 
-                <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
-                  <FiMail size={20} color="#f35c27" style={{ flexShrink: 0, marginTop: 2 }} />
-                  <div style={{ fontSize: 14, color: "#4b5563" }}>
-                    <strong>Direct Email</strong><br />
-                    <a href="mailto:hello@sumclotico.com" style={{ color: "#111111", textDecoration: "underline" }}>
-                      hello@sumclotico.com
-                    </a>
-                  </div>
+              {/* WhatsApp */}
+              <div className="contact-direct__channel">
+                <div className="contact-direct__icon-wrap" style={{ color: "#16a34a" }}>
+                  <FaWhatsapp size={20} />
                 </div>
-
-                <div style={{ display: "flex", gap: 12 }}>
-                  <FiPhone size={20} color="#f35c27" style={{ flexShrink: 0, marginTop: 2 }} />
-                  <div style={{ fontSize: 14, color: "#4b5563" }}>
-                    <strong>Customer Support Hours</strong><br />
-                    Monday – Saturday: 10:00 AM – 7:00 PM IST
+                <div>
+                  <div className="contact-direct__label">WhatsApp</div>
+                  <a
+                    href="https://wa.me/919329587707"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="contact-direct__val"
+                  >
+                    9329587707
+                  </a>
+                  <div className="contact-direct__subtext">
+                    Direct chat with our styling and support concierge.
                   </div>
                 </div>
               </div>
 
-              <div style={{ background: "#fdf8f6", padding: "24px", borderRadius: 16, border: "1px solid #fed7aa" }}>
-                <h4 style={{ margin: "0 0 6px", fontSize: 15, fontWeight: 800, color: "#9a3412" }}>Need Immediate Help?</h4>
-                <p style={{ margin: "0 0 12px", fontSize: 13, color: "#7c2d12" }}>
-                  Check our Frequently Asked Questions for instant answers regarding shipping, sizing, and returns.
-                </p>
-                <a href="/faq" style={{ color: "#9a3412", fontWeight: 700, fontSize: 13, textDecoration: "underline" }}>
-                  Browse All FAQs →
-                </a>
+              {/* Catalogue link */}
+              <div className="contact-direct__channel">
+                <div className="contact-direct__icon-wrap">
+                  <FiBookOpen size={18} />
+                </div>
+                <div>
+                  <div className="contact-direct__label">Catalogue</div>
+                  <a href="/shop" className="contact-direct__val">
+                    View Sum Catalogue
+                  </a>
+                  <div className="contact-direct__subtext">
+                    Browse all pieces, silhouettes and handcrafted textiles.
+                  </div>
+                </div>
               </div>
+
+              {/* Email */}
+              <div className="contact-direct__channel">
+                <div className="contact-direct__icon-wrap">
+                  <FiMail size={18} />
+                </div>
+                <div>
+                  <div className="contact-direct__label">Email</div>
+                  <a href="mailto:support@sumclothico.com" className="contact-direct__val">
+                    support@sumclothico.com
+                  </a>
+                  <div className="contact-direct__subtext">
+                    Write to us for queries, size consultation or orders.
+                  </div>
+                </div>
+              </div>
+
+              {/* Instagram */}
+              <div className="contact-direct__channel">
+                <div className="contact-direct__icon-wrap">
+                  <FiInstagram size={18} />
+                </div>
+                <div>
+                  <div className="contact-direct__label">Instagram</div>
+                  <a
+                    href="https://www.instagram.com/sumclothico/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="contact-direct__val"
+                  >
+                    @sumclothico
+                  </a>
+                  <div className="contact-direct__subtext">
+                    Follow our journey of hands, looms and everyday living.
+                  </div>
+                </div>
+              </div>
+
+              {/* YouTube */}
+              <div className="contact-direct__channel">
+                <div className="contact-direct__icon-wrap">
+                  <FiYoutube size={18} />
+                </div>
+                <div>
+                  <div className="contact-direct__label">YouTube</div>
+                  <a
+                    href="https://youtube.com/@sumclothico"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="contact-direct__val"
+                  >
+                    @sumclothico
+                  </a>
+                  <div className="contact-direct__subtext">
+                    Documentary films on weaving, spinning and making.
+                  </div>
+                </div>
+              </div>
+
             </div>
+
           </div>
+
+          {/* ─── Closing Line ─── */}
+          <div className="contact-closing">
+            <p className="contact-closing__text">
+              Some of the best things start with a conversation.
+            </p>
+          </div>
+
         </div>
       </div>
       <Footer />

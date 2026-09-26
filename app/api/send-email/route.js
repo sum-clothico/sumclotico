@@ -75,7 +75,7 @@ export async function POST(request) {
             </div>
 
             <div style="margin-top: 28px; padding: 16px; background: #f9fafb; border-radius: 8px; font-size: 12px; color: #6b7280; text-align: center;">
-              Questions? Message our stylists on WhatsApp or email us at <a href="mailto:hello@sumclotico.com" style="color: #f35c27;">hello@sumclotico.com</a>
+              Questions? Message our stylists on WhatsApp (+91 9329587707) or email us at <a href="mailto:support@sumclothico.com" style="color: #f35c27;">support@sumclothico.com</a>
             </div>
           </div>
         </div>

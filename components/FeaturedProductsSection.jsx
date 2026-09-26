@@ -53,13 +53,19 @@ export default function FeaturedProductsSection() {
       }}
     >
       <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-        {/* Section Header - Clean, centered/left typography without top CTA bar */}
+        {/* Section Header */}
         <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto 48px" }}>
-          <h2 style={{ fontSize: "clamp(26px, 4vw, 38px)", fontWeight: 800, color: "#111111", letterSpacing: "-0.5px", margin: 0, lineHeight: 1.2 }}>
-            Handcrafted Silhouettes for Mindful Living
+          <span style={{ fontSize: "11px", fontWeight: 800, letterSpacing: "2px", textTransform: "uppercase", color: "#f35c27", display: "block", marginBottom: "8px" }}>
+            Made for Real Days
+          </span>
+          <h2 style={{ fontSize: "clamp(26px, 4vw, 38px)", fontWeight: 800, color: "#111111", letterSpacing: "-0.5px", margin: "0 0 14px", lineHeight: 1.2 }}>
+            Clothes that keep up with you.
           </h2>
-          <p style={{ color: "#6b7280", fontSize: 15, margin: "10px auto 0", maxWidth: 580, lineHeight: 1.6 }}>
-            Slowly woven by master weavers across India using 100% organic, breathable cotton.
+          <p style={{ color: "#4b5563", fontSize: "15px", margin: "0 auto 8px", maxWidth: 620, lineHeight: 1.6 }}>
+            For mornings that start too early. Workdays that run too long. Last-minute plans. Slow Sundays. Train journeys. Coffee runs. And all the ordinary, beautiful things in between.
+          </p>
+          <p style={{ color: "#111111", fontSize: "14px", fontWeight: 600, margin: "0 auto", maxWidth: 600, lineHeight: 1.6 }}>
+            We make pieces that are easy to live in — comfortable enough to forget you&apos;re wearing them, considered enough to make you feel good in them.
           </p>
         </div>
 
@@ -321,10 +327,10 @@ export default function FeaturedProductsSection() {
           })}
         </div>
 
-        {/* Prominent Bottom CTA Button to Collection */}
+        {/* Prominent Bottom CTA Button to Shop */}
         <div style={{ marginTop: 56, textAlign: "center" }}>
           <Link
-            href="/collection"
+            href="/shop"
             className="cart-checkout-btn"
             style={{
               display: "inline-flex",
@@ -343,7 +349,7 @@ export default function FeaturedProductsSection() {
             onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.04)")}
             onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
           >
-            <span>Explore Full Collection</span>
+            <span>Shop All Pieces</span>
             <FiArrowRight size={17} />
           </Link>
         </div>

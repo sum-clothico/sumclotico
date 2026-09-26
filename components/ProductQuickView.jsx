@@ -78,10 +78,10 @@ export default function ProductQuickView() {
       <div
         className="quickview-card"
         style={{
-          maxWidth: 1080,
+          maxWidth: 1040,
           width: "94%",
           maxHeight: "92vh",
-          gridTemplateColumns: "1.3fr 1fr",
+          gridTemplateColumns: "1fr 1fr",
           borderRadius: 20,
           overflow: "hidden",
           boxShadow: "0 30px 80px rgba(0, 0, 0, 0.35)",
@@ -118,27 +118,32 @@ export default function ProductQuickView() {
         {/* ─── BIG EDITORIAL IMAGE GALLERY ─── */}
         <div
           style={{
-            background: "#f3f4f6",
+            background: "#FAF6F0",
             display: "flex",
             flexDirection: "column",
-            padding: 24,
+            justifyContent: "center",
+            padding: "24px 20px",
             position: "relative",
             userSelect: "none",
+            maxHeight: "92vh",
+            overflowY: "auto",
           }}
         >
           {/* Main Large Showcase Image Stage */}
           <div
             style={{
               position: "relative",
-              flex: 1,
-              minHeight: 460,
-              maxHeight: 520,
+              width: "100%",
+              maxWidth: 420,
+              aspectRatio: "3 / 4",
+              maxHeight: "64vh",
+              margin: "0 auto",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               overflow: "hidden",
-              borderRadius: 14,
-              background: "#ffffff",
+              borderRadius: 16,
+              background: "#f3ede4",
               boxShadow: "0 4px 20px rgba(0,0,0,0.06)",
               cursor: isZoomed ? "zoom-out" : "zoom-in",
             }}
@@ -212,8 +217,10 @@ export default function ProductQuickView() {
               style={{
                 width: "100%",
                 height: "100%",
-                objectFit: isZoomed ? "scale-down" : "cover",
-                transform: isZoomed ? "scale(1.4)" : "scale(1)",
+                aspectRatio: "3 / 4",
+                objectFit: isZoomed ? "contain" : "cover",
+                objectPosition: "top center",
+                transform: isZoomed ? "scale(1.3)" : "scale(1)",
                 transition: "transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease",
               }}
             />
@@ -299,10 +306,11 @@ export default function ProductQuickView() {
                     key={idx}
                     onClick={() => setActiveImageIndex(idx)}
                     style={{
-                      width: 72,
+                      width: 62,
                       height: 82,
+                      aspectRatio: "3 / 4",
                       padding: 2,
-                      borderRadius: 10,
+                      borderRadius: 8,
                       overflow: "hidden",
                       border: `2px solid ${isActive ? "#111111" : "#e5e7eb"}`,
                       opacity: isActive ? 1 : 0.65,
@@ -320,7 +328,9 @@ export default function ProductQuickView() {
                       style={{
                         width: "100%",
                         height: "100%",
+                        aspectRatio: "3 / 4",
                         objectFit: "cover",
+                        objectPosition: "top center",
                         borderRadius: 6,
                       }}
                     />

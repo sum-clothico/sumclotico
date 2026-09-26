@@ -41,7 +41,7 @@ export default function WhatsAppWidget() {
   if (!isVisible || pathname.startsWith("/admin")) return null;
 
   const whatsappUrl =
-    "https://wa.me/+919876543210?text=" +
+    "https://wa.me/919329587707?text=" +
     encodeURIComponent(
       "Hello Sum Clothico! I need assistance with sizing and fabric details.",
     );

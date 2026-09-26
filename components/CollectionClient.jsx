@@ -29,13 +29,13 @@ function ImageSlider({ images, altText }) {
   if (!images || images.length === 0) return null;
 
   return (
-    <div className="slider-container">
+    <div className="slider-container" style={{ width: "100%", height: "100%", aspectRatio: "3 / 4" }}>
       <div 
         className="slider-track" 
-        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+        style={{ transform: `translateX(-${currentIndex * 100}%)`, height: "100%" }}
       >
         {images.map((src, idx) => (
-          <img key={idx} src={src} alt={`${altText} ${idx + 1}`} loading="lazy" />
+          <img key={idx} src={src} alt={`${altText} ${idx + 1}`} loading="lazy" style={{ width: "100%", height: "100%", aspectRatio: "3 / 4", objectFit: "cover", objectPosition: "top center" }} />
         ))}
       </div>
       
@@ -164,20 +164,26 @@ export default function CollectionClient() {
       <div className="os-noise" />
 
       {/* Hero Header */}
-      <section className="col-hero" style={{ paddingBottom: "32px" }}>
-        <h1 className="prod-fade">Handcrafted Collection</h1>
-        <p className="prod-fade">Authentic, breathable Indian Khadi silhouettes designed for mindful everyday living.</p>
+      <section className="col-hero" style={{ paddingBottom: "32px", textAlign: "center", maxWidth: 840, margin: "0 auto" }}>
+        <h1 className="prod-fade" style={{ fontFamily: "serif", fontSize: "clamp(2.2rem, 4vw, 3.2rem)", fontWeight: 500, color: "#1a140e", marginBottom: 16 }}>
+          Clothes you&apos;ll want to wear again.
+        </h1>
+        <p className="prod-fade" style={{ fontSize: "1.1rem", lineHeight: 1.8, color: "#4a3c30", maxWidth: 640, margin: "0 auto 24px" }}>
+          Easy pieces. Thoughtful details. Handwoven beginnings.
+          <br />
+          Made for everyday life however yours happens to look.
+        </p>
         
-        <div className="col-details prod-fade">
-          <div className="detail-item"><span>Fabric:</span> 100% Handspun Khadi</div>
-          <div className="detail-item"><span>Fit:</span> Relaxed Modern</div>
+        <div className="col-details prod-fade" style={{ justifyContent: "center", gap: 24 }}>
+          <div className="detail-item"><span>Textile:</span> 100% Handspun Khadi Cotton</div>
+          <div className="detail-item"><span>Origin:</span> Madhya Pradesh, India</div>
           <div className="detail-item">
             <button
               onClick={() => setIsSizeGuideOpen(true)}
               style={{
                 background: "none",
                 border: "none",
-                color: "#f35c27",
+                color: "#b36338",
                 fontWeight: 700,
                 fontSize: 13,
                 cursor: "pointer",
@@ -216,34 +222,38 @@ export default function CollectionClient() {
             justifyContent: "space-between",
           }}
         >
-          {/* Category Filter Pills */}
+          {/* Category Filter Pills: ALL PIECES, TOPS, SHIRTS, DRESSES, SETS */}
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
-            <span style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: 0.5, color: "#9ca3af", marginRight: 4 }}>
-              Category:
+            <span style={{ fontSize: 11, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.1em", color: "#8a7a6c", marginRight: 4 }}>
+              Categories:
             </span>
-            {["ALL", ...categories].map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                style={{
-                  border: selectedCategory.toUpperCase() === cat.toUpperCase() ? "1px solid #111111" : "1px solid #e5e7eb",
-                  background: selectedCategory.toUpperCase() === cat.toUpperCase() ? "#111111" : "#f9fafb",
-                  color: selectedCategory.toUpperCase() === cat.toUpperCase() ? "#ffffff" : "#374151",
-                  padding: "6px 16px",
-                  borderRadius: 999,
-                  fontSize: 13,
-                  fontWeight: 600,
-                  cursor: "pointer",
-                  transition: "all 0.15s",
-                }}
-              >
-                {cat === "ALL" ? "All Pieces" : cat}
-              </button>
-            ))}
+            {["ALL PIECES", "TOPS", "SHIRTS", "DRESSES", "SETS"].map((cat) => {
+              const isSelected = (cat === "ALL PIECES" && (selectedCategory === "ALL" || selectedCategory === "ALL PIECES")) || selectedCategory.toUpperCase() === cat;
+              return (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedCategory(cat === "ALL PIECES" ? "ALL" : cat)}
+                  style={{
+                    border: isSelected ? "1.5px solid #1a140e" : "1px solid #e5e7eb",
+                    background: isSelected ? "#1a140e" : "#f9fafb",
+                    color: isSelected ? "#ffffff" : "#374151",
+                    padding: "8px 18px",
+                    borderRadius: 999,
+                    fontSize: 12,
+                    fontWeight: 700,
+                    letterSpacing: "0.06em",
+                    cursor: "pointer",
+                    transition: "all 0.15s ease",
+                  }}
+                >
+                  {cat}
+                </button>
+              );
+            })}
           </div>
 
-          {/* Sort Dropdown & Quick Filter Drawer Trigger */}
-          <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
+          {/* Optional Filters: SIZE, COLOUR, PRICE */}
+          <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
             {/* Size Filter Dropdown */}
             <select
               value={selectedSizeFilter}
@@ -252,7 +262,7 @@ export default function CollectionClient() {
                 padding: "8px 12px",
                 borderRadius: 8,
                 border: "1px solid #e5e7eb",
-                fontSize: 13,
+                fontSize: 12,
                 fontWeight: 600,
                 color: "#374151",
                 outline: "none",
@@ -261,12 +271,62 @@ export default function CollectionClient() {
               }}
               aria-label="Filter by size"
             >
-              <option value="ALL">All Sizes</option>
+              <option value="ALL">Size: All</option>
               <option value="XS">Size XS</option>
               <option value="S">Size S</option>
               <option value="M">Size M</option>
               <option value="L">Size L</option>
               <option value="XL">Size XL</option>
+            </select>
+
+            {/* Colour Filter Dropdown */}
+            <select
+              value={selectedColorFilter}
+              onChange={(e) => setSelectedColorFilter(e.target.value)}
+              style={{
+                padding: "8px 12px",
+                borderRadius: 8,
+                border: "1px solid #e5e7eb",
+                fontSize: 12,
+                fontWeight: 600,
+                color: "#374151",
+                outline: "none",
+                background: "#ffffff",
+                cursor: "pointer",
+              }}
+              aria-label="Filter by colour"
+            >
+              <option value="ALL">Colour: All</option>
+              <option value="Khadi">Natural Khadi</option>
+              <option value="Green">Green</option>
+              <option value="Noir">Noir / Black</option>
+              <option value="Rust">Rust</option>
+              <option value="Blue">Soft Blue</option>
+              <option value="Purple">Purple</option>
+              <option value="Orange">Orange</option>
+            </select>
+
+            {/* Price Filter Dropdown */}
+            <select
+              value={maxPrice}
+              onChange={(e) => setMaxPrice(Number(e.target.value))}
+              style={{
+                padding: "8px 12px",
+                borderRadius: 8,
+                border: "1px solid #e5e7eb",
+                fontSize: 12,
+                fontWeight: 600,
+                color: "#374151",
+                outline: "none",
+                background: "#ffffff",
+                cursor: "pointer",
+              }}
+              aria-label="Filter by price"
+            >
+              <option value={5000}>Price: All</option>
+              <option value={1700}>Under Rs 1700</option>
+              <option value={1900}>Under Rs 1900</option>
+              <option value={2200}>Under Rs 2200</option>
             </select>
 
             {/* Sort Selector */}
@@ -277,7 +337,7 @@ export default function CollectionClient() {
                 padding: "8px 12px",
                 borderRadius: 8,
                 border: "1px solid #e5e7eb",
-                fontSize: 13,
+                fontSize: 12,
                 fontWeight: 600,
                 color: "#374151",
                 outline: "none",
@@ -286,7 +346,7 @@ export default function CollectionClient() {
               }}
               aria-label="Sort products"
             >
-              <option value="FEATURED">Sort: Featured Edit</option>
+              <option value="FEATURED">Sort: Featured</option>
               <option value="BEST_SELLING">Best Selling</option>
               <option value="PRICE_ASC">Price: Low to High</option>
               <option value="PRICE_DESC">Price: High to Low</option>
@@ -306,7 +366,7 @@ export default function CollectionClient() {
                   textDecoration: "underline",
                 }}
               >
-                Reset Filters
+                Reset
               </button>
             )}
           </div>
@@ -315,7 +375,7 @@ export default function CollectionClient() {
         {/* Product Count Banner */}
         <div style={{ marginTop: 14, display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 13, color: "#6b7280" }}>
           <div>
-            Showing <strong>{filtered.length}</strong> {filtered.length === 1 ? "garment" : "garments"}
+            Showing <strong>{filtered.length}</strong> {filtered.length === 1 ? "piece" : "pieces"}
           </div>
           <div style={{ fontSize: 12 }}>
             Free shipping on orders above ₹1,999
@@ -359,16 +419,16 @@ export default function CollectionClient() {
               ? Number(prod.sizePrices[currentSize])
               : (prod.salePrice || prod.price);
             const hasDiscount = prod.salePrice && prod.salePrice < prod.price;
-            const isAdded = addedFeedback[prod.id];
 
             return (
-              <div key={prod.id} className="prod-card prod-fade">
+              <div key={prod.id} className="prod-card prod-fade" style={{ background: "#ffffff", borderRadius: 16, overflow: "hidden", border: "1px solid rgba(42, 31, 20, 0.08)", display: "flex", flexDirection: "column" }}>
                 <div 
                   className="prod-img-wrapper" 
-                  style={{ cursor: "pointer", position: "relative" }}
-                  onClick={() => setQuickViewProduct(prod)}
+                  style={{ cursor: "pointer", position: "relative", width: "100%", aspectRatio: "3 / 4", overflow: "hidden" }}
                 >
-                  <ImageSlider images={prod.images} altText={prod.name} />
+                  <Link href={`/product/${prod.slug}`} style={{ display: "block", width: "100%", height: "100%", aspectRatio: "3 / 4" }}>
+                    <ImageSlider images={prod.images} altText={prod.name} />
+                  </Link>
 
                   {hasDiscount && (
                     <div
@@ -376,7 +436,7 @@ export default function CollectionClient() {
                         position: "absolute",
                         top: 14,
                         left: 14,
-                        background: "#f35c27",
+                        background: "#b36338",
                         color: "#ffffff",
                         fontSize: 11,
                         fontWeight: 800,
@@ -390,191 +450,74 @@ export default function CollectionClient() {
                   )}
                 </div>
 
-                <div className="prod-info">
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-                    <div>
-                      <span className="prod-sub">
-                        {prod.subtitle || prod.category}
+                {/* Clean Product Card Content per FINAL CONTENT DIRECTION */}
+                <div className="prod-info" style={{ padding: "24px 26px", display: "flex", flexDirection: "column", justifyContent: "space-between", flex: 1 }}>
+                  <div>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 12, marginBottom: 8 }}>
+                      <Link href={`/product/${prod.slug}`} style={{ textDecoration: "none", color: "inherit" }}>
+                        <h2 style={{ fontFamily: "serif", fontSize: "1.35rem", fontWeight: 600, color: "#1a140e", margin: 0, letterSpacing: "0.02em" }}>
+                          {prod.name.toUpperCase()}
+                        </h2>
+                      </Link>
+                      <span style={{ fontSize: "1.1rem", fontWeight: 700, color: "#1a140e", whiteSpace: "nowrap" }}>
+                        Rs {displayPrice}
                       </span>
-                      <h2>{prod.name}</h2>
                     </div>
-                    <div style={{ textAlign: "right" }}>
-                      <span style={{ fontSize: 20, fontWeight: 800, color: "#111111" }}>
-                        ₹{displayPrice.toLocaleString("en-IN")}
-                      </span>
-                      {hasDiscount && (
-                        <div style={{ fontSize: 13, color: "#888888", textDecoration: "line-through" }}>
-                          ₹{prod.price.toLocaleString("en-IN")}
-                        </div>
-                      )}
-                    </div>
+
+                    {/* Short personality-led line */}
+                    <p style={{ fontSize: "0.95rem", lineHeight: 1.5, color: "#6b5d52", fontStyle: "italic", margin: "0 0 20px" }}>
+                      {prod.personality || prod.hook || prod.subtitle}
+                    </p>
                   </div>
 
-                  <p className="prod-hook">{prod.hook || prod.description?.slice(0, 70)}</p>
-                  <p className="prod-desc">{prod.description}</p>
-
-                  {/* Size Selection Pill Buttons */}
-                  <div style={{ margin: "16px 0 12px" }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                      <span style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: 0.5, color: "#666" }}>
-                        Choose Size:
-                      </span>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setIsSizeGuideOpen(true);
-                        }}
-                        style={{
-                          background: "none",
-                          border: "none",
-                          color: "#888888",
-                          fontSize: 11,
-                          cursor: "pointer",
-                          textDecoration: "underline",
-                        }}
-                      >
-                        Size Guide
-                      </button>
-                    </div>
-
-                    <div style={{ display: "flex", gap: 8, marginTop: 6, flexWrap: "wrap" }}>
-                      {(prod.sizes || ["XS", "S", "M", "L", "XL"]).map((sz) => (
-                        <button
-                          key={sz}
-                          className={`quickview-size-pill ${currentSize === sz ? "selected" : ""}`}
-                          onClick={() => handleSizeChange(prod.id, sz)}
-                          style={{ padding: "4px 10px", fontSize: 12, minWidth: 36, textAlign: "center" }}
-                        >
-                          {sz}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Add to Bag and Quick View Buttons */}
-                  <div style={{ display: "flex", gap: 10, marginTop: 16 }}>
-                    {(() => {
-                      const matchingItem = cart.find(
-                        (i) => i.id === prod.id && i.selectedSize === currentSize
-                      );
-                      const qty = matchingItem ? matchingItem.quantity : 0;
-
-                      if (qty > 0) {
-                        return (
-                          <div
-                            style={{
-                              flex: 1,
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "space-between",
-                              background: "#111111",
-                              color: "#ffffff",
-                              borderRadius: 8,
-                              padding: "4px 8px",
-                            }}
-                          >
-                            <button
-                              onClick={() => updateQuantity(prod.id, currentSize, prod.colors?.[0] || "", -1)}
-                              style={{
-                                width: 30,
-                                height: 30,
-                                borderRadius: 4,
-                                background: "rgba(255, 255, 255, 0.15)",
-                                border: "none",
-                                color: "#ffffff",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                cursor: "pointer",
-                              }}
-                              aria-label="Decrease quantity"
-                            >
-                              <FiMinus size={13} />
-                            </button>
-                            <span style={{ fontSize: 12, fontWeight: 800 }}>{qty} in Bag</span>
-                            <button
-                              onClick={() => updateQuantity(prod.id, currentSize, prod.colors?.[0] || "", 1)}
-                              style={{
-                                width: 30,
-                                height: 30,
-                                borderRadius: 4,
-                                background: "#f35c27",
-                                border: "none",
-                                color: "#ffffff",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                cursor: "pointer",
-                              }}
-                              aria-label="Increase quantity"
-                            >
-                              <FiPlus size={13} />
-                            </button>
-                          </div>
-                        );
-                      }
-
-                      return (
-                        <button
-                          className="cart-checkout-btn"
-                          style={{
-                            margin: 0,
-                            flex: 1,
-                            padding: "12px 18px",
-                            fontSize: 13,
-                            background: isAdded ? "#15803d" : "#111111",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            gap: 6,
-                            transition: "background 0.2s ease",
-                          }}
-                          onClick={() => handleAddToCart(prod)}
-                        >
-                          {isAdded ? (
-                            <>
-                              <FiCheck size={16} />
-                              <span>Added to Bag</span>
-                            </>
-                          ) : (
-                            <span>Add to Bag</span>
-                          )}
-                        </button>
-                      );
-                    })()}
-
+                  {/* Actions: QUICK VIEW & VIEW PIECE */}
+                  <div style={{ display: "flex", gap: 10, marginTop: "auto" }}>
                     <button
-                      className="quickview-size-pill"
-                      style={{ padding: "12px 16px", background: "#f5f5f5", border: "1px solid #ddd", fontWeight: 700 }}
+                      className="quickview-btn"
                       onClick={() => setQuickViewProduct(prod)}
-                      title="Quick View Gallery"
+                      style={{
+                        flex: 1,
+                        padding: "11px 16px",
+                        background: "transparent",
+                        color: "#1a140e",
+                        border: "1.5px solid #1a140e",
+                        borderRadius: 8,
+                        fontSize: "0.82rem",
+                        fontWeight: 700,
+                        letterSpacing: "0.08em",
+                        textTransform: "uppercase",
+                        cursor: "pointer",
+                        transition: "all 0.2s ease",
+                      }}
                     >
                       Quick View
                     </button>
                     <Link
                       href={`/product/${prod.slug}`}
                       style={{
-                        padding: "12px 16px",
-                        background: "#fff",
-                        border: "1.5px solid #111",
+                        flex: 1,
+                        padding: "11px 16px",
+                        background: "#1a140e",
+                        color: "#f5ede3",
+                        border: "1.5px solid #1a140e",
                         borderRadius: 8,
+                        fontSize: "0.82rem",
                         fontWeight: 700,
-                        fontSize: 13,
-                        color: "#111",
+                        letterSpacing: "0.08em",
+                        textTransform: "uppercase",
                         textDecoration: "none",
+                        textAlign: "center",
                         display: "flex",
                         alignItems: "center",
-                        gap: 4,
-                        whiteSpace: "nowrap",
-                        transition: "all 0.2s",
+                        justifyContent: "center",
+                        gap: 6,
+                        transition: "all 0.2s ease",
                       }}
-                      title="View full product details"
                     >
-                      <FiArrowUpRight size={14} /> Details
+                      <span>View Piece</span>
+                      <FiArrowUpRight size={14} />
                     </Link>
                   </div>
-
-                  {prod.oneLine && <p className="prod-oneline" style={{ marginTop: 14 }}>"{prod.oneLine}"</p>}
                 </div>
               </div>
             );

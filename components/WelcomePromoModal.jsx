@@ -206,7 +206,7 @@ export default function WelcomePromoModal() {
             </Link>
 
             <a
-              href="https://wa.me/919876543210?text=Hi%20Sum%20Clothico%2C%20I%20saw%20your%20welcome%20offer%20and%20would%20like%20to%20chat%20with%20a%20stylist."
+              href="https://wa.me/919329587707?text=Hi%20Sum%20Clothico%2C%20I%20saw%20your%20welcome%20offer%20and%20would%20like%20to%20chat%20with%20a%20stylist."
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => {

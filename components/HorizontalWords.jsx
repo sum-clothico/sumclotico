@@ -1,268 +1,111 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
+import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "../app/styles/horizontal-words.css";
+import { FiArrowRight, FiMapPin } from "react-icons/fi";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const HorizontalWords = () => {
+const TOTAL_PIN_DISTANCE = 3300;
+
+export default function HorizontalWords() {
   const sectionRef = useRef(null);
+  const contentRef = useRef(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       const container = sectionRef.current;
-      const textRef = container.querySelector(".horizontal-words__relative");
-      const letters = container.querySelectorAll(".letter");
+      const content = contentRef.current;
 
-      // Select the individual stickers instead of just the wrapper
-      // or we select the images directly if they are the elements we want to animate.
-      // The original logic animated .horizontal-words__sticker-svg, but since you have multiple images:
-      const stickers = container.querySelectorAll(
-        ".horizontal-words__sticker-watch, .horizontal-words__sticker-cursor, .horizontal-words__sticker-phone",
-      );
-
-      // Note: To animate SVG paths with strokeDashoffset, the SVG must be inlined in the HTML,
-      // not loaded via <img> tags. The current setup uses <img> tags, so direct path animation
-      // as written below will not work unless the SVGs are converted to inline <svg> elements.
-      // For the purpose of this exercise, we'll assume the intent is for inline SVGs or
-      // that the querySelectorAll will find nothing and the animation will gracefully skip.
-      const arrows = container.querySelectorAll(
-        ".horizontal-words__arrow-svg path, .horizontal-words__arrow-end-svg path",
-      );
-
-      // --- ENTRANCE & PINNING LOGIC ---
-      // To make letters start animating as we scroll down from VimeoHero,
-      // we start the horizontal movement as soon as the section enters the viewport (top bottom).
-      const entranceDistance = window.innerHeight;
-      const textScrollDistance = 2500; // How long the text takes to scroll
-      const extraPinForImage = 800; // Extra pinned time for traveling image fade-in
-      const totalPinDistance = textScrollDistance + extraPinForImage;
-
-      // Text scroll timeline — ends when text finishes (before pin ends)
-      const scrollTween = gsap.timeline({
-        scrollTrigger: {
-          trigger: container,
-          start: "top bottom",
-          end: () => `+=${entranceDistance + textScrollDistance}`,
-          scrub: 1,
-          invalidateOnRefresh: true,
-        },
-      });
-
-      scrollTween
-        .fromTo(
-          textRef,
-          {
-            x: window.innerWidth,
-          },
-          {
-            x: window.innerWidth * 0.5,
-            ease: "none",
-            duration: entranceDistance,
-          },
-        )
-        .to(textRef, {
-          x: () => -(textRef.scrollWidth - window.innerWidth * 0.5),
-          ease: "none",
-          duration: textScrollDistance,
-        });
-
-      // Pin lasts longer than text scroll — extra time for image fade-in
+      // Pin the section while the story and traveling image reveal
       ScrollTrigger.create({
         trigger: container,
         start: "top top",
-        end: () => `+=${totalPinDistance}`,
+        end: () => `+=${TOTAL_PIN_DISTANCE}`,
         pin: true,
         pinSpacing: true,
         invalidateOnRefresh: true,
         refreshPriority: 2,
       });
-      // ------------------------------------
 
-      // Bounce each letter randomly
-      letters.forEach((letter) => {
-        gsap.from(letter, {
-          yPercent: (Math.random() - 0.5) * 500,
-          rotation: (Math.random() - 0.5) * 60,
-          ease: "elastic.out(1.2, 1)",
+      // Frame stroke animation
+      const hFrame = container.querySelector(".section-frame-path");
+      if (hFrame) {
+        const len = hFrame.getTotalLength ? hFrame.getTotalLength() : 1100;
+        gsap.set(hFrame, { strokeDasharray: len, strokeDashoffset: len });
+        gsap.to(hFrame, {
+          strokeDashoffset: 0,
+          ease: "power2.inOut",
           scrollTrigger: {
-            trigger: letter,
-            containerAnimation: scrollTween,
-            start: "left 90%",
-            end: "left 50%", // Finish as it reaches center
-            scrub: 0.5,
+            trigger: container,
+            start: "top top",
+            end: "+=1200",
+            scrub: 1,
           },
         });
-      });
+      }
 
-      // Bounce stickers
-      stickers.forEach((sticker) => {
-        gsap.from(sticker, {
-          scale: 0,
-          yPercent: (Math.random() - 0.5) * 400,
-          rotation: (Math.random() - 0.5) * 60,
-          ease: "elastic.out(1.2, 1)",
-          scrollTrigger: {
-            trigger: sticker,
-            containerAnimation: scrollTween,
-            start: "left 90%",
-            end: "left 50%", // Finish as it reaches center
-            scrub: 0.5,
-          },
-        });
-      });
-
-      // Animate Drawing SVG Arrows
-      arrows.forEach((arrowPath) => {
-        if (arrowPath.getTotalLength) {
-          const pathLen = arrowPath.getTotalLength();
-          gsap.set(arrowPath, {
-            strokeDasharray: pathLen,
-            strokeDashoffset: pathLen,
-          });
-          gsap.to(arrowPath, {
-            strokeDashoffset: 0,
-            duration: 1,
-            scrollTrigger: {
-              trigger: arrowPath.parentElement,
-              containerAnimation: scrollTween,
-              start: "left 90%",
-              end: "left 50%", // This is the last arrow's end point
-              scrub: 0.5,
-            },
-          });
-        }
-      });
-
-      // Animate Corner Ornaments (SVG and Hindi char)
+      // Corner botanical wipe-up reveal
       gsap.to(".horizontal-words__corner-left", {
         clipPath: "inset(0% 0% 0% 0%)",
-        ease: "none",
+        opacity: 0.65,
+        ease: "power2.out",
         scrollTrigger: {
-          trigger: textRef,
-          containerAnimation: scrollTween,
-          start: "left 80%",
-          end: "right 90%", // Reveals completely quicker
-          scrub: true,
+          trigger: container,
+          start: "top 30%",
+          end: "top top",
+          scrub: 1,
         },
       });
 
-      // Fade out alphabet as scrolled more
+      // Subtle parallax on watermark character
       gsap.to(".horizontal-words__corner-right", {
-        opacity: 0,
+        y: 60,
+        opacity: 0.35,
         ease: "none",
         scrollTrigger: {
-          trigger: textRef,
-          containerAnimation: scrollTween,
-          start: "left 50%",
-          end: "right 60%",
-          scrub: true,
+          trigger: container,
+          start: "top bottom",
+          end: `+=${TOTAL_PIN_DISTANCE}`,
+          scrub: 1,
         },
       });
+
+      // Content elements smooth stagger entrance
+      if (content) {
+        gsap.fromTo(
+          content.querySelectorAll(".hw-editorial-item"),
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            stagger: 0.15,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: container,
+              start: "top 60%",
+            },
+          }
+        );
+      }
     }, sectionRef);
 
     return () => ctx.revert();
   }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      className="horizontal-words-section content-section"
-    >
-      <div className="horizontal-words__relative">
-        <div className="horizontal-words__sticker-svg">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="100%"
-            viewBox="0 0 386 127"
-            fill="none"
-            className="horizontal-words__arrow-svg"
-          >
-            <path
-              d="M2 123C9 35.9999 84.5 17 124 25.9999C217.764 47.3635 207 115 177.5 123C105.777 142.45 110.737 1.99991 232.5 2C310.5 2.00006 366.5 79 376 118L356.5 105.5"
-              stroke="currentColor"
-              strokeWidth="3"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            ></path>
-            <path
-              d="M2 123C9 35.9999 84.5 17 124 25.9999C217.764 47.3635 207 115 177.5 123C105.777 142.45 110.737 1.99991 232.5 2C310.5 2.00006 366.5 79 376 118L384 97"
-              stroke="currentColor"
-              strokeWidth="3"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            ></path>
-          </svg>
-          <img
-            src="/assets/HorizontalWords SVG/horizontal-words-sticker-thumps-up.svg"
-            className="horizontal-words__sticker-watch"
-            alt="thumbs up sticker"
-          />
-          <img
-            src="/assets/HorizontalWords SVG/horizontal-words-sticker-cursor.svg"
-            className="horizontal-words__sticker-cursor"
-            alt="cursor sticker"
-          />
-          <img
-            src="/assets/HorizontalWords SVG/horizontal-words-sticker-phone.svg"
-            className="horizontal-words__sticker-phone"
-            alt="phone sticker"
-          />
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="100%"
-            viewBox="0 0 140 127"
-            fill="none"
-            className="horizontal-words__arrow-end-svg"
-          >
-            <path
-              d="M2.03125 2.42188C100.469 2.42188 130.156 52.4219 118.437 125.078L99.6875 107.891"
-              stroke="currentColor"
-              strokeWidth="3"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            ></path>
-            <path
-              d="M2.03125 2.42188C100.469 2.42188 130.156 52.4219 118.438 125.078L137.969 110.234"
-              stroke="currentColor"
-              strokeWidth="3"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            ></path>
-          </svg>
-
-          <h2
-            className="display horizontal-words__h2"
-            aria-label="THE FEELING"
-          >
-            {"THE FEELING".split("").map((char, i) =>
-              char === " " ? (
-                <span key={i} aria-hidden="true" style={{ display: "inline-block", width: "0.35em" }} />
-              ) : (
-                <div
-                  key={i}
-                  className="letter"
-                  aria-hidden="true"
-                  style={{ position: "relative", display: "inline-block" }}
-                >
-                  {char}
-                </div>
-              )
-            )}
-          </h2>
-        </div>
+    <section ref={sectionRef} className="horizontal-words-section content-section">
+      {/* ─── Preserved Background Ornaments ─── */}
+      <div className="horizontal-words__corner-left">
+        <img src="/assets/Asset 1.svg" alt="Botanical Line Art" />
       </div>
+      <div className="horizontal-words__corner-right">स</div>
 
-      <div className="horizontal-words__bottom-text">
-        <div className="horizontal-words__bottom-text-l">
-          Some fabrics are made fast.<br />
-          <em className="story-section__highlight">This one is made with time.</em>
-        </div>
-      </div>
-
-      {/* ─── SVG Frame for Traveling Image ─── */}
+      {/* ─── Preserved SVG Frame for Traveling Image ─── */}
       <svg className="horizontal-words__frame" viewBox="0 0 240 330">
         <rect
           className="section-frame-path"
@@ -277,13 +120,190 @@ const HorizontalWords = () => {
         />
       </svg>
 
-      {/* ─── Corner Ornaments ─── */}
-      <div className="horizontal-words__corner-left">
-        <img src="/assets/Asset 1.svg" alt="Botanical Line Art" />
+      {/* ─── New Elegant Editorial Content ─── */}
+      <div
+        ref={contentRef}
+        style={{
+          position: "relative",
+          zIndex: 10,
+          width: "100%",
+          maxWidth: "1200px",
+          height: "100%",
+          margin: "0 auto",
+          padding: "60px 24px 40px",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          alignItems: "center",
+          boxSizing: "border-box",
+        }}
+      >
+        {/* Top Header */}
+        <div style={{ textAlign: "center", maxWidth: "800px" }} className="hw-editorial-item">
+          <span
+            style={{
+              fontSize: "11px",
+              fontWeight: 800,
+              letterSpacing: "2.5px",
+              textTransform: "uppercase",
+              color: "#f35c27",
+              display: "inline-block",
+              marginBottom: "10px",
+            }}
+          >
+            The Beginning of the Journey
+          </span>
+          <h2
+            style={{
+              fontSize: "clamp(30px, 5vw, 54px)",
+              fontWeight: 800,
+              lineHeight: 1.12,
+              letterSpacing: "-0.03em",
+              color: "#111827",
+              margin: 0,
+            }}
+          >
+            Rooted in handwoven textiles.
+          </h2>
+        </div>
+
+        {/* Flanking Story Columns (Left & Right of the Central Portrait Frame) */}
+        <div
+          style={{
+            width: "100%",
+            display: "grid",
+            gridTemplateColumns: "1fr 280px 1fr",
+            gap: "24px",
+            alignItems: "center",
+            margin: "auto 0",
+          }}
+        >
+          {/* Left Column Narrative */}
+          <div
+            className="hw-editorial-item"
+            style={{
+              textAlign: "right",
+              paddingRight: "20px",
+              display: "flex",
+              flexDirection: "column",
+              gap: "12px",
+            }}
+          >
+            <p
+              style={{
+                fontSize: "clamp(14px, 1.4vw, 17px)",
+                lineHeight: 1.65,
+                color: "#374151",
+                margin: 0,
+                fontWeight: 500,
+              }}
+            >
+              We believe a garment&apos;s story begins long before it reaches your wardrobe.
+            </p>
+            <p
+              style={{
+                fontSize: "clamp(13px, 1.2vw, 15px)",
+                lineHeight: 1.6,
+                color: "#6b7280",
+                margin: 0,
+              }}
+            >
+              With the hands that make it. The place it comes from.
+            </p>
+          </div>
+
+          {/* Center spacer — dedicated for the SVG Frame & Traveling Image */}
+          <div style={{ minHeight: "330px" }} aria-hidden="true" />
+
+          {/* Right Column Narrative */}
+          <div
+            className="hw-editorial-item"
+            style={{
+              textAlign: "left",
+              paddingLeft: "20px",
+              display: "flex",
+              flexDirection: "column",
+              gap: "12px",
+            }}
+          >
+            <p
+              style={{
+                fontSize: "clamp(14px, 1.4vw, 17px)",
+                lineHeight: 1.65,
+                color: "#374151",
+                margin: 0,
+                fontWeight: 500,
+              }}
+            >
+              The way the yarn is spun. The way the loom moves at human rhythm.
+            </p>
+            <p
+              style={{
+                fontSize: "clamp(13px, 1.2vw, 15px)",
+                lineHeight: 1.6,
+                color: "#111827",
+                fontWeight: 600,
+                margin: 0,
+              }}
+            >
+              Starting close to home, with Khadi cotton sourced from Madhya Pradesh.
+            </p>
+          </div>
+        </div>
+
+        {/* Bottom Location & Action CTA */}
+        <div
+          className="hw-editorial-item"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "14px",
+            textAlign: "center",
+          }}
+        >
+          <div
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "7px",
+              background: "rgba(255, 255, 255, 0.8)",
+              backdropFilter: "blur(6px)",
+              border: "1px solid #e5e7eb",
+              padding: "6px 16px",
+              borderRadius: "99px",
+              fontSize: "12px",
+              fontWeight: 700,
+              color: "#1f2937",
+            }}
+          >
+            <FiMapPin size={13} color="#f35c27" />
+            <span>We design it for today • Currently: Khadi Cotton · Madhya Pradesh</span>
+          </div>
+
+          <Link
+            href="/fabric"
+            style={{
+              background: "#111827",
+              color: "#ffffff",
+              padding: "12px 28px",
+              borderRadius: "99px",
+              fontWeight: 700,
+              fontSize: "13px",
+              letterSpacing: "0.5px",
+              textDecoration: "none",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "8px",
+              boxShadow: "0 4px 14px rgba(0,0,0,0.1)",
+              transition: "transform 0.15s ease",
+            }}
+          >
+            <span>Our Fabric Story</span>
+            <FiArrowRight size={14} />
+          </Link>
+        </div>
       </div>
-      <div className="horizontal-words__corner-right">स</div>
     </section>
   );
-};
-
-export default HorizontalWords;
+}

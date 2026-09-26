@@ -9,15 +9,15 @@ const PIN_DURATION = 7000;
 
 const phases = [
   {
-    text: "Fabric has evolved over time, from handmade craft to modern production.",
+    text: "We believe a garment's story begins long before it reaches your wardrobe — with the hands that make it.",
     position: "right",
   },
   {
-    text: "Khadi is more than just fabric it represents India’s spirit of self-reliance and pride.",
+    text: "At Sum, we are exploring handwoven textiles from across India — one place, one textile and one story at a time.",
     position: "left",
   },
   {
-    text: "Each piece is hand-spun and handwoven, carrying the warmth and authenticity of human touch.",
+    text: "We are starting close to home, with pure Khadi cotton sourced from artisan weavers in Madhya Pradesh.",
     position: "right",
   },
 ];
