@@ -8,9 +8,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(InertiaPlugin, ScrollTrigger);
 
 const PHASE_TEXTS = [
-  "Before it becomes your clothes, it passes through many hands.",
   "From the textile we source to the hands that cut, stitch and finish each piece.",
   "Sum is a collection of many small acts of making.",
+  "We want you to know where your clothes come from — not just what they look like when they arrive.",
   "Clothes that keep up with you — from morning coffee runs to slow Sundays.",
   "Made with time. Made for living.",
 ];
@@ -144,7 +144,7 @@ export default function MotionCards() {
       <div className="horizontal-words__corner-right">म</div>
 
       {/* ─── Section heading ─── */}
-      <h2 className="mc-heading">Where Khadi Fits in Your Life</h2>
+      <h2 className="mc-heading">Before it becomes your clothes, it passes through many hands.</h2>
 
       {/* ─── Click-to-cycle Text ─── */}
       <div

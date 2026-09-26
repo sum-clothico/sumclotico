@@ -5,7 +5,14 @@ import Loader from "@/components/Loader";
 import SvgSymbols from "@/components/SvgSymbols";
 import Navbar from "@/components/Navbar";
 import ArchedHero from "@/components/ArchedHero";
-import HomeSections from "@/components/HomeSections";
+import HorizontalWords from "@/components/HorizontalWords";
+import FeaturedProductsSection from "@/components/FeaturedProductsSection";
+import StorySection from "@/components/StorySection";
+import SplitSection from "@/components/SplitSection";
+import TravelingImage from "@/components/TravelingImage";
+import AboutSection from "@/components/AboutSection";
+import MotionCards from "@/components/MotionCards";
+import JournalPreviewSection from "@/components/JournalPreviewSection";
 import Footer from "@/components/Footer";
 import CursorBubble from "@/components/CursorBubble";
 import SmoothScroll from "@/components/SmoothScroll";
@@ -21,15 +28,26 @@ export default function Home() {
       <CursorBubble />
       <header className="main-header">
         <Navbar />
-        {/* 01. HERO — Rounded Rectangular Video with Aligned Content */}
         <ArchedHero />
       </header>
+      <FeaturedProductsSection />
+      <HorizontalWords />
+      <StorySection />
+      <SplitSection />
+      <TravelingImage />
+      <img
+        src="/assets/footer-dip.png"
+        alt=""
+        className="motion-card__dip-img"
+      />
       <main>
-        {/* 02. The Feeling through 10. Final Shopping Moment */}
-        <HomeSections />
+        <div className="content-section motion-cards-wrapper">
+          <MotionCards />
+        </div>
+        <AboutSection />
+        <JournalPreviewSection />
       </main>
       <footer className="main-footer">
-        {/* 11. FOOTER */}
         <Footer />
       </footer>
     </>

@@ -104,11 +104,12 @@ export default function FeaturedProductsSection() {
                   transition: "transform 0.25s ease, box-shadow 0.25s ease",
                 }}
               >
-                {/* Image Stage */}
+                {/* Image Stage — Portrait 3:4 without cropping faces/necks */}
                 <div
                   style={{
                     position: "relative",
-                    height: 340,
+                    aspectRatio: "3 / 4",
+                    width: "100%",
                     background: "#f3f4f6",
                     overflow: "hidden",
                     cursor: "pointer",
@@ -122,6 +123,7 @@ export default function FeaturedProductsSection() {
                       width: "100%",
                       height: "100%",
                       objectFit: "cover",
+                      objectPosition: "top center",
                       transition: "transform 0.4s ease",
                     }}
                     onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}

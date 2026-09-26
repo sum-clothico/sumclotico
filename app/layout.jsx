@@ -41,9 +41,13 @@ export const metadata = {
 
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "G-4PDRN1Q81Y";
 
+const CLERK_PUBLISHABLE_KEY =
+  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ||
+  "pk_test_YW1hemVkLWRlZXItNDIxMy5jbGVyay5hY2NvdW50cy5kZXYk";
+
 export default function RootLayout({ children }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY}>
       <html lang="en" suppressHydrationWarning>
         <head>
           {/* Google Analytics 4 (GA4) Tracking Scripts */}

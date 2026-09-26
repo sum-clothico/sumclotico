@@ -9,15 +9,15 @@ const PIN_DURATION = 7000;
 
 const phases = [
   {
-    text: "We believe a garment's story begins long before it reaches your wardrobe — with the hands that make it.",
+    text: "A thread spun by hand. A loom moving at its own rhythm.",
     position: "right",
   },
   {
-    text: "At Sum, we are exploring handwoven textiles from across India — one place, one textile and one story at a time.",
+    text: "A garment cut, stitched and finished with care.",
     position: "left",
   },
   {
-    text: "We are starting close to home, with pure Khadi cotton sourced from artisan weavers in Madhya Pradesh.",
+    text: "There is something different about clothes that don't begin with a race against time. They feel lighter. They move differently. And somehow, they become more yours.",
     position: "right",
   },
 ];
@@ -98,7 +98,7 @@ const StorySection = () => {
   return (
     <section ref={sectionRef} className="story-section" id="story">
       {/* Heading */}
-      <h2 className="story-section__heading">What is Khadi?</h2>
+      <h2 className="story-section__heading">Some things are better when they take time.</h2>
 
       {/* SVG Frame */}
       <svg className="story-section__frame" viewBox="0 0 240 330">
@@ -126,9 +126,9 @@ const StorySection = () => {
         </div>
       ))}
 
-      {/* Link to Our Story */}
-      <a href="/our-story" className="story-section__link">
-        Read Our Story →
+      {/* Link to Fabric Story */}
+      <a href="/fabric" className="story-section__link">
+        Explore the Fabric →
       </a>
 
       {/* Cloth image */}
