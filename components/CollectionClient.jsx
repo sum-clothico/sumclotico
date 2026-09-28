@@ -5,10 +5,10 @@ import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "../app/styles/collection.css";
-import Footer from "./Footer";
 import { useStore } from "@/context/StoreContext";
-import { FiShoppingBag, FiFilter, FiCheck, FiX, FiSliders, FiArrowUpRight, FiPlus, FiMinus } from "react-icons/fi";
+import { FiShoppingBag, FiFilter, FiCheck, FiX, FiSliders, FiArrowUpRight, FiPlus, FiMinus, FiEye } from "react-icons/fi";
 import { trackEvent } from "@/lib/analytics";
+import IndianArchBadge from "@/components/IndianArchBadge";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -164,17 +164,20 @@ export default function CollectionClient() {
       <div className="os-noise" />
 
       {/* Hero Header */}
-      <section className="col-hero" style={{ paddingBottom: "32px", textAlign: "center", maxWidth: 840, margin: "0 auto" }}>
-        <h1 className="prod-fade" style={{ fontFamily: "serif", fontSize: "clamp(2.2rem, 4vw, 3.2rem)", fontWeight: 500, color: "#1a140e", marginBottom: 16 }}>
+      <section className="col-hero" style={{ paddingBottom: "24px", textAlign: "center", maxWidth: 840, margin: "28px auto 36px" }}>
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: "16px" }}>
+          <IndianArchBadge>Handcrafted Everyday Silhouettes</IndianArchBadge>
+        </div>
+        <h1 className="prod-fade" style={{ fontFamily: "serif", fontSize: "clamp(2.2rem, 4vw, 3.2rem)", fontWeight: 600, color: "#2C2016", marginBottom: 16 }}>
           Clothes you&apos;ll want to wear again.
         </h1>
-        <p className="prod-fade" style={{ fontSize: "1.1rem", lineHeight: 1.8, color: "#4a3c30", maxWidth: 640, margin: "0 auto 24px" }}>
+        <p className="prod-fade" style={{ fontSize: "1.08rem", lineHeight: 1.8, color: "#5C4A3E", maxWidth: 640, margin: "0 auto 24px" }}>
           Easy pieces. Thoughtful details. Handwoven beginnings.
           <br />
           Made for everyday life however yours happens to look.
         </p>
         
-        <div className="col-details prod-fade" style={{ justifyContent: "center", gap: 24 }}>
+        <div className="col-details prod-fade" style={{ justifyContent: "center", gap: 20 }}>
           <div className="detail-item"><span>Textile:</span> 100% Handspun Khadi Cotton</div>
           <div className="detail-item"><span>Origin:</span> Madhya Pradesh, India</div>
           <div className="detail-item">
@@ -183,7 +186,7 @@ export default function CollectionClient() {
               style={{
                 background: "none",
                 border: "none",
-                color: "#b36338",
+                color: "#660608",
                 fontWeight: 700,
                 fontSize: 13,
                 cursor: "pointer",
@@ -203,18 +206,18 @@ export default function CollectionClient() {
       {/* ─── FILTERS & SORTING BAR ─── */}
       <section
         style={{
-          maxWidth: 1280,
+          maxWidth: 1360,
           margin: "0 auto 36px",
           padding: "0 24px",
         }}
       >
         <div
           style={{
-            background: "#ffffff",
-            padding: "18px 24px",
+            background: "#FAF6F0",
+            padding: "16px 24px",
             borderRadius: 14,
-            boxShadow: "0 4px 20px rgba(0,0,0,0.04)",
-            border: "1px solid #f0f0f0",
+            boxShadow: "0 4px 20px rgba(44, 32, 22, 0.04)",
+            border: "1px solid rgba(44, 32, 22, 0.12)",
             display: "flex",
             flexWrap: "wrap",
             gap: 16,
@@ -234,9 +237,9 @@ export default function CollectionClient() {
                   key={cat}
                   onClick={() => setSelectedCategory(cat === "ALL PIECES" ? "ALL" : cat)}
                   style={{
-                    border: isSelected ? "1.5px solid #1a140e" : "1px solid #e5e7eb",
-                    background: isSelected ? "#1a140e" : "#f9fafb",
-                    color: isSelected ? "#ffffff" : "#374151",
+                    border: isSelected ? "1.5px solid #660608" : "1px solid rgba(44, 32, 22, 0.18)",
+                    background: isSelected ? "#660608" : "#FAF6F0",
+                    color: isSelected ? "#FAF6F0" : "#4A3B30",
                     padding: "8px 18px",
                     borderRadius: 999,
                     fontSize: 12,
@@ -261,12 +264,12 @@ export default function CollectionClient() {
               style={{
                 padding: "8px 12px",
                 borderRadius: 8,
-                border: "1px solid #e5e7eb",
+                border: "1px solid rgba(44, 32, 22, 0.2)",
                 fontSize: 12,
-                fontWeight: 600,
-                color: "#374151",
+                fontWeight: 700,
+                color: "#2C2016",
                 outline: "none",
-                background: "#ffffff",
+                background: "#FAF6F0",
                 cursor: "pointer",
               }}
               aria-label="Filter by size"
@@ -286,12 +289,12 @@ export default function CollectionClient() {
               style={{
                 padding: "8px 12px",
                 borderRadius: 8,
-                border: "1px solid #e5e7eb",
+                border: "1px solid rgba(44, 32, 22, 0.2)",
                 fontSize: 12,
-                fontWeight: 600,
-                color: "#374151",
+                fontWeight: 700,
+                color: "#2C2016",
                 outline: "none",
-                background: "#ffffff",
+                background: "#FAF6F0",
                 cursor: "pointer",
               }}
               aria-label="Filter by colour"
@@ -313,20 +316,20 @@ export default function CollectionClient() {
               style={{
                 padding: "8px 12px",
                 borderRadius: 8,
-                border: "1px solid #e5e7eb",
+                border: "1px solid rgba(44, 32, 22, 0.2)",
                 fontSize: 12,
-                fontWeight: 600,
-                color: "#374151",
+                fontWeight: 700,
+                color: "#2C2016",
                 outline: "none",
-                background: "#ffffff",
+                background: "#FAF6F0",
                 cursor: "pointer",
               }}
               aria-label="Filter by price"
             >
               <option value={5000}>Price: All</option>
-              <option value={1700}>Under Rs 1700</option>
-              <option value={1900}>Under Rs 1900</option>
-              <option value={2200}>Under Rs 2200</option>
+              <option value={1700}>Under ₹1,700</option>
+              <option value={1900}>Under ₹1,900</option>
+              <option value={2200}>Under ₹2,200</option>
             </select>
 
             {/* Sort Selector */}
@@ -336,12 +339,12 @@ export default function CollectionClient() {
               style={{
                 padding: "8px 12px",
                 borderRadius: 8,
-                border: "1px solid #e5e7eb",
+                border: "1px solid rgba(44, 32, 22, 0.2)",
                 fontSize: 12,
-                fontWeight: 600,
-                color: "#374151",
+                fontWeight: 700,
+                color: "#2C2016",
                 outline: "none",
-                background: "#ffffff",
+                background: "#FAF6F0",
                 cursor: "pointer",
               }}
               aria-label="Sort products"
@@ -384,7 +387,7 @@ export default function CollectionClient() {
       </section>
 
       {/* ─── PRODUCTS GRID ─── */}
-      <section className="prod-grid" style={{ maxWidth: 1280, margin: "0 auto 60px", padding: "0 24px 100px" }}>
+      <section className="prod-grid" style={{ maxWidth: 1360, margin: "0 auto 60px", padding: "0 24px 100px" }}>
         {filtered.length === 0 ? (
           <div style={{ gridColumn: "1 / -1", textAlign: "center", padding: "80px 20px" }}>
             <div style={{ width: 64, height: 64, borderRadius: "50%", background: "#f3f4f6", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
@@ -421,102 +424,215 @@ export default function CollectionClient() {
             const hasDiscount = prod.salePrice && prod.salePrice < prod.price;
 
             return (
-              <div key={prod.id} className="prod-card prod-fade" style={{ background: "#ffffff", borderRadius: 16, overflow: "hidden", border: "1px solid rgba(42, 31, 20, 0.08)", display: "flex", flexDirection: "column" }}>
+              <div
+                key={prod.id}
+                className="prod-card prod-fade"
+                style={{
+                  background: "#FAF6F0",
+                  borderRadius: 16,
+                  overflow: "hidden",
+                  border: "1px solid rgba(44, 32, 22, 0.12)",
+                  boxShadow: "0 6px 24px rgba(44, 32, 22, 0.05)",
+                  display: "flex",
+                  flexDirection: "column",
+                  transition: "transform 0.25s ease, box-shadow 0.25s ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-4px)";
+                  e.currentTarget.style.boxShadow = "0 12px 30px rgba(44, 32, 22, 0.1)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "0 6px 24px rgba(44, 32, 22, 0.05)";
+                }}
+              >
                 <div 
                   className="prod-img-wrapper" 
-                  style={{ cursor: "pointer", position: "relative", width: "100%", aspectRatio: "3 / 4", overflow: "hidden" }}
+                  style={{ cursor: "pointer", position: "relative", width: "100%", aspectRatio: "3 / 4", overflow: "hidden", background: "#EBE5D9" }}
                 >
                   <Link href={`/product/${prod.slug}`} style={{ display: "block", width: "100%", height: "100%", aspectRatio: "3 / 4" }}>
                     <ImageSlider images={prod.images} altText={prod.name} />
                   </Link>
 
                   {hasDiscount && (
-                    <div
-                      style={{
-                        position: "absolute",
-                        top: 14,
-                        left: 14,
-                        background: "#b36338",
-                        color: "#ffffff",
-                        fontSize: 11,
-                        fontWeight: 800,
-                        padding: "4px 8px",
-                        borderRadius: 4,
-                        zIndex: 10,
-                      }}
-                    >
-                      SALE
-                    </div>
-                  )}
-                </div>
-
-                {/* Clean Product Card Content per FINAL CONTENT DIRECTION */}
-                <div className="prod-info" style={{ padding: "24px 26px", display: "flex", flexDirection: "column", justifyContent: "space-between", flex: 1 }}>
-                  <div>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 12, marginBottom: 8 }}>
-                      <Link href={`/product/${prod.slug}`} style={{ textDecoration: "none", color: "inherit" }}>
-                        <h2 style={{ fontFamily: "serif", fontSize: "1.35rem", fontWeight: 600, color: "#1a140e", margin: 0, letterSpacing: "0.02em" }}>
-                          {prod.name.toUpperCase()}
-                        </h2>
-                      </Link>
-                      <span style={{ fontSize: "1.1rem", fontWeight: 700, color: "#1a140e", whiteSpace: "nowrap" }}>
-                        Rs {displayPrice}
+                    <div style={{ position: "absolute", top: 12, left: 12, zIndex: 10 }}>
+                      <span
+                        style={{
+                          background: "#660608",
+                          color: "#FAF6F0",
+                          fontSize: 10,
+                          fontWeight: 800,
+                          padding: "4px 9px",
+                          borderRadius: 999,
+                          letterSpacing: "0.5px",
+                          boxShadow: "0 2px 8px rgba(102, 6, 8, 0.3)",
+                        }}
+                      >
+                        SALE
                       </span>
                     </div>
+                  )}
 
-                    {/* Short personality-led line */}
-                    <p style={{ fontSize: "0.95rem", lineHeight: 1.5, color: "#6b5d52", fontStyle: "italic", margin: "0 0 20px" }}>
-                      {prod.personality || prod.hook || prod.subtitle}
+                  {/* Quick View Floating Eye Button */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setQuickViewProduct(prod);
+                    }}
+                    style={{
+                      position: "absolute",
+                      bottom: 12,
+                      right: 12,
+                      background: "rgba(250, 246, 240, 0.94)",
+                      backdropFilter: "blur(6px)",
+                      WebkitBackdropFilter: "blur(6px)",
+                      border: "1px solid rgba(44, 32, 22, 0.15)",
+                      borderRadius: "50%",
+                      width: 36,
+                      height: 36,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "#2C2016",
+                      cursor: "pointer",
+                      boxShadow: "0 4px 12px rgba(44, 32, 22, 0.12)",
+                      zIndex: 10,
+                      transition: "transform 0.15s, background 0.15s",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = "#660608";
+                      e.currentTarget.style.color = "#ffffff";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = "rgba(250, 246, 240, 0.94)";
+                      e.currentTarget.style.color = "#2C2016";
+                    }}
+                    title="Quick Preview"
+                    aria-label="Quick Preview"
+                  >
+                    <FiEye size={16} />
+                  </button>
+                </div>
+
+                {/* Details */}
+                <div style={{ padding: "20px 22px", display: "flex", flexDirection: "column", flex: 1, justifyContent: "space-between" }}>
+                  <div>
+                    <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1, color: "#8C7868" }}>
+                      {prod.category}
+                    </div>
+                    <Link href={`/product/${prod.slug}`} style={{ textDecoration: "none", color: "inherit" }}>
+                      <h3 style={{ fontSize: 17, fontWeight: 800, color: "#2C2016", margin: "4px 0 2px" }}>
+                        {prod.name}
+                      </h3>
+                    </Link>
+                    <p style={{ fontSize: 13, color: "#7A695C", fontStyle: "italic", margin: "0 0 12px" }}>
+                      &ldquo;{prod.personality || prod.hook || prod.subtitle}&rdquo;
                     </p>
+
+                    {/* Price in Brand Dark Brown */}
+                    <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 14 }}>
+                      <span style={{ fontSize: 18, fontWeight: 800, color: "#2C2016" }}>
+                        ₹{displayPrice.toLocaleString("en-IN")}
+                      </span>
+                      {hasDiscount && (
+                        <span style={{ fontSize: 13, color: "#9E8E80", textDecoration: "line-through" }}>
+                          ₹{prod.price.toLocaleString("en-IN")}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Size Selector */}
+                    <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 16 }}>
+                      {(prod.sizes || ["XS", "S", "M", "L", "XL"]).map((sz) => {
+                        const isSel = currentSize === sz;
+                        return (
+                          <button
+                            key={sz}
+                            onClick={() => handleSizeChange(prod.id, sz)}
+                            style={{
+                              padding: "4px 10px",
+                              fontSize: 11,
+                              fontWeight: 700,
+                              borderRadius: 6,
+                              border: isSel ? "1.5px solid #2C2016" : "1px solid rgba(44, 32, 22, 0.2)",
+                              background: isSel ? "#2C2016" : "#FAF6F0",
+                              color: isSel ? "#FAF6F0" : "#4A3B30",
+                              cursor: "pointer",
+                              transition: "all 0.15s",
+                            }}
+                          >
+                            {sz}
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
 
-                  {/* Actions: QUICK VIEW & VIEW PIECE */}
-                  <div style={{ display: "flex", gap: 10, marginTop: "auto" }}>
-                    <button
-                      className="quickview-btn"
-                      onClick={() => setQuickViewProduct(prod)}
-                      style={{
-                        flex: 1,
-                        padding: "11px 16px",
-                        background: "transparent",
-                        color: "#1a140e",
-                        border: "1.5px solid #1a140e",
-                        borderRadius: 8,
-                        fontSize: "0.82rem",
-                        fontWeight: 700,
-                        letterSpacing: "0.08em",
-                        textTransform: "uppercase",
-                        cursor: "pointer",
-                        transition: "all 0.2s ease",
-                      }}
-                    >
-                      Quick View
-                    </button>
-                    <Link
-                      href={`/product/${prod.slug}`}
-                      style={{
-                        flex: 1,
-                        padding: "11px 16px",
-                        background: "#1a140e",
-                        color: "#f5ede3",
-                        border: "1.5px solid #1a140e",
-                        borderRadius: 8,
-                        fontSize: "0.82rem",
-                        fontWeight: 700,
-                        letterSpacing: "0.08em",
-                        textTransform: "uppercase",
-                        textDecoration: "none",
-                        textAlign: "center",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        gap: 6,
-                        transition: "all 0.2s ease",
-                      }}
-                    >
-                      <span>View Piece</span>
-                      <FiArrowUpRight size={14} />
-                    </Link>
+                  {/* Primary Action Button — Add to Bag / Quantity Counter */}
+                  <div style={{ marginTop: "auto" }}>
+                    {(() => {
+                      const matchingCartItem = cart.find(
+                        (item) => item.id === prod.id && item.selectedSize === currentSize
+                      );
+                      const quantityInCart = matchingCartItem ? matchingCartItem.quantity : 0;
+
+                      if (quantityInCart > 0) {
+                        return (
+                          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#FAF6F0", border: "1.5px solid #2C2016", borderRadius: 8, padding: "4px 8px" }}>
+                            <button
+                              onClick={() => updateQuantity(prod.id, quantityInCart - 1, currentSize)}
+                              style={{ width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center", border: "none", background: "none", cursor: "pointer", color: "#2C2016" }}
+                              aria-label="Decrease quantity"
+                            >
+                              <FiMinus size={14} />
+                            </button>
+                            <span style={{ fontSize: 13, fontWeight: 700, color: "#2C2016" }}>
+                              {quantityInCart} in bag
+                            </span>
+                            <button
+                              onClick={() => updateQuantity(prod.id, quantityInCart + 1, currentSize)}
+                              style={{ width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center", border: "none", background: "none", cursor: "pointer", color: "#2C2016" }}
+                              aria-label="Increase quantity"
+                            >
+                              <FiPlus size={14} />
+                            </button>
+                          </div>
+                        );
+                      }
+
+                      return (
+                        <button
+                          onClick={() => handleAddToCart(prod)}
+                          style={{
+                            width: "100%",
+                            padding: "12px 18px",
+                            background: addedFeedback[prod.id] ? "#15803d" : "#2C2016",
+                            color: "#FAF6F0",
+                            border: "none",
+                            borderRadius: 8,
+                            fontSize: 12,
+                            fontWeight: 700,
+                            letterSpacing: "0.08em",
+                            textTransform: "uppercase",
+                            cursor: "pointer",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: 8,
+                            transition: "background 0.2s ease, transform 0.15s ease",
+                          }}
+                          onMouseEnter={(e) => {
+                            if (!addedFeedback[prod.id]) e.currentTarget.style.background = "#660608";
+                          }}
+                          onMouseLeave={(e) => {
+                            if (!addedFeedback[prod.id]) e.currentTarget.style.background = "#2C2016";
+                          }}
+                        >
+                          <FiShoppingBag size={15} />
+                          {addedFeedback[prod.id] ? "Added to Bag ✓" : "Add to Bag"}
+                        </button>
+                      );
+                    })()}
                   </div>
                 </div>
               </div>
@@ -575,8 +691,6 @@ export default function CollectionClient() {
           </span>
         </button>
       )}
-
-      <Footer />
     </div>
   );
 }

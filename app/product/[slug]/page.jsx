@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { useStore } from "@/context/StoreContext";
 import { trackEvent } from "@/lib/analytics";
 import { 
@@ -17,6 +16,7 @@ import {
   FiShoppingBag,
   FiHelpCircle
 } from "react-icons/fi";
+import IndianArchBadge from "@/components/IndianArchBadge";
 
 export default function ProductPage() {
   const params = useParams();
@@ -63,7 +63,6 @@ export default function ProductPage() {
             Return to Shop All Pieces <FiArrowRight size={14} />
           </Link>
         </div>
-        <Footer />
       </>
     );
   }
@@ -75,7 +74,6 @@ export default function ProductPage() {
         <div style={{ minHeight: "70vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#FAF6F0" }}>
           <p style={{ color: "#8a7a6c", fontStyle: "italic", fontFamily: "serif", fontSize: "1.2rem" }}>Unfolding piece details...</p>
         </div>
-        <Footer />
       </>
     );
   }
@@ -259,21 +257,20 @@ export default function ProductPage() {
         .pdp-buy-now-btn:hover {
           background: rgba(26, 20, 14, 0.06);
         }
-        .pdp-detail-card {
-          background: #ffffff;
-          padding: 24px;
-          border-radius: 16px;
-          border: 1px solid rgba(42, 31, 20, 0.08);
-        }
         .pdp-spec-row {
           display: flex;
           justify-content: space-between;
-          padding: 10px 0;
-          border-bottom: 1px solid rgba(42, 31, 20, 0.06);
+          align-items: baseline;
+          gap: 20px;
+          padding: 14px 0;
+          border-bottom: 1px solid rgba(44, 32, 22, 0.1);
           font-size: 14px;
         }
-        .pdp-spec-row:last-child {
-          border-bottom: none;
+        .pdp-spec-row > span:first-child {
+          flex-shrink: 0;
+        }
+        .pdp-spec-row > span:last-child {
+          text-align: right;
         }
       `}</style>
 
@@ -528,8 +525,8 @@ export default function ProductPage() {
                 </button>
               </div>
 
-              {/* Support Links Below CTAs */}
-              <div style={{ background: "#ffffff", padding: "18px 20px", borderRadius: 14, border: "1px solid rgba(42,31,20,0.08)", display: "flex", flexDirection: "column", gap: 10, fontSize: 13, color: "#55483d" }}>
+              {/* Support Links Below CTAs — Clean Inline Styling (No Floating White Box) */}
+              <div style={{ padding: "16px 0", borderTop: "1px solid rgba(44, 32, 22, 0.1)", display: "flex", flexDirection: "column", gap: 10, fontSize: 13, color: "#55483d" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   <FiHelpCircle size={15} color="#b36338" />
                   <span>
@@ -581,149 +578,142 @@ export default function ProductPage() {
             </div>
           </div>
 
-          {/* ─── HOW IT FEELS ─── */}
-          {product.howItFeels && (
-            <section style={{ maxWidth: 880, margin: "0 auto 70px", textAlign: "center" }}>
-              <div style={{ background: "#ffffff", padding: "40px 32px", borderRadius: 20, border: "1px solid rgba(42,31,20,0.08)" }}>
-                <span style={{ fontSize: "0.78rem", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "#b36338", display: "block", marginBottom: 12 }}>
-                  How It Feels
-                </span>
-                <p style={{ fontFamily: "serif", fontSize: "clamp(1.5rem, 2.8vw, 2.1rem)", fontStyle: "italic", color: "#1a140e", margin: 0, lineHeight: 1.4 }}>
-                  "{product.howItFeels}"
-                </p>
-              </div>
-            </section>
-          )}
+          {/* ─── TRADITIONAL INDIAN BORDER DIVIDER ─── */}
+          <div
+            style={{
+              width: "100%",
+              height: "28px",
+              backgroundImage: 'url("/assets/footerpattern-accent.png")',
+              backgroundRepeat: "repeat-x",
+              backgroundPosition: "center",
+              backgroundSize: "auto 26px",
+              opacity: 0.85,
+              margin: "60px 0 50px",
+            }}
+            aria-hidden="true"
+          />
 
-          {/* ─── WHY YOU'LL LOVE IT ─── */}
-          <section style={{ margin: "0 auto 80px" }}>
-            <div style={{ textAlign: "center", marginBottom: 36 }}>
-              <span style={{ fontSize: "0.78rem", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "#b36338", display: "block", marginBottom: 6 }}>
-                Considered Details
-              </span>
-              <h2 style={{ fontFamily: "serif", fontSize: "clamp(1.8rem, 3vw, 2.4rem)", fontWeight: 600, color: "#1a140e", margin: 0 }}>
-                Why You&apos;ll Love It
+          {/* ─── SEAMLESS EDITORIAL DETAILS (OUR STYLE — NO BOXES) ─── */}
+          <section style={{ maxWidth: 900, margin: "0 auto 60px" }}>
+            <div style={{ textAlign: "center", maxWidth: 700, margin: "0 auto 36px" }}>
+              <IndianArchBadge style={{ marginBottom: "16px" }}>
+                Khadi Handloom Craft
+              </IndianArchBadge>
+              <h2 style={{ fontFamily: "serif", fontSize: "clamp(2rem, 3.5vw, 2.8rem)", fontWeight: 600, color: "#2C2016", margin: "0 0 14px" }}>
+                The Details & Specifications
               </h2>
+              {product.howItFeels && (
+                <p style={{ fontFamily: "serif", fontSize: "1.15rem", fontStyle: "italic", color: "#5C4A3E", margin: 0, lineHeight: 1.6 }}>
+                  &ldquo;{product.howItFeels}&rdquo;
+                </p>
+              )}
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 20 }}>
+
+            {/* 1. Considered Details / Why You'll Love It — Clean Editorial Row (No Card Boxes) */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 28, margin: "0 auto 50px" }}>
               {whyYouLoveIt.map((item, idx) => (
-                <div key={idx} style={{ background: "#ffffff", padding: "30px 24px", borderRadius: 16, border: "1px solid rgba(42,31,20,0.08)" }}>
-                  <span style={{ fontSize: "0.78rem", fontWeight: 800, color: "#b36338", letterSpacing: "0.12em", display: "block", marginBottom: 8 }}>
-                    0{idx + 1}
+                <div key={idx} style={{ textAlign: "left", borderTop: "1.5px solid #660608", paddingTop: 14 }}>
+                  <span style={{ fontSize: "0.74rem", fontWeight: 800, color: "#660608", letterSpacing: "0.14em", textTransform: "uppercase", display: "block", marginBottom: 6 }}>
+                    0{idx + 1} • {item.title}
                   </span>
-                  <h3 style={{ fontFamily: "serif", fontSize: "1.18rem", fontWeight: 700, color: "#1a140e", margin: "0 0 10px", letterSpacing: "0.04em" }}>
-                    {item.title}
-                  </h3>
-                  <p style={{ fontSize: "0.94rem", lineHeight: 1.65, color: "#55483d", margin: 0 }}>
+                  <p style={{ fontSize: "0.92rem", lineHeight: 1.65, color: "#55483D", margin: 0 }}>
                     {item.desc}
                   </p>
                 </div>
               ))}
             </div>
-          </section>
 
-          {/* ─── MADE FOR YOU IF... ─── */}
-          <section style={{ maxWidth: 840, margin: "0 auto 80px" }}>
-            <div style={{ background: "#2a1f14", color: "#FAF6F0", padding: "clamp(32px, 5vw, 48px)", borderRadius: 24 }}>
-              <span style={{ fontSize: "0.78rem", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "#d89b6c", display: "block", marginBottom: 12 }}>
-                Wardrobe Fit
-              </span>
-              <h2 style={{ fontFamily: "serif", fontSize: "clamp(1.6rem, 2.8vw, 2.2rem)", margin: "0 0 24px", color: "#FAF6F0" }}>
-                Made For You If...
-              </h2>
-              <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-                {madeForYouIf.map((item, idx) => (
-                  <div key={idx} style={{ display: "flex", alignItems: "flex-start", gap: 14 }}>
-                    <div style={{ width: 22, height: 22, borderRadius: "50%", background: "rgba(216, 155, 108, 0.2)", color: "#d89b6c", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 2 }}>
-                      <FiCheck size={13} />
-                    </div>
-                    <span style={{ fontSize: "1.02rem", lineHeight: 1.7, color: "rgba(250, 246, 240, 0.9)" }}>
-                      {item}
-                    </span>
+            {/* 2. Clean Specifications Grid Directly on Background (No floating white box) */}
+            <div style={{ borderTop: "1px solid rgba(44, 32, 22, 0.14)", padding: "10px 0 0" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: "0 48px" }}>
+                <div className="pdp-spec-row">
+                  <span style={{ fontWeight: 700, color: "#8A7A6C", textTransform: "uppercase", fontSize: "0.78rem", letterSpacing: "0.1em" }}>Textile</span>
+                  <span style={{ fontWeight: 600, color: "#1a140e" }}>{product.fabricComposition || "100% Handspun Khadi Cotton"}</span>
+                </div>
+                <div className="pdp-spec-row">
+                  <span style={{ fontWeight: 700, color: "#8A7A6C", textTransform: "uppercase", fontSize: "0.78rem", letterSpacing: "0.1em" }}>Weave</span>
+                  <span style={{ fontWeight: 600, color: "#1a140e" }}>Traditional Wooden Pit Loom</span>
+                </div>
+                <div className="pdp-spec-row">
+                  <span style={{ fontWeight: 700, color: "#8A7A6C", textTransform: "uppercase", fontSize: "0.78rem", letterSpacing: "0.1em" }}>Fit</span>
+                  <span style={{ fontWeight: 600, color: "#1a140e" }}>{product.fit || "Relaxed Silhouette"}</span>
+                </div>
+                <div className="pdp-spec-row">
+                  <span style={{ fontWeight: 700, color: "#8A7A6C", textTransform: "uppercase", fontSize: "0.78rem", letterSpacing: "0.1em" }}>Origin</span>
+                  <span style={{ fontWeight: 600, color: "#1a140e" }}>Madhya Pradesh, India</span>
+                </div>
+                {product.sleeveType && (
+                  <div className="pdp-spec-row">
+                    <span style={{ fontWeight: 700, color: "#8A7A6C", textTransform: "uppercase", fontSize: "0.78rem", letterSpacing: "0.1em" }}>Sleeves</span>
+                    <span style={{ fontWeight: 600, color: "#1a140e" }}>{product.sleeveType}</span>
                   </div>
-                ))}
+                )}
+                {product.neckType && (
+                  <div className="pdp-spec-row">
+                    <span style={{ fontWeight: 700, color: "#8A7A6C", textTransform: "uppercase", fontSize: "0.78rem", letterSpacing: "0.1em" }}>Neckline</span>
+                    <span style={{ fontWeight: 600, color: "#1a140e" }}>{product.neckType}</span>
+                  </div>
+                )}
+                <div className="pdp-spec-row">
+                  <span style={{ fontWeight: 700, color: "#8A7A6C", textTransform: "uppercase", fontSize: "0.78rem", letterSpacing: "0.1em" }}>Pockets</span>
+                  <span style={{ fontWeight: 600, color: "#1a140e" }}>{product.hasPockets ? "Functional Deep Pockets" : "Clean Line Without Pockets"}</span>
+                </div>
+                <div className="pdp-spec-row">
+                  <span style={{ fontWeight: 700, color: "#8A7A6C", textTransform: "uppercase", fontSize: "0.78rem", letterSpacing: "0.1em" }}>Care</span>
+                  <span style={{ fontWeight: 600, color: "#1a140e" }}>{product.fabricCare || "Pure organic handspun cotton. Gentle cycle wash with similar colors."}</span>
+                </div>
               </div>
             </div>
           </section>
 
-          {/* ─── THE DETAILS ─── */}
-          <section style={{ maxWidth: 840, margin: "0 auto 80px" }}>
-            <div style={{ textAlign: "center", marginBottom: 28 }}>
-              <span style={{ fontSize: "0.78rem", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "#b36338", display: "block", marginBottom: 6 }}>
-                Specifications
-              </span>
-              <h2 style={{ fontFamily: "serif", fontSize: "clamp(1.8rem, 3vw, 2.4rem)", fontWeight: 600, color: "#1a140e", margin: 0 }}>
-                The Details
-              </h2>
-            </div>
-            <div className="pdp-detail-card">
-              <div className="pdp-spec-row">
-                <span style={{ fontWeight: 700, color: "#6e5d4e" }}>Textile</span>
-                <span style={{ fontWeight: 600, color: "#1a140e" }}>{product.fabricComposition || "Khadi cotton"}</span>
-              </div>
-              <div className="pdp-spec-row">
-                <span style={{ fontWeight: 700, color: "#6e5d4e" }}>Fit</span>
-                <span style={{ fontWeight: 600, color: "#1a140e" }}>{product.fit || "Relaxed"}</span>
-              </div>
-              {product.sleeveType && (
-                <div className="pdp-spec-row">
-                  <span style={{ fontWeight: 700, color: "#6e5d4e" }}>Sleeves</span>
-                  <span style={{ fontWeight: 600, color: "#1a140e" }}>{product.sleeveType}</span>
+          {/* 3. Wardrobe Fit / Made For You If... — Clean Seamless Editorial (No Dark Box) */}
+          <section style={{ maxWidth: 740, margin: "0 auto 60px", padding: "28px 0", borderTop: "1px solid rgba(44, 32, 22, 0.12)", borderBottom: "1px solid rgba(44, 32, 22, 0.12)" }}>
+            <span style={{ fontSize: "0.76rem", fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: "#660608", display: "block", textAlign: "center", marginBottom: 8 }}>
+              Wardrobe Fit
+            </span>
+            <h3 style={{ fontFamily: "serif", fontSize: "clamp(1.5rem, 2.4vw, 2rem)", color: "#1a140e", textAlign: "center", margin: "0 0 20px" }}>
+              Made for you if...
+            </h3>
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              {madeForYouIf.map((item, idx) => (
+                <div key={idx} style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
+                  <span style={{ color: "#660608", fontSize: "1.1rem", lineHeight: 1.4, flexShrink: 0 }}>✦</span>
+                  <span style={{ fontSize: "1rem", lineHeight: 1.7, color: "#4A3B30" }}>
+                    {item}
+                  </span>
                 </div>
-              )}
-              {product.neckType && (
-                <div className="pdp-spec-row">
-                  <span style={{ fontWeight: 700, color: "#6e5d4e" }}>Neckline</span>
-                  <span style={{ fontWeight: 600, color: "#1a140e" }}>{product.neckType}</span>
-                </div>
-              )}
-              <div className="pdp-spec-row">
-                <span style={{ fontWeight: 700, color: "#6e5d4e" }}>Pockets</span>
-                <span style={{ fontWeight: 600, color: "#1a140e" }}>{product.hasPockets ? "Yes" : "No"}</span>
-              </div>
-              <div className="pdp-spec-row">
-                <span style={{ fontWeight: 700, color: "#6e5d4e" }}>Made in</span>
-                <span style={{ fontWeight: 600, color: "#1a140e" }}>India</span>
-              </div>
-              <div className="pdp-spec-row">
-                <span style={{ fontWeight: 700, color: "#6e5d4e" }}>Care</span>
-                <span style={{ fontWeight: 600, color: "#1a140e" }}>{product.fabricCare || "Gentle wash"}</span>
-              </div>
+              ))}
             </div>
           </section>
 
-          {/* ─── THE STORY BEHIND THE PIECE ─── */}
-          <section style={{ maxWidth: 840, margin: "0 auto 80px", textAlign: "center" }}>
-            <span style={{ fontSize: "0.78rem", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "#b36338", display: "block", marginBottom: 8 }}>
+          {/* 4. Origin & Intention — Story Block (No Floating White Box) */}
+          <section style={{ maxWidth: 740, margin: "0 auto 60px", textAlign: "center" }}>
+            <span style={{ fontSize: "0.78rem", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "#660608", display: "block", marginBottom: 10 }}>
               Origin & Intention
             </span>
-            <h2 style={{ fontFamily: "serif", fontSize: "clamp(1.8rem, 3vw, 2.5rem)", color: "#1a140e", margin: "0 0 20px" }}>
+            <h3 style={{ fontFamily: "serif", fontSize: "clamp(1.6rem, 2.5vw, 2.2rem)", color: "#1a140e", margin: "0 0 16px" }}>
               Why we made it.
-            </h2>
-            <div style={{ fontSize: "1.08rem", lineHeight: 1.85, color: "#443528", background: "#ffffff", padding: "clamp(30px, 4vw, 44px)", borderRadius: 20, border: "1px solid rgba(42,31,20,0.08)" }}>
-              <p style={{ margin: 0 }}>
-                {story}
-              </p>
-            </div>
+            </h3>
+            <p style={{ fontSize: "1.06rem", lineHeight: 1.85, color: "#4A3B30", margin: "0 auto" }}>
+              {story}
+            </p>
           </section>
 
-          {/* ─── HOW TO WEAR IT ─── */}
-          <section style={{ maxWidth: 960, margin: "0 auto 100px" }}>
-            <div style={{ textAlign: "center", marginBottom: 36 }}>
-              <span style={{ fontSize: "0.78rem", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "#b36338", display: "block", marginBottom: 6 }}>
-                Styling Possibilities
-              </span>
-              <h2 style={{ fontFamily: "serif", fontSize: "clamp(1.8rem, 3vw, 2.4rem)", fontWeight: 600, color: "#1a140e", margin: 0 }}>
-                One piece. Your way.
-              </h2>
-            </div>
+          {/* 5. Styling Possibilities / One Piece. Your Way. (No Floating White Boxes) */}
+          <section style={{ maxWidth: 900, margin: "0 auto 80px" }}>
+            <span style={{ fontSize: "0.76rem", fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: "#660608", display: "block", textAlign: "center", marginBottom: 8 }}>
+              Styling Possibilities
+            </span>
+            <h3 style={{ fontFamily: "serif", fontSize: "clamp(1.5rem, 2.4vw, 2rem)", color: "#1a140e", textAlign: "center", margin: "0 0 24px" }}>
+              One piece. Your way.
+            </h3>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 20 }}>
               {howToWear.map((style, idx) => (
-                <div key={idx} style={{ background: "#ffffff", padding: "28px 24px", borderRadius: 16, border: "1px solid rgba(42,31,20,0.08)" }}>
-                  <span style={{ fontSize: "0.78rem", fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: "#b36338", display: "block", marginBottom: 8 }}>
+                <div key={idx} style={{ padding: "16px 20px", borderLeft: "2.5px solid #660608", background: "rgba(250, 246, 240, 0.7)" }}>
+                  <span style={{ fontSize: "0.72rem", fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "#660608", display: "block", marginBottom: 6 }}>
                     {style.occasion}
                   </span>
-                  <p style={{ fontFamily: "serif", fontSize: "1.08rem", lineHeight: 1.6, color: "#1a140e", margin: 0 }}>
+                  <p style={{ fontFamily: "serif", fontSize: "1.02rem", lineHeight: 1.6, color: "#1a140e", margin: 0 }}>
                     {style.styling}
                   </p>
                 </div>
@@ -731,9 +721,23 @@ export default function ProductPage() {
             </div>
           </section>
 
+          {/* Bottom Indian Border Pattern Divider */}
+          <div
+            style={{
+              width: "100%",
+              height: "28px",
+              backgroundImage: 'url("/assets/footerpattern-accent.png")',
+              backgroundRepeat: "repeat-x",
+              backgroundPosition: "center",
+              backgroundSize: "auto 26px",
+              opacity: 0.85,
+              margin: "0 0 40px",
+            }}
+            aria-hidden="true"
+          />
+
         </div>
       </div>
-      <Footer />
     </>
   );
 }

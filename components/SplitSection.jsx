@@ -49,60 +49,82 @@ const SplitPanel = ({ reversed, title, why, how, label, model }) => {
     const xTarget = section.classList.contains("split-section--reversed") ? -150 : 150;
 
     const ctx = gsap.context(() => {
+      const isDesktop = typeof window !== "undefined" && window.innerWidth > 900;
+
       gsap.fromTo(
         modelRef.current,
-        { scale: 0.95, y: 100, opacity: 0 },
+        { scale: 0.96, y: isDesktop ? 80 : 25, opacity: 0 },
         {
           scale: 1,
           y: 0,
           opacity: 1,
-          duration: 1.5,
+          duration: 1.2,
           ease: "power3.out",
           scrollTrigger: {
             trigger: section,
-            start: "top 70%",
+            start: "top 75%",
           },
         },
       );
 
+      // Only scrub horizontal translation on desktop
+      if (isDesktop) {
+        gsap.fromTo(
+          modelRef.current,
+          { x: 0 },
+          {
+            x: xTarget,
+            ease: "none",
+            scrollTrigger: {
+              trigger: section,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true,
+            },
+          },
+        );
+      }
+
+      const contentEl = section.querySelector(".split-section__content");
+
+      // Dynamic Word-by-Word Title Animation (matching Section 2)
+      const titleWords = section.querySelectorAll(".split-title-word");
+      if (titleWords.length > 0) {
+        gsap.fromTo(
+          titleWords,
+          { y: "125%", rotate: 2.5, opacity: 0 },
+          {
+            y: "0%",
+            rotate: 0,
+            opacity: 1,
+            duration: 1.1,
+            stagger: 0.07,
+            ease: "power4.out",
+            scrollTrigger: {
+              trigger: contentEl || section,
+              start: "top 85%",
+            },
+          }
+        );
+      }
+
+      // Paragraphs Animation (matching Section 2 .fp-desc)
       gsap.fromTo(
-        modelRef.current,
-        { x: 0 },
+        section.querySelectorAll(".split-section__why, .split-section__how"),
+        { opacity: 0, y: 24 },
         {
-          x: xTarget,
-          ease: "none",
+          opacity: 1,
+          y: 0,
+          duration: 1.0,
+          stagger: 0.16,
+          delay: 0.22,
+          ease: "power3.out",
           scrollTrigger: {
-            trigger: section,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
+            trigger: contentEl || section,
+            start: "top 85%",
           },
-        },
+        }
       );
-
-      gsap.from(section.querySelectorAll(".split-section__title span"), {
-        y: 100,
-        opacity: 0,
-        duration: 1,
-        stagger: 0.1,
-        ease: "power4.out",
-        scrollTrigger: {
-          trigger: section,
-          start: "top 60%",
-        },
-      });
-
-      gsap.from(section.querySelectorAll(".split-section__why, .split-section__how"), {
-        opacity: 0,
-        y: 20,
-        duration: 0.8,
-        stagger: 0.15,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: section,
-          start: "top 55%",
-        },
-      });
     }, sectionRef);
 
     return () => ctx.revert();
@@ -130,11 +152,35 @@ const SplitPanel = ({ reversed, title, why, how, label, model }) => {
       <div className="split-section__left">
         <div className="split-section__content">
           <div className="split-section__title">
-            {title.map((t, i) => (
-              <React.Fragment key={i}>
-                <span>{t}</span>
-                {i < title.length - 1 && <br />}
-              </React.Fragment>
+            {title.map((line, lineIdx) => (
+              <div
+                key={lineIdx}
+                style={{
+                  overflow: "hidden",
+                  display: "block",
+                  paddingBottom: "4px",
+                  lineHeight: 1.05,
+                }}
+              >
+                {line.split(" ").map((word, wordIdx) => (
+                  <span
+                    key={wordIdx}
+                    style={{
+                      display: "inline-block",
+                      overflow: "hidden",
+                      verticalAlign: "top",
+                      marginRight: "0.26em",
+                    }}
+                  >
+                    <span
+                      className="split-title-word"
+                      style={{ display: "inline-block", transformOrigin: "bottom left" }}
+                    >
+                      {word}
+                    </span>
+                  </span>
+                ))}
+              </div>
             ))}
           </div>
           <div className="split-section__why">

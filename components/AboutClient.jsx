@@ -4,7 +4,6 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "../app/styles/about.css";
-import Footer from "./Footer";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -109,8 +108,6 @@ export default function AboutClient() {
           </div>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 }

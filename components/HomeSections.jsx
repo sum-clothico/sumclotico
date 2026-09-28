@@ -50,8 +50,8 @@ export default function HomeSections() {
             idx === 0
               ? "The dress you reach for without thinking."
               : idx === 1
-              ? "Easy shape. A little attitude."
-              : "Your everyday shirt, reconsidered.",
+                ? "Easy shape. A little attitude."
+                : "Your everyday shirt, reconsidered.",
         }))
       : sampleClothes;
 
@@ -62,21 +62,56 @@ export default function HomeSections() {
         <div className="hs-container hs-feeling">
           <div className="hs-feeling__text-col">
             <span className="hs-eyebrow">The Feeling</span>
-            <h2 className="hs-headline">Some things are better when they take time.</h2>
+            <h2 className="hs-headline">
+              Some things are better when they take time.
+            </h2>
             <div className="hs-feeling__stanza">
               <p style={{ margin: "0 0 10px" }}>A thread spun by hand.</p>
-              <p style={{ margin: "0 0 10px" }}>A loom moving at its own rhythm.</p>
-              <p style={{ margin: "0 0 16px" }}>A garment cut, stitched and finished with care.</p>
-              <p style={{ margin: "0 0 10px", fontSize: "1.08rem", fontStyle: "normal", color: "#3f3329" }}>
-                There is something different about clothes that don&apos;t begin with a race against time.
+              <p style={{ margin: "0 0 10px" }}>
+                A loom moving at its own rhythm.
               </p>
-              <p style={{ margin: "0 0 6px", fontSize: "1.08rem", fontStyle: "normal", color: "#3f3329" }}>
+              <p style={{ margin: "0 0 16px" }}>
+                A garment cut, stitched and finished with care.
+              </p>
+              <p
+                style={{
+                  margin: "0 0 10px",
+                  fontSize: "1.08rem",
+                  fontStyle: "normal",
+                  color: "#3f3329",
+                }}
+              >
+                There is something different about clothes that don&apos;t begin
+                with a race against time.
+              </p>
+              <p
+                style={{
+                  margin: "0 0 6px",
+                  fontSize: "1.08rem",
+                  fontStyle: "normal",
+                  color: "#3f3329",
+                }}
+              >
                 They feel lighter.
               </p>
-              <p style={{ margin: "0 0 6px", fontSize: "1.08rem", fontStyle: "normal", color: "#3f3329" }}>
+              <p
+                style={{
+                  margin: "0 0 6px",
+                  fontSize: "1.08rem",
+                  fontStyle: "normal",
+                  color: "#3f3329",
+                }}
+              >
                 They move differently.
               </p>
-              <p style={{ margin: "0 0 20px", fontSize: "1.08rem", fontStyle: "normal", color: "#3f3329" }}>
+              <p
+                style={{
+                  margin: "0 0 20px",
+                  fontSize: "1.08rem",
+                  fontStyle: "normal",
+                  color: "#3f3329",
+                }}
+              >
                 And somehow, they become more yours.
               </p>
             </div>
@@ -104,25 +139,48 @@ export default function HomeSections() {
             <span className="hs-eyebrow">The Beginning of the Journey</span>
             <h2 className="hs-headline">Rooted in handwoven textiles.</h2>
             <p className="hs-copy">
-              We believe a garment&apos;s story begins long before it reaches your wardrobe.
+              We believe a garment&apos;s story begins long before it reaches
+              your wardrobe.
               {"\n"}With the hands that make it.
               {"\n"}The place it comes from.
               {"\n"}The way the yarn is spun.
               {"\n"}The way the loom moves.
-              {"\n\n"}At Sum, we&apos;re exploring handwoven textiles from across India — one place, one textile and one story at a time.
-              {"\n"}We are starting close to home, with Khadi cotton sourced from Madhya Pradesh.
+              {"\n\n"}At Sum, we&apos;re exploring handwoven textiles from
+              across India — one place, one textile and one story at a time.
+              {"\n"}We are starting close to home, with Khadi cotton sourced
+              from Madhya Pradesh.
             </p>
-            <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", alignItems: "center" }}>
+            <div
+              style={{
+                display: "flex",
+                gap: "16px",
+                flexWrap: "wrap",
+                alignItems: "center",
+              }}
+            >
               <Link href="/fabric" className="hs-btn hs-btn--secondary">
                 Our Fabric Story <FiArrowRight />
               </Link>
             </div>
           </div>
           <div className="hs-rooted__info-box">
-            <div className="hs-rooted__tagline-small">We design it for today</div>
-            <div className="hs-rooted__loc">Currently: Khadi Cotton · Madhya Pradesh</div>
-            <p style={{ fontSize: "0.92rem", lineHeight: 1.6, color: "#66584c", marginTop: 12 }}>
-              Pure indigenous cotton spun on charkhas, honoring ancestral slow-craft and shaped into contemporary, breathable pieces for everyday living.
+            <div className="hs-rooted__tagline-small">
+              We design it for today
+            </div>
+            <div className="hs-rooted__loc">
+              Currently: Khadi Cotton · Madhya Pradesh
+            </div>
+            <p
+              style={{
+                fontSize: "0.92rem",
+                lineHeight: 1.6,
+                color: "#66584c",
+                marginTop: 12,
+              }}
+            >
+              Pure indigenous cotton spun on charkhas, honoring ancestral
+              slow-craft and shaped into contemporary, breathable pieces for
+              everyday living.
             </p>
           </div>
         </div>
@@ -134,11 +192,16 @@ export default function HomeSections() {
           <div style={{ textAlign: "center", maxWidth: 740, margin: "0 auto" }}>
             <span className="hs-eyebrow">Made for Real Days</span>
             <h2 className="hs-headline">Clothes that keep up with you.</h2>
-            <p className="hs-copy" style={{ margin: "0 auto", textAlign: "center" }}>
+            <p
+              className="hs-copy"
+              style={{ margin: "0 auto", textAlign: "center" }}
+            >
               For mornings that start too early. Workdays that run too long.
-              Last-minute plans. Slow Sundays. Train journeys. Coffee runs.
-              And all the ordinary, beautiful things in between.
-              {"\n\n"}We make pieces that are easy to live in — comfortable enough to forget you&apos;re wearing them, considered enough to make you feel good in them.
+              Last-minute plans. Slow Sundays. Train journeys. Coffee runs. And
+              all the ordinary, beautiful things in between.
+              {"\n\n"}We make pieces that are easy to live in — comfortable
+              enough to forget you&apos;re wearing them, considered enough to
+              make you feel good in them.
             </p>
           </div>
 
@@ -154,7 +217,9 @@ export default function HomeSections() {
                   />
                   <button
                     type="button"
-                    onClick={() => setQuickViewProduct && setQuickViewProduct(prod)}
+                    onClick={() =>
+                      setQuickViewProduct && setQuickViewProduct(prod)
+                    }
                     className="hs-product-card__quick-view"
                   >
                     <FiEye style={{ marginRight: 6 }} /> Quick View
@@ -165,11 +230,17 @@ export default function HomeSections() {
                   <p className="hs-product-card__quote">{prod.statement}</p>
                   <div className="hs-product-card__price-row">
                     <span className="hs-product-card__price">
-                      ₹{Number(prod.salePrice || prod.price).toLocaleString("en-IN")}
+                      ₹
+                      {Number(prod.salePrice || prod.price).toLocaleString(
+                        "en-IN",
+                      )}
                     </span>
                     <button
                       type="button"
-                      onClick={() => addToCart && addToCart(prod, prod.sizes?.[0] || "M", "", 1)}
+                      onClick={() =>
+                        addToCart &&
+                        addToCart(prod, prod.sizes?.[0] || "M", "", 1)
+                      }
                       style={{
                         background: "none",
                         border: "none",
@@ -205,13 +276,17 @@ export default function HomeSections() {
         <div className="hs-container">
           <div style={{ maxWidth: 780 }}>
             <span className="hs-eyebrow">Why Sum</span>
-            <h2 className="hs-headline">We don&apos;t make clothes for the wardrobe you wish you had.</h2>
+            <h2 className="hs-headline">
+              We don&apos;t make clothes for the wardrobe you wish you had.
+            </h2>
             <p className="hs-copy">
               We make them for the life you&apos;re actually living.
               {"\n"}That means thoughtful silhouettes.
-              {"\n"}Comfort that doesn&apos;t ask you to compromise on looking good.
+              {"\n"}Comfort that doesn&apos;t ask you to compromise on looking
+                good.
               {"\n"}Details that have a reason to be there.
-              {"\n"}And pieces you can wear more than one way, more than one season.
+              {"\n"}And pieces you can wear more than one way, more than one
+              season.
             </p>
           </div>
 
@@ -219,22 +294,30 @@ export default function HomeSections() {
             <div className="hs-principle-card">
               <span className="hs-principle-card__num">01</span>
               <h3 className="hs-principle-card__title">EASY</h3>
-              <p className="hs-principle-card__desc">Clothes that move with you.</p>
+              <p className="hs-principle-card__desc">
+                Clothes that move with you.
+              </p>
             </div>
             <div className="hs-principle-card">
               <span className="hs-principle-card__num">02</span>
               <h3 className="hs-principle-card__title">THOUGHTFUL</h3>
-              <p className="hs-principle-card__desc">Every detail has a reason.</p>
+              <p className="hs-principle-card__desc">
+                Every detail has a reason.
+              </p>
             </div>
             <div className="hs-principle-card">
               <span className="hs-principle-card__num">03</span>
               <h3 className="hs-principle-card__title">ROOTED</h3>
-              <p className="hs-principle-card__desc">Textiles with a story and a place.</p>
+              <p className="hs-principle-card__desc">
+                Textiles with a story and a place.
+              </p>
             </div>
             <div className="hs-principle-card">
               <span className="hs-principle-card__num">04</span>
               <h3 className="hs-principle-card__title">LONG-WEARING</h3>
-              <p className="hs-principle-card__desc">Made to stay beyond a season.</p>
+              <p className="hs-principle-card__desc">
+                Made to stay beyond a season.
+              </p>
             </div>
           </div>
 
@@ -262,7 +345,9 @@ export default function HomeSections() {
             <em>Will you want to wear this again?</em>
             {"\n\n"}
             If the answer is yes, we make it.
-            {"\n"}If it can make your everyday easier, better or a little more beautiful, if it is an expression of your personality, gives you space to be…
+            {"\n"}If it can make your everyday easier, better or a little more
+            beautiful, if it is an expression of your personality, gives you
+            space to be…
             {"\n"}That&apos;s the kind of clothing we&apos;re interested in.
           </p>
           <div style={{ marginTop: 32 }}>
@@ -284,34 +369,60 @@ export default function HomeSections() {
               it passes through many hands.
             </h2>
             <p className="hs-copy">
-              From the textile we source to the hands that cut, stitch and finish each piece, Sum is a collection of many small acts of making.
-              We want you to know where your clothes come from not just what they look like when they arrive.
+              From the textile we source to the hands that cut, stitch and
+              finish each piece, Sum is a collection of many small acts of
+              making. We want you to know where your clothes come from not just
+              what they look like when they arrive.
             </p>
           </div>
 
           <div className="hs-making-track">
             <div className="hs-making-step">
-              <img src="/assets/fabric.jpg" alt="Textile" className="hs-making-step__img" />
+              <img
+                src="/assets/fabric.jpg"
+                alt="Textile"
+                className="hs-making-step__img"
+              />
               <div className="hs-making-step__label">1. Textile</div>
             </div>
             <div className="hs-making-step">
-              <img src="/assets/han.jpg" alt="Hands" className="hs-making-step__img" />
+              <img
+                src="/assets/han.jpg"
+                alt="Hands"
+                className="hs-making-step__img"
+              />
               <div className="hs-making-step__label">2. Hands</div>
             </div>
             <div className="hs-making-step">
-              <img src="/assets/ctn.jpg" alt="Cutting" className="hs-making-step__img" />
+              <img
+                src="/assets/ctn.jpg"
+                alt="Cutting"
+                className="hs-making-step__img"
+              />
               <div className="hs-making-step__label">3. Cutting</div>
             </div>
             <div className="hs-making-step">
-              <img src="/assets/wev.jpg" alt="Stitching & Weaving" className="hs-making-step__img" />
+              <img
+                src="/assets/wev.jpg"
+                alt="Stitching & Weaving"
+                className="hs-making-step__img"
+              />
               <div className="hs-making-step__label">4. Stitching</div>
             </div>
             <div className="hs-making-step">
-              <img src="/assets/cloth.png" alt="Finishing" className="hs-making-step__img" />
+              <img
+                src="/assets/cloth.png"
+                alt="Finishing"
+                className="hs-making-step__img"
+              />
               <div className="hs-making-step__label">5. Finishing</div>
             </div>
             <div className="hs-making-step">
-              <img src="/assets/model.png" alt="Woman Wearing Sum" className="hs-making-step__img" />
+              <img
+                src="/assets/model.png"
+                alt="Woman Wearing Sum"
+                className="hs-making-step__img"
+              />
               <div className="hs-making-step__label">6. Garment</div>
             </div>
           </div>
@@ -327,12 +438,24 @@ export default function HomeSections() {
       {/* ─── 08. JOURNAL ─── */}
       <section className="hs-section hs-section--alt" id="journal">
         <div className="hs-container">
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: 20, marginBottom: 28 }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "flex-end",
+              flexWrap: "wrap",
+              gap: 20,
+              marginBottom: 28,
+            }}
+          >
             <div>
               <span className="hs-eyebrow">The Sum Journal</span>
-              <h2 className="hs-headline" style={{ marginBottom: 12 }}>Things worth talking about.</h2>
+              <h2 className="hs-headline" style={{ marginBottom: 12 }}>
+                Things worth talking about.
+              </h2>
               <p className="hs-copy" style={{ marginBottom: 0 }}>
-                A place for stories about clothes, people, places and the things we discover along the way.
+                A place for stories about clothes, people, places and the things
+                we discover along the way.
                 {"\n"}Sometimes we&apos;ll write them. Sometimes you will.
               </p>
             </div>
@@ -340,14 +463,24 @@ export default function HomeSections() {
               <Link href="/journal" className="hs-btn hs-btn--secondary">
                 Explore the Journal
               </Link>
-              <Link href="/journal#submission-form" className="hs-btn hs-btn--primary">
+              <Link
+                href="/journal#submission-form"
+                className="hs-btn hs-btn--primary"
+              >
                 Share Your Story
               </Link>
             </div>
           </div>
 
           {/* Interactive Story Highlight Tabs */}
-          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 28 }}>
+          <div
+            style={{
+              display: "flex",
+              gap: 8,
+              flexWrap: "wrap",
+              marginBottom: 28,
+            }}
+          >
             {[
               { id: "all", label: "All Highlights" },
               { id: "museum", label: "Khadi Museum" },
@@ -360,7 +493,8 @@ export default function HomeSections() {
                 type="button"
                 onClick={() => setActiveJournalTab(tab.id)}
                 style={{
-                  background: activeJournalTab === tab.id ? "#1a140e" : "#ffffff",
+                  background:
+                    activeJournalTab === tab.id ? "#1a140e" : "#ffffff",
                   color: activeJournalTab === tab.id ? "#FAF6F0" : "#4a3c30",
                   border: `1.5px solid ${activeJournalTab === tab.id ? "#1a140e" : "rgba(42,31,20,0.12)"}`,
                   padding: "7px 16px",
@@ -378,46 +512,83 @@ export default function HomeSections() {
 
           {/* Tabbed Stories Grid */}
           <div className="hs-journal-grid">
-            {(activeJournalTab === "all" || activeJournalTab === "bharatpur") && (
+            {(activeJournalTab === "all" ||
+              activeJournalTab === "bharatpur") && (
               <Link href="/journal" className="hs-journal-card">
-                <img src="/assets/wev.jpg" alt="Bharatpur Weaving Village" className="hs-journal-card__img" />
+                <img
+                  src="/assets/wev.jpg"
+                  alt="Bharatpur Weaving Village"
+                  className="hs-journal-card__img"
+                />
                 <div className="hs-journal-card__body">
-                  <span className="hs-journal-card__cat">Places · Bharatpur</span>
-                  <h3 className="hs-journal-card__title">The Handlooms of Bharatpur: Walking Through MP&apos;s Weaving Villages</h3>
-                  <span className="hs-journal-card__read">Read Entry <FiArrowRight /></span>
+                  <span className="hs-journal-card__cat">
+                    Places · Bharatpur
+                  </span>
+                  <h3 className="hs-journal-card__title">
+                    The Handlooms of Bharatpur: Walking Through MP&apos;s
+                    Weaving Villages
+                  </h3>
+                  <span className="hs-journal-card__read">
+                    Read Entry <FiArrowRight />
+                  </span>
                 </div>
               </Link>
             )}
 
             {(activeJournalTab === "all" || activeJournalTab === "museum") && (
               <Link href="/journal" className="hs-journal-card">
-                <img src="/assets/chakra.jpg" alt="Khadi Museum Archives" className="hs-journal-card__img" />
+                <img
+                  src="/assets/chakra.jpg"
+                  alt="Khadi Museum Archives"
+                  className="hs-journal-card__img"
+                />
                 <div className="hs-journal-card__body">
                   <span className="hs-journal-card__cat">Cloth · Archive</span>
-                  <h3 className="hs-journal-card__title">Inside The Khadi Museum: Living Archives of Slow Time</h3>
-                  <span className="hs-journal-card__read">Watch & Read <FiArrowRight /></span>
+                  <h3 className="hs-journal-card__title">
+                    Inside The Khadi Museum: Living Archives of Slow Time
+                  </h3>
+                  <span className="hs-journal-card__read">
+                    Watch & Read <FiArrowRight />
+                  </span>
                 </div>
               </Link>
             )}
 
             {(activeJournalTab === "all" || activeJournalTab === "miras") && (
               <Link href="/journal" className="hs-journal-card">
-                <img src="/assets/img/18.png" alt="Mira's College Everyday Uniform" className="hs-journal-card__img" />
+                <img
+                  src="/assets/img/18.png"
+                  alt="Mira's College Everyday Uniform"
+                  className="hs-journal-card__img"
+                />
                 <div className="hs-journal-card__body">
                   <span className="hs-journal-card__cat">People & Living</span>
-                  <h3 className="hs-journal-card__title">Mira&apos;s College: The Everyday Uniform of Real Living</h3>
-                  <span className="hs-journal-card__read">Read Entry <FiArrowRight /></span>
+                  <h3 className="hs-journal-card__title">
+                    Mira&apos;s College: The Everyday Uniform of Real Living
+                  </h3>
+                  <span className="hs-journal-card__read">
+                    Read Entry <FiArrowRight />
+                  </span>
                 </div>
               </Link>
             )}
 
-            {(activeJournalTab === "all" || activeJournalTab === "community") && (
+            {(activeJournalTab === "all" ||
+              activeJournalTab === "community") && (
               <Link href="/journal" className="hs-journal-card">
-                <img src="/assets/img/23.png" alt="Community Wardrobe Story" className="hs-journal-card__img" />
+                <img
+                  src="/assets/img/23.png"
+                  alt="Community Wardrobe Story"
+                  className="hs-journal-card__img"
+                />
                 <div className="hs-journal-card__body">
                   <span className="hs-journal-card__cat">Your Stories</span>
-                  <h3 className="hs-journal-card__title">My Grandmother&apos;s 40-Year-Old Odhna: The Pieces We Keep</h3>
-                  <span className="hs-journal-card__read">Read Entry <FiArrowRight /></span>
+                  <h3 className="hs-journal-card__title">
+                    My Grandmother&apos;s 40-Year-Old Odhna: The Pieces We Keep
+                  </h3>
+                  <span className="hs-journal-card__read">
+                    Read Entry <FiArrowRight />
+                  </span>
                 </div>
               </Link>
             )}
@@ -433,17 +604,23 @@ export default function HomeSections() {
             <h2 className="hs-headline">Have a story? Tell us.</h2>
             <p className="hs-copy">
               Maybe you know a weaver we should meet.
-              {"\n"}Maybe there&apos;s a textile from your hometown we&apos;ve never heard of.
-              {"\n"}Maybe a piece of clothing carries a story you&apos;ll never forget.
+              {"\n"}Maybe there&apos;s a textile from your hometown we&apos;ve
+              never heard of.
+              {"\n"}Maybe a piece of clothing carries a story you&apos;ll never
+              forget.
               {"\n"}We&apos;d like to hear it.
             </p>
             <div style={{ marginTop: 28 }}>
-              <Link href="/journal#submit-story" className="hs-btn hs-btn--light">
+              <Link
+                href="/journal#submit-story"
+                className="hs-btn hs-btn--light"
+              >
                 Share Your Story <FiArrowRight />
               </Link>
             </div>
             <p className="hs-community-note">
-              You choose whether we&apos;d be allowed to share your submission on our social channels.
+              You choose whether we&apos;d be allowed to share your submission
+              on our social channels.
             </p>
           </div>
         </div>
@@ -453,12 +630,18 @@ export default function HomeSections() {
       <section className="hs-final-shop" id="final-shop">
         <div className="hs-container" style={{ maxWidth: 760 }}>
           <span className="hs-eyebrow">Sum Clothico</span>
-          <h2 className="hs-headline">Find something you&apos;ll want to live in.</h2>
+          <h2 className="hs-headline">
+            Find something you&apos;ll want to live in.
+          </h2>
           <p className="hs-copy">
             Thoughtful clothes. Handwoven beginnings. Made for your everyday.
           </p>
           <div style={{ marginTop: 32 }}>
-            <Link href="/shop" className="hs-btn hs-btn--primary" style={{ padding: "16px 36px", fontSize: "0.88rem" }}>
+            <Link
+              href="/shop"
+              className="hs-btn hs-btn--primary"
+              style={{ padding: "16px 36px", fontSize: "0.88rem" }}
+            >
               Shop Sum Clothico <FiArrowRight />
             </Link>
           </div>

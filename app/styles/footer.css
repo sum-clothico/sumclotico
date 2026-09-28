@@ -1,19 +1,27 @@
-/* ─── Footer Shell ───────────────────────────────────────────────────────── */
+/* ─── Footer Shell — 100% Edge to Edge Full Width ───────────────────────── */
 .main-footer {
-  padding: 10px;
-  background-color: var(--bg-color);
+  padding: 0;
+  width: 100%;
+  background-color: var(--bg-color, #EDE8DC);
 }
 
 .footer-inner {
-  background-color: #2C1F14;
-  border-radius: 20px;
-  padding: 80px 40px 40px;
+  background-color: #FAF6F0;
+  border-radius: 0;
+  border-top: 1.5px solid rgba(44, 32, 22, 0.16);
+  border-bottom: none;
+  border-left: none;
+  border-right: none;
+  padding: 64px 32px 32px;
   position: relative;
   overflow: hidden;
-  min-height: 95vh;
+  width: 100%;
+  max-width: 100%;
+  min-height: auto;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  box-sizing: border-box;
 }
 
 /* ─── Top Row ────────────────────────────────────────────────────────────── */
@@ -30,22 +38,23 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
-  color: var(--color-white);
+  color: var(--color-dark, #2C2016);
 }
 
 .footer-badge {
   display: inline-block;
-  font-family: "Epilogue", Arial, sans-serif;
-  padding: 8px 15px;
-  background: var(--color-white);
-  color: var(--color-black);
+  font-family: "Poppins", Arial, sans-serif;
+  padding: 5px 14px;
+  background: rgba(102, 6, 8, 0.08);
+  color: #660608;
+  border: 1px solid rgba(102, 6, 8, 0.22);
   align-items: center;
-  border-radius: 20px;
-  border-bottom-left-radius: 1px;
-  font-size: 1rem;
-  font-weight: 450;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   width: fit-content;
-  text-transform: lowercase;
+  text-transform: uppercase;
   cursor:
     url("/assets/Cursor SVG/cursor-text.svg") 12 12,
     auto;
@@ -53,10 +62,11 @@
 
 .footer-column h3 {
   font-family: "Epilogue", Arial, sans-serif;
-  font-size: 2.2rem;
+  font-size: 2rem;
   font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: -1px;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+  color: #2C2016;
   cursor:
     url("/assets/Cursor SVG/cursor-pointer.svg") 12 12,
     pointer;
@@ -65,19 +75,20 @@
 .footer-column address {
   font-family: "Epilogue", Arial, sans-serif;
   font-style: normal;
-  font-size: 2rem;
-  font-weight: 1000;
-  line-height: 1.2;
+  font-size: 1.8rem;
+  font-weight: 800;
+  line-height: 1.25;
+  color: #2C2016;
   cursor:
     url("/assets/Cursor SVG/cursor-text.svg") 12 12,
     auto;
 }
 
 .footer-map-link {
-  color: var(--color-white);
+  color: #2C2016;
   text-decoration: none;
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: 1.05rem;
+  font-weight: 700;
   width: fit-content;
   padding-bottom: 4px;
   margin-top: 10px;
@@ -96,38 +107,50 @@
   width: 40%;
   height: auto;
   margin-top: 2px;
+  color: #660608;
 }
 
 .footer-email {
-  font-size: 2rem;
-  font-weight: 900;
-  color: var(--color-white);
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #2C2016;
   text-decoration: none;
   letter-spacing: -0.5px;
   width: fit-content;
   display: inline-block;
+  transition: color 0.2s ease;
   cursor:
     url("/assets/Cursor SVG/cursor-pointer.svg") 12 12,
     pointer;
+}
+
+.footer-email:hover {
+  color: #660608;
 }
 
 .footer-whatsapp {
-  font-size: 2.2rem;
+  font-size: 1.85rem;
   font-weight: 800;
   margin-top: -10px;
-  color: var(--color-white);
+  color: #2C2016;
   text-decoration: none;
   width: fit-content;
   display: inline-block;
+  transition: color 0.2s ease;
   cursor:
     url("/assets/Cursor SVG/cursor-pointer.svg") 12 12,
     pointer;
 }
 
+.footer-whatsapp:hover {
+  color: #660608;
+}
+
 .footer-note {
-  font-size: 1rem;
-  opacity: 0.8;
-  line-height: 1.4;
+  font-size: 0.95rem;
+  color: #6B5A4E;
+  opacity: 0.9;
+  line-height: 1.5;
   cursor:
     url("/assets/Cursor SVG/cursor-text.svg") 12 12,
     auto;
@@ -136,20 +159,26 @@
 /* ─── Social Icons ───────────────────────────────────────────────────────── */
 .footer-socials {
   display: flex;
-  gap: 25px;
-  margin-top: 1px;
+  gap: 20px;
+  margin-top: 6px;
 }
 
 .footer-socials a {
-  color: var(--color-white);
-  width: 50px;
-  height: 50px;
+  color: #2C2016;
+  width: 42px;
+  height: 42px;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: color 0.2s ease, transform 0.2s ease;
   cursor:
     url("/assets/Cursor SVG/cursor-pointer.svg") 12 12,
     pointer;
+}
+
+.footer-socials a:hover {
+  color: #660608;
+  transform: translateY(-2px);
 }
 
 .footer-socials a svg {
@@ -157,21 +186,37 @@
   height: 100%;
 }
 
+/* ─── Traditional Indian Pattern Bands (Full-Bleed Border to Border) ────── */
+.footer-pattern-divider {
+  width: calc(100% + 80px);
+  margin-left: -40px;
+  margin-right: -40px;
+  height: 32px;
+  background-image: url("/assets/footerpattern-accent.png");
+  background-repeat: repeat-x;
+  background-position: center;
+  background-size: auto 28px;
+  opacity: 0.9;
+  margin-top: 18px;
+  margin-bottom: 18px;
+  pointer-events: none;
+}
+
 /* ─── Bottom Area ────────────────────────────────────────────────────────── */
 .footer-bottom {
   position: relative;
   width: 100%;
-  margin-top: 50px;
+  margin-top: 20px;
   z-index: 5;
 }
 
 .footer-big-text {
   width: 100%;
-  color: var(--color-white);
+  color: var(--color-dark, #2C2016);
   text-align: center;
   pointer-events: none;
   user-select: none;
-  margin-bottom: -70px;
+  margin: 10px 0;
 }
 
 .footer-logo__svg,
@@ -218,19 +263,21 @@
 }
 
 .footer-credits {
-  background: var(--color-black);
-  font-family: "Epilogue";
-  color: var(--color-white);
-  padding: 3px 12px;
+  background: #2C2016;
+  font-family: "Epilogue", sans-serif;
+  color: #FAF6F0;
+  padding: 4px 14px;
   border-radius: 20px;
   border-bottom-left-radius: 1px;
   text-decoration: none;
-  font-size: 1rem;
+  font-size: 0.92rem;
+  font-weight: 700;
   pointer-events: auto;
   letter-spacing: 0.5px;
   display: inline-block;
   position: relative;
   z-index: 2;
+  border: 1px solid rgba(44, 32, 22, 0.2);
   cursor:
     url("/assets/Cursor SVG/cursor-pointer.svg") 12 12,
     pointer;
@@ -240,12 +287,13 @@
   position: absolute;
   bottom: calc(100% + 15px);
   right: 0;
-  background: var(--color-black);
+  background: #FAF6F0;
   border-radius: 12px;
   opacity: 0;
   visibility: hidden;
   transform-origin: bottom right;
-  border: 3px solid var(--color-white);
+  border: 2px solid #2C2016;
+  box-shadow: 0 10px 30px rgba(44, 32, 22, 0.12);
   pointer-events: auto;
   overflow: hidden;
   z-index: 1;
@@ -259,9 +307,8 @@
 
 .credits-content {
   display: flex;
-  /* REDUCED BOX SIZE: Makes the box smaller without changing text size */
   gap: 38px;
-  padding: 34px 26px;
+  padding: 28px 24px;
   white-space: nowrap;
   width: max-content;
   height: max-content;
@@ -283,25 +330,30 @@
 }
 
 .credits-label {
-  color: var(--color-white);
-  font-size: 1.3rem;
-  font-weight: 950;
+  color: #660608;
+  font-size: 1.15rem;
+  font-weight: 900;
   font-family: "Epilogue", sans-serif;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 .credits-name {
-  color: var(--color-white);
-  font-size: 1.1rem;
-  font-weight: 450;
+  color: #2C2016;
+  font-size: 1.15rem;
+  font-weight: 700;
   font-family: "Epilogue", sans-serif;
-  opacity: 0.9;
+  opacity: 0.95;
   text-decoration: none;
-  /* Removed underline since it's an <a> tag now */
   cursor:
     url("/assets/Cursor SVG/cursor-pointer.svg") 12 12,
     pointer;
-  /* Added custom pointer */
   display: inline-block;
+  transition: color 0.2s ease;
+}
+
+.credits-name:hover {
+  color: #660608;
 }
 
 /* ─── Footer Stickers ────────────────────────────────────────────────────── */
@@ -364,53 +416,27 @@
   transform: rotate(5deg);
 }
 
-.footer-f1-overlay {
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 100%;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.footer-f1-overlay img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.footer-bottom-gradient {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 50%;
-  background: linear-gradient(to bottom, transparent, rgba(44, 32, 22, 0.9));
-  z-index: 2;
-  pointer-events: none;
-}
-
 /* ─── Footer Closing Line ─────────────────────────────────────────────────── */
 .footer-closing-line {
   position: relative;
   z-index: 10;
-  margin-top: 40px;
-  padding: 28px 40px;
+  margin-top: 30px;
+  padding: 24px 40px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  border-top: 1px solid rgba(245, 237, 227, 0.15);
+  border-top: 1px solid rgba(44, 32, 22, 0.12);
   flex-wrap: wrap;
 }
 
 .footer-closing-tagline {
   font-family: 'Poppins', sans-serif;
   font-size: 0.95rem;
-  font-weight: 400;
-  font-style: italic;
-  color: rgba(245, 237, 227, 0.7);
-  letter-spacing: 0.05em;
+  font-weight: 600;
+  color: #2C2016;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .footer-quick-links {
@@ -422,23 +448,33 @@
 .footer-quick-links a {
   font-family: 'Poppins', sans-serif;
   font-size: 0.78rem;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(245, 237, 227, 0.55);
+  color: #5C4A3E;
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .footer-quick-links a:hover {
-  color: rgba(245, 237, 227, 0.95);
+  color: #660608;
 }
 
 @media (max-width: 768px) {
+  .footer-inner {
+    padding: 50px 20px 30px;
+  }
+  .footer-pattern-divider {
+    width: calc(100% + 40px);
+    margin-left: -20px;
+    margin-right: -20px;
+    height: 24px;
+    background-size: auto 22px;
+  }
   .footer-closing-line {
     flex-direction: column;
     align-items: flex-start;
-    padding: 20px;
+    padding: 20px 10px;
     gap: 16px;
   }
   .footer-quick-links {

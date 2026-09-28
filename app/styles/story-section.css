@@ -22,16 +22,17 @@
 /* ─── Heading ───────────────────────────────────────────── */
 .story-section__heading {
   position: absolute;
-  top: 10%;
+  top: clamp(120px, 15vh, 150px);
   left: 50%;
   transform: translateX(-50%);
   font-family: 'Epilogue', sans-serif;
-  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
   font-weight: 700;
-  color: #111;
+  color: var(--color-dark, #2C2016);
   z-index: 10;
   text-align: center;
   margin: 0;
+  letter-spacing: -0.5px;
 }
 
 /* ─── Phase Text ────────────────────────────────────────── */
@@ -159,38 +160,65 @@
 }
 
 /* ─── Mobile ────────────────────────────────────────────── */
-@media (max-width: 768px) {
+/* ─── Mobile ────────────────────────────────────────────── */
+@media (max-width: 900px) {
   .story-section {
     height: 100svh;
-    min-height: 600px;
+    min-height: 560px;
     padding: 0;
+  }
+
+  .story-section__heading {
+    top: 48px !important;
+    font-size: clamp(1.6rem, 5.5vw, 2.2rem) !important;
+    padding: 0 20px;
+    width: 100%;
+    line-height: 1.2 !important;
+    color: #1A1714 !important;
   }
 
   .story-phase-text {
     position: absolute;
-    top: 50% !important;
+    top: 52% !important;
     left: 50% !important;
     right: auto !important;
     transform: translate(-50%, -50%) !important;
     text-align: center !important;
-    max-width: 90%;
+    max-width: 88%;
     width: 100%;
-    padding: 0 20px;
+    padding: 16px 20px;
+    background: rgba(237, 232, 220, 0.75);
+    backdrop-filter: blur(8px);
+    border-radius: 14px;
+    border: 1px solid rgba(61, 43, 31, 0.15);
   }
 
   .story-phase-text p {
-    font-size: 1.15rem;
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    color: #1A1714 !important;
+    line-height: 1.55 !important;
   }
 
   .story-section__frame {
-    display: none;
+    display: none !important;
   }
 
   .story-section__bg {
-    height: 50%;
+    height: 45%;
+    opacity: 0.65;
   }
 
   .story-section__cloth {
-    opacity: 0.5;
+    opacity: 0.25 !important;
+  }
+
+  .story-section__link {
+    bottom: 24px !important;
+    right: 50% !important;
+    transform: translateX(50%) !important;
+    white-space: nowrap !important;
+    font-size: 0.9rem !important;
+    font-weight: 700 !important;
   }
 }

@@ -352,12 +352,12 @@
     display: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
     .desktop-only {
         display: none !important;
     }
     .mobile-only {
-        display: block;
+        display: block !important;
     }
     
     .nav-wa-mobile-link {
@@ -391,21 +391,41 @@
     }
 
     .navbar {
-        padding: 16px 20px;
+        padding: 12px 16px !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
     }
 
-    .nav-left, .nav-right {
-        flex: 1;
-    }
-    
     .nav-left {
-        display: flex;
-        justify-content: flex-start;
+        display: none !important;
+    }
+
+    .nav-center {
+        position: static !important;
+        transform: none !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        flex: 1 !important;
+    }
+
+    .nav-center .logo-main {
+        font-size: 16px !important;
+        letter-spacing: 0.1em !important;
     }
     
     .nav-right {
-        display: flex;
-        justify-content: flex-end;
+        display: flex !important;
+        justify-content: flex-end !important;
+        align-items: center !important;
+        gap: 8px !important;
+        flex: 0 0 auto !important;
+    }
+
+    .nav-bag-button {
+        padding: 6px 10px !important;
+        font-size: 12px !important;
     }
 
     /* Hamburger Animation */
@@ -418,7 +438,6 @@
     .nav-hamburger-btn.is-active .hamburger-line:nth-child(3) {
         transform: translateY(-10px) rotate(-45deg);
     }
-
 }
 
 /* Mobile Menu Overlay */

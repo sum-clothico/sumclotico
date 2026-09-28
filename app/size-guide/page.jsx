@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import Link from "next/link";
 
 const MEASUREMENTS_INCHES = [
@@ -145,7 +144,6 @@ export default function SizeGuidePage() {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 }

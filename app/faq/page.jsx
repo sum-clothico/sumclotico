@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { FiChevronDown, FiChevronUp, FiHelpCircle } from "react-icons/fi";
 import Link from "next/link";
 import { trackEvent } from "@/lib/analytics";
@@ -205,7 +204,6 @@ export default function FAQPage() {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 }

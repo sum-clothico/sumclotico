@@ -2,7 +2,6 @@
 
 import React from "react";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { useStore } from "@/context/StoreContext";
 
 export default function CancellationPolicyPage() {
@@ -48,7 +47,6 @@ export default function CancellationPolicyPage() {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 }

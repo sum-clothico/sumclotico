@@ -13,8 +13,6 @@ import TravelingImage from "@/components/TravelingImage";
 import AboutSection from "@/components/AboutSection";
 import MotionCards from "@/components/MotionCards";
 import JournalPreviewSection from "@/components/JournalPreviewSection";
-import Footer from "@/components/Footer";
-import CursorBubble from "@/components/CursorBubble";
 import SmoothScroll from "@/components/SmoothScroll";
 
 export default function Home() {
@@ -25,8 +23,14 @@ export default function Home() {
       {!loaded && <Loader onComplete={() => setLoaded(true)} />}
       <SvgSymbols />
       <SmoothScroll />
-      <CursorBubble />
-      <header className="main-header">
+      <header
+        className="main-header"
+        style={{
+          opacity: loaded ? 1 : 0,
+          transition: "opacity 0.35s ease",
+          pointerEvents: loaded ? "auto" : "none",
+        }}
+      >
         <Navbar />
         <ArchedHero />
       </header>
@@ -35,21 +39,30 @@ export default function Home() {
       <StorySection />
       <SplitSection />
       <TravelingImage />
-      <img
-        src="/assets/footer-dip.png"
-        alt=""
-        className="motion-card__dip-img"
+      {/* Traditional Indian Border Pattern Divider */}
+      <div
+        className="section-pattern-divider"
+        style={{
+          width: "100%",
+          height: "28px",
+          backgroundColor: "var(--bg-color, #EDE8DC)",
+          backgroundImage: 'url("/assets/footerpattern-accent.png")',
+          backgroundRepeat: "repeat-x",
+          backgroundPosition: "center",
+          backgroundSize: "auto 26px",
+          opacity: 0.85,
+          position: "relative",
+          zIndex: 10,
+        }}
+        aria-hidden="true"
       />
       <main>
-        <div className="content-section motion-cards-wrapper">
+        <div className="motion-cards-wrapper">
           <MotionCards />
         </div>
         <AboutSection />
         <JournalPreviewSection />
       </main>
-      <footer className="main-footer">
-        <Footer />
-      </footer>
     </>
   );
 }

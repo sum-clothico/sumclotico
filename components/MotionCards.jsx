@@ -5,6 +5,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { InertiaPlugin } from "gsap/InertiaPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+import IndianArchBadge from "@/components/IndianArchBadge";
+
 gsap.registerPlugin(InertiaPlugin, ScrollTrigger);
 
 const PHASE_TEXTS = [
@@ -56,46 +58,69 @@ export default function MotionCards() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Inertia on cards
-      const cards = document.querySelectorAll(".motion-card__card");
-      cards.forEach((card) => {
-        let lastX = 0;
-        let lastY = 0;
-        let speedX = 0;
-        let speedY = 0;
-
-        const startRotation = gsap.getProperty(card, "rotation");
-        const startX = gsap.getProperty(card, "x");
-        const startY = gsap.getProperty(card, "y");
-
-        const onMove = (e) => {
-          speedX = e.clientX - lastX;
-          speedY = e.clientY - lastY;
-          lastX = e.clientX;
-          lastY = e.clientY;
-        };
-        const onEnter = (e) => {
-          speedX = 0;
-          speedY = 0;
-          lastX = e.clientX;
-          lastY = e.clientY;
-        };
-        const onLeave = () => {
-          gsap.to(card, {
-            inertia: {
-              x: { velocity: speedX * 20, end: startX },
-              y: { velocity: speedY * 20, end: startY },
-              rotation: { velocity: speedX * 1.5, end: startRotation },
+      // Heading Word-by-Word Reveal
+      const mcWords = sectionRef.current.querySelectorAll(".mc-heading-word");
+      if (mcWords.length > 0) {
+        gsap.fromTo(
+          mcWords,
+          { y: "125%", rotate: 2.5, opacity: 0 },
+          {
+            y: "0%",
+            rotate: 0,
+            opacity: 1,
+            duration: 1.1,
+            stagger: 0.05,
+            ease: "power4.out",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 75%",
             },
-          });
-        };
+          }
+        );
+      }
 
-        card.addEventListener("mousemove", onMove);
-        card.addEventListener("mouseenter", onEnter);
-        card.addEventListener("mouseleave", onLeave);
-      });
+      // Static Paragraph / Cycling Subtitle Slide-up (like Section 2)
+      const mcDesc = sectionRef.current.querySelector(".mc-texts");
+      if (mcDesc) {
+        gsap.fromTo(
+          mcDesc,
+          { y: 20, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 1.0,
+            delay: 0.25,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 75%",
+            },
+          }
+        );
+      }
 
-      // ── Pattern rotate + scale on scroll ──
+      // Grid Cards Staggered Slide-up Entrance
+      const cards = sectionRef.current.querySelectorAll(".motion-card__card");
+      if (cards.length > 0) {
+        gsap.fromTo(
+          cards,
+          { y: 35, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.9,
+            stagger: 0.12,
+            delay: 0.35,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 70%",
+            },
+          }
+        );
+      }
+
+      // Pattern rotate + scale on scroll
       const pattern = sectionRef.current.querySelector(".mc-pattern");
       if (pattern) {
         gsap.fromTo(
@@ -115,20 +140,23 @@ export default function MotionCards() {
           },
         );
       }
-
-      // ── Pin section ──
-      const PIN = 3500;
-      ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: "top top",
-        end: `+=${PIN}`,
-        pin: true,
-        pinSpacing: true,
-      });
     }, sectionRef);
 
     return () => ctx.revert();
   }, []);
+
+  const mcHeadingWords = [
+    "Before",
+    "it",
+    "becomes",
+    "your",
+    "clothes,",
+    "it",
+    "passes",
+    "through",
+    "many",
+    "hands.",
+  ];
 
   return (
     <section
@@ -136,15 +164,43 @@ export default function MotionCards() {
       className="motion-card-section"
       id="motion-card-section"
     >
-      {/* ─── Logo ─── */}
-      <div className="mc-logo">
-        <img src="/assets/logo.svg" alt="सम् Clothico" />
-      </div>
 
       <div className="horizontal-words__corner-right">म</div>
 
-      {/* ─── Section heading ─── */}
-      <h2 className="mc-heading">Before it becomes your clothes, it passes through many hands.</h2>
+      {/* ─── Indian Arch Subtitle Badge ─── */}
+      <div style={{ display: "flex", justifyContent: "center", marginBottom: "16px" }}>
+        <IndianArchBadge>From Fiber to Form</IndianArchBadge>
+      </div>
+
+      {/* ─── Section heading with Masked Words ─── */}
+      <h2
+        className="mc-heading"
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          gap: "0.26em",
+        }}
+      >
+        {mcHeadingWords.map((word, idx) => (
+          <span
+            key={idx}
+            style={{
+              display: "inline-block",
+              overflow: "hidden",
+              verticalAlign: "top",
+              paddingBottom: "4px",
+            }}
+          >
+            <span
+              className="mc-heading-word"
+              style={{ display: "inline-block", transformOrigin: "bottom left" }}
+            >
+              {word}
+            </span>
+          </span>
+        ))}
+      </h2>
 
       {/* ─── Click-to-cycle Text ─── */}
       <div
@@ -159,50 +215,61 @@ export default function MotionCards() {
         <p ref={phaseTextRef} className="mc-phase-text mc-phase-text--active">
           {PHASE_TEXTS[phaseIndex]}
         </p>
-        <span className="mc-click-hint">click</span>
+        <span className="mc-click-hint">tap to explore stories</span>
       </div>
 
-      {/* ─── Cards ─── */}
+      {/* ─── Cards with authentic artisan craft imagery ─── */}
       <div className="motion-card__cards-area">
         <div ref={containerRef} className="motion-card__cards">
+          {/* Card 1: Handspun Charkha Yarn */}
           <div className="motion-card__card motion-card__card--1">
             <div className="motion-card__card-image">
               <img
-                src="/assets/img/13.png"
+                src="/assets/chakra.jpg"
                 loading="lazy"
-                alt=""
+                alt="Handspinning raw cotton on Charkha"
                 className="cover-image"
               />
+              <span className="motion-card__tag">01 • Handspun Charkha</span>
             </div>
           </div>
+
+          {/* Card 2: Traditional Loom Weaving */}
           <div className="motion-card__card motion-card__card--2">
             <div className="motion-card__card-image">
               <img
-                src="/assets/img/14.png"
+                src="/assets/wev.jpg"
                 loading="lazy"
-                alt=""
+                alt="Pit loom artisan hand weaving"
                 className="cover-image"
               />
+              <span className="motion-card__tag">02 • Pit Loom Weaving</span>
             </div>
           </div>
+
+          {/* Card 3: Master Hand Stitching */}
           <div className="motion-card__card motion-card__card--3">
             <div className="motion-card__card-image">
               <img
-                src="/assets/img/15.png"
+                src="/assets/han.jpg"
                 loading="lazy"
-                alt=""
+                alt="Master hands cutting and hand tailoring"
                 className="cover-image"
               />
+              <span className="motion-card__tag">03 • Master Tailoring</span>
             </div>
           </div>
+
+          {/* Card 4: Living Khadi Cloth */}
           <div className="motion-card__card motion-card__card--4">
             <div className="motion-card__card-image">
               <img
-                src="/assets/img/16.png"
+                src="/assets/khadi.jpg"
                 loading="lazy"
-                alt=""
+                alt="Finished living handspun Khadi cloth"
                 className="cover-image"
               />
+              <span className="motion-card__tag">04 • Living Khadi</span>
             </div>
           </div>
         </div>
