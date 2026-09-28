@@ -4,7 +4,6 @@ import React from "react";
 import { SignUp } from "@clerk/nextjs";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 
 export default function SignUpPage() {
   return (
@@ -46,7 +45,6 @@ export default function SignUpPage() {
           </Link>
         </div>
       </div>
-      <Footer />
     </>
   );
 }

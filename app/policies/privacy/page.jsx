@@ -2,7 +2,6 @@
 
 import React from "react";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { useStore } from "@/context/StoreContext";
 
 export default function PrivacyPolicyPage() {
@@ -48,7 +47,6 @@ export default function PrivacyPolicyPage() {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 }

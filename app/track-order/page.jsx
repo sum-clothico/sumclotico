@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import { useStore } from "@/context/StoreContext";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import {
   FiSearch,
   FiTruck,
@@ -698,8 +697,6 @@ export default function TrackOrderPage() {
           </div>
         </div>
       )}
-
-      <Footer />
     </>
   );
 }

@@ -2,8 +2,8 @@
 
 import { useEffect, useState, useRef } from "react";
 import { gsap } from "gsap";
-import { WIGGLE_CONFIG } from "@/lib/data";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useStore } from "@/context/StoreContext";
 import { FiShoppingBag, FiUser, FiSearch, FiMessageSquare, FiX, FiTruck, FiRefreshCw, FiLogOut } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa";
@@ -11,35 +11,8 @@ import { useUser, useClerk } from "@clerk/nextjs";
 import { trackEvent } from "@/lib/analytics";
 import WhatsAppQRModal from "@/components/WhatsAppQRModal";
 
-function initWiggle(element, intensity) {
-  const target = element.querySelector("[data-wiggle-target]") || element;
-  if (!target) return () => {};
-  gsap.set(target, { transformOrigin: "center center" });
-  let tween;
-  const onEnter = () => {
-    tween = gsap.to(target, {
-      rotation: intensity,
-      duration: 0.17,
-      repeat: -1,
-      yoyo: true,
-      ease: "steps(1)",
-    });
-  };
-  const onLeave = () => {
-    if (tween) {
-      tween.kill();
-      gsap.to(target, { rotation: 0, duration: 0.3, ease: "power2.out" });
-    }
-  };
-  element.addEventListener("mouseenter", onEnter);
-  element.addEventListener("mouseleave", onLeave);
-  return () => {
-    element.removeEventListener("mouseenter", onEnter);
-    element.removeEventListener("mouseleave", onLeave);
-  };
-}
-
 export default function Navbar() {
+  const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isWhatsAppQROpen, setIsWhatsAppQROpen] = useState(false);
@@ -118,14 +91,8 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
 
-    // Wiggle on logo
-    const cleanups = [];
-    const logoMain = document.querySelector(".logo-main");
-    if (logoMain) cleanups.push(initWiggle(logoMain, WIGGLE_CONFIG.logoMain || 2));
-
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      cleanups.forEach((fn) => fn && fn());
     };
   }, []);
 
@@ -154,7 +121,7 @@ export default function Navbar() {
         top: 0,
         left: 0,
         width: "100%",
-        zIndex: 1000,
+        zIndex: 9999,
         transition: "all 0.3s ease",
       }}
     >
@@ -162,8 +129,8 @@ export default function Navbar() {
       {!isBannerDismissed && (
         <div
           style={{
-            background: "#0a0a0a",
-            color: "#ffffff",
+            background: "#2A1F14", // Warm brand dark brown from client swatch
+            color: "#FAF6F0",
             padding: "6px 24px",
             fontSize: "12px",
             fontWeight: 700,
@@ -213,12 +180,12 @@ export default function Navbar() {
                   {activeBannerCoupon.bannerText || (
                     <>
                       {activeBannerCoupon.title.toUpperCase()} • CODE:{" "}
-                      <strong style={{ color: "#f35c27" }}>{activeBannerCoupon.code}</strong>
+                      <strong style={{ color: "#E07A5F" }}>{activeBannerCoupon.code}</strong>
                     </>
                   )}
                 </>
               ) : (
-                <span>FREE EXPRESS SHIPPING ON ORDERS ABOVE ₹1,999 • CODE: <strong style={{ color: "#f35c27" }}>KHADI10</strong></span>
+                <span>FREE EXPRESS SHIPPING ON ORDERS ABOVE ₹1,999 • CODE: <strong style={{ color: "#E07A5F" }}>KHADI10</strong></span>
               )}
             </span>
           </div>
@@ -266,12 +233,69 @@ export default function Navbar() {
         }}
       >
         <div className="nav-left">
-          <div className="nav-main-links desktop-only" style={{ display: "flex", gap: "22px" }}>
-            <Link href="/shop" style={{ textDecoration: "none", color: "#111", fontWeight: 600, fontSize: "13px", textTransform: "uppercase", letterSpacing: "0.5px" }}>Shop</Link>
-            <Link href="/our-story" style={{ textDecoration: "none", color: "#111", fontWeight: 600, fontSize: "13px", textTransform: "uppercase", letterSpacing: "0.5px" }}>Our Story</Link>
-            <Link href="/fabric" style={{ textDecoration: "none", color: "#111", fontWeight: 600, fontSize: "13px", textTransform: "uppercase", letterSpacing: "0.5px" }}>Fabric</Link>
-            <Link href="/journal" style={{ textDecoration: "none", color: "#111", fontWeight: 600, fontSize: "13px", textTransform: "uppercase", letterSpacing: "0.5px" }}>Journal</Link>
-            <Link href="/contact" style={{ textDecoration: "none", color: "#111", fontWeight: 600, fontSize: "13px", textTransform: "uppercase", letterSpacing: "0.5px" }}>Contact</Link>
+          <div className="nav-main-links desktop-only" style={{ display: "flex", gap: "22px", alignItems: "center" }}>
+            {[
+              {
+                label: "Shop",
+                href: "/shop",
+                isActive:
+                  pathname === "/shop" ||
+                  pathname?.startsWith("/product") ||
+                  pathname?.startsWith("/collection"),
+              },
+              {
+                label: "Our Story",
+                href: "/our-story",
+                isActive: pathname === "/our-story" || pathname === "/about",
+              },
+              {
+                label: "Fabric",
+                href: "/fabric",
+                isActive: pathname === "/fabric",
+              },
+              {
+                label: "Journal",
+                href: "/journal",
+                isActive: pathname === "/journal" || pathname?.startsWith("/journal"),
+              },
+              {
+                label: "Contact",
+                href: "/contact",
+                isActive: pathname === "/contact",
+              },
+            ].map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                style={{
+                  position: "relative",
+                  textDecoration: "none",
+                  color: link.isActive ? "#660608" : "#111111",
+                  fontWeight: link.isActive ? 800 : 600,
+                  fontSize: "13px",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.5px",
+                  padding: "4px 0",
+                  transition: "color 0.2s ease",
+                }}
+              >
+                {link.label}
+                {link.isActive && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      bottom: "-2px",
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                      width: "18px",
+                      height: "2px",
+                      backgroundColor: "#660608",
+                      borderRadius: "2px",
+                    }}
+                  />
+                )}
+              </Link>
+            ))}
           </div>
         </div>
 
@@ -327,8 +351,9 @@ export default function Navbar() {
             <FiSearch size={16} />
           </button>
 
-          {/* WhatsApp QR Modal Trigger */}
+          {/* WhatsApp QR Modal Trigger — Desktop Only */}
           <button
+            className="desktop-only"
             onClick={() => {
               handleWhatsAppClick();
               setIsWhatsAppQROpen(true);
@@ -351,8 +376,8 @@ export default function Navbar() {
             <FaWhatsapp size={18} color="#16a34a" />
           </button>
 
-          {/* Customer Profile & Account Popover Trigger */}
-          <div ref={profileRef} style={{ position: "relative" }}>
+          {/* Customer Profile & Account Popover Trigger — Desktop Only */}
+          <div ref={profileRef} className="desktop-only" style={{ position: "relative" }}>
             <button
               onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
               style={{
@@ -543,12 +568,13 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Luxury 520px Bag Drawer Trigger */}
+          {/* Luxury Bag Drawer Trigger (Full on Desktop, Compact on Mobile) */}
           <button
             onClick={() => {
               trackEvent("open_cart_drawer", { source: "navbar_bag_btn", total_items: cartTotalItems });
               setIsCartOpen(true);
             }}
+            className="nav-bag-button"
             style={{
               background: "#111111",
               border: "1px solid #111111",
@@ -557,32 +583,26 @@ export default function Navbar() {
               color: "#ffffff",
               display: "flex",
               alignItems: "center",
-              gap: "10px",
-              fontSize: "14px",
+              gap: "8px",
+              fontSize: "13px",
               fontWeight: 700,
-              padding: "10px 22px",
-              transition: "transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s, box-shadow 0.2s",
+              padding: "8px 16px",
+              transition: "transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s",
               boxShadow: "0 4px 16px rgba(0,0,0,0.18)",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "scale(1.04)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "scale(1)";
             }}
             aria-label={`Shopping bag containing ${cartTotalItems} items`}
           >
-            <FiShoppingBag size={18} />
-            <span style={{ letterSpacing: "0.5px" }}>Bag</span>
+            <FiShoppingBag size={16} />
+            <span className="desktop-only" style={{ letterSpacing: "0.5px" }}>Bag</span>
             <span
               style={{
                 background: "#f35c27",
                 color: "#ffffff",
-                fontSize: "12px",
-                padding: "3px 8px",
+                fontSize: "11px",
+                padding: "2px 7px",
                 borderRadius: "999px",
                 fontWeight: 800,
-                minWidth: "20px",
+                minWidth: "18px",
                 textAlign: "center",
                 lineHeight: 1,
               }}
@@ -609,12 +629,74 @@ export default function Navbar() {
       {/* Mobile Menu Overlay */}
       <div className={`nav-mobile-menu ${isMobileMenuOpen ? "is-open" : ""}`}>
         <div className="nav-mobile-menu-inner">
-          <Link href="/shop" onClick={() => setIsMobileMenuOpen(false)}>Shop</Link>
-          <Link href="/our-story" onClick={() => setIsMobileMenuOpen(false)}>Our Story</Link>
-          <Link href="/fabric" onClick={() => setIsMobileMenuOpen(false)}>Fabric</Link>
-          <Link href="/journal" onClick={() => setIsMobileMenuOpen(false)}>Journal</Link>
-          <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
+          {[
+            {
+              label: "Shop",
+              href: "/shop",
+              isActive:
+                pathname === "/shop" ||
+                pathname?.startsWith("/product") ||
+                pathname?.startsWith("/collection"),
+            },
+            {
+              label: "Our Story",
+              href: "/our-story",
+              isActive: pathname === "/our-story" || pathname === "/about",
+            },
+            {
+              label: "Fabric",
+              href: "/fabric",
+              isActive: pathname === "/fabric",
+            },
+            {
+              label: "Journal",
+              href: "/journal",
+              isActive: pathname === "/journal" || pathname?.startsWith("/journal"),
+            },
+            {
+              label: "Contact",
+              href: "/contact",
+              isActive: pathname === "/contact",
+            },
+          ].map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              onClick={() => setIsMobileMenuOpen(false)}
+              style={{
+                color: link.isActive ? "#660608" : "inherit",
+                fontWeight: link.isActive ? 800 : 500,
+                paddingLeft: link.isActive ? "10px" : "0",
+                borderLeft: link.isActive ? "3px solid #660608" : "3px solid transparent",
+                transition: "all 0.2s ease",
+              }}
+            >
+              {link.label}
+            </Link>
+          ))}
           <Link href="/track-order" onClick={() => setIsMobileMenuOpen(false)}>Track Order</Link>
+          {(isClerkSignedIn || currentUser) ? (
+            <button
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                handleSignOut();
+              }}
+              style={{
+                background: "none",
+                border: "none",
+                color: "#dc2626",
+                fontFamily: "inherit",
+                fontSize: "1.2rem",
+                fontWeight: 700,
+                cursor: "pointer",
+                padding: "8px 0",
+              }}
+            >
+              Sign Out
+            </button>
+          ) : (
+            <Link href="/sign-in" onClick={() => setIsMobileMenuOpen(false)}>Account / Sign In</Link>
+          )}
           <Link href="/faq" onClick={() => setIsMobileMenuOpen(false)}>FAQs</Link>
           <button
             type="button"

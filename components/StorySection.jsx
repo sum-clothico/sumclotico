@@ -31,11 +31,14 @@ const StorySection = () => {
       const section = sectionRef.current;
       const textEls = section.querySelectorAll(".story-phase-text");
 
+      const isDesktop = typeof window !== "undefined" && window.innerWidth > 900;
+      const PIN = isDesktop ? PIN_DURATION : 2200;
+
       // Pin the section
       ScrollTrigger.create({
         trigger: section,
         start: "top top",
-        end: `+=${PIN_DURATION}`,
+        end: `+=${PIN}`,
         pin: true,
         pinSpacing: true,
         refreshPriority: 1,
@@ -58,6 +61,27 @@ const StorySection = () => {
         });
       }
 
+      // Heading Word-by-Word Kinetic Reveal
+      const headingWords = section.querySelectorAll(".story-heading-word");
+      if (headingWords.length > 0) {
+        gsap.fromTo(
+          headingWords,
+          { y: "130%", rotate: 3, opacity: 0 },
+          {
+            y: "0%",
+            rotate: 0,
+            opacity: 1,
+            duration: 1.15,
+            stagger: 0.07,
+            ease: "power4.out",
+            scrollTrigger: {
+              trigger: section,
+              start: "top 70%",
+            },
+          }
+        );
+      }
+
       // Single master timeline for all 3 text phases, scrubbed to pin range
       const masterTl = gsap.timeline({
         scrollTrigger: {
@@ -71,9 +95,9 @@ const StorySection = () => {
       // Each phase: fade in (10%) → hold (23%) → fade out (10%) → gap (7%) ≈ 33% each
       textEls.forEach((el) => {
         masterTl
-          .fromTo(el, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.1, ease: "power2.out" })
+          .fromTo(el, { opacity: 0, y: 40, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.12, ease: "power3.out" })
           .to({}, { duration: 0.15 }) // hold
-          .to(el, { opacity: 0, y: -30, duration: 0.08, ease: "power2.in" });
+          .to(el, { opacity: 0, y: -30, scale: 0.98, duration: 0.08, ease: "power2.in" });
       });
 
       // Cloth slide animation
@@ -95,10 +119,39 @@ const StorySection = () => {
     return () => ctx.revert();
   }, []);
 
+  const storyHeadingWords = ["Some", "things", "are", "better", "when", "they", "take", "time."];
+
   return (
     <section ref={sectionRef} className="story-section" id="story">
-      {/* Heading */}
-      <h2 className="story-section__heading">Some things are better when they take time.</h2>
+      {/* Heading with Masked Words */}
+      <h2
+        className="story-section__heading"
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          gap: "0.26em",
+        }}
+      >
+        {storyHeadingWords.map((word, idx) => (
+          <span
+            key={idx}
+            style={{
+              display: "inline-block",
+              overflow: "hidden",
+              verticalAlign: "top",
+              paddingBottom: "4px",
+            }}
+          >
+            <span
+              className="story-heading-word"
+              style={{ display: "inline-block", transformOrigin: "bottom left" }}
+            >
+              {word}
+            </span>
+          </span>
+        ))}
+      </h2>
 
       {/* SVG Frame */}
       <svg className="story-section__frame" viewBox="0 0 240 330">

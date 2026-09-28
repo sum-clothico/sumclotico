@@ -45,6 +45,8 @@ const CLERK_PUBLISHABLE_KEY =
   process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ||
   "pk_test_YW1hemVkLWRlZXItNDIxMy5jbGVyay5hY2NvdW50cy5kZXYk";
 
+import GlobalFooter from "@/components/GlobalFooter";
+
 export default function RootLayout({ children }) {
   return (
     <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY}>
@@ -77,6 +79,7 @@ export default function RootLayout({ children }) {
         <body suppressHydrationWarning>
           <StoreProvider>
             {children}
+            <GlobalFooter />
             <CartDrawer />
             <AuthModal />
             <ProductQuickView />

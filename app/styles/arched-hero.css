@@ -1,9 +1,11 @@
+/* ─── ArchedHero: Restored Hero Layout with Landscape Center Video ────────── */
+
 .arched-hero {
   position: relative;
   width: 100%;
   height: 100vh;
-  background-color: var(--bg-warm, #E8DFD0);
-  min-height: 800px;
+  min-height: 750px;
+  background-color: var(--bg-warm, #e8dfd0);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -33,54 +35,58 @@
   z-index: 1;
 }
 
-/* ─── Center Video Portal (Rounded Rectangular) ─── */
-.arched-hero__portal {
-  position: relative;
-  width: min(85%, 360px);
-  aspect-ratio: 9 / 14;
-  max-height: 72vh;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 28px;
-  box-shadow: 0 24px 50px -12px rgba(42, 31, 20, 0.22);
-}
-
-.arched-hero__mask {
-  width: 100%;
-  height: 100%;
-  border-radius: 28px;
-  overflow: hidden;
-  background-color: #1a140e;
-  position: relative;
-}
-
-.arched-hero__video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  border-radius: 28px;
-  transform: none;
-}
-
-/* Video adjustments for the mask */
-.arched-hero__video iframe {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover;
-  pointer-events: none;
-}
-
-.arched-hero__border {
+/* ─── Right-aligned Background Image (Subtle watermark) ─── */
+.arched-hero__bg-right {
   position: absolute;
-  inset: -8px;
-  border-radius: 36px;
-  border: 1.5px solid rgba(255, 255, 255, 0.85);
-  box-shadow: 0 0 0 1px rgba(42, 31, 20, 0.12);
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: auto;
+  opacity: 0.11;
+  mix-blend-mode: multiply;
+  z-index: 1;
   pointer-events: none;
-  z-index: 12;
+}
+
+/* ─── Brand Wrap — Left Side ─── */
+.arched-hero__brand-wrap {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  z-index: 20;
+  width: 38%;
+  max-width: 520px;
+}
+
+/* ─── Brand Name Box ─── */
+.arched-hero__brand-left {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  background-color: #2a1f14;
+  padding: 28px 40px 28px 6%;
+  box-sizing: border-box;
+}
+
+.arched-hero__hindi {
+  font-size: clamp(4.5rem, 7vw, 7rem);
+  line-height: 1;
+  color: #f5ede3;
+  font-family: serif;
+}
+
+.arched-hero__latin {
+  font-size: 1rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: #f5ede3;
+  opacity: 0.85;
 }
 
 /* ─── Tagline ─── */
@@ -95,6 +101,7 @@
   color: #1a140e;
   text-transform: uppercase;
   opacity: 0.9;
+  box-sizing: border-box;
 }
 
 /* ─── Hero Description Paragraph ─── */
@@ -110,6 +117,7 @@
   color: #4a3b32;
   font-weight: 400;
   opacity: 0.9;
+  box-sizing: border-box;
 }
 
 /* ─── CTA Row ─── */
@@ -120,7 +128,7 @@
   padding-right: 40px;
   width: 100%;
   justify-content: flex-end;
-  opacity: 0;
+  box-sizing: border-box;
 }
 
 .arched-hero__cta {
@@ -137,93 +145,131 @@
   cursor: pointer;
 }
 
-/* Primary CTA */
 .arched-hero__cta--primary {
-  background-color: #1a140e;
-  color: #f5ede3;
-  border: 1.5px solid #1a140e;
+  background-color: #660608;
+  color: #faf6f0;
+  border: 1.5px solid #660608;
 }
 
 .arched-hero__cta--primary:hover {
-  background-color: #3d2f23;
-  border-color: #3d2f23;
+  background-color: #4d0406;
+  border-color: #4d0406;
 }
 
 .arched-hero__cta--secondary {
   background-color: transparent;
-  color: #1a140e;
-  border: 1.5px solid rgba(42, 31, 20, 0.45);
+  color: #2a1f14;
+  border: 1.5px solid rgba(42, 31, 20, 0.5);
 }
 
 .arched-hero__cta--secondary:hover {
   background-color: rgba(42, 31, 20, 0.08);
-  border-color: #1a140e;
+  border-color: #2a1f14;
 }
 
-/* ─── Right-aligned Background Image ─── */
-.arched-hero__bg-right {
-  position: absolute;
-  right: 0;
-  top: 0;
-  height: 100%;
-  width: auto;
-  opacity: 0.25;
-  mix-blend-mode: color-burn;
-  z-index: 1;
-  pointer-events: none;
-}
-
-/* ─── Brand Wrap ─── */
-.arched-hero__brand-wrap {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
+/* ─── Center Video Portal: LANDSCAPE IN OUR STYLE ─── */
+.arched-hero__portal {
+  position: relative;
+  z-index: 10;
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  z-index: 20;
-  width: 38%;
-  max-width: 520px;
+  align-items: center;
+  justify-content: center;
 }
 
-/* ─── Brand Name Left ─── */
-.arched-hero__brand-left {
+.arched-hero__portal--landscape {
+  width: min(92%, 640px);
+  aspect-ratio: 16 / 9;
+  max-height: 52vh;
+  border-radius: 22px;
+  box-shadow:
+    0 24px 50px -12px rgba(42, 31, 20, 0.28),
+    0 0 0 1px rgba(255, 255, 255, 0.75) inset;
+  background: #faf6f0;
+  padding: 6px;
+  box-sizing: border-box;
+}
+
+.arched-hero__mask {
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  height: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+  background-color: #1a140e;
+  position: relative;
+}
+
+.arched-hero__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 45%;
+  display: block;
+  border-radius: 16px;
+}
+
+.arched-hero__vignette {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(26, 20, 14, 0.15) 0%,
+    transparent 40%,
+    rgba(26, 20, 14, 0.45) 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+.hero-video-sound-btn {
+  position: absolute;
+  bottom: 14px;
+  right: 16px;
+  z-index: 15;
+  display: inline-flex;
+  align-items: center;
   gap: 6px;
-  background-color: #2a1f14;
-  padding: 28px 40px 28px 6%;
+  background: rgba(26, 20, 14, 0.72);
+  backdrop-filter: blur(10px);
+  color: #faf6f0;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.arched-hero__hindi {
-  font-size: 7rem;
-  line-height: 1;
-  color: #f5ede3;
-  font-family: serif;
+.hero-video-sound-btn:hover {
+  background: #660608;
+  border-color: #660608;
+  transform: scale(1.04);
 }
 
-.arched-hero__latin {
-  font-size: 1rem;
-  letter-spacing: 0.4em;
-  text-transform: uppercase;
-  color: #f5ede3;
-  opacity: 0.85;
+.arched-hero__border {
+  position: absolute;
+  inset: -6px;
+  border-radius: 28px;
+  border: 1.5px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 0 1px rgba(42, 31, 20, 0.14);
+  pointer-events: none;
+  z-index: 12;
 }
 
 /* ─── Mobile Responsiveness ─── */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .arched-hero {
     min-height: 100svh;
-    padding-top: 100px;
+    height: auto;
+    padding-top: 110px;
+    padding-bottom: 50px;
     flex-direction: column;
     justify-content: flex-start;
   }
-  
+
   .arched-hero__bg-right {
-    opacity: 0.2;
+    opacity: 0.15;
     object-fit: cover;
     width: 100%;
   }
@@ -247,7 +293,7 @@
   }
 
   .arched-hero__hindi {
-    font-size: 5rem;
+    font-size: 4.5rem;
   }
 
   .arched-hero__latin {
@@ -279,11 +325,10 @@
     padding: 8px 16px;
   }
 
-  .arched-hero__portal {
-    width: min(85%, 320px);
-    aspect-ratio: 9 / 13;
-    margin-top: auto;
-    margin-bottom: auto;
+  .arched-hero__portal--landscape {
+    width: min(92%, 480px);
+    aspect-ratio: 16 / 9;
+    max-height: 48vh;
+    margin: 0 auto;
   }
 }
-

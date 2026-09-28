@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useStore } from "@/context/StoreContext";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { FiShield, FiTag, FiCheck, FiTruck, FiLock, FiCreditCard, FiSmartphone } from "react-icons/fi";
 import { trackEvent } from "@/lib/analytics";
 
@@ -72,7 +71,6 @@ export default function CheckoutPage() {
             Browse Collection →
           </Link>
         </div>
-        <Footer />
       </>
     );
   }
@@ -823,8 +821,6 @@ export default function CheckoutPage() {
           </div>
         </div>
       )}
-
-      <Footer />
     </>
   );
 }

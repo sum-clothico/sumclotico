@@ -6,7 +6,6 @@ import SvgSymbols from "@/components/SvgSymbols";
 import Navbar from "@/components/Navbar";
 import ArchedHero from "@/components/ArchedHero";
 import HomeSections from "@/components/HomeSections";
-import Footer from "@/components/Footer";
 import CursorBubble from "@/components/CursorBubble";
 import SmoothScroll from "@/components/SmoothScroll";
 
@@ -28,10 +27,6 @@ export default function HomeV2() {
         {/* 02. THE FEELING through 10. FINAL SHOPPING MOMENT */}
         <HomeSections />
       </main>
-      <footer className="main-footer">
-        {/* 11. FOOTER */}
-        <Footer />
-      </footer>
     </>
   );
 }

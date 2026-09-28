@@ -1,22 +1,47 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import Link from "next/link";
+import IndianArchBadge from "@/components/IndianArchBadge";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   FiSend,
-  FiCheckCircle,
   FiCalendar,
   FiUser,
   FiInstagram,
   FiArrowRight,
   FiX,
-  FiTag,
-  FiMessageSquare,
+  FiClock,
   FiPlay,
   FiCheck
 } from "react-icons/fi";
+
+gsap.registerPlugin(ScrollTrigger);
+
+function AnimatedWords({ text, className = "journal-anim-word" }) {
+  const words = text.split(" ");
+  return (
+    <>
+      {words.map((word, i) => (
+        <span
+          key={i}
+          style={{
+            display: "inline-block",
+            overflow: "hidden",
+            verticalAlign: "top",
+            marginRight: i === words.length - 1 ? 0 : "0.26em",
+          }}
+        >
+          <span className={className} style={{ display: "inline-block" }}>
+            {word}
+          </span>
+        </span>
+      ))}
+    </>
+  );
+}
 
 const JOURNAL_CATEGORIES = [
   {
@@ -60,14 +85,15 @@ const JOURNAL_STORIES = [
   {
     id: "bharatpur-weavers",
     category: "PLACES",
+    tagColor: "#8B4513",
     title: "The Handlooms of Bharatpur: Walking Through Madhya Pradesh's Weaving Villages",
     subtitle: "Where every warp has a name, and time is measured in hand movements.",
-    author: "Sum Clothico",
+    author: "Sum Field Notes",
     date: "Autumn 2026",
     readTime: "4 min read",
     image: "/assets/wev.jpg",
     gallery: ["/assets/wev.jpg", "/assets/fabric.jpg", "/assets/han.jpg"],
-    excerpt: "Before our first stitch was drafted, we spent weeks in Madhya Pradesh's Sidhi district. Walking down lanes where the sound of the wooden pit loom echoes from every courtyard.",
+    excerpt: "A morning spent among wooden frame looms, listening to the rhythm of shuttles and the artisans who turn raw cotton into living cloth.",
     content: [
       "Before our first stitch was drafted, we spent weeks walking through the rural clusters of Bharatpur in Madhya Pradesh. In this corner of India, weaving is not an automated factory shift—it is the cadence of daily life. The rhythm begins at dawn with the winding of yarn around wooden spindles and continues through the afternoon with the click-clack of the handloom shuttle.",
       "What strikes you first is the quiet patience of the artisans. When you watch a weaver run their fingers along handspun Khadi yarn, you realize why mass production can never replicate this texture. The slight irregularities—the tiny slubs and breathable air pockets—are not flaws. They are the human signature of the maker.",
@@ -77,15 +103,16 @@ const JOURNAL_STORIES = [
   {
     id: "khadi-museum",
     category: "CLOTH",
+    tagColor: "#660608",
     title: "Inside The Khadi Museum: Living Archives of Slow Time",
     subtitle: "Understanding how a humble spinning wheel sparked self-reliance and timeless style.",
-    author: "Sum Clothico",
+    author: "Textile Archives",
     date: "Late Summer 2026",
     readTime: "5 min read",
     image: "/assets/chakra.jpg",
     gallery: ["/assets/chakra.jpg", "/assets/fabric.jpg", "/assets/ctn.jpg"],
     videoUrl: "/assets/videos/vid2.mp4",
-    excerpt: "Surrounded by historic charkhas and hand-spun weaves, we were reminded that Khadi was never simply a fabric. It was a philosophy of slowing down enough to care about every step.",
+    excerpt: "From charkha revolutions to contemporary wardrobes — why the simplest textile in human history remains our most radical act of living.",
     content: [
       "Visiting the Khadi textile archive feels like stepping into a sanctuary of slow time. Standing among decades-old wooden charkhas, preserved swatches of double-spun cotton, and handwritten weaver ledgers, the pace of modern fast fashion instantly feels hollow.",
       "Here, you see why Khadi was celebrated: it requires no massive industrial power plants, consumes minimal water, and leaves zero toxic runoff. The thread is created purely through human skill and natural cotton fiber. The air pockets woven into the textile act as natural insulation—keeping the skin cool in scorching afternoons and comfortably warm when the evening breeze arrives.",
@@ -95,14 +122,15 @@ const JOURNAL_STORIES = [
   {
     id: "miras-college",
     category: "PEOPLE",
-    title: "Mira's College: The Uniform of Real Living",
-    subtitle: "Conversations on campus about repeat wearability, pockets, and feeling comfortable.",
-    author: "Sum Clothico",
+    tagColor: "#4A3B30",
+    title: "Real Living: How Women Wear Sum from Morning Coffee to Slow Evenings",
+    subtitle: "Conversations on campus and city studios about repeat wearability, pockets, and feeling comfortable.",
+    author: "Community Stories",
     date: "Monsoon 2026",
-    readTime: "4 min read",
+    readTime: "6 min read",
     image: "/assets/img/18.png",
     gallery: ["/assets/img/18.png", "/assets/m1.png", "/assets/m2.png"],
-    excerpt: "We spent an afternoon talking with young women at Mira's College about what actually belongs in their wardrobes. The verdict was unanimous: comfort, deep pockets, and pieces you never get tired of repeating.",
+    excerpt: "Conversations with architects, ceramicists, and writers on why clothes should feel lighter, softer, and more honest with every passing season.",
     content: [
       "College mornings are notoriously rushed. You have an 8:30 AM lecture, a library study session, a quick café plan with friends, and maybe errands before heading home. Who has the energy to change outfits three times a day?",
       "During our conversations with students and faculty at Mira's College, we asked one simple question: 'What makes you reach for the same piece again and again?' The answers were remarkably consistent: 'I want clothes that let me breathe when the weather is hot,' 'I need pockets that actually fit my phone,' and 'I want something that looks put-together without feeling like I'm trying too hard.'",
@@ -112,6 +140,7 @@ const JOURNAL_STORIES = [
   {
     id: "the-making-of-sum",
     category: "SUM",
+    tagColor: "#660608",
     title: "The Diary of Sum: Learning What Not To Rush",
     subtitle: "The trials of small-batch production and why we said no to seasonal fast fashion.",
     author: "Sum Clothico",
@@ -129,6 +158,7 @@ const JOURNAL_STORIES = [
   {
     id: "grandmother-sari",
     category: "YOUR STORIES",
+    tagColor: "#8B4513",
     title: "My Grandmother's 40-Year-Old Odhna",
     subtitle: "A community story by Ananya Iyer, Mumbai.",
     author: "Sum Community Voice",
@@ -146,6 +176,7 @@ const JOURNAL_STORIES = [
 ];
 
 export default function JournalPage() {
+  const containerRef = useRef(null);
   const [selectedCategory, setSelectedCategory] = useState("ALL");
   const [activeStory, setActiveStory] = useState(null);
 
@@ -160,6 +191,70 @@ export default function JournalPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+
+  // GSAP Text Animations
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const heroTl = gsap.timeline({ defaults: { ease: "power4.out" } });
+
+      heroTl.fromTo(
+        ".journal-hero-badge",
+        { opacity: 0, scale: 0.8, y: -20 },
+        { opacity: 1, scale: 1, y: 0, duration: 0.7, ease: "back.out(1.8)" }
+      );
+
+      heroTl.fromTo(
+        ".journal-anim-title .journal-anim-word",
+        { y: "135%", rotate: 4, opacity: 0 },
+        { y: "0%", rotate: 0, opacity: 1, duration: 1.1, stagger: 0.06 },
+        "-=0.4"
+      );
+
+      heroTl.fromTo(
+        ".journal-anim-placard",
+        { opacity: 0, scale: 0.94, y: 35 },
+        { opacity: 1, scale: 1, y: 0, duration: 1.0, ease: "power3.out" },
+        "-=0.6"
+      );
+
+      // Cards staggered reveal on scroll
+      gsap.fromTo(
+        ".journal-story-card",
+        { y: 50, opacity: 0, scale: 0.94 },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.95,
+          stagger: 0.1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".journal-stories-grid",
+            start: "top 82%",
+          },
+        }
+      );
+
+      // Form card reveal
+      gsap.fromTo(
+        ".journal-form-card",
+        { y: 40, opacity: 0, scale: 0.96 },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.9,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".journal-form-card",
+            start: "top 85%",
+          },
+        }
+      );
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
 
   const filteredStories =
     selectedCategory === "ALL"
@@ -214,60 +309,53 @@ export default function JournalPage() {
   };
 
   return (
-    <>
+    <div ref={containerRef} style={{ position: "relative", minHeight: "100vh", backgroundColor: "#EDE8DC" }}>
       <Navbar />
+
       <style>{`
         .journal-page {
-          background-color: #FAF6F0;
+          background-color: #EDE8DC;
           color: #1a140e;
           min-height: 100vh;
-          padding-top: 120px;
-          padding-bottom: 100px;
+          padding-top: 130px;
+          padding-bottom: 90px;
+          position: relative;
+          overflow: hidden;
         }
         .journal-container {
-          max-width: 1180px;
+          max-width: 1220px;
           margin: 0 auto;
-          padding: 0 24px;
-        }
-        .j-card {
-          background: #ffffff;
-          border-radius: 20px;
-          overflow: hidden;
-          border: 1px solid rgba(42, 31, 20, 0.08);
-          display: flex;
-          flex-direction: column;
-          transition: transform 0.25s ease, box-shadow 0.25s ease;
-          cursor: pointer;
-        }
-        .j-card:hover {
-          transform: translateY(-4px);
-          box-shadow: 0 12px 30px rgba(0,0,0,0.06);
-        }
-        .j-card-img-wrap {
-          height: 240px;
-          overflow: hidden;
+          padding: 0 clamp(24px, 4vw, 56px);
           position: relative;
-          background: #e8dfd0;
-        }
-        .j-card-img-wrap img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          transition: transform 0.4s ease;
-        }
-        .j-card:hover .j-card-img-wrap img {
-          transform: scale(1.04);
+          z-index: 3;
         }
         .j-pill {
           padding: 8px 18px;
           border-radius: 999px;
           font-size: 12px;
           font-weight: 700;
-          letter-spacing: 0.06em;
+          letter-spacing: 0.08em;
           text-transform: uppercase;
           cursor: pointer;
           transition: all 0.2s ease;
-          border: 1.5px solid transparent;
+        }
+        .journal-stories-grid {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 32px;
+          margin-bottom: 70px;
+        }
+        @media (max-width: 1024px) {
+          .journal-stories-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 24px;
+          }
+        }
+        @media (max-width: 640px) {
+          .journal-stories-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+          }
         }
         .j-modal-overlay {
           position: fixed;
@@ -275,7 +363,7 @@ export default function JournalPage() {
           left: 0;
           right: 0;
           bottom: 0;
-          background: rgba(26, 20, 14, 0.7);
+          background: rgba(26, 20, 14, 0.75);
           backdrop-filter: blur(8px);
           z-index: 1000;
           display: flex;
@@ -289,39 +377,146 @@ export default function JournalPage() {
           width: 100%;
           max-height: 90vh;
           overflow-y: auto;
-          border-radius: 24px;
-          padding: clamp(28px, 5vw, 48px);
+          border-radius: 16px;
+          padding: clamp(28px, 5vw, 44px);
           position: relative;
-          border: 1px solid rgba(42, 31, 20, 0.15);
+          border: 1px solid rgba(44, 32, 22, 0.15);
         }
       `}</style>
 
       <div className="journal-page">
+        {/* ─── LEFT SIDE REPEATING PATTERN IMAGE (bgele2.png) ─── */}
+        <div
+          style={{
+            position: "absolute",
+            left: 0,
+            top: 0,
+            bottom: 0,
+            width: "48px",
+            backgroundImage: 'url("/assets/bgele2.png")',
+            backgroundRepeat: "repeat-y",
+            backgroundPosition: "left top",
+            backgroundSize: "48px auto",
+            opacity: 0.28,
+            pointerEvents: "none",
+            zIndex: 1,
+          }}
+          aria-hidden="true"
+        />
+
+        {/* ─── RIGHT SIDE REPEATING PATTERN IMAGE (bgele2.png, MIRRORED) ─── */}
+        <div
+          style={{
+            position: "absolute",
+            right: 0,
+            top: 0,
+            bottom: 0,
+            width: "48px",
+            backgroundImage: 'url("/assets/bgele2.png")',
+            backgroundRepeat: "repeat-y",
+            backgroundPosition: "left top",
+            backgroundSize: "48px auto",
+            transform: "scaleX(-1)",
+            opacity: 0.28,
+            pointerEvents: "none",
+            zIndex: 1,
+          }}
+          aria-hidden="true"
+        />
+
         <div className="journal-container">
 
-          {/* ─── HERO ─── */}
-          <section style={{ textAlign: "center", maxWidth: 780, margin: "0 auto 60px" }}>
-            <span style={{ fontSize: "0.78rem", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "#b36338", display: "block", marginBottom: 12 }}>
-              The Sum Journal
-            </span>
-            <h1 style={{ fontFamily: "serif", fontSize: "clamp(2.4rem, 4.5vw, 3.8rem)", fontWeight: 500, lineHeight: 1.15, color: "#1a140e", margin: "0 0 24px" }}>
-              Things worth talking about.
+          {/* ─── HERO HEADLINE ─── */}
+          <section style={{ textAlign: "center", maxWidth: 840, margin: "0 auto 36px" }}>
+            <div className="journal-hero-badge">
+              <IndianArchBadge style={{ marginBottom: "16px" }}>
+                The Sum Journal
+              </IndianArchBadge>
+            </div>
+            <h1
+              className="journal-anim-title"
+              style={{
+                fontFamily: "serif",
+                fontSize: "clamp(2.4rem, 4.8vw, 4.2rem)",
+                fontWeight: 600,
+                lineHeight: 1.15,
+                color: "#1a140e",
+                margin: "0 0 24px",
+                letterSpacing: "-0.01em",
+              }}
+            >
+              <AnimatedWords text="Things worth talking about." />
             </h1>
-            <div style={{ fontSize: "1.1rem", lineHeight: 1.8, color: "#4a3c30", maxWidth: 660, margin: "0 auto" }}>
-              <p style={{ margin: "0 0 6px" }}>Clothes are rarely just clothes.</p>
-              <p style={{ margin: "0 0 6px" }}>They carry memories.</p>
-              <p style={{ margin: "0 0 6px" }}>They tell us where we&apos;ve been.</p>
-              <p style={{ margin: "0 0 6px" }}>They introduce us to people and places.</p>
-              <p style={{ margin: "0 0 16px" }}>And sometimes, they make us feel like ourselves again.</p>
-              <p style={{ margin: 0, fontWeight: 700, color: "#1a140e", fontStyle: "italic", fontFamily: "serif", fontSize: "1.2rem" }}>
-                The Sum Journal is a space for those stories.
-              </p>
+
+            {/* ─── CARD BELOW HEADING (ASTAKA SCALLOPED PLACARD FRAME) ─── */}
+            <div
+              className="journal-anim-placard"
+              style={{
+                position: "relative",
+                padding: "28px 36px",
+                margin: "0 auto 20px",
+                maxWidth: 780,
+                textAlign: "center",
+              }}
+            >
+              {/* SVG Placard Frame */}
+              <svg
+                viewBox="0 0 780 140"
+                preserveAspectRatio="none"
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  width: "100%",
+                  height: "100%",
+                  pointerEvents: "none",
+                  zIndex: 0,
+                }}
+                aria-hidden="true"
+              >
+                <path
+                  d="M 28,0 L 752,0 L 752,6 A 22 22 0 0 0 774 28 L 780 28 L 780 112 L 774 112 A 22 22 0 0 0 752 134 L 752 140 L 28 140 L 28 134 A 22 22 0 0 0 6 112 L 0 112 L 0 28 L 6 28 A 22 22 0 0 0 28 6 L 28 0 Z"
+                  fill="#FAF6F0"
+                  stroke="rgba(44, 32, 22, 0.2)"
+                  strokeWidth="1.5"
+                />
+                <path
+                  d="M 32,8 L 748,8 L 748,12 A 18 18 0 0 0 766 30 L 770 30 L 770 110 L 766 110 A 18 18 0 0 0 748 128 L 748 132 L 32 132 L 32 128 A 18 18 0 0 0 14 110 L 10 110 L 10 30 L 14 30 A 18 18 0 0 0 32 12 L 32 8 Z"
+                  fill="none"
+                  stroke="#660608"
+                  strokeWidth="1"
+                  strokeOpacity="0.32"
+                />
+              </svg>
+
+              <div style={{ position: "relative", zIndex: 1 }}>
+                <p style={{ fontSize: "1.06rem", lineHeight: 1.75, color: "#4A3B30", margin: "0 0 6px" }}>
+                  Clothes are rarely just clothes. They carry memories. They tell us where we&apos;ve been. They introduce us to people and places. And sometimes, they make us feel like ourselves again.
+                </p>
+                <p style={{ margin: 0, fontWeight: 700, color: "#660608", fontStyle: "italic", fontFamily: "serif", fontSize: "1.12rem" }}>
+                  The Sum Journal is a space for those stories.
+                </p>
+              </div>
             </div>
           </section>
 
-          {/* ─── EXPLORE THE JOURNAL CATEGORIES ─── */}
-          <section style={{ marginBottom: 50 }}>
-            <div style={{ display: "flex", gap: 10, flexWrap: "wrap", justifyContent: "center", marginBottom: 20 }}>
+          {/* Traditional Indian Border Pattern Divider */}
+          <div
+            style={{
+              width: "100%",
+              height: "28px",
+              backgroundImage: 'url("/assets/footerpattern-accent.png")',
+              backgroundRepeat: "repeat-x",
+              backgroundPosition: "center",
+              backgroundSize: "auto 26px",
+              opacity: 0.85,
+              margin: "0 0 40px",
+            }}
+            aria-hidden="true"
+          />
+
+          {/* ─── CATEGORY FILTER PILLS ─── */}
+          <section style={{ marginBottom: 44 }}>
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap", justifyContent: "center", marginBottom: 14 }}>
               {JOURNAL_CATEGORIES.map((cat) => {
                 const isSelected = selectedCategory === cat.id;
                 return (
@@ -330,9 +525,9 @@ export default function JournalPage() {
                     className="j-pill"
                     onClick={() => setSelectedCategory(cat.id)}
                     style={{
-                      background: isSelected ? "#1a140e" : "#ffffff",
+                      background: isSelected ? "#660608" : "transparent",
                       color: isSelected ? "#FAF6F0" : "#4a3c30",
-                      borderColor: isSelected ? "#1a140e" : "rgba(42, 31, 20, 0.15)",
+                      border: `1.5px solid ${isSelected ? "#660608" : "rgba(44, 32, 22, 0.2)"}`,
                     }}
                   >
                     {cat.name}
@@ -341,53 +536,122 @@ export default function JournalPage() {
               })}
             </div>
 
-            {/* Category Description Banner */}
             <div style={{ textAlign: "center", maxWidth: 600, margin: "0 auto", fontSize: "0.95rem", color: "#6e5d4e", fontStyle: "italic" }}>
               {activeCategoryObj.description}
             </div>
           </section>
 
-          {/* ─── STORIES GRID ─── */}
-          <section style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 32, marginBottom: 90 }}>
+          {/* ─── STORIES GRID WITH ASTAKA SCALLOPED CARDS (MATCHING IMAGE 2) ─── */}
+          <section className="journal-stories-grid">
             {filteredStories.map((story) => (
               <article
                 key={story.id}
-                className="j-card"
+                className="journal-story-card"
                 onClick={() => setActiveStory(story)}
+                style={{
+                  position: "relative",
+                  padding: "10px 10px 18px",
+                  background: "transparent",
+                  cursor: "pointer",
+                  display: "flex",
+                  flexDirection: "column",
+                  transition: "transform 0.35s cubic-bezier(0.25, 1, 0.5, 1)",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-6px)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                }}
               >
-                <div className="j-card-img-wrap">
-                  <img src={story.image} alt={story.title} />
+                {/* SVG ASTAKA Scalloped Corner Card Framing with Inner Accent Hairline */}
+                <svg
+                  viewBox="0 0 380 520"
+                  preserveAspectRatio="none"
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    width: "100%",
+                    height: "100%",
+                    pointerEvents: "none",
+                    zIndex: 0,
+                  }}
+                  aria-hidden="true"
+                >
+                  {/* Outer Silhouette — Top Scalloped Ears, Bottom Smooth Rounded Corners */}
+                  <path
+                    d="M 34,0 L 346,0 L 346,6 A 28 28 0 0 0 374 34 L 380 34 L 380 498 A 22 22 0 0 1 358 520 L 22 520 A 22 22 0 0 1 0 498 L 0 34 L 6 34 A 28 28 0 0 0 34 6 L 34 0 Z"
+                    fill="#FAF6F0"
+                    stroke="rgba(44, 32, 22, 0.18)"
+                    strokeWidth="1.5"
+                  />
+                  {/* Inner Accent Hairline */}
+                  <path
+                    d="M 38,10 L 342,10 L 342,14 A 24 24 0 0 0 366 38 L 370 38 L 370 494 A 16 16 0 0 1 354 510 L 26 510 A 16 16 0 0 1 10 494 L 10 38 L 14 38 A 24 24 0 0 0 38 14 L 38 10 Z"
+                    fill="none"
+                    stroke="#660608"
+                    strokeWidth="1"
+                    strokeOpacity="0.32"
+                  />
+                </svg>
+
+                {/* Card Image Banner */}
+                <div
+                  style={{
+                    position: "relative",
+                    width: "100%",
+                    aspectRatio: "16 / 11",
+                    background: "#EBE5D9",
+                    overflow: "hidden",
+                    borderRadius: "4px",
+                    zIndex: 1,
+                  }}
+                >
+                  <img
+                    src={story.image}
+                    alt={story.title}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      objectPosition: "center",
+                      transition: "transform 0.5s ease",
+                      filter: "sepia(0.03) contrast(1.02)",
+                    }}
+                  />
+
+                  {/* Category Tag Pill (Top Left) */}
                   <div
                     style={{
                       position: "absolute",
-                      top: 14,
-                      left: 14,
-                      background: "rgba(255, 255, 255, 0.94)",
-                      padding: "4px 10px",
-                      borderRadius: 6,
-                      fontSize: 11,
+                      top: 10,
+                      left: 10,
+                      background: "rgba(250, 246, 240, 0.94)",
+                      backdropFilter: "blur(6px)",
+                      color: story.tagColor || "#660608",
+                      fontSize: 10,
                       fontWeight: 800,
-                      letterSpacing: "0.08em",
-                      color: "#1a140e",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 4,
+                      letterSpacing: "1.5px",
+                      textTransform: "uppercase",
+                      padding: "4px 10px",
+                      borderRadius: 999,
+                      border: "1px solid rgba(44, 32, 22, 0.1)",
                     }}
                   >
-                    <FiTag size={11} color="#b36338" />
-                    <span>{story.category}</span>
+                    {story.category}
                   </div>
+
                   {story.videoUrl && (
                     <div
                       style={{
                         position: "absolute",
-                        bottom: 14,
-                        right: 14,
+                        bottom: 10,
+                        right: 10,
                         background: "rgba(26, 20, 14, 0.85)",
                         color: "#FAF6F0",
                         padding: "4px 10px",
                         borderRadius: 30,
-                        fontSize: 11,
+                        fontSize: 10,
                         fontWeight: 700,
                         display: "flex",
                         alignItems: "center",
@@ -400,105 +664,261 @@ export default function JournalPage() {
                   )}
                 </div>
 
-                <div style={{ padding: "26px 28px", flex: 1, display: "flex", flexDirection: "column" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 12, color: "#8a7a6c", marginBottom: 10 }}>
-                    <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                      <FiCalendar size={12} />
-                      {story.date}
-                    </span>
-                    <span>•</span>
-                    <span>{story.readTime}</span>
+                {/* Card Content */}
+                <div
+                  style={{
+                    padding: "16px 14px 10px",
+                    display: "flex",
+                    flexDirection: "column",
+                    flex: 1,
+                    justifyContent: "space-between",
+                    position: "relative",
+                    zIndex: 1,
+                  }}
+                >
+                  <div>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 10,
+                        fontSize: 12,
+                        color: "#8C7868",
+                        marginBottom: 8,
+                        fontWeight: 600,
+                      }}
+                    >
+                      <span>{story.author}</span>
+                      <span>•</span>
+                      <span style={{ display: "inline-flex", alignItems: "center", gap: 4 }}>
+                        <FiClock size={12} />
+                        {story.readTime}
+                      </span>
+                    </div>
+
+                    <h3
+                      style={{
+                        fontSize: 17,
+                        fontWeight: 700,
+                        color: "#2C2016",
+                        lineHeight: 1.35,
+                        margin: "0 0 8px",
+                        letterSpacing: "-0.01em",
+                      }}
+                    >
+                      {story.title}
+                    </h3>
+
+                    <p
+                      style={{
+                        fontSize: 13.5,
+                        color: "#6B5A4E",
+                        lineHeight: 1.55,
+                        margin: 0,
+                      }}
+                    >
+                      {story.excerpt}
+                    </p>
                   </div>
 
-                  <h2 style={{ fontFamily: "serif", fontSize: "1.35rem", fontWeight: 600, lineHeight: 1.3, color: "#1a140e", margin: "0 0 10px" }}>
-                    {story.title}
-                  </h2>
-
-                  <p style={{ fontSize: "0.94rem", lineHeight: 1.65, color: "#55483d", margin: "0 0 20px", flex: 1 }}>
-                    {story.excerpt}
-                  </p>
-
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: 14, borderTop: "1px solid rgba(42,31,20,0.08)" }}>
-                    <span style={{ fontSize: 12, fontWeight: 700, color: "#7a6c5f", display: "flex", alignItems: "center", gap: 5 }}>
-                      <FiUser size={13} color="#b36338" />
-                      {story.author}
-                    </span>
-                    <span style={{ fontSize: 13, fontWeight: 800, color: "#1a140e", display: "flex", alignItems: "center", gap: 4 }}>
-                      Read Story <FiArrowRight size={13} />
-                    </span>
+                  {/* Read Article Bottom Link */}
+                  <div
+                    style={{
+                      marginTop: 16,
+                      paddingTop: 12,
+                      borderTop: "1px solid rgba(44, 32, 22, 0.08)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      color: "#2C2016",
+                      fontSize: 13,
+                      fontWeight: 700,
+                    }}
+                  >
+                    <span>Read Article</span>
+                    <FiArrowRight size={15} color="#660608" />
                   </div>
                 </div>
               </article>
             ))}
           </section>
 
-          {/* ─── COMMUNITY SECTION ─── */}
-          <section style={{ maxWidth: 960, margin: "0 auto 80px" }}>
-            <div style={{ background: "#ffffff", padding: "clamp(36px, 5vw, 60px)", borderRadius: 24, border: "1px solid rgba(42,31,20,0.1)", textAlign: "center" }}>
-              <span style={{ fontSize: "0.78rem", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "#b36338", display: "block", marginBottom: 10 }}>
-                Community
-              </span>
-              <h2 style={{ fontFamily: "serif", fontSize: "clamp(2rem, 3.5vw, 2.7rem)", fontWeight: 600, color: "#1a140e", margin: "0 0 18px" }}>
-                Your wardrobe has stories too.
-              </h2>
-              <div style={{ fontSize: "1.06rem", lineHeight: 1.85, color: "#4a3c30", maxWidth: 660, margin: "0 auto 28px" }}>
-                <p style={{ margin: "0 0 8px" }}>Maybe there is a dress you have had for ten years.</p>
-                <p style={{ margin: "0 0 8px" }}>A textile your grandmother brought home.</p>
-                <p style={{ margin: "0 0 8px" }}>A place you think we should visit.</p>
-                <p style={{ margin: "0 0 8px" }}>A weaver we should know.</p>
-                <p style={{ margin: "0 0 16px" }}>A thought about clothing you&apos;ve never had anywhere to put.</p>
-                <p style={{ margin: 0, fontWeight: 700, color: "#1a140e", fontStyle: "italic", fontFamily: "serif", fontSize: "1.25rem" }}>
-                  Tell us.
-                </p>
-              </div>
+          {/* ─── COMMUNITY BANNER PLACARD (MATCHING IMAGE 2 EXACT PLACARD) ─── */}
+          <div
+            style={{
+              position: "relative",
+              padding: "36px 44px",
+              background: "transparent",
+              display: "flex",
+              flexWrap: "wrap",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 24,
+              marginBottom: 70,
+            }}
+          >
+            {/* SVG Placard with Stepped Scalloped Corners and Inner Hairline Border */}
+            <svg
+              viewBox="0 0 1192 200"
+              preserveAspectRatio="none"
+              style={{
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
+                pointerEvents: "none",
+                zIndex: 0,
+              }}
+              aria-hidden="true"
+            >
+              <path
+                d="M 32,0 L 1160,0 L 1160,6 A 26 26 0 0 0 1186 32 L 1192 32 L 1192 168 L 1186 168 A 26 26 0 0 0 1160 194 L 1160 200 L 32 200 L 32 194 A 26 26 0 0 0 6 168 L 0 168 L 0 32 L 6 32 A 26 26 0 0 0 32 6 L 32 0 Z"
+                fill="#FAF6F0"
+                stroke="rgba(44, 32, 22, 0.2)"
+                strokeWidth="1.5"
+              />
+              <path
+                d="M 36,10 L 1156,10 L 1156,14 A 22 22 0 0 0 1178 36 L 1182 36 L 1182 164 L 1178 164 A 22 22 0 0 0 1156 186 L 1156 190 L 36 190 L 36 186 A 22 22 0 0 0 14 164 L 10 164 L 10 36 L 14 36 A 22 22 0 0 0 36 14 L 36 10 Z"
+                fill="none"
+                stroke="#660608"
+                strokeWidth="1"
+                strokeOpacity="0.38"
+              />
+            </svg>
+
+            <div style={{ maxWidth: 620, position: "relative", zIndex: 1 }}>
+              <IndianArchBadge style={{ marginBottom: 12 }}>
+                <span>Have a story? Tell us.</span>
+              </IndianArchBadge>
+              <h4
+                style={{
+                  fontSize: "clamp(20px, 2.5vw, 26px)",
+                  fontWeight: 800,
+                  color: "#2C2016",
+                  margin: "0 0 8px",
+                  letterSpacing: "-0.02em",
+                }}
+              >
+                Share your thoughts, discoveries, or memories.
+              </h4>
+              <p style={{ fontSize: 14, color: "#6B5A4E", margin: 0, lineHeight: 1.55 }}>
+                Maybe you know a weaver we should meet, or a textile from your hometown. We welcome words, photographs, and field notes from our community.
+              </p>
+            </div>
+
+            <div style={{ display: "flex", gap: 14, flexWrap: "wrap", alignItems: "center", position: "relative", zIndex: 1 }}>
               <button
                 onClick={scrollToSubmission}
                 style={{
+                  background: "#660608",
+                  color: "#FAF6F0",
+                  padding: "14px 28px",
+                  borderRadius: 999,
+                  border: "none",
+                  fontSize: 14,
+                  fontWeight: 700,
                   display: "inline-flex",
                   alignItems: "center",
                   gap: 8,
-                  padding: "15px 32px",
-                  borderRadius: 99,
-                  background: "#1a140e",
-                  color: "#FAF6F0",
+                  cursor: "pointer",
+                  transition: "background 0.2s ease, transform 0.15s ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "#4d0406";
+                  e.currentTarget.style.transform = "scale(1.03)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "#660608";
+                  e.currentTarget.style.transform = "scale(1)";
+                }}
+              >
+                <span>Write To Us</span>
+                <FiArrowRight size={15} />
+              </button>
+
+              <button
+                onClick={scrollToSubmission}
+                style={{
+                  background: "#EBE5D9",
+                  color: "#2C2016",
+                  padding: "14px 24px",
+                  borderRadius: 999,
                   border: "none",
-                  fontWeight: 800,
-                  fontSize: "0.82rem",
-                  letterSpacing: "0.12em",
-                  textTransform: "uppercase",
+                  fontSize: 14,
+                  fontWeight: 700,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
                   cursor: "pointer",
                 }}
               >
-                <span>Share Your Story</span>
-                <FiArrowRight size={14} />
+                <span>Share Something with Us</span>
               </button>
             </div>
-          </section>
+          </div>
 
-          {/* ─── SUBMISSION PAGE / FORM ─── */}
-          <section id="submission-form" style={{ maxWidth: 840, margin: "0 auto 90px" }}>
-            <div style={{ background: "#2a1f14", color: "#FAF6F0", padding: "clamp(36px, 5vw, 60px)", borderRadius: 24 }}>
-              <div style={{ textAlign: "center", maxWidth: 620, margin: "0 auto 36px" }}>
-                <span style={{ fontSize: "0.78rem", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "#d89b6c", display: "block", marginBottom: 10 }}>
+          {/* ─── SUBMISSION SECTION / FORM (USING THE SAME ASTAKA CARD SHAPE) ─── */}
+          <section
+            id="submission-form"
+            className="journal-form-card"
+            style={{
+              maxWidth: 880,
+              margin: "0 auto 80px",
+              position: "relative",
+              padding: "clamp(36px, 5vw, 56px)",
+            }}
+          >
+            {/* SVG ASTAKA Placard Outer Frame for Form */}
+            <svg
+              viewBox="0 0 880 720"
+              preserveAspectRatio="none"
+              style={{
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
+                pointerEvents: "none",
+                zIndex: 0,
+              }}
+              aria-hidden="true"
+            >
+              <path
+                d="M 32,0 L 848,0 L 848,6 A 26 26 0 0 0 874 32 L 880 32 L 880 688 L 874 688 A 26 26 0 0 0 848 714 L 848 720 L 32 720 L 32 714 A 26 26 0 0 0 6 688 L 0 688 L 0 32 L 6 32 A 26 26 0 0 0 32 6 L 32 0 Z"
+                fill="#FAF6F0"
+                stroke="rgba(44, 32, 22, 0.22)"
+                strokeWidth="1.5"
+              />
+              <path
+                d="M 36,10 L 844,10 L 844,14 A 22 22 0 0 0 866 36 L 870 36 L 870 684 L 866 684 A 22 22 0 0 0 844 706 L 844 710 L 36 710 L 36 706 A 22 22 0 0 0 14 684 L 10 684 L 10 36 L 14 36 A 22 22 0 0 0 36 14 L 36 10 Z"
+                fill="none"
+                stroke="#660608"
+                strokeWidth="1"
+                strokeOpacity="0.35"
+              />
+            </svg>
+
+            <div style={{ position: "relative", zIndex: 1 }}>
+              <div style={{ textAlign: "center", maxWidth: 620, margin: "0 auto 30px" }}>
+                <IndianArchBadge style={{ marginBottom: "12px" }}>
                   Submission
-                </span>
-                <h2 style={{ fontFamily: "serif", fontSize: "clamp(2rem, 3.2vw, 2.6rem)", color: "#FAF6F0", margin: "0 0 16px" }}>
+                </IndianArchBadge>
+                <h2 style={{ fontFamily: "serif", fontSize: "clamp(2rem, 3.2vw, 2.6rem)", color: "#1a140e", margin: "0 0 12px" }}>
                   Tell us something.
                 </h2>
-                <p style={{ fontSize: "1.02rem", lineHeight: 1.7, color: "rgba(250, 246, 240, 0.85)", margin: 0 }}>
+                <p style={{ fontSize: "1rem", lineHeight: 1.65, color: "#55483d", margin: 0 }}>
                   We&apos;d love to hear what clothing means to you. You can share a story, a suggestion, a memory, a place we should explore, a textile we should know about — or simply tell us what you think.
                 </p>
               </div>
 
               {isSuccess ? (
-                <div style={{ textAlign: "center", padding: "40px 24px", background: "rgba(255,255,255,0.06)", borderRadius: 16 }}>
-                  <div style={{ width: 56, height: 56, borderRadius: "50%", background: "#15803d", color: "#ffffff", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
-                    <FiCheck size={28} />
+                <div style={{ textAlign: "center", padding: "40px 24px", border: "1px solid rgba(44, 32, 22, 0.12)", borderRadius: 12 }}>
+                  <div style={{ width: 52, height: 52, borderRadius: "50%", background: "#660608", color: "#ffffff", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
+                    <FiCheck size={26} />
                   </div>
-                  <h3 style={{ fontFamily: "serif", fontSize: "1.6rem", color: "#FAF6F0", margin: "0 0 10px" }}>
+                  <h3 style={{ fontFamily: "serif", fontSize: "1.6rem", color: "#1a140e", margin: "0 0 10px" }}>
                     Thank you for sharing with Sum, {formData.name}
                   </h3>
-                  <p style={{ color: "rgba(250,246,240,0.85)", fontSize: "0.96rem", lineHeight: 1.65, maxWidth: 500, margin: "0 auto 20px" }}>
+                  <p style={{ color: "#55483d", fontSize: "0.96rem", lineHeight: 1.65, maxWidth: 500, margin: "0 auto 20px" }}>
                     Our editorial team reads every submission with care. If selected, we will reach out to feature your piece in our journal.
                   </p>
                   <button
@@ -515,12 +935,14 @@ export default function JournalPage() {
                     }}
                     style={{
                       background: "transparent",
-                      border: "1.5px solid #d89b6c",
-                      color: "#d89b6c",
+                      border: "1.5px solid #660608",
+                      color: "#660608",
                       padding: "10px 24px",
                       borderRadius: 99,
-                      fontWeight: 700,
+                      fontWeight: 800,
                       fontSize: 12,
+                      letterSpacing: "0.08em",
+                      textTransform: "uppercase",
                       cursor: "pointer",
                     }}
                   >
@@ -528,10 +950,10 @@ export default function JournalPage() {
                   </button>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+                <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 18 }}>
                   <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16 }}>
                     <div>
-                      <label style={{ display: "block", fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 8, color: "#d89b6c" }}>
+                      <label style={{ display: "block", fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 6, color: "#660608" }}>
                         Your Name *
                       </label>
                       <input
@@ -542,11 +964,11 @@ export default function JournalPage() {
                         placeholder="e.g. Priya Sharma"
                         style={{
                           width: "100%",
-                          padding: "14px 16px",
-                          borderRadius: 10,
-                          border: "1px solid rgba(255,255,255,0.15)",
-                          background: "rgba(255,255,255,0.06)",
-                          color: "#FAF6F0",
+                          padding: "12px 14px",
+                          borderRadius: 8,
+                          border: "1px solid rgba(44, 32, 22, 0.2)",
+                          background: "rgba(255, 255, 255, 0.8)",
+                          color: "#1a140e",
                           fontSize: 14,
                           outline: "none",
                         }}
@@ -554,7 +976,7 @@ export default function JournalPage() {
                     </div>
 
                     <div>
-                      <label style={{ display: "block", fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 8, color: "#d89b6c" }}>
+                      <label style={{ display: "block", fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 6, color: "#660608" }}>
                         Email *
                       </label>
                       <input
@@ -565,11 +987,11 @@ export default function JournalPage() {
                         placeholder="priya@example.com"
                         style={{
                           width: "100%",
-                          padding: "14px 16px",
-                          borderRadius: 10,
-                          border: "1px solid rgba(255,255,255,0.15)",
-                          background: "rgba(255,255,255,0.06)",
-                          color: "#FAF6F0",
+                          padding: "12px 14px",
+                          borderRadius: 8,
+                          border: "1px solid rgba(44, 32, 22, 0.2)",
+                          background: "rgba(255, 255, 255, 0.8)",
+                          color: "#1a140e",
                           fontSize: 14,
                           outline: "none",
                         }}
@@ -578,7 +1000,7 @@ export default function JournalPage() {
                   </div>
 
                   <div>
-                    <label style={{ display: "block", fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 8, color: "#d89b6c" }}>
+                    <label style={{ display: "block", fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 6, color: "#660608" }}>
                       Instagram Handle (optional)
                     </label>
                     <input
@@ -588,11 +1010,11 @@ export default function JournalPage() {
                       placeholder="@yourhandle"
                       style={{
                         width: "100%",
-                        padding: "14px 16px",
-                        borderRadius: 10,
-                        border: "1px solid rgba(255,255,255,0.15)",
-                        background: "rgba(255,255,255,0.06)",
-                        color: "#FAF6F0",
+                        padding: "12px 14px",
+                        borderRadius: 8,
+                        border: "1px solid rgba(44, 32, 22, 0.2)",
+                        background: "rgba(255, 255, 255, 0.8)",
+                        color: "#1a140e",
                         fontSize: 14,
                         outline: "none",
                       }}
@@ -601,7 +1023,7 @@ export default function JournalPage() {
 
                   {/* What are you sharing? */}
                   <div>
-                    <label style={{ display: "block", fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 10, color: "#d89b6c" }}>
+                    <label style={{ display: "block", fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 8, color: "#660608" }}>
                       What are you sharing?
                     </label>
                     <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
@@ -618,11 +1040,11 @@ export default function JournalPage() {
                           type="button"
                           onClick={() => setFormData({ ...formData, category: type })}
                           style={{
-                            padding: "8px 16px",
+                            padding: "6px 14px",
                             borderRadius: 999,
-                            border: `1.5px solid ${formData.category === type ? "#d89b6c" : "rgba(255,255,255,0.18)"}`,
-                            background: formData.category === type ? "#d89b6c" : "transparent",
-                            color: formData.category === type ? "#1a140e" : "#FAF6F0",
+                            border: `1.5px solid ${formData.category === type ? "#660608" : "rgba(44, 32, 22, 0.2)"}`,
+                            background: formData.category === type ? "#660608" : "transparent",
+                            color: formData.category === type ? "#FAF6F0" : "#443528",
                             fontSize: 12,
                             fontWeight: 700,
                             cursor: "pointer",
@@ -637,22 +1059,22 @@ export default function JournalPage() {
 
                   {/* Tell us more */}
                   <div>
-                    <label style={{ display: "block", fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: 8, color: "#d89b6c" }}>
+                    <label style={{ display: "block", fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 6, color: "#660608" }}>
                       Tell Us More *
                     </label>
                     <textarea
-                      rows={5}
+                      rows={4}
                       required
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       placeholder="Share your memory, textile thought, or suggestion here..."
                       style={{
                         width: "100%",
-                        padding: "14px 16px",
-                        borderRadius: 10,
-                        border: "1px solid rgba(255,255,255,0.15)",
-                        background: "rgba(255,255,255,0.06)",
-                        color: "#FAF6F0",
+                        padding: "12px 14px",
+                        borderRadius: 8,
+                        border: "1px solid rgba(44, 32, 22, 0.2)",
+                        background: "rgba(255, 255, 255, 0.8)",
+                        color: "#1a140e",
                         fontSize: 14,
                         lineHeight: 1.6,
                         outline: "none",
@@ -662,27 +1084,27 @@ export default function JournalPage() {
                   </div>
 
                   {/* Permission Checkboxes */}
-                  <div style={{ background: "rgba(255,255,255,0.04)", padding: 18, borderRadius: 12, display: "flex", flexDirection: "column", gap: 10 }}>
-                    <span style={{ fontSize: 12, fontWeight: 800, textTransform: "uppercase", color: "#d89b6c" }}>
+                  <div style={{ borderLeft: "2.5px solid #660608", paddingLeft: 14, display: "flex", flexDirection: "column", gap: 6 }}>
+                    <span style={{ fontSize: 11, fontWeight: 800, textTransform: "uppercase", color: "#660608", letterSpacing: "0.08em" }}>
                       Permission
                     </span>
-                    <label style={{ display: "flex", alignItems: "flex-start", gap: 10, fontSize: 13, color: "rgba(250,246,240,0.9)", cursor: "pointer" }}>
+                    <label style={{ display: "flex", alignItems: "flex-start", gap: 10, fontSize: 12.5, color: "#443528", cursor: "pointer" }}>
                       <input
                         type="radio"
                         name="permission"
                         checked={formData.permissionShare}
                         onChange={() => setFormData({ ...formData, permissionShare: true })}
-                        style={{ marginTop: 3 }}
+                        style={{ marginTop: 2, accentColor: "#660608" }}
                       />
                       <span>Yes, you may share my submission on Sum Clothico&apos;s Instagram/social channels.</span>
                     </label>
-                    <label style={{ display: "flex", alignItems: "flex-start", gap: 10, fontSize: 13, color: "rgba(250,246,240,0.9)", cursor: "pointer" }}>
+                    <label style={{ display: "flex", alignItems: "flex-start", gap: 10, fontSize: 12.5, color: "#443528", cursor: "pointer" }}>
                       <input
                         type="radio"
                         name="permission"
                         checked={!formData.permissionShare}
                         onChange={() => setFormData({ ...formData, permissionShare: false })}
-                        style={{ marginTop: 3 }}
+                        style={{ marginTop: 2, accentColor: "#660608" }}
                       />
                       <span>Please keep my submission private.</span>
                     </label>
@@ -693,31 +1115,26 @@ export default function JournalPage() {
                     type="submit"
                     disabled={isSubmitting}
                     style={{
-                      padding: "16px 32px",
-                      borderRadius: 10,
-                      background: "#FAF6F0",
-                      color: "#1a140e",
+                      padding: "15px 32px",
+                      borderRadius: 99,
+                      background: "#660608",
+                      color: "#FAF6F0",
                       border: "none",
-                      fontSize: 14,
+                      fontSize: 13,
                       fontWeight: 800,
-                      letterSpacing: "0.08em",
+                      letterSpacing: "0.1em",
                       textTransform: "uppercase",
                       cursor: isSubmitting ? "not-allowed" : "pointer",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                       gap: 8,
-                      marginTop: 6,
+                      marginTop: 4,
                     }}
                   >
-                    <FiSend size={15} />
+                    <FiSend size={14} />
                     <span>{isSubmitting ? "Sending..." : "SEND IT OUR WAY"}</span>
                   </button>
-
-                  {/* Note */}
-                  <p style={{ fontSize: 11, lineHeight: 1.6, color: "rgba(250,246,240,0.6)", margin: 0, textAlign: "center" }}>
-                    By submitting, you give Sum Clothico permission to review your contribution. If you choose social sharing permission, Sum may edit the submission for length or clarity before publishing.
-                  </p>
                 </form>
               )}
             </div>
@@ -725,9 +1142,9 @@ export default function JournalPage() {
 
           {/* ─── CLOSING ─── */}
           <section style={{ maxWidth: 760, margin: "0 auto", textAlign: "center" }}>
-            <span style={{ fontSize: "0.78rem", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "#b36338", display: "block", marginBottom: 8 }}>
+            <IndianArchBadge style={{ marginBottom: "14px" }}>
               Community
-            </span>
+            </IndianArchBadge>
             <h2 style={{ fontFamily: "serif", fontSize: "clamp(2rem, 3.5vw, 2.7rem)", fontWeight: 600, color: "#1a140e", margin: "0 0 20px" }}>
               Keep the conversation going.
             </h2>
@@ -743,8 +1160,8 @@ export default function JournalPage() {
                 borderRadius: 99,
                 background: "#1a140e",
                 color: "#FAF6F0",
-                fontWeight: 700,
-                fontSize: "0.82rem",
+                fontWeight: 800,
+                fontSize: "0.8rem",
                 letterSpacing: "0.12em",
                 textTransform: "uppercase",
                 textDecoration: "none",
@@ -779,7 +1196,7 @@ export default function JournalPage() {
               <FiX size={24} />
             </button>
 
-            <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase", color: "#b36338", display: "block", marginBottom: 8 }}>
+            <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: "#660608", display: "block", marginBottom: 8 }}>
               {activeStory.category}
             </span>
 
@@ -788,12 +1205,12 @@ export default function JournalPage() {
             </h1>
 
             {activeStory.subtitle && (
-              <p style={{ fontSize: "1.1rem", color: "#5c4033", fontStyle: "italic", margin: "0 0 18px" }}>
+              <p style={{ fontSize: "1.1rem", color: "#660608", fontStyle: "italic", margin: "0 0 18px" }}>
                 {activeStory.subtitle}
               </p>
             )}
 
-            <div style={{ display: "flex", gap: 16, alignItems: "center", fontSize: 13, color: "#8a7a6c", marginBottom: 24, borderBottom: "1px solid rgba(42,31,20,0.1)", paddingBottom: 16 }}>
+            <div style={{ display: "flex", gap: 16, alignItems: "center", fontSize: 13, color: "#8a7a6c", marginBottom: 24, borderBottom: "1px solid rgba(44, 32, 22, 0.12)", paddingBottom: 16 }}>
               <span>{activeStory.date}</span>
               <span>•</span>
               <span>Author: <strong>{activeStory.author}</strong></span>
@@ -803,11 +1220,11 @@ export default function JournalPage() {
 
             {/* Media Gallery / Video */}
             {activeStory.videoUrl ? (
-              <div style={{ borderRadius: 16, overflow: "hidden", aspectRatio: "16/9", background: "#000", marginBottom: 24 }}>
+              <div style={{ borderRadius: 12, overflow: "hidden", aspectRatio: "16/9", background: "#000", marginBottom: 24 }}>
                 <video src={activeStory.videoUrl} controls autoPlay playsInline style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               </div>
             ) : (
-              <div style={{ borderRadius: 16, overflow: "hidden", aspectRatio: "16/9", marginBottom: 24, background: "#e8dfd0" }}>
+              <div style={{ borderRadius: 12, overflow: "hidden", aspectRatio: "16/9", marginBottom: 24, background: "#e8dfd0" }}>
                 <img src={activeStory.image} alt={activeStory.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               </div>
             )}
@@ -822,7 +1239,7 @@ export default function JournalPage() {
             </div>
 
             {/* Article End Action */}
-            <div style={{ background: "#ffffff", padding: "24px 28px", borderRadius: 16, border: "1px solid rgba(42,31,20,0.1)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 16 }}>
+            <div style={{ borderTop: "1.5px solid #660608", paddingTop: 20, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 16 }}>
               <div>
                 <strong style={{ display: "block", color: "#1a140e", fontSize: "1.05rem", fontFamily: "serif" }}>
                   Have something to add?
@@ -834,7 +1251,7 @@ export default function JournalPage() {
               <button
                 onClick={scrollToSubmission}
                 style={{
-                  background: "#1a140e",
+                  background: "#660608",
                   color: "#FAF6F0",
                   padding: "12px 24px",
                   borderRadius: 99,
@@ -853,8 +1270,6 @@ export default function JournalPage() {
           </div>
         </div>
       )}
-
-      <Footer />
-    </>
+    </div>
   );
 }

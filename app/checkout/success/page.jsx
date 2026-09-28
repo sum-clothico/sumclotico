@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useStore } from "@/context/StoreContext";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { trackEvent } from "@/lib/analytics";
 
 function SuccessContent() {
@@ -153,7 +152,6 @@ export default function CheckoutSuccessPage() {
           </Suspense>
         </div>
       </div>
-      <Footer />
     </>
   );
 }

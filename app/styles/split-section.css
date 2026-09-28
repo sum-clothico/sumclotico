@@ -11,7 +11,7 @@
 /* ─── SVG Frame ─────────────────────────────────────────── */
 .split-section__frame {
   position: absolute;
-  top: 30%;
+  top: 38%;
   left: 18%;
   transform: translate(-50%, -50%);
   width: 240px;
@@ -180,74 +180,115 @@
 }
 
 /* ─── Responsive ────────────────────────────────────────── */
-@media (max-width: 1024px) {
+@media (max-width: 900px) {
   .split-section {
-    flex-direction: column;
-    height: auto;
-    min-height: auto;
+    flex-direction: column !important;
+    height: auto !important;
+    min-height: auto !important;
+    overflow: hidden !important;
+    position: relative !important;
+    padding: 0 !important;
   }
 
-  .split-section__left,
-  .split-section__right {
-    width: 100%;
+  .split-section--reversed {
+    flex-direction: column !important;
   }
 
-  .split-section__right {
-    height: 400px;
+  .split-section__left {
+    width: 100% !important;
+    height: auto !important;
+    padding: 48px 24px 28px !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
   }
 
-  .split-section__model,
-  .split-section--reversed .split-section__model {
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%);
-    height: 600px;
+  .split-section--reversed .split-section__left {
+    align-items: flex-start !important;
+    text-align: left !important;
+  }
+
+  .split-section--reversed .split-section__content {
+    align-items: flex-start !important;
+    text-align: left !important;
   }
 
   .split-section__content {
-    padding: 150px 0 100px;
-  }
-
-  .split-section__mahay {
-    top: 40px;
-  }
-}
-
-@media (max-width: 768px) {
-  .split-section__content {
-    padding: 60px 20px 40px;
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: 100% !important;
   }
 
   .split-section__title {
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
+    font-size: clamp(24px, 6vw, 32px) !important;
+    margin-bottom: 1.2rem !important;
+    line-height: 1.1 !important;
   }
 
   .split-section__subtitle,
   .split-section__why,
   .split-section__how {
-    font-size: 0.95rem;
+    font-size: 0.95rem !important;
+    max-width: 100% !important;
   }
 
   .split-section__right {
-    height: 300px;
+    width: 100% !important;
+    height: 360px !important;
+    position: relative !important;
+    overflow: hidden !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-end !important;
+    background: linear-gradient(135deg, #D4B896 0%, #C8A87A 100%) !important;
   }
 
-  .split-section__model {
-    height: 400px;
+  .split-section__model,
+  .split-section--reversed .split-section__model {
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: 0 !important;
+    transform: none !important;
+    height: 360px !important;
+    max-height: 360px !important;
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-end !important;
+  }
+
+  .split-section__model img,
+  .split-section--reversed .split-section__model img {
+    height: 100% !important;
+    max-height: 340px !important;
+    width: auto !important;
+    object-fit: contain !important;
+    object-position: bottom center !important;
+    transform: none !important;
+    filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.15)) !important;
   }
 
   .split-section__mahay {
-    font-size: 1.8rem;
-    top: 20px;
-  }
-
-  .split-section--reversed .split-section__content {
-    align-items: flex-start;
-    text-align: left;
+    font-size: 1.8rem !important;
+    top: 20px !important;
   }
 
   .split-section__frame {
-    display: none;
+    display: none !important;
   }
+}
+
+/* ─── Smooth Dissolve on Last Split Panel ─────────────────────────────────── */
+/* Eliminates sharp split background boundary and dissolves model feet into cream base */
+.split-section:last-of-type::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 120px;
+  background: linear-gradient(to bottom, rgba(237, 232, 220, 0) 0%, var(--bg-color, #EDE8DC) 100%);
+  pointer-events: none;
+  z-index: 6;
 }
