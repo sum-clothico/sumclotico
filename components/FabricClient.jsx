@@ -1208,6 +1208,71 @@ export default function FabricClient() {
             </div>
 
             <div
+              className="fab-image-reveal fab-compare-strip"
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr 1fr",
+                gap: 10,
+                margin: "0 0 36px",
+              }}
+            >
+              <div
+                style={{
+                  borderRadius: 12,
+                  overflow: "hidden",
+                  border: "1px solid rgba(44, 32, 22, 0.14)",
+                }}
+              >
+                <img
+                  src="/assets/fabric.jpg"
+                  alt="Khadi weave"
+                  style={{
+                    width: "100%",
+                    aspectRatio: "4/3",
+                    objectFit: "cover",
+                    display: "block",
+                  }}
+                />
+              </div>
+              <div
+                style={{
+                  borderRadius: 12,
+                  overflow: "hidden",
+                  border: "1px solid rgba(44, 32, 22, 0.14)",
+                }}
+              >
+                <img
+                  src="/assets/ctn.jpg"
+                  alt="Cotton weave"
+                  style={{
+                    width: "100%",
+                    aspectRatio: "4/3",
+                    objectFit: "cover",
+                    display: "block",
+                  }}
+                />
+              </div>
+              <div
+                style={{
+                  borderRadius: 12,
+                  overflow: "hidden",
+                  border: "1px solid rgba(44, 32, 22, 0.14)",
+                }}
+              >
+                <img
+                  src="/assets/khadi.jpg"
+                  alt="Khadi texture"
+                  style={{
+                    width: "100%",
+                    aspectRatio: "4/3",
+                    objectFit: "cover",
+                    display: "block",
+                  }}
+                />
+              </div>
+            </div>
+
+            <div
               style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
@@ -1372,63 +1437,93 @@ export default function FabricClient() {
               borderTop: "1px solid rgba(44, 32, 22, 0.14)",
               paddingTop: 48,
               marginBottom: 70,
-              textAlign: "center",
             }}
           >
-            <div className="fab-block-badge">
-              <IndianArchBadge style={{ marginBottom: "14px" }}>
-                Why We Chose It
-              </IndianArchBadge>
-            </div>
-            <h3
-              className="fab-block-title"
-              style={{
-                fontFamily: "serif",
-                fontSize: "clamp(1.8rem, 3vw, 2.4rem)",
-                fontWeight: 700,
-                color: "#660608",
-                margin: "0 0 24px",
-                lineHeight: 1.3,
-              }}
-            >
-              <AnimatedWords text="Because you can feel the difference." />
-            </h3>
             <div
+              className="fab-why-we-chose-grid"
               style={{
-                fontSize: "1.06rem",
-                lineHeight: 1.85,
-                color: "#3f3329",
-                maxWidth: 640,
-                margin: "0 auto",
+                display: "grid",
+                gridTemplateColumns: "0.9fr 1.1fr",
+                gap: "clamp(28px, 4vw, 48px)",
+                alignItems: "center",
               }}
             >
-              <p
-                className="fab-text-item"
+              <div
+                className="fab-image-reveal"
                 style={{
-                  margin: "0 0 14px",
-                  fontFamily: "serif",
-                  fontStyle: "italic",
-                  color: "#1a140e",
-                  fontSize: "1.15rem",
+                  borderRadius: 16,
+                  overflow: "hidden",
+                  border: "1px solid rgba(44, 32, 22, 0.14)",
+                  boxShadow: "0 18px 40px -14px rgba(44, 32, 22, 0.18)",
                 }}
               >
-                Airy. Textured. Easy against the skin.
-              </p>
-              <p className="fab-text-item" style={{ margin: "0 0 10px" }}>
-                Khadi doesn&apos;t need to be perfectly uniform to be beautiful.
-              </p>
-              <p
-                className="fab-text-item"
-                style={{
-                  margin: 0,
-                  fontWeight: 700,
-                  color: "#660608",
-                  fontFamily: "serif",
-                  fontSize: "1.2rem",
-                }}
-              >
-                Neither do we.
-              </p>
+                <img
+                  src="/assets/khadi.jpg"
+                  alt="Khadi fabric close-up"
+                  style={{
+                    width: "100%",
+                    aspectRatio: "4/5",
+                    objectFit: "cover",
+                    display: "block",
+                  }}
+                />
+              </div>
+              <div>
+                <div className="fab-block-badge">
+                  <IndianArchBadge style={{ marginBottom: "14px" }}>
+                    Why We Chose It
+                  </IndianArchBadge>
+                </div>
+                <h3
+                  className="fab-block-title"
+                  style={{
+                    fontFamily: "serif",
+                    fontSize: "clamp(1.8rem, 3vw, 2.4rem)",
+                    fontWeight: 700,
+                    color: "#660608",
+                    margin: "0 0 24px",
+                    lineHeight: 1.3,
+                  }}
+                >
+                  <AnimatedWords text="Because you can feel the difference." />
+                </h3>
+                <div
+                  style={{
+                    fontSize: "1.06rem",
+                    lineHeight: 1.85,
+                    color: "#3f3329",
+                  }}
+                >
+                  <p
+                    className="fab-text-item"
+                    style={{
+                      margin: "0 0 14px",
+                      fontFamily: "serif",
+                      fontStyle: "italic",
+                      color: "#1a140e",
+                      fontSize: "1.15rem",
+                    }}
+                  >
+                    Airy. Textured. Easy against the skin.
+                  </p>
+                  <p className="fab-text-item" style={{ margin: "0 0 10px" }}>
+                    Khadi doesn&apos;t need to be perfectly uniform to be
+                    beautiful.
+                  </p>
+                  <p
+                    className="fab-text-item"
+                    style={{
+                      margin: 0,
+                      fontWeight: 700,
+                      color: "#660608",
+                      fontFamily: "serif",
+                      fontSize: "1.2rem",
+                    }}
+                  >
+                    Neither do we.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -1603,6 +1698,51 @@ export default function FabricClient() {
               </h3>
             </div>
             <div
+              className="fab-image-reveal"
+              style={{
+                position: "relative",
+                borderRadius: 16,
+                overflow: "hidden",
+                border: "1px solid rgba(44, 32, 22, 0.14)",
+                marginBottom: 36,
+                aspectRatio: "16/5",
+                boxShadow: "0 18px 40px -16px rgba(44, 32, 22, 0.18)",
+              }}
+            >
+              <img
+                src="/assets/wev.jpg"
+                alt="Artisan at wooden loom"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  display: "block",
+                }}
+              />
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  background:
+                    "linear-gradient(to right, rgba(26,20,14,0.55) 0%, rgba(26,20,14,0.1) 55%, transparent 100%)",
+                }}
+              />
+              <div
+                style={{
+                  position: "absolute",
+                  left: 24,
+                  bottom: 20,
+                  color: "#EDE8DC",
+                  fontFamily: "serif",
+                  fontStyle: "italic",
+                  fontSize: "clamp(0.95rem, 1.6vw, 1.2rem)",
+                  maxWidth: "60%",
+                }}
+              >
+                Wooden looms. Hand power. No fossil fuel.
+              </div>
+            </div>
+            <div
               style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
@@ -1712,6 +1852,26 @@ export default function FabricClient() {
             }}
           >
             <div className="fab-evolve-col" style={{ borderLeft: "2.5px solid #660608", paddingLeft: 22 }}>
+              <div
+                style={{
+                  borderRadius: 12,
+                  overflow: "hidden",
+                  border: "1px solid rgba(44, 32, 22, 0.14)",
+                  marginBottom: 16,
+                  aspectRatio: "16/9",
+                }}
+              >
+                <img
+                  src="/assets/clt.jpg"
+                  alt="Contemporary khadi garment"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    display: "block",
+                  }}
+                />
+              </div>
               <span
                 style={{
                   fontSize: "0.76rem",
@@ -1785,6 +1945,26 @@ export default function FabricClient() {
             </div>
 
             <div className="fab-evolve-col" style={{ borderLeft: "2.5px solid #660608", paddingLeft: 22 }}>
+              <div
+                style={{
+                  borderRadius: 12,
+                  overflow: "hidden",
+                  border: "1px solid rgba(44, 32, 22, 0.14)",
+                  marginBottom: 16,
+                  aspectRatio: "16/9",
+                }}
+              >
+                <img
+                  src="/assets/chakra.jpg"
+                  alt="Khadi being worn in everyday life"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    display: "block",
+                  }}
+                />
+              </div>
               <span
                 style={{
                   fontSize: "0.76rem",

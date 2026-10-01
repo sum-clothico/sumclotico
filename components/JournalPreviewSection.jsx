@@ -462,21 +462,22 @@ export default function JournalPreviewSection() {
 
           <div style={{ maxWidth: 580, position: "relative", zIndex: 1 }}>
             <IndianArchBadge style={{ marginBottom: 12 }}>
-              <span>Have a story? Tell us.</span>
+              <span>Clothes have stories. We&apos;d like to hear yours.</span>
             </IndianArchBadge>
             <h4
               style={{
                 fontSize: "clamp(20px, 2.5vw, 26px)",
                 fontWeight: 800,
                 color: "#2C2016",
-                margin: "0 0 8px",
+                margin: "0 0 10px",
                 letterSpacing: "-0.02em",
               }}
             >
-              Share your thoughts, discoveries, or memories.
+              Before it becomes your clothes, it passes through many hands.
             </h4>
-            <p style={{ fontSize: 14, color: "#6B5A4E", margin: 0, lineHeight: 1.55 }}>
-              Maybe you know a weaver we should meet, or a textile from your hometown. We welcome words, photographs, and field notes from our community.
+            <p style={{ fontSize: 14, color: "#6B5A4E", margin: 0, lineHeight: 1.65 }}>
+              A textile from your hometown. A garment you still remember. A place
+              we should visit. Or simply something you&apos;d like to tell us.
             </p>
           </div>
 
@@ -505,7 +506,7 @@ export default function JournalPreviewSection() {
                 e.currentTarget.style.transform = "scale(1)";
               }}
             >
-              <span>Explore The Journal</span>
+              <span>Enter The Journal</span>
               <FiArrowRight size={15} />
             </Link>
 
@@ -529,7 +530,7 @@ export default function JournalPreviewSection() {
               onMouseLeave={(e) => (e.currentTarget.style.background = "#EBE5D9")}
             >
               <FiMessageCircle size={15} />
-              <span>Share Something with Us</span>
+              <span>Share Something</span>
             </Link>
           </div>
         </div>

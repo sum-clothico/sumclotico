@@ -371,3 +371,18 @@
     margin: 0 auto;
   }
 }
+
+@media (max-width: 820px) {
+  .fab-why-we-chose-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .fab-compare-strip {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .fab-compare-strip {
+    grid-template-columns: 1fr !important;
+  }
+}

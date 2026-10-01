@@ -222,3 +222,27 @@
     font-weight: 700 !important;
   }
 }
+
+.story-section__subline {
+  position: absolute;
+  top: clamp(200px, 24vh, 260px);
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 640px;
+  width: 90%;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  font-size: clamp(0.95rem, 1.4vw, 1.1rem);
+  color: #4a3c30;
+  line-height: 1.6;
+  z-index: 10;
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .story-section__subline {
+    top: 120px !important;
+    font-size: 0.95rem !important;
+    padding: 0 20px;
+  }
+}

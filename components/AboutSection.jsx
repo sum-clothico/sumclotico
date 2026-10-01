@@ -7,10 +7,10 @@ import "../app/styles/about-section.css";
 gsap.registerPlugin(ScrollTrigger);
 
 const LINES = [
-  "We don't want to make more clothes.",
-  "We want to make better ones.",
-  "There is already enough clothing in the world.",
-  "Will you want to wear this again? If yes, we make it.",
+  "Clothes should leave room for you.",
+  "For changing bodies. Changing plans.",
+  "Different moods. Different versions of yourself.",
+  "No template. Just clothes you can make your own.",
 ];
 
 const PIN_DISTANCE = 500 * LINES.length;
@@ -165,6 +165,13 @@ export default function AboutSection() {
           <p className="about-section__sub">
             A brand rooted in handwoven textiles. Designed for how women live today.
           </p>
+
+          <Link
+            href="/our-story"
+            className="about-section__cta-inline"
+          >
+            Why Sum Exists →
+          </Link>
         </div>
       </div>
 

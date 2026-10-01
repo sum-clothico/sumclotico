@@ -131,16 +131,16 @@ const StorySection = () => {
   }, []);
 
   const storyHeadingWords = [
-    "Handwoven",
-    "beginnings.",
-    "Easy",
-    "silhouettes.",
-    "Clothes",
-    "made",
-    "for",
-    "real",
-    "days.",
+    "Some",
+    "things",
+    "are",
+    "better",
+    "when",
+    "they",
+    "take",
+    "time.",
   ];
+  const storySubline = "Handwoven beginnings. Easy silhouettes. Clothes made for real days.";
 
   return (
     <section ref={sectionRef} className="story-section" id="story">
@@ -176,6 +176,8 @@ const StorySection = () => {
           </span>
         ))}
       </h2>
+
+      <p className="story-section__subline">{storySubline}</p>
 
       {/* SVG Frame */}
       <svg className="story-section__frame" viewBox="0 0 240 330">
