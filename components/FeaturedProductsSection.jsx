@@ -5,7 +5,15 @@ import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useStore } from "@/context/StoreContext";
-import { FiShoppingBag, FiArrowRight, FiEye, FiPlus, FiMinus, FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import {
+  FiShoppingBag,
+  FiArrowRight,
+  FiEye,
+  FiPlus,
+  FiMinus,
+  FiChevronLeft,
+  FiChevronRight,
+} from "react-icons/fi";
 import { trackEvent } from "@/lib/analytics";
 
 import IndianArchBadge from "@/components/IndianArchBadge";
@@ -14,7 +22,13 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function FeaturedProductsSection() {
   const sectionRef = useRef(null);
-  const { products = [], setQuickViewProduct, addToCart, cart = [], updateQuantity } = useStore();
+  const {
+    products = [],
+    setQuickViewProduct,
+    addToCart,
+    cart = [],
+    updateQuantity,
+  } = useStore();
   const [selectedSizes, setSelectedSizes] = useState({});
   const sliderRef = useRef(null);
 
@@ -37,7 +51,7 @@ export default function FeaturedProductsSection() {
               trigger: sectionRef.current,
               start: "top 75%",
             },
-          }
+          },
         );
       }
 
@@ -56,7 +70,7 @@ export default function FeaturedProductsSection() {
               trigger: sectionRef.current,
               start: "top 75%",
             },
-          }
+          },
         );
       }
     }, sectionRef);
@@ -66,7 +80,8 @@ export default function FeaturedProductsSection() {
 
   // Filter products chosen to be featured by the admin (min 2, max 8)
   const adminFeatured = products.filter((p) => p.isFeatured);
-  const featured = adminFeatured.length > 0 ? adminFeatured : products.slice(0, 6);
+  const featured =
+    adminFeatured.length > 0 ? adminFeatured : products.slice(0, 6);
 
   const [canScroll, setCanScroll] = useState(false);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -152,11 +167,20 @@ export default function FeaturedProductsSection() {
         borderTop: "1px solid rgba(44, 32, 22, 0.08)",
       }}
     >
-      <div style={{ maxWidth: 1320, margin: "0 auto", position: "relative", zIndex: 1 }}>
+      <div
+        style={{
+          maxWidth: 1320,
+          margin: "0 auto",
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
         {/* Section Header — Center Aligned with Indian Arch Sub-Header */}
-        <div style={{ textAlign: "center", maxWidth: 780, margin: "0 auto 40px" }}>
+        <div
+          style={{ textAlign: "center", maxWidth: 780, margin: "0 auto 40px" }}
+        >
           <IndianArchBadge style={{ marginBottom: "18px" }}>
-            Made for Real Days
+            For real days.
           </IndianArchBadge>
 
           <h2
@@ -185,7 +209,10 @@ export default function FeaturedProductsSection() {
               >
                 <span
                   className="fp-heading-word"
-                  style={{ display: "inline-block", transformOrigin: "bottom left" }}
+                  style={{
+                    display: "inline-block",
+                    transformOrigin: "bottom left",
+                  }}
                 >
                   {word}
                 </span>
@@ -203,12 +230,21 @@ export default function FeaturedProductsSection() {
               lineHeight: 1.65,
             }}
           >
-            For mornings that start too early. Workdays that run too long. Last-minute plans. Slow Sundays. Train journeys. Coffee runs. And all the ordinary, beautiful things in between.
+            Work. Errands. Travel. Dinner. And everything your day becomes in
+            between.
           </p>
 
           {/* Slider Prev / Next Arrows — ONLY SHOWN IF CONTENT ACTUALLY OVERFLOWS */}
           {canScroll && (
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginTop: 24 }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 12,
+                marginTop: 24,
+              }}
+            >
               <button
                 type="button"
                 onClick={() => scrollSlider("left")}
@@ -224,7 +260,9 @@ export default function FeaturedProductsSection() {
                   alignItems: "center",
                   justifyContent: "center",
                   cursor: canScrollLeft ? "pointer" : "not-allowed",
-                  boxShadow: canScrollLeft ? "0 2px 10px rgba(44, 32, 22, 0.06)" : "none",
+                  boxShadow: canScrollLeft
+                    ? "0 2px 10px rgba(44, 32, 22, 0.06)"
+                    : "none",
                   opacity: canScrollLeft ? 1 : 0.45,
                   transition: "all 0.2s ease",
                 }}
@@ -263,7 +301,9 @@ export default function FeaturedProductsSection() {
                   alignItems: "center",
                   justifyContent: "center",
                   cursor: canScrollRight ? "pointer" : "not-allowed",
-                  boxShadow: canScrollRight ? "0 4px 14px rgba(102, 6, 8, 0.25)" : "none",
+                  boxShadow: canScrollRight
+                    ? "0 4px 14px rgba(102, 6, 8, 0.25)"
+                    : "none",
                   opacity: canScrollRight ? 1 : 0.45,
                   transition: "all 0.2s ease",
                 }}
@@ -294,7 +334,11 @@ export default function FeaturedProductsSection() {
           style={{
             display: "flex",
             flexWrap: "nowrap",
-            justifyContent: canScroll ? "flex-start" : (featured.length <= 3 ? "center" : "flex-start"),
+            justifyContent: canScroll
+              ? "flex-start"
+              : featured.length <= 3
+                ? "center"
+                : "flex-start",
             gap: 24,
             overflowX: "auto",
             scrollSnapType: "x mandatory",
@@ -306,23 +350,32 @@ export default function FeaturedProductsSection() {
           }}
         >
           {featured.map((prod) => {
-            const currentSize = selectedSizes[prod.id] || prod.sizes?.[0] || "M";
-            const effectivePrice = prod.sizePrices && prod.sizePrices[currentSize]
-              ? Number(prod.sizePrices[currentSize])
-              : (prod.salePrice || prod.price);
+            const currentSize =
+              selectedSizes[prod.id] || prod.sizes?.[0] || "M";
+            const effectivePrice =
+              prod.sizePrices && prod.sizePrices[currentSize]
+                ? Number(prod.sizePrices[currentSize])
+                : prod.salePrice || prod.price;
             const hasDiscount = prod.salePrice && prod.salePrice < prod.price;
 
             // Check if current item with selected size is in cart
             const matchingCartItem = cart.find(
-              (item) => item.id === prod.id && item.selectedSize === currentSize
+              (item) =>
+                item.id === prod.id && item.selectedSize === currentSize,
             );
-            const quantityInCart = matchingCartItem ? matchingCartItem.quantity : 0;
+            const quantityInCart = matchingCartItem
+              ? matchingCartItem.quantity
+              : 0;
 
             return (
               <div
                 key={prod.id}
                 style={{
-                  flex: canScroll ? "0 0 290px" : (featured.length <= 3 ? "0 1 340px" : "0 0 290px"),
+                  flex: canScroll
+                    ? "0 0 290px"
+                    : featured.length <= 3
+                      ? "0 1 340px"
+                      : "0 0 290px",
                   maxWidth: canScroll ? 290 : 360,
                   minWidth: 260,
                   scrollSnapAlign: "start",
@@ -337,11 +390,13 @@ export default function FeaturedProductsSection() {
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = "translateY(-4px)";
-                  e.currentTarget.style.boxShadow = "0 12px 30px rgba(44, 32, 22, 0.1)";
+                  e.currentTarget.style.boxShadow =
+                    "0 12px 30px rgba(44, 32, 22, 0.1)";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "0 6px 24px rgba(44, 32, 22, 0.05)";
+                  e.currentTarget.style.boxShadow =
+                    "0 6px 24px rgba(44, 32, 22, 0.05)";
                 }}
               >
                 {/* Image Stage — Portrait 3:4 */}
@@ -366,13 +421,24 @@ export default function FeaturedProductsSection() {
                       objectPosition: "top center",
                       transition: "transform 0.4s ease",
                     }}
-                    onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
-                    onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.transform = "scale(1.05)")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.transform = "scale(1)")
+                    }
                   />
 
                   {/* Top Sale Badge in #660608 */}
                   {hasDiscount && (
-                    <div style={{ position: "absolute", top: 12, left: 12, zIndex: 2 }}>
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: 12,
+                        left: 12,
+                        zIndex: 2,
+                      }}
+                    >
                       <span
                         style={{
                           background: "#660608",
@@ -420,7 +486,8 @@ export default function FeaturedProductsSection() {
                       e.currentTarget.style.color = "#ffffff";
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.background = "rgba(250, 246, 240, 0.94)";
+                      e.currentTarget.style.background =
+                        "rgba(250, 246, 240, 0.94)";
                       e.currentTarget.style.color = "#2C2016";
                     }}
                     title="Quick Preview"
@@ -431,32 +498,88 @@ export default function FeaturedProductsSection() {
                 </div>
 
                 {/* Details */}
-                <div style={{ padding: "20px", display: "flex", flexDirection: "column", flex: 1, justifyContent: "space-between" }}>
+                <div
+                  style={{
+                    padding: "20px",
+                    display: "flex",
+                    flexDirection: "column",
+                    flex: 1,
+                    justifyContent: "space-between",
+                  }}
+                >
                   <div>
-                    <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1, color: "#8C7868" }}>
+                    <div
+                      style={{
+                        fontSize: 11,
+                        fontWeight: 700,
+                        textTransform: "uppercase",
+                        letterSpacing: 1,
+                        color: "#8C7868",
+                      }}
+                    >
                       {prod.category}
                     </div>
-                    <h3 style={{ fontSize: 17, fontWeight: 800, color: "#2C2016", margin: "4px 0 2px" }}>
+                    <h3
+                      style={{
+                        fontSize: 17,
+                        fontWeight: 800,
+                        color: "#2C2016",
+                        margin: "4px 0 2px",
+                      }}
+                    >
                       {prod.name}
                     </h3>
-                    <p style={{ fontSize: 13, color: "#7A695C", fontStyle: "italic", margin: "0 0 12px" }}>
+                    <p
+                      style={{
+                        fontSize: 13,
+                        color: "#7A695C",
+                        fontStyle: "italic",
+                        margin: "0 0 12px",
+                      }}
+                    >
                       &ldquo;{prod.subtitle}&rdquo;
                     </p>
 
                     {/* Price in Brand Dark Brown */}
-                    <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 14 }}>
-                      <span style={{ fontSize: 18, fontWeight: 800, color: "#2C2016" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "baseline",
+                        gap: 8,
+                        marginBottom: 14,
+                      }}
+                    >
+                      <span
+                        style={{
+                          fontSize: 18,
+                          fontWeight: 800,
+                          color: "#2C2016",
+                        }}
+                      >
                         ₹{effectivePrice.toLocaleString("en-IN")}
                       </span>
                       {hasDiscount && (
-                        <span style={{ fontSize: 13, color: "#9E8E80", textDecoration: "line-through" }}>
+                        <span
+                          style={{
+                            fontSize: 13,
+                            color: "#9E8E80",
+                            textDecoration: "line-through",
+                          }}
+                        >
                           ₹{prod.price.toLocaleString("en-IN")}
                         </span>
                       )}
                     </div>
 
                     {/* Size Selector */}
-                    <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 16 }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: 6,
+                        flexWrap: "wrap",
+                        marginBottom: 16,
+                      }}
+                    >
                       {(prod.sizes || ["XS", "S", "M", "L", "XL"]).map((sz) => {
                         const isSel = currentSize === sz;
                         return (
@@ -468,7 +591,9 @@ export default function FeaturedProductsSection() {
                               fontSize: 11,
                               fontWeight: 700,
                               borderRadius: 6,
-                              border: isSel ? "1.5px solid #2C2016" : "1px solid rgba(44, 32, 22, 0.2)",
+                              border: isSel
+                                ? "1.5px solid #2C2016"
+                                : "1px solid rgba(44, 32, 22, 0.2)",
                               background: isSel ? "#2C2016" : "#FAF6F0",
                               color: isSel ? "#FAF6F0" : "#4A3B30",
                               cursor: "pointer",
@@ -499,7 +624,14 @@ export default function FeaturedProductsSection() {
                         }}
                       >
                         <button
-                          onClick={() => updateQuantity(prod.id, currentSize, prod.colors?.[0] || "", -1)}
+                          onClick={() =>
+                            updateQuantity(
+                              prod.id,
+                              currentSize,
+                              prod.colors?.[0] || "",
+                              -1,
+                            )
+                          }
                           style={{
                             width: 32,
                             height: 32,
@@ -526,7 +658,14 @@ export default function FeaturedProductsSection() {
                         </div>
 
                         <button
-                          onClick={() => updateQuantity(prod.id, currentSize, prod.colors?.[0] || "", 1)}
+                          onClick={() =>
+                            updateQuantity(
+                              prod.id,
+                              currentSize,
+                              prod.colors?.[0] || "",
+                              1,
+                            )
+                          }
                           style={{
                             width: 32,
                             height: 32,
@@ -563,10 +702,15 @@ export default function FeaturedProductsSection() {
                           alignItems: "center",
                           justifyContent: "center",
                           gap: 8,
-                          transition: "background 0.2s ease, transform 0.15s ease",
+                          transition:
+                            "background 0.2s ease, transform 0.15s ease",
                         }}
-                        onMouseEnter={(e) => (e.currentTarget.style.background = "#B85741")} // Terracotta on hover
-                        onMouseLeave={(e) => (e.currentTarget.style.background = "#2C2016")}
+                        onMouseEnter={(e) =>
+                          (e.currentTarget.style.background = "#B85741")
+                        } // Terracotta on hover
+                        onMouseLeave={(e) =>
+                          (e.currentTarget.style.background = "#2C2016")
+                        }
                       >
                         <FiShoppingBag size={15} />
                         <span>Add to Bag</span>
@@ -633,4 +777,3 @@ export default function FeaturedProductsSection() {
     </section>
   );
 }
-

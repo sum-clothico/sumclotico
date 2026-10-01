@@ -31,7 +31,8 @@ const StorySection = () => {
       const section = sectionRef.current;
       const textEls = section.querySelectorAll(".story-phase-text");
 
-      const isDesktop = typeof window !== "undefined" && window.innerWidth > 900;
+      const isDesktop =
+        typeof window !== "undefined" && window.innerWidth > 900;
       const PIN = isDesktop ? PIN_DURATION : 2200;
 
       // Pin the section
@@ -78,7 +79,7 @@ const StorySection = () => {
               trigger: section,
               start: "top 70%",
             },
-          }
+          },
         );
       }
 
@@ -95,9 +96,19 @@ const StorySection = () => {
       // Each phase: fade in (10%) → hold (23%) → fade out (10%) → gap (7%) ≈ 33% each
       textEls.forEach((el) => {
         masterTl
-          .fromTo(el, { opacity: 0, y: 40, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.12, ease: "power3.out" })
+          .fromTo(
+            el,
+            { opacity: 0, y: 40, scale: 0.96 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.12, ease: "power3.out" },
+          )
           .to({}, { duration: 0.15 }) // hold
-          .to(el, { opacity: 0, y: -30, scale: 0.98, duration: 0.08, ease: "power2.in" });
+          .to(el, {
+            opacity: 0,
+            y: -30,
+            scale: 0.98,
+            duration: 0.08,
+            ease: "power2.in",
+          });
       });
 
       // Cloth slide animation
@@ -119,7 +130,17 @@ const StorySection = () => {
     return () => ctx.revert();
   }, []);
 
-  const storyHeadingWords = ["Some", "things", "are", "better", "when", "they", "take", "time."];
+  const storyHeadingWords = [
+    "Some",
+    "things",
+    "are",
+    "better",
+    "when",
+    "they",
+    "take",
+    "time.",
+  ];
+  const storySubline = "Handwoven beginnings. Easy silhouettes. Clothes made for real days.";
 
   return (
     <section ref={sectionRef} className="story-section" id="story">
@@ -145,13 +166,18 @@ const StorySection = () => {
           >
             <span
               className="story-heading-word"
-              style={{ display: "inline-block", transformOrigin: "bottom left" }}
+              style={{
+                display: "inline-block",
+                transformOrigin: "bottom left",
+              }}
             >
               {word}
             </span>
           </span>
         ))}
       </h2>
+
+      <p className="story-section__subline">{storySubline}</p>
 
       {/* SVG Frame */}
       <svg className="story-section__frame" viewBox="0 0 240 330">
@@ -181,7 +207,7 @@ const StorySection = () => {
 
       {/* Link to Fabric Story */}
       <a href="/fabric" className="story-section__link">
-        Explore the Fabric →
+        Discover Sum →
       </a>
 
       {/* Cloth image */}

@@ -10,11 +10,8 @@ import IndianArchBadge from "@/components/IndianArchBadge";
 gsap.registerPlugin(InertiaPlugin, ScrollTrigger);
 
 const PHASE_TEXTS = [
-  "From the textile we source to the hands that cut, stitch and finish each piece.",
-  "Sum is a collection of many small acts of making.",
-  "We want you to know where your clothes come from — not just what they look like when they arrive.",
-  "Clothes that keep up with you — from morning coffee runs to slow Sundays.",
-  "Made with time. Made for living.",
+  "Human hands, at almost every step.",
+  "Made with time, skill and attention before it ever reaches you.",
 ];
 
 export default function MotionCards() {
@@ -75,7 +72,7 @@ export default function MotionCards() {
               trigger: sectionRef.current,
               start: "top 75%",
             },
-          }
+          },
         );
       }
 
@@ -95,7 +92,7 @@ export default function MotionCards() {
               trigger: sectionRef.current,
               start: "top 75%",
             },
-          }
+          },
         );
       }
 
@@ -116,7 +113,7 @@ export default function MotionCards() {
               trigger: sectionRef.current,
               start: "top 70%",
             },
-          }
+          },
         );
       }
 
@@ -145,18 +142,7 @@ export default function MotionCards() {
     return () => ctx.revert();
   }, []);
 
-  const mcHeadingWords = [
-    "Before",
-    "it",
-    "becomes",
-    "your",
-    "clothes,",
-    "it",
-    "passes",
-    "through",
-    "many",
-    "hands.",
-  ];
+  const mcHeadingWords = ["SPUN → WOVEN → SOURCED → DESIGNED → CUT → STITCHED → WORN"];
 
   return (
     <section
@@ -164,12 +150,17 @@ export default function MotionCards() {
       className="motion-card-section"
       id="motion-card-section"
     >
-
       <div className="horizontal-words__corner-right">म</div>
 
       {/* ─── Indian Arch Subtitle Badge ─── */}
-      <div style={{ display: "flex", justifyContent: "center", marginBottom: "16px" }}>
-        <IndianArchBadge>From Fiber to Form</IndianArchBadge>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginBottom: "16px",
+        }}
+      >
+        <IndianArchBadge>Many hands. One piece.</IndianArchBadge>
       </div>
 
       {/* ─── Section heading with Masked Words ─── */}
@@ -194,7 +185,10 @@ export default function MotionCards() {
           >
             <span
               className="mc-heading-word"
-              style={{ display: "inline-block", transformOrigin: "bottom left" }}
+              style={{
+                display: "inline-block",
+                transformOrigin: "bottom left",
+              }}
             >
               {word}
             </span>

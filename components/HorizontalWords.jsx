@@ -89,7 +89,7 @@ export default function HorizontalWords() {
               trigger: container,
               start: "top 60%",
             },
-          }
+          },
         );
       }
     }, sectionRef);
@@ -98,7 +98,10 @@ export default function HorizontalWords() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="horizontal-words-section content-section">
+    <section
+      ref={sectionRef}
+      className="horizontal-words-section content-section"
+    >
       {/* ─── Preserved Background Ornaments ─── */}
       <div className="horizontal-words__corner-left">
         <img src="/assets/Asset 1.svg" alt="Botanical Line Art" />
@@ -139,7 +142,10 @@ export default function HorizontalWords() {
         }}
       >
         {/* Top Header */}
-        <div style={{ textAlign: "center", maxWidth: "800px" }} className="hw-editorial-item">
+        <div
+          style={{ textAlign: "center", maxWidth: "800px" }}
+          className="hw-editorial-item"
+        >
           <span
             style={{
               fontSize: "11px",
@@ -198,7 +204,7 @@ export default function HorizontalWords() {
                 fontWeight: 500,
               }}
             >
-              We believe a garment&apos;s story begins long before it reaches your wardrobe.
+              We start with the cloth.
             </p>
             <p
               style={{
@@ -208,7 +214,8 @@ export default function HorizontalWords() {
                 margin: 0,
               }}
             >
-              With the hands that make it. The place it comes from.
+              We're exploring handwoven textiles from across India — beginning
+              close to home.
             </p>
           </div>
 
@@ -226,7 +233,7 @@ export default function HorizontalWords() {
               gap: "12px",
             }}
           >
-            <p
+            {/* <p
               style={{
                 fontSize: "clamp(14px, 1.4vw, 17px)",
                 lineHeight: 1.65,
@@ -236,7 +243,7 @@ export default function HorizontalWords() {
               }}
             >
               The way the yarn is spun. The way the loom moves at human rhythm.
-            </p>
+            </p> */}
             <p
               style={{
                 fontSize: "clamp(13px, 1.2vw, 15px)",
@@ -246,7 +253,7 @@ export default function HorizontalWords() {
                 margin: 0,
               }}
             >
-              Starting close to home, with Khadi cotton sourced from Madhya Pradesh.
+              Currently: Khadi Cotton · Madhya Pradesh
             </p>
           </div>
         </div>
@@ -262,25 +269,6 @@ export default function HorizontalWords() {
             textAlign: "center",
           }}
         >
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "7px",
-              background: "rgba(255, 255, 255, 0.8)",
-              backdropFilter: "blur(6px)",
-              border: "1px solid #e5e7eb",
-              padding: "6px 16px",
-              borderRadius: "99px",
-              fontSize: "12px",
-              fontWeight: 700,
-              color: "#1f2937",
-            }}
-          >
-            <FiMapPin size={13} color="#f35c27" />
-            <span>We design it for today • Currently: Khadi Cotton · Madhya Pradesh</span>
-          </div>
-
           <Link
             href="/fabric"
             style={{
@@ -299,7 +287,7 @@ export default function HorizontalWords() {
               transition: "transform 0.15s ease",
             }}
           >
-            <span>Our Fabric Story</span>
+            <span>Meet the Fabric</span>
             <FiArrowRight size={14} />
           </Link>
         </div>

@@ -177,9 +177,11 @@
 }
 
 .arched-hero__portal--landscape {
-  width: min(92%, 640px);
+  width: 680px;
+  max-width: 90vw;
+  height: 382px;
+  max-height: 48vh;
   aspect-ratio: 16 / 9;
-  max-height: 52vh;
   border-radius: 22px;
   box-shadow:
     0 24px 50px -12px rgba(42, 31, 20, 0.28),
@@ -187,6 +189,22 @@
   background: #faf6f0;
   padding: 6px;
   box-sizing: border-box;
+}
+
+/* ─── Brand Line at Center Bottom ─── */
+.arched-hero__brandline-bottom {
+  position: absolute;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 25;
+  font-family: inherit;
+  font-size: 0.82rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #5c4a3e;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 .arched-hero__mask {
@@ -326,9 +344,20 @@
   }
 
   .arched-hero__portal--landscape {
-    width: min(92%, 480px);
+    width: min(92vw, 480px);
+    height: 270px;
+    max-height: 42vh;
     aspect-ratio: 16 / 9;
-    max-height: 48vh;
     margin: 0 auto;
+  }
+
+  .arched-hero__brandline-bottom {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    transform: none;
+    margin-top: 24px;
+    text-align: center;
+    font-size: 0.74rem;
   }
 }
