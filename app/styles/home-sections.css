@@ -4,7 +4,7 @@
   position: relative;
   width: 100%;
   padding: 100px 24px;
-  background-color: var(--bg-warm, #E8DFD0);
+  background-color: var(--bg-warm, #e8dfd0);
   color: #1a140e;
   overflow: hidden;
 }
@@ -211,7 +211,9 @@
   border-radius: 20px;
   overflow: hidden;
   border: 1px solid rgba(42, 31, 20, 0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
 }
@@ -412,7 +414,9 @@
   color: inherit;
   display: flex;
   flex-direction: column;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .hs-journal-card:hover {
@@ -493,7 +497,7 @@
 .hs-final-shop {
   text-align: center;
   padding: 120px 24px;
-  background-color: var(--bg-warm, #E8DFD0);
+  background-color: var(--bg-warm, #e8dfd0);
 }
 
 .hs-final-shop .hs-copy {

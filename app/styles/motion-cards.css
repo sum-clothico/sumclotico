@@ -31,7 +31,7 @@
 
 /* ─── Section Heading ────────────────────────────────────────────────────── */
 .mc-heading {
-  font-family: 'Epilogue', sans-serif;
+  font-family: "Epilogue", sans-serif;
   font-size: clamp(1.4rem, 2.5vw, 2rem);
   font-weight: 700;
   color: var(--color-dark);
@@ -75,7 +75,7 @@
   font-size: 0.72rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-earth, #8B6F47);
+  color: var(--color-earth, #8b6f47);
   opacity: 0.5;
   margin-top: 6px;
   transition: opacity 0.2s ease;
@@ -321,40 +321,40 @@
   text-align: center;
 }
 
-  .motion-card__description {
-    font-family: "DM Sans", sans-serif;
-    font-size: 1.3rem;
-    font-weight: 400;
-    line-height: 1.7;
-    color: var(--color-dark);
-    letter-spacing: -0.2px;
-    cursor:
-      url("/assets/Cursor SVG/cursor-text.svg") 12 12,
-      auto;
+.motion-card__description {
+  font-family: "DM Sans", sans-serif;
+  font-size: 1.3rem;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--color-dark);
+  letter-spacing: -0.2px;
+  cursor:
+    url("/assets/Cursor SVG/cursor-text.svg") 12 12,
+    auto;
+}
+
+/* ─── Mobile Responsiveness ─── */
+@media (max-width: 768px) {
+  .motion-card-section {
+    padding: 60px 20px;
   }
-  
-  /* ─── Mobile Responsiveness ─── */
-  @media (max-width: 768px) {
-    .motion-card-section {
-      padding: 60px 20px;
-    }
-    .motion-card__cards-area {
-      height: auto;
-      margin: 20px auto 40px;
-    }
-    .motion-card__cards {
-      flex-direction: column;
-      gap: 30px;
-    }
-    .motion-card__card {
-      width: 85vw;
-      height: 110vw;
-      max-height: 400px;
-      max-width: 320px;
-      transform: none !important;
-      margin: 0 !important;
-      left: auto !important;
-      right: auto !important;
-      bottom: auto !important;
-    }
+  .motion-card__cards-area {
+    height: auto;
+    margin: 20px auto 40px;
   }
+  .motion-card__cards {
+    flex-direction: column;
+    gap: 30px;
+  }
+  .motion-card__card {
+    width: 85vw;
+    height: 110vw;
+    max-height: 400px;
+    max-width: 320px;
+    transform: none !important;
+    margin: 0 !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+  }
+}

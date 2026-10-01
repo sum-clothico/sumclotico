@@ -63,7 +63,8 @@ export default function HomeSections() {
           <div className="hs-feeling__text-col">
             <span className="hs-eyebrow">The Feeling</span>
             <h2 className="hs-headline">
-              Some things are better when they take time.
+              Handwoven beginnings. Easy silhouettes. Clothes made for real
+              days.
             </h2>
             <div className="hs-feeling__stanza">
               <p style={{ margin: "0 0 10px" }}>A thread spun by hand.</p>
@@ -147,8 +148,7 @@ export default function HomeSections() {
               {"\n"}The way the loom moves.
               {"\n\n"}At Sum, we&apos;re exploring handwoven textiles from
               across India — one place, one textile and one story at a time.
-              {"\n"}We are starting close to home, with Khadi cotton sourced
-              from Madhya Pradesh.
+              {"\n"}Currently: Khadi Cotton · Madhya Pradesh
             </p>
             <div
               style={{
@@ -190,7 +190,7 @@ export default function HomeSections() {
       <section className="hs-section hs-section--alt" id="the-clothes">
         <div className="hs-container">
           <div style={{ textAlign: "center", maxWidth: 740, margin: "0 auto" }}>
-            <span className="hs-eyebrow">Made for Real Days</span>
+            <span className="hs-eyebrow">For real days.</span>
             <h2 className="hs-headline">Clothes that keep up with you.</h2>
             <p
               className="hs-copy"
@@ -283,7 +283,7 @@ export default function HomeSections() {
               We make them for the life you&apos;re actually living.
               {"\n"}That means thoughtful silhouettes.
               {"\n"}Comfort that doesn&apos;t ask you to compromise on looking
-                good.
+              good.
               {"\n"}Details that have a reason to be there.
               {"\n"}And pieces you can wear more than one way, more than one
               season.

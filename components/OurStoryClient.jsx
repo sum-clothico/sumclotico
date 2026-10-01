@@ -146,7 +146,7 @@ export default function OurStoryClient() {
       heroTl.fromTo(
         ".os-hero-badge",
         { opacity: 0, scale: 0.8, y: -20 },
-        { opacity: 1, scale: 1, y: 0, duration: 0.7, ease: "back.out(1.8)" }
+        { opacity: 1, scale: 1, y: 0, duration: 0.7, ease: "back.out(1.8)" },
       );
 
       // Headline masked words roll-in
@@ -154,7 +154,7 @@ export default function OurStoryClient() {
         ".os-hero-title .os-anim-word",
         { y: "135%", rotate: 4, opacity: 0 },
         { y: "0%", rotate: 0, opacity: 1, duration: 1.1, stagger: 0.05 },
-        "-=0.4"
+        "-=0.4",
       );
 
       // Quote border draw and quote text reveal
@@ -162,13 +162,13 @@ export default function OurStoryClient() {
         ".os-quote-border",
         { scaleY: 0, transformOrigin: "top center" },
         { scaleY: 1, duration: 0.75, ease: "power2.out" },
-        "-=0.5"
+        "-=0.5",
       );
       heroTl.fromTo(
         ".os-quote-text .os-anim-word",
         { y: "125%", rotate: 3, opacity: 0 },
         { y: "0%", rotate: 0, opacity: 1, duration: 0.95, stagger: 0.035 },
-        "-=0.6"
+        "-=0.6",
       );
 
       // Paragraph lines staggered reveal
@@ -176,23 +176,37 @@ export default function OurStoryClient() {
         ".os-hero-para",
         { opacity: 0, y: 28, filter: "blur(4px)" },
         { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.9, stagger: 0.12 },
-        "-=0.5"
+        "-=0.5",
       );
 
       // Dual buttons
       heroTl.fromTo(
         ".os-hero-cta",
         { opacity: 0, y: 20, scale: 0.94 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.8, stagger: 0.1, ease: "back.out(1.4)" },
-        "-=0.5"
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.8,
+          stagger: 0.1,
+          ease: "back.out(1.4)",
+        },
+        "-=0.5",
       );
 
       // Hero Right Framed Visual
       heroTl.fromTo(
         ".os-hero-visual",
         { opacity: 0, scale: 0.9, y: 45, rotateY: 5 },
-        { opacity: 1, scale: 1, y: 0, rotateY: 0, duration: 1.3, ease: "power3.out" },
-        "-=1.0"
+        {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          rotateY: 0,
+          duration: 1.3,
+          ease: "power3.out",
+        },
+        "-=1.0",
       );
 
       // ─── SCROLLTRIGGER ANIMATION FOR EACH STORY SECTION ───
@@ -211,18 +225,33 @@ export default function OurStoryClient() {
           tl.fromTo(
             badge,
             { opacity: 0, y: -16, scale: 0.85 },
-            { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "back.out(1.6)" }
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              duration: 0.6,
+              ease: "back.out(1.6)",
+            },
           );
         }
 
         // Section Title Words
-        const titleWords = block.querySelectorAll(".os-block-title .os-anim-word");
+        const titleWords = block.querySelectorAll(
+          ".os-block-title .os-anim-word",
+        );
         if (titleWords.length > 0) {
           tl.fromTo(
             titleWords,
             { y: "130%", rotate: 3, opacity: 0 },
-            { y: "0%", rotate: 0, opacity: 1, duration: 0.95, stagger: 0.04, ease: "power4.out" },
-            "-=0.3"
+            {
+              y: "0%",
+              rotate: 0,
+              opacity: 1,
+              duration: 0.95,
+              stagger: 0.04,
+              ease: "power4.out",
+            },
+            "-=0.3",
           );
         }
 
@@ -232,8 +261,15 @@ export default function OurStoryClient() {
           tl.fromTo(
             textItems,
             { opacity: 0, y: 26, filter: "blur(3px)" },
-            { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.85, stagger: 0.1, ease: "power3.out" },
-            "-=0.4"
+            {
+              opacity: 1,
+              y: 0,
+              filter: "blur(0px)",
+              duration: 0.85,
+              stagger: 0.1,
+              ease: "power3.out",
+            },
+            "-=0.4",
           );
         }
 
@@ -243,8 +279,15 @@ export default function OurStoryClient() {
           tl.fromTo(
             cards,
             { opacity: 0, y: 40, scale: 0.94 },
-            { opacity: 1, y: 0, scale: 1, duration: 0.85, stagger: 0.08, ease: "power3.out" },
-            "-=0.5"
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              duration: 0.85,
+              stagger: 0.08,
+              ease: "power3.out",
+            },
+            "-=0.5",
           );
         }
 
@@ -254,8 +297,15 @@ export default function OurStoryClient() {
           tl.fromTo(
             imageBoxes,
             { opacity: 0, scale: 0.92, y: 35 },
-            { opacity: 1, scale: 1, y: 0, duration: 1.0, stagger: 0.12, ease: "power3.out" },
-            "-=0.6"
+            {
+              opacity: 1,
+              scale: 1,
+              y: 0,
+              duration: 1.0,
+              stagger: 0.12,
+              ease: "power3.out",
+            },
+            "-=0.6",
           );
         }
       });
@@ -396,13 +446,25 @@ export default function OurStoryClient() {
                 marginBottom: "32px",
               }}
             >
-              <p className="os-hero-para" style={{ margin: "0 0 6px", fontWeight: 600, color: "#2a1f14" }}>
+              <p
+                className="os-hero-para"
+                style={{ margin: "0 0 6px", fontWeight: 600, color: "#2a1f14" }}
+              >
                 Not louder. Not trendier. Just more considered.
               </p>
               <p className="os-hero-para" style={{ margin: "0 0 16px" }}>
-                Clothes that feel good on your skin, make sense in your wardrobe and carry a little more thought in every detail.
+                Clothes that feel good on your skin, make sense in your wardrobe
+                and carry a little more thought in every detail.
               </p>
-              <p className="os-hero-para" style={{ margin: 0, fontWeight: 700, color: "#1a140e", fontSize: "1.12rem" }}>
+              <p
+                className="os-hero-para"
+                style={{
+                  margin: 0,
+                  fontWeight: 700,
+                  color: "#1a140e",
+                  fontSize: "1.12rem",
+                }}
+              >
                 That&apos;s where Sum Clothico began.
               </p>
             </div>
@@ -631,7 +693,8 @@ export default function OurStoryClient() {
                 textAlign: "center",
               }}
             >
-              “Before the cloth, there is the spinner, the weaver, the dyer, the maker.”
+              “Before the cloth, there is the spinner, the weaver, the dyer, the
+              maker.”
             </div>
           </div>
 
@@ -655,7 +718,13 @@ export default function OurStoryClient() {
             >
               <AnimatedWords text="Made by Humans. For real lives." />
             </h2>
-            <div style={{ fontSize: "1.04rem", lineHeight: 1.85, color: "#3f3329" }}>
+            <div
+              style={{
+                fontSize: "1.04rem",
+                lineHeight: 1.85,
+                color: "#3f3329",
+              }}
+            >
               <p className="os-text-item" style={{ marginBottom: 14 }}>
                 There was always something fascinating about the things we wear.
               </p>
@@ -669,14 +738,21 @@ export default function OurStoryClient() {
                   fontWeight: 500,
                 }}
               >
-                <p style={{ margin: "4px 0" }}>How a piece of cloth becomes a shirt.</p>
-                <p style={{ margin: "4px 0" }}>How a thread becomes a textile.</p>
                 <p style={{ margin: "4px 0" }}>
-                  How something made by someone&apos;s hands eventually becomes part of someone else&apos;s everyday life.
+                  How a piece of cloth becomes a shirt.
+                </p>
+                <p style={{ margin: "4px 0" }}>
+                  How a thread becomes a textile.
+                </p>
+                <p style={{ margin: "4px 0" }}>
+                  How something made by someone&apos;s hands eventually becomes
+                  part of someone else&apos;s everyday life.
                 </p>
               </div>
               <p className="os-text-item" style={{ marginBottom: 14 }}>
-                We wanted to get closer to that process. To understand where our textiles come from, who makes them, and what happens when we slow down enough to care about every step.
+                We wanted to get closer to that process. To understand where our
+                textiles come from, who makes them, and what happens when we
+                slow down enough to care about every step.
               </p>
               <p
                 className="os-text-item"
@@ -707,7 +783,9 @@ export default function OurStoryClient() {
           zIndex: 2,
         }}
       >
-        <div style={{ textAlign: "center", maxWidth: 780, margin: "0 auto 44px" }}>
+        <div
+          style={{ textAlign: "center", maxWidth: 780, margin: "0 auto 44px" }}
+        >
           <div className="os-block-badge">
             <IndianArchBadge style={{ marginBottom: "14px" }}>
               Why Sum
@@ -723,7 +801,11 @@ export default function OurStoryClient() {
               lineHeight: 1.25,
             }}
           >
-            <AnimatedWords text="We wanted to make clothes differently. Not dramatically. Just thoughtfully." />
+            <AnimatedWords
+              text="Sum is a sum of people, ideas, skills, places, techniques
+And eventually, you.
+"
+            />
           </h2>
           <p
             className="os-text-item"
@@ -736,7 +818,9 @@ export default function OurStoryClient() {
               margin: 0,
             }}
           >
-            SUM is the coming together of heritage, modernity, functionality and individuality — just as every woman is the sum of many identities, experiences and possibilities.
+            SUM is the coming together of heritage, modernity, functionality and
+            individuality — just as every woman is the sum of many identities,
+            experiences and possibilities.
           </p>
         </div>
 
@@ -811,7 +895,8 @@ export default function OurStoryClient() {
             margin: "24px 0 0",
           }}
         >
-          Because the best clothes don&apos;t take over your life. They become part of it.
+          Because the best clothes don&apos;t take over your life. They become
+          part of it.
         </p>
       </section>
 
@@ -937,17 +1022,24 @@ export default function OurStoryClient() {
             >
               <AnimatedWords text="The garment is only one part of the story." />
             </h2>
-            <div style={{ fontSize: "1.04rem", lineHeight: 1.8, color: "#443528" }}>
+            <div
+              style={{ fontSize: "1.04rem", lineHeight: 1.8, color: "#443528" }}
+            >
               <p className="os-text-item" style={{ marginBottom: 12 }}>
-                We are building Sum around a deeper relationship with handwoven textiles.
+                We are building Sum around a deeper relationship with handwoven
+                textiles.
               </p>
               <p className="os-text-item" style={{ marginBottom: 12 }}>
                 Not because they&apos;re fashionable.
               </p>
               <p className="os-text-item" style={{ marginBottom: 18 }}>
-                Because they carry something that mass production often leaves behind — time, place, skill and character.
+                Because they carry something that mass production often leaves
+                behind — time, place, skill and character.
               </p>
-              <p className="os-text-item" style={{ fontWeight: 600, color: "#1a140e", marginBottom: 20 }}>
+              <p
+                className="os-text-item"
+                style={{ fontWeight: 600, color: "#1a140e", marginBottom: 20 }}
+              >
                 We&apos;re starting with Khadi cotton from Madhya Pradesh.
               </p>
               <div
@@ -974,7 +1066,8 @@ export default function OurStoryClient() {
                     gap: 4,
                   }}
                 >
-                  Bharatpur Handicrafts Success Story <FiExternalLink size={12} />
+                  Bharatpur Handicrafts Success Story{" "}
+                  <FiExternalLink size={12} />
                 </a>
               </div>
               <p
@@ -1014,8 +1107,17 @@ export default function OurStoryClient() {
           </div>
 
           {/* Handloom Visual Collage */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
-            <div className="os-image-box" style={{ borderRadius: 14, overflow: "hidden", border: "1px solid rgba(44, 32, 22, 0.14)" }}>
+          <div
+            style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}
+          >
+            <div
+              className="os-image-box"
+              style={{
+                borderRadius: 14,
+                overflow: "hidden",
+                border: "1px solid rgba(44, 32, 22, 0.14)",
+              }}
+            >
               <img
                 src="/assets/fabric.jpg"
                 alt="Khadi Cotton Textile"
@@ -1028,7 +1130,14 @@ export default function OurStoryClient() {
                 }}
               />
             </div>
-            <div className="os-image-box" style={{ borderRadius: 14, overflow: "hidden", border: "1px solid rgba(44, 32, 22, 0.14)" }}>
+            <div
+              className="os-image-box"
+              style={{
+                borderRadius: 14,
+                overflow: "hidden",
+                border: "1px solid rgba(44, 32, 22, 0.14)",
+              }}
+            >
               <img
                 src="/assets/wev.jpg"
                 alt="Artisan Weaving on Handloom"
@@ -1077,8 +1186,19 @@ export default function OurStoryClient() {
           zIndex: 2,
         }}
       >
-        <div style={{ borderTop: "1px solid rgba(44, 32, 22, 0.14)", paddingTop: 48 }}>
-          <div style={{ textAlign: "center", maxWidth: 740, margin: "0 auto 36px" }}>
+        <div
+          style={{
+            borderTop: "1px solid rgba(44, 32, 22, 0.14)",
+            paddingTop: 48,
+          }}
+        >
+          <div
+            style={{
+              textAlign: "center",
+              maxWidth: 740,
+              margin: "0 auto 36px",
+            }}
+          >
             <div className="os-block-badge">
               <IndianArchBadge style={{ marginBottom: "14px" }}>
                 Community
@@ -1104,7 +1224,9 @@ export default function OurStoryClient() {
                 margin: "0 0 12px",
               }}
             >
-              Sum brings together different hands, experiences, skills and perspectives to create clothes that feel like they belong to the women who wear them.
+              Sum brings together different hands, experiences, skills and
+              perspectives to create clothes that feel like they belong to the
+              women who wear them.
             </p>
             <p
               className="os-text-item"
@@ -1247,10 +1369,12 @@ export default function OurStoryClient() {
           }}
         >
           <p className="os-text-item" style={{ marginBottom: 10 }}>
-            We&apos;re slowly building a brand around clothing, textiles, people and stories.
+            We&apos;re slowly building a brand around clothing, textiles, people
+            and stories.
           </p>
           <p className="os-text-item" style={{ marginBottom: 10 }}>
-            We want to discover handwoven textiles from different parts of India.
+            We want to discover handwoven textiles from different parts of
+            India.
           </p>
           <p className="os-text-item" style={{ marginBottom: 10 }}>
             Meet the people behind them.
@@ -1259,7 +1383,8 @@ export default function OurStoryClient() {
             Bring those textiles into contemporary wardrobes.
           </p>
           <p className="os-text-item" style={{ marginBottom: 24 }}>
-            And create a space where the conversation around clothing goes beyond what is trending.
+            And create a space where the conversation around clothing goes
+            beyond what is trending.
           </p>
           <div
             className="os-text-item"
@@ -1273,7 +1398,9 @@ export default function OurStoryClient() {
             }}
           >
             <p style={{ margin: "4px 0" }}>We&apos;re still figuring it out.</p>
-            <p style={{ margin: "4px 0" }}>But we know how we want it to feel.</p>
+            <p style={{ margin: "4px 0" }}>
+              But we know how we want it to feel.
+            </p>
             <p style={{ margin: "8px 0", fontWeight: 700, color: "#660608" }}>
               Thoughtful. Human. Easy. And entirely Sum.
             </p>

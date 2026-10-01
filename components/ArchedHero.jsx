@@ -63,30 +63,30 @@ export default function ArchedHero() {
           <span className="arched-hero__latin">CLOTHICO</span>
         </div>
         <div ref={taglineRef} className="arched-hero__tagline">
-          Made with time. Made for living.
+          Made with time.
+          <br />
+          Made for living.
         </div>
         <p ref={descRef} className="arched-hero__desc">
-          We make clothes rooted in handwoven textiles, thoughtful design and
-          the everyday lives of the women who wear them. Starting with Khadi
-          cotton from Madhya Pradesh.
+          Thoughtful everyday clothing rooted in handwoven textiles.
         </p>
         <div ref={ctaRef} className="arched-hero__cta-row">
           <a
             href="/shop"
             className="arched-hero__cta arched-hero__cta--primary"
           >
-            Shop Collection
+            Shop Sum
           </a>
           <a
             href="/our-story"
             className="arched-hero__cta arched-hero__cta--secondary"
           >
-            Explore the Story
+            Our Story
           </a>
         </div>
       </div>
 
-      {/* Center Video — Redesigned into Landscape in Our Style */}
+      {/* Center Video — Rectangular Landscape */}
       <div
         ref={videoPortalRef}
         className="arched-hero__portal arched-hero__portal--landscape"
@@ -116,6 +116,11 @@ export default function ArchedHero() {
           </button>
         </div>
         <div className="arched-hero__border" />
+      </div>
+
+      {/* Brand line at center bottom */}
+      <div className="arched-hero__brandline-bottom">
+        Airy. Earthy. Fluid.
       </div>
     </section>
   );
