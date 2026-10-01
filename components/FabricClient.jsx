@@ -305,60 +305,129 @@ export default function FabricClient() {
           aria-hidden="true"
         />
 
-        {/* ─── HERO ─── */}
+        {/* ─── HERO = THE SOURCE ─── */}
         <section
           className="fab-hero"
           style={{
-            textAlign: "center",
-            padding: "100px 24px 48px",
-            maxWidth: 900,
+            padding: "120px 24px 72px",
+            maxWidth: 1200,
             margin: "0 auto",
             position: "relative",
             zIndex: 2,
           }}
         >
-          <div className="fab-hero-badge">
-            <IndianArchBadge style={{ marginBottom: "18px" }}>
-              Our Textile Ambition
-            </IndianArchBadge>
-          </div>
-          <h1
-            className="fab-hero-title"
-            style={{
-              fontFamily: "serif",
-              fontSize: "clamp(2.4rem, 4.5vw, 3.8rem)",
-              fontWeight: 500,
-              lineHeight: 1.18,
-              color: "#1a140e",
-              margin: "0 0 24px",
-            }}
-          >
-            <AnimatedWords text="Every garment begins somewhere." />
-          </h1>
           <div
-            className="fab-hero-sub"
+            className="fab-hero-grid"
             style={{
-              fontSize: "1.12rem",
-              lineHeight: 1.85,
-              color: "#4a3c30",
-              maxWidth: 680,
-              margin: "0 auto",
+              display: "grid",
+              gridTemplateColumns: "1.05fr 0.95fr",
+              gap: "clamp(32px, 5vw, 56px)",
+              alignItems: "center",
             }}
           >
-            <p
+            <div>
+              <div className="fab-hero-badge">
+                <IndianArchBadge style={{ marginBottom: "18px" }}>
+                  The Source
+                </IndianArchBadge>
+              </div>
+              <h1
+                className="fab-hero-title"
+                style={{
+                  fontFamily: "serif",
+                  fontSize: "clamp(2.2rem, 4vw, 3.4rem)",
+                  fontWeight: 500,
+                  lineHeight: 1.18,
+                  color: "#1a140e",
+                  margin: "0 0 24px",
+                }}
+              >
+                <AnimatedWords text="The garment is only one part of the story." />
+              </h1>
+              <div
+                className="fab-hero-sub"
+                style={{
+                  fontSize: "1.05rem",
+                  lineHeight: 1.8,
+                  color: "#4a3c30",
+                }}
+              >
+                <p style={{ margin: "0 0 12px" }}>
+                  <AnimatedWords text="We are building Sum around a deeper relationship with handwoven textiles." />
+                </p>
+                <p style={{ margin: "0 0 12px" }}>
+                  <AnimatedWords text="Not because they're fashionable." />
+                </p>
+                <p style={{ margin: "0 0 18px" }}>
+                  <AnimatedWords text="Because they carry something that mass production often leaves behind — time, place, skill and character." />
+                </p>
+                <p
+                  style={{
+                    margin: 0,
+                    fontStyle: "italic",
+                    fontFamily: "serif",
+                    fontSize: "1.15rem",
+                    color: "#660608",
+                  }}
+                >
+                  <AnimatedWords text="And behind the textile, there is a place, a process and a whole lot of human work." />
+                </p>
+              </div>
+            </div>
+
+            <div
+              className="fab-hero-visual"
               style={{
-                margin: 0,
-                fontStyle: "italic",
-                fontFamily: "serif",
-                fontSize: "1.2rem",
-                color: "#660608",
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: 12,
               }}
             >
-              <AnimatedWords text="And behind the textile, there is a place, a process and a whole lot of human work." />
-            </p>
+              <div
+                className="fab-image-reveal"
+                style={{
+                  borderRadius: 14,
+                  overflow: "hidden",
+                  border: "1px solid rgba(44, 32, 22, 0.14)",
+                  boxShadow: "0 18px 40px -14px rgba(44, 32, 22, 0.18)",
+                }}
+              >
+                <img
+                  src="/assets/chakra.jpg"
+                  alt="Woman spinning yarn on charkha"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    aspectRatio: "3/4",
+                    objectFit: "cover",
+                    display: "block",
+                  }}
+                />
+              </div>
+              <div
+                className="fab-image-reveal"
+                style={{
+                  borderRadius: 14,
+                  overflow: "hidden",
+                  border: "1px solid rgba(44, 32, 22, 0.14)",
+                  boxShadow: "0 18px 40px -14px rgba(44, 32, 22, 0.18)",
+                }}
+              >
+                <img
+                  src="/assets/han.jpg"
+                  alt="Hands weaving khadi on loom"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    aspectRatio: "3/4",
+                    objectFit: "cover",
+                    display: "block",
+                  }}
+                />
+              </div>
+            </div>
           </div>
         </section>
-
 
         {/* ─── OUR STARTING POINT (SEAMLESS EDITORIAL) ─── */}
         <section
@@ -485,6 +554,85 @@ export default function FabricClient() {
                 style={{ width: "100%", height: "100%", objectFit: "cover" }}
               />
             </div>
+          </div>
+        </section>
+
+        {/* ─── WHAT MAKES IT DIFFERENT ─── */}
+        <section
+          className="fab-anim-block"
+          style={{
+            maxWidth: 1080,
+            margin: "0 auto 80px",
+            padding: "0 clamp(24px, 4vw, 56px)",
+            position: "relative",
+            zIndex: 2,
+          }}
+        >
+          <div style={{ textAlign: "center", marginBottom: 36 }}>
+            <div className="fab-block-badge">
+              <IndianArchBadge style={{ marginBottom: "14px" }}>
+                What Makes It Different
+              </IndianArchBadge>
+            </div>
+          </div>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+              gap: 24,
+            }}
+          >
+            {[
+              {
+                title: "Hand-Spun",
+                desc: "Tiny variations leave room between the threads.",
+              },
+              {
+                title: "Handwoven",
+                desc: "No two metres behave exactly alike.",
+              },
+              {
+                title: "Breathable",
+                desc: "Airy enough for everyday movement.",
+              },
+              {
+                title: "Gets Better",
+                desc: "The fabric softens as you live in it.",
+              },
+            ].map((item) => (
+              <div
+                key={item.title}
+                className="fab-text-item"
+                style={{
+                  borderTop: "2px solid #660608",
+                  paddingTop: 16,
+                }}
+              >
+                <h3
+                  style={{
+                    fontFamily: "serif",
+                    fontSize: "1.2rem",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.08em",
+                    color: "#660608",
+                    margin: "0 0 10px",
+                    fontWeight: 800,
+                  }}
+                >
+                  {item.title}
+                </h3>
+                <p
+                  style={{
+                    fontSize: "0.98rem",
+                    lineHeight: 1.65,
+                    color: "#55483d",
+                    margin: 0,
+                  }}
+                >
+                  {item.desc}
+                </p>
+              </div>
+            ))}
           </div>
         </section>
 
@@ -652,6 +800,21 @@ export default function FabricClient() {
             >
               <AnimatedWords text="How Khadi Is Made (And Why That Changes Everything)" />
             </h3>
+            <p
+              className="fab-text-item"
+              style={{
+                fontFamily: "serif",
+                fontSize: "1.12rem",
+                fontWeight: 700,
+                color: "#1a140e",
+                margin: "16px 0 0",
+                lineHeight: 1.5,
+              }}
+            >
+              The irregularity isn&apos;t a flaw.
+              <br />
+              It&apos;s the hand in handwoven.
+            </p>
           </div>
 
           <div
@@ -1198,6 +1361,73 @@ export default function FabricClient() {
               >
                 Simple truth: Khadi is not just about fiber. It&apos;s about the
                 process, and that changes how it feels on your body.
+              </p>
+            </div>
+          </div>
+
+          {/* ─── WHY WE CHOSE IT ─── */}
+          <div
+            className="fab-anim-block"
+            style={{
+              borderTop: "1px solid rgba(44, 32, 22, 0.14)",
+              paddingTop: 48,
+              marginBottom: 70,
+              textAlign: "center",
+            }}
+          >
+            <div className="fab-block-badge">
+              <IndianArchBadge style={{ marginBottom: "14px" }}>
+                Why We Chose It
+              </IndianArchBadge>
+            </div>
+            <h3
+              className="fab-block-title"
+              style={{
+                fontFamily: "serif",
+                fontSize: "clamp(1.8rem, 3vw, 2.4rem)",
+                fontWeight: 700,
+                color: "#660608",
+                margin: "0 0 24px",
+                lineHeight: 1.3,
+              }}
+            >
+              <AnimatedWords text="Because you can feel the difference." />
+            </h3>
+            <div
+              style={{
+                fontSize: "1.06rem",
+                lineHeight: 1.85,
+                color: "#3f3329",
+                maxWidth: 640,
+                margin: "0 auto",
+              }}
+            >
+              <p
+                className="fab-text-item"
+                style={{
+                  margin: "0 0 14px",
+                  fontFamily: "serif",
+                  fontStyle: "italic",
+                  color: "#1a140e",
+                  fontSize: "1.15rem",
+                }}
+              >
+                Airy. Textured. Easy against the skin.
+              </p>
+              <p className="fab-text-item" style={{ margin: "0 0 10px" }}>
+                Khadi doesn&apos;t need to be perfectly uniform to be beautiful.
+              </p>
+              <p
+                className="fab-text-item"
+                style={{
+                  margin: 0,
+                  fontWeight: 700,
+                  color: "#660608",
+                  fontFamily: "serif",
+                  fontSize: "1.2rem",
+                }}
+              >
+                Neither do we.
               </p>
             </div>
           </div>
