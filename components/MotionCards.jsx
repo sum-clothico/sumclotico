@@ -14,12 +14,30 @@ const PHASE_TEXTS = [
   "Made with time, skill and attention before it ever reaches you.",
 ];
 
+const JOURNEY = [
+  { label: "SPUN", image: "/assets/chakra.jpg", caption: "Yarn by hand on the charkha." },
+  { label: "WOVEN", image: "/assets/wev.jpg", caption: "Pit loom. Human rhythm." },
+  { label: "SOURCED", image: "/assets/fabric.jpg", caption: "Cloth chosen with care." },
+  { label: "DESIGNED", image: "/assets/khadi.jpg", caption: "Easy silhouettes, honest cuts." },
+  { label: "CUT", image: "/assets/han.jpg", caption: "Measured and shaped by hand." },
+  { label: "STITCHED", image: "/assets/clt.jpg", caption: "Women tailors, piece by piece." },
+  { label: "WORN", image: "/assets/khadi.jpg", caption: "Then it becomes yours." },
+];
+
 export default function MotionCards() {
   const sectionRef = useRef(null);
   const containerRef = useRef(null);
   const phaseTextRef = useRef(null);
   const [phaseIndex, setPhaseIndex] = useState(0);
+  const [journeyIdx, setJourneyIdx] = useState(0);
   const isAnimating = useRef(false);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setJourneyIdx((i) => (i + 1) % JOURNEY.length);
+    }, 2200);
+    return () => clearInterval(id);
+  }, []);
 
   // Advance to next phase text on click
   const handleTextClick = () => {
@@ -142,7 +160,7 @@ export default function MotionCards() {
     return () => ctx.revert();
   }, []);
 
-  const mcHeadingWords = ["SPUN → WOVEN → SOURCED → DESIGNED → CUT → STITCHED → WORN"];
+  const mcHeadingWords = ["Many", "hands.", "One", "piece."];
 
   return (
     <section
@@ -210,6 +228,46 @@ export default function MotionCards() {
           {PHASE_TEXTS[phaseIndex]}
         </p>
         <span className="mc-click-hint">tap to explore stories</span>
+      </div>
+
+      {/* ─── Interactive Journey (word pills + swapping image) ─── */}
+      <div className="mc-journey">
+        <div className="mc-journey__visual">
+          {JOURNEY.map((step, i) => (
+            <img
+              key={step.label}
+              src={step.image}
+              alt={step.label}
+              style={{ opacity: i === journeyIdx ? 1 : 0 }}
+            />
+          ))}
+          <div className="mc-journey__scrim" />
+          <div className="mc-journey__caption">
+            <span className="mc-journey__step-num">
+              {String(journeyIdx + 1).padStart(2, "0")} / {String(JOURNEY.length).padStart(2, "0")}
+            </span>
+            <p key={journeyIdx}>{JOURNEY[journeyIdx].caption}</p>
+          </div>
+        </div>
+        <div className="mc-journey__pills">
+          {JOURNEY.map((step, i) => (
+            <React.Fragment key={step.label}>
+              <button
+                type="button"
+                onClick={() => setJourneyIdx(i)}
+                className={
+                  "mc-journey__pill" +
+                  (i === journeyIdx ? " mc-journey__pill--active" : "")
+                }
+              >
+                {step.label}
+              </button>
+              {i < JOURNEY.length - 1 && (
+                <span className="mc-journey__arrow">→</span>
+              )}
+            </React.Fragment>
+          ))}
+        </div>
       </div>
 
       {/* ─── Cards with authentic artisan craft imagery ─── */}

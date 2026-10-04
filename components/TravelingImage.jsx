@@ -38,8 +38,9 @@ const TravelingImage = () => {
       xPercent: -50,
       yPercent: -50,
       left: "50%",
-      top: "40%",
+      top: "55%",
     });
+    el.classList.add("ti-ready");
 
     // ═══ PHASE 0 — Fade in during HorizontalWords ═══
     const fadeInTl = gsap.timeline({
@@ -78,7 +79,7 @@ const TravelingImage = () => {
     const travelToStoryTl = gsap.timeline({
       scrollTrigger: {
         trigger: storySection,
-        start: "top bottom",
+        start: "top 40%",
         end: "top top",
         scrub: 1.5,
       },
@@ -86,7 +87,7 @@ const TravelingImage = () => {
     triggers.push(travelToStoryTl.scrollTrigger);
     travelToStoryTl.fromTo(
       el,
-      { left: "50%", top: "40%", scale: 1 },
+      { left: "50%", top: "55%", scale: 1 },
       {
         left: "50%",
         top: "50%",
@@ -149,8 +150,8 @@ const TravelingImage = () => {
       const travelTl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
-          start: "top bottom",
-          end: "top 10%",
+          start: "top top",
+          end: "top -40%",
           scrub: 1.5,
         },
       });

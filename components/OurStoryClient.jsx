@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -89,17 +89,25 @@ const BELIEFS = [
 ];
 
 const JOURNEY_STEPS = [
-  "Fibre",
-  "Artisan",
-  "Fabric",
-  "Design",
-  "Tailor",
-  "Garment",
-  "You",
+  { label: "Fibre", image: "/assets/ctn.jpg", caption: "Raw cotton, straight from the land." },
+  { label: "Artisan", image: "/assets/chakra.jpg", caption: "Hands at the charkha, spinning yarn." },
+  { label: "Fabric", image: "/assets/wev.jpg", caption: "Yarn becomes cloth on the pit loom." },
+  { label: "Design", image: "/assets/fabric.jpg", caption: "Cloth meets pattern — shape begins." },
+  { label: "Tailor", image: "/assets/clt.jpg", caption: "Measuring, cutting, stitching, finishing." },
+  { label: "Garment", image: "/assets/khadi.jpg", caption: "A finished Sum piece, ready to live in." },
+  { label: "You", image: "/assets/han.jpg", caption: "It becomes yours when you wear it your way." },
 ];
 
 export default function OurStoryClient() {
   const containerRef = useRef(null);
+  const [journeyIdx, setJourneyIdx] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setJourneyIdx((i) => (i + 1) % JOURNEY_STEPS.length);
+    }, 2400);
+    return () => clearInterval(id);
+  }, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -746,6 +754,64 @@ export default function OurStoryClient() {
             <p style={{ margin: "4px 0" }}>From us to you.</p>
           </div>
         </div>
+
+        <div
+          className="os-people-strip"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gap: 12,
+            marginTop: 36,
+          }}
+        >
+          {[
+            { src: "/assets/chakra.jpg", tag: "Spinner" },
+            { src: "/assets/wev.jpg", tag: "Weaver" },
+            { src: "/assets/clt.jpg", tag: "Tailor" },
+            { src: "/assets/khadi.jpg", tag: "Wearer" },
+          ].map((img) => (
+            <div
+              key={img.tag}
+              className="os-image-box"
+              style={{
+                position: "relative",
+                borderRadius: 12,
+                overflow: "hidden",
+                border: "1px solid rgba(44, 32, 22, 0.14)",
+                aspectRatio: "3/4",
+              }}
+            >
+              <img
+                src={img.src}
+                alt={img.tag}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  display: "block",
+                }}
+              />
+              <div
+                style={{
+                  position: "absolute",
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  padding: "20px 12px 10px",
+                  background:
+                    "linear-gradient(to top, rgba(26,20,14,0.72), transparent)",
+                  color: "#EDE8DC",
+                  fontSize: "0.72rem",
+                  fontWeight: 800,
+                  letterSpacing: "0.14em",
+                  textTransform: "uppercase",
+                }}
+              >
+                {img.tag}
+              </div>
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* ─── THE ARTISANS ─── */}
@@ -863,7 +929,7 @@ export default function OurStoryClient() {
       <section
         className="os-anim-block"
         style={{
-          maxWidth: 980,
+          maxWidth: 1140,
           margin: "0 auto 100px",
           padding: "0 clamp(24px, 4vw, 48px)",
           position: "relative",
@@ -872,91 +938,166 @@ export default function OurStoryClient() {
           paddingTop: 56,
         }}
       >
-        <div className="os-block-badge">
-          <IndianArchBadge style={{ marginBottom: "14px" }}>
-            The Founder
-          </IndianArchBadge>
-        </div>
         <div
-          className="os-text-item"
+          className="os-editorial-grid"
           style={{
-            fontFamily: "serif",
-            fontSize: "1.2rem",
-            fontWeight: 700,
-            color: "#1a140e",
-            margin: "0 0 4px",
+            display: "grid",
+            gridTemplateColumns: "0.85fr 1.15fr",
+            gap: "clamp(32px, 5vw, 56px)",
+            alignItems: "center",
           }}
         >
-          Aditi Singh
-        </div>
-        <div
-          className="os-text-item"
-          style={{
-            fontSize: "0.95rem",
-            color: "#660608",
-            letterSpacing: "0.08em",
-            textTransform: "uppercase",
-            fontWeight: 700,
-            margin: "0 0 24px",
-          }}
-        >
-          Founder, Sum Clothico
-        </div>
-        <h2
-          className="os-block-title"
-          style={{
-            fontFamily: "serif",
-            fontSize: "clamp(1.8rem, 3vw, 2.4rem)",
-            color: "#1a140e",
-            margin: "0 0 22px",
-            lineHeight: 1.25,
-          }}
-        >
-          <AnimatedWords text="She asks what the cloth could become." />
-        </h2>
-        <div
-          style={{ fontSize: "1.06rem", lineHeight: 1.85, color: "#3f3329" }}
-        >
-          <p className="os-text-item" style={{ margin: "0 0 14px" }}>
-            Years spent in marketing, brand building and understanding how
-            people choose eventually turned into building a brand of her own.
-          </p>
-          <p className="os-text-item" style={{ margin: "0 0 18px" }}>
-            Started in Rewa, Sum grew from a very personal question:
-          </p>
-          <p
-            className="os-text-item"
-            style={{
-              margin: "0 0 18px",
-              fontWeight: 700,
-              color: "#1a140e",
-              fontFamily: "serif",
-              fontSize: "1.15rem",
-            }}
-          >
-            Could everyday clothing feel more like the women actually wearing
-            it?
-          </p>
-          <p className="os-text-item" style={{ margin: "0 0 28px" }}>
-            And the search began for better cloth, easier silhouettes and a
-            different way of making.
-          </p>
-          <blockquote
-            className="os-text-item"
-            style={{
-              borderLeft: "3px solid #660608",
-              paddingLeft: 20,
-              margin: 0,
-              fontStyle: "italic",
-              fontFamily: "serif",
-              fontSize: "1.25rem",
-              color: "#660608",
-              lineHeight: 1.5,
-            }}
-          >
-            “I didn&apos;t want to make more clothes. I wanted to make clothes
-            we&apos;d actually want to live in.”
-          </blockquote>
+          <div className="os-founder-visual" style={{ position: "relative" }}>
+            <div
+              className="os-image-box"
+              style={{
+                position: "relative",
+                borderRadius: 18,
+                overflow: "hidden",
+                border: "1px solid rgba(44, 32, 22, 0.16)",
+                boxShadow: "0 22px 48px -18px rgba(44, 32, 22, 0.22)",
+                aspectRatio: "4/5",
+              }}
+            >
+              <img
+                src="/assets/751.jpg"
+                alt="Aditi Singh — founder, Sum Clothico"
+                className="os-image-hover"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  display: "block",
+                }}
+              />
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  background:
+                    "linear-gradient(to top, rgba(26,20,14,0.55) 0%, transparent 50%)",
+                }}
+              />
+              <div
+                style={{
+                  position: "absolute",
+                  left: 18,
+                  bottom: 16,
+                  color: "#EDE8DC",
+                  fontFamily: "serif",
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: "0.68rem",
+                    letterSpacing: "0.22em",
+                    textTransform: "uppercase",
+                    fontWeight: 800,
+                    color: "#D4C4A8",
+                    marginBottom: 4,
+                  }}
+                >
+                  Rewa, Madhya Pradesh
+                </div>
+                <div style={{ fontSize: "1rem", fontWeight: 700 }}>
+                  Aditi Singh
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div className="os-block-badge">
+              <IndianArchBadge style={{ marginBottom: "14px" }}>
+                The Founder
+              </IndianArchBadge>
+            </div>
+            <div
+              className="os-text-item"
+              style={{
+                fontFamily: "serif",
+                fontSize: "1.2rem",
+                fontWeight: 700,
+                color: "#1a140e",
+                margin: "0 0 4px",
+              }}
+            >
+              Aditi Singh
+            </div>
+            <div
+              className="os-text-item"
+              style={{
+                fontSize: "0.95rem",
+                color: "#660608",
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                fontWeight: 700,
+                margin: "0 0 24px",
+              }}
+            >
+              Founder, Sum Clothico
+            </div>
+            <h2
+              className="os-block-title"
+              style={{
+                fontFamily: "serif",
+                fontSize: "clamp(1.8rem, 3vw, 2.4rem)",
+                color: "#1a140e",
+                margin: "0 0 22px",
+                lineHeight: 1.25,
+              }}
+            >
+              <AnimatedWords text="She asks what the cloth could become." />
+            </h2>
+            <div
+              style={{
+                fontSize: "1.06rem",
+                lineHeight: 1.85,
+                color: "#3f3329",
+              }}
+            >
+              <p className="os-text-item" style={{ margin: "0 0 14px" }}>
+                Years spent in marketing, brand building and understanding how
+                people choose eventually turned into building a brand of her
+                own.
+              </p>
+              <p className="os-text-item" style={{ margin: "0 0 18px" }}>
+                Started in Rewa, Sum grew from a very personal question:
+              </p>
+              <p
+                className="os-text-item"
+                style={{
+                  margin: "0 0 18px",
+                  fontWeight: 700,
+                  color: "#1a140e",
+                  fontFamily: "serif",
+                  fontSize: "1.15rem",
+                }}
+              >
+                Could everyday clothing feel more like the women actually
+                wearing it?
+              </p>
+              <p className="os-text-item" style={{ margin: "0 0 28px" }}>
+                And the search began for better cloth, easier silhouettes and a
+                different way of making.
+              </p>
+              <blockquote
+                className="os-text-item"
+                style={{
+                  borderLeft: "3px solid #660608",
+                  paddingLeft: 20,
+                  margin: 0,
+                  fontStyle: "italic",
+                  fontFamily: "serif",
+                  fontSize: "1.25rem",
+                  color: "#660608",
+                  lineHeight: 1.5,
+                }}
+              >
+                “I didn&apos;t want to make more clothes. I wanted to make
+                clothes we&apos;d actually want to live in.”
+              </blockquote>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -1109,6 +1250,40 @@ export default function OurStoryClient() {
             And Then, You
           </IndianArchBadge>
         </div>
+
+        <div
+          className="os-image-box"
+          style={{
+            position: "relative",
+            maxWidth: 520,
+            margin: "0 auto 28px",
+            borderRadius: 16,
+            overflow: "hidden",
+            border: "1px solid rgba(44, 32, 22, 0.14)",
+            aspectRatio: "4/3",
+            boxShadow: "0 18px 40px -14px rgba(44, 32, 22, 0.18)",
+          }}
+        >
+          <img
+            src="/assets/khadi.jpg"
+            alt="A Sum garment worn"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              display: "block",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              background:
+                "linear-gradient(to top, rgba(26,20,14,0.5) 0%, transparent 55%)",
+            }}
+          />
+        </div>
+
         <h2
           className="os-block-title"
           style={{
@@ -1179,33 +1354,113 @@ export default function OurStoryClient() {
           </div>
         </div>
         <div
+          className="os-text-item os-journey-visual"
+          style={{
+            position: "relative",
+            maxWidth: 720,
+            margin: "0 auto 24px",
+            borderRadius: 18,
+            overflow: "hidden",
+            aspectRatio: "16/9",
+            border: "1px solid rgba(44, 32, 22, 0.14)",
+            boxShadow: "0 18px 40px -14px rgba(44, 32, 22, 0.18)",
+            background: "#1a140e",
+          }}
+        >
+          {JOURNEY_STEPS.map((step, i) => (
+            <img
+              key={step.label}
+              src={step.image}
+              alt={step.label}
+              style={{
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                opacity: i === journeyIdx ? 1 : 0,
+                transition: "opacity 0.7s ease",
+              }}
+            />
+          ))}
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              background:
+                "linear-gradient(to top, rgba(26,20,14,0.72) 0%, rgba(26,20,14,0.1) 55%, transparent 100%)",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              left: 24,
+              bottom: 20,
+              right: 24,
+              color: "#EDE8DC",
+            }}
+          >
+            <span
+              style={{
+                fontSize: "0.72rem",
+                letterSpacing: "0.22em",
+                textTransform: "uppercase",
+                fontWeight: 800,
+                color: "#D4C4A8",
+                display: "block",
+                marginBottom: 6,
+              }}
+            >
+              Step {String(journeyIdx + 1).padStart(2, "0")} / {String(JOURNEY_STEPS.length).padStart(2, "0")}
+            </span>
+            <p
+              key={journeyIdx}
+              style={{
+                margin: 0,
+                fontFamily: "serif",
+                fontStyle: "italic",
+                fontSize: "clamp(1rem, 1.6vw, 1.3rem)",
+                lineHeight: 1.4,
+                animation: "osFadeUp 0.6s ease",
+              }}
+            >
+              {JOURNEY_STEPS[journeyIdx].caption}
+            </p>
+          </div>
+        </div>
+        <div
           className="os-text-item os-journey-flow"
           style={{
             display: "flex",
             flexWrap: "wrap",
             justifyContent: "center",
             alignItems: "center",
-            gap: 12,
+            gap: 10,
             margin: "0 0 24px",
           }}
         >
           {JOURNEY_STEPS.map((step, i) => (
-            <React.Fragment key={step}>
-              <span
+            <React.Fragment key={step.label}>
+              <button
+                type="button"
+                onClick={() => setJourneyIdx(i)}
                 style={{
                   padding: "10px 18px",
                   borderRadius: 99,
-                  background: "#EDE8DC",
-                  border: "1.5px solid rgba(102, 6, 8, 0.3)",
+                  background: i === journeyIdx ? "#660608" : "#EDE8DC",
+                  color: i === journeyIdx ? "#EDE8DC" : "#1a140e",
+                  border: "1.5px solid rgba(102, 6, 8, 0.35)",
                   fontFamily: "serif",
                   fontWeight: 700,
-                  color: "#1a140e",
-                  fontSize: "0.98rem",
+                  fontSize: "0.95rem",
                   letterSpacing: "0.04em",
+                  cursor: "pointer",
+                  transition: "background 0.25s ease, color 0.25s ease, transform 0.2s ease",
+                  transform: i === journeyIdx ? "scale(1.05)" : "scale(1)",
                 }}
               >
-                {step}
-              </span>
+                {step.label}
+              </button>
               {i < JOURNEY_STEPS.length - 1 && (
                 <span
                   style={{

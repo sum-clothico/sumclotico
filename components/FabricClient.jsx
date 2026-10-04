@@ -818,11 +818,15 @@ export default function FabricClient() {
           </div>
 
           <div
+            className="fab-steps-grid"
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+              gridTemplateColumns: "repeat(2, 1fr)",
               gap: 24,
               marginBottom: 70,
+              maxWidth: 820,
+              marginLeft: "auto",
+              marginRight: "auto",
             }}
           >
             {/* Step 1 */}
