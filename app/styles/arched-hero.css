@@ -361,3 +361,57 @@
     font-size: 0.74rem;
   }
 }
+
+/* ─── Tablet / laptop (prevent brand/portal overlap) ─── */
+@media (min-width: 901px) and (max-width: 1500px) {
+  .arched-hero {
+    min-height: 100svh;
+    height: auto;
+    padding: 120px 20px 60px;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 32px;
+  }
+  .arched-hero__brand-wrap {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    width: 100%;
+    max-width: 640px;
+    align-items: center;
+    margin: 0 auto;
+  }
+  .arched-hero__brand-left {
+    width: auto;
+    padding: 20px 32px;
+    align-items: center;
+    border-radius: 8px;
+  }
+  .arched-hero__tagline,
+  .arched-hero__desc {
+    text-align: center;
+    padding: 10px 0;
+    max-width: 520px;
+  }
+  .arched-hero__cta-row {
+    justify-content: center;
+    padding-right: 0;
+  }
+  .arched-hero__portal--landscape {
+    width: min(85vw, 720px);
+    height: auto;
+    max-height: 50vh;
+  }
+  .arched-hero__brandline-bottom {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    transform: none;
+    margin-top: 20px;
+    text-align: center;
+  }
+  .arched-hero__bg-right {
+    opacity: 0.08;
+  }
+}

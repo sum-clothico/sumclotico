@@ -217,7 +217,7 @@ const StorySection = () => {
 
       {/* Background */}
       <div className="story-section__bg">
-        <img src="/assets/bgiamge.png" alt="Landscape Background" />
+        <img src="/assets/751.jpg" alt="Landscape Background" />
       </div>
     </section>
   );

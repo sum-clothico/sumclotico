@@ -53,7 +53,7 @@ export default function ArchedHero() {
       <div className="arched-hero__noise" />
 
       {/* Right-aligned Background Image (Watermark illustration) */}
-      <img src="/assets/chakra.jpg" alt="" className="arched-hero__bg-right" />
+      <img src="/assets/751.jpg" alt="" className="arched-hero__bg-right" />
 
       {/* Brand Name — Left Side (Restored earlier design) */}
       <div className="arched-hero__brand-wrap">

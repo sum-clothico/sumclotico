@@ -225,10 +225,10 @@
 
 .story-section__subline {
   position: absolute;
-  top: clamp(200px, 24vh, 260px);
+  top: clamp(285px, 24vh, 320px);
   left: 50%;
   transform: translateX(-50%);
-  max-width: 640px;
+  max-width: 520px;
   width: 90%;
   text-align: center;
   font-family: "Poppins", sans-serif;
@@ -244,5 +244,20 @@
     top: 120px !important;
     font-size: 0.95rem !important;
     padding: 0 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .story-section__heading {
+    font-size: clamp(1.5rem, 7vw, 2rem) !important;
+    gap: 0.15em !important;
+  }
+  .story-section__subline {
+    top: 110px !important;
+    font-size: 0.88rem !important;
+  }
+  .story-phase-text {
+    font-size: 0.85rem !important;
+    padding: 0 16px !important;
   }
 }
