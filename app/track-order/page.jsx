@@ -36,23 +36,64 @@ function getStageIndex(status) {
 export default function TrackOrderPage() {
   const { orders = [], requestReturn } = useStore();
   const [searchTerm, setSearchTerm] = useState("");
-  const [activeOrder, setActiveOrder] = useState(orders[0] || null);
+  const [activeOrder, setActiveOrder] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [searchError, setSearchError] = useState("");
   const [returnModalOpen, setReturnModalOpen] = useState(false);
   const [returnReason, setReturnReason] = useState("Size fit issue");
   const [returnFeedback, setReturnFeedback] = useState("");
 
-  const handleSearch = (e) => {
-    e.preventDefault();
+  const handleSearch = async (e) => {
+    if (e) e.preventDefault();
     if (!searchTerm.trim()) return;
 
+    setIsLoading(true);
+    setSearchError("");
     const term = searchTerm.trim().toLowerCase();
-    const found = orders.find(
+
+    // 1. Check in client store
+    let found = orders.find(
       (o) =>
         o.orderNumber?.toLowerCase() === term ||
         o.orderNumber?.toLowerCase() === `sum-${term}` ||
         o.customer?.email?.toLowerCase() === term ||
         o.trackingNumber?.toLowerCase() === term,
     );
+
+    // 2. Check in localStorage directly
+    if (!found) {
+      try {
+        const local = localStorage.getItem("sum_orders");
+        if (local) {
+          const parsed = JSON.parse(local);
+          found = (Array.isArray(parsed) ? parsed : []).find(
+            (o) =>
+              o.orderNumber?.toLowerCase() === term ||
+              o.orderNumber?.toLowerCase() === `sum-${term}` ||
+              o.customer?.email?.toLowerCase() === term ||
+              o.trackingNumber?.toLowerCase() === term,
+          );
+        }
+      } catch {}
+    }
+
+    // 3. If still not found, fetch from backend API
+    if (!found) {
+      try {
+        const orderQuery = term.startsWith("sum-") ? term.toUpperCase() : `SUM-${term.toUpperCase()}`;
+        const res = await fetch(`/api/orders/${encodeURIComponent(orderQuery)}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.success && data.order) {
+            found = data.order;
+          }
+        }
+      } catch (err) {
+        console.warn("Track order API lookup error:", err);
+      }
+    }
+
+    setIsLoading(false);
 
     trackEvent("track_order_search", {
       search_term: searchTerm,
@@ -62,9 +103,11 @@ export default function TrackOrderPage() {
 
     if (found) {
       setActiveOrder(found);
+      setSearchError("");
     } else {
-      alert(
-        `No order found matching "${searchTerm}". Please check your order reference (e.g. SUM-98214) or email.`,
+      setActiveOrder(null);
+      setSearchError(
+        `No shipment found matching "${searchTerm}". Please verify your Order Reference (e.g. SUM-28211) or email address.`
       );
     }
   };
@@ -94,14 +137,86 @@ export default function TrackOrderPage() {
   return (
     <>
       <Navbar />
-      <div
-        style={{
-          background: "#fbfbfc",
-          minHeight: "100vh",
-          padding: "140px 24px 80px",
-          color: "#111827",
-        }}
-      >
+      <style>{`
+        .track-order-wrapper {
+          background: #fbfbfc;
+          min-height: 100vh;
+          padding: 130px 24px 80px;
+          color: #111827;
+        }
+        .track-card {
+          background: #ffffff;
+          border-radius: 16px;
+          padding: 32px;
+          border: 1px solid #e5e7eb;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+        }
+        .track-stage-node {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          z-index: 2;
+          width: 20%;
+          padding: 0 2px;
+        }
+        .track-stage-circle {
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 700;
+          font-size: 14px;
+          margin-bottom: 8px;
+        }
+        .track-stage-label {
+          font-size: 12px;
+          line-height: 1.25;
+          word-break: break-word;
+          text-align: center;
+        }
+        .track-actions-wrap {
+          display: flex;
+          gap: 10px;
+          align-items: center;
+        }
+        @media (max-width: 640px) {
+          .track-order-wrapper {
+            padding: 95px 14px 60px !important;
+          }
+          .track-card {
+            padding: 20px 14px !important;
+            border-radius: 14px !important;
+          }
+          .track-stage-circle {
+            width: 28px !important;
+            height: 28px !important;
+            font-size: 11px !important;
+            margin-bottom: 6px !important;
+          }
+          .track-stage-label {
+            font-size: 9.5px !important;
+            letter-spacing: -0.2px !important;
+            font-weight: 700 !important;
+          }
+          .track-actions-wrap {
+            width: 100% !important;
+            flex-direction: row !important;
+          }
+          .track-actions-wrap > * {
+            flex: 1 !important;
+            justify-content: center !important;
+            text-align: center !important;
+            padding: 10px 10px !important;
+            font-size: 12px !important;
+            min-width: 0 !important;
+          }
+        }
+      `}</style>
+
+      <div className="track-order-wrapper">
         <div style={{ maxWidth: 840, margin: "0 auto" }}>
           {/* Header */}
           <div style={{ textAlign: "center", marginBottom: 36 }}>
@@ -118,7 +233,7 @@ export default function TrackOrderPage() {
             </span>
             <h1
               style={{
-                fontSize: 32,
+                fontSize: "clamp(1.75rem, 4vw, 2rem)",
                 fontWeight: 800,
                 margin: "6px 0 10px",
                 letterSpacing: "-0.5px",
@@ -126,9 +241,8 @@ export default function TrackOrderPage() {
             >
               Track Your Order & Delivery
             </h1>
-            <p style={{ color: "#6b7280", fontSize: 15, margin: 0 }}>
-              Enter your Order Reference (e.g. <strong>SUM-98214</strong>) or
-              email address to view real-time shipping milestones.
+            <p style={{ color: "#6b7280", fontSize: 14, margin: 0 }}>
+              Enter your Order Reference (e.g. <strong>SUM-28211</strong>) or email address to view live courier transit milestones.
             </p>
           </div>
 
@@ -137,14 +251,14 @@ export default function TrackOrderPage() {
             onSubmit={handleSearch}
             style={{
               background: "#ffffff",
-              padding: "10px 14px",
+              padding: "8px 12px",
               borderRadius: 12,
               boxShadow: "0 4px 20px rgba(0,0,0,0.06)",
               border: "1px solid #e5e7eb",
               display: "flex",
               alignItems: "center",
-              gap: 12,
-              marginBottom: 36,
+              gap: 8,
+              marginBottom: searchError ? 16 : 36,
               maxWidth: 640,
               marginLeft: "auto",
               marginRight: "auto",
@@ -154,7 +268,7 @@ export default function TrackOrderPage() {
               style={{
                 display: "flex",
                 alignItems: "center",
-                paddingLeft: 6,
+                paddingLeft: 4,
                 color: "#9ca3af",
                 flexShrink: 0,
               }}
@@ -163,7 +277,7 @@ export default function TrackOrderPage() {
             </div>
             <input
               type="text"
-              placeholder="Enter Order # (e.g. SUM-98214) or email"
+              placeholder="Enter Order # or Email"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               style={{
@@ -171,42 +285,54 @@ export default function TrackOrderPage() {
                 minWidth: 0,
                 border: "none",
                 outline: "none",
-                fontSize: 15,
+                fontSize: 14,
                 color: "#111827",
                 background: "transparent",
               }}
             />
             <button
               type="submit"
+              disabled={isLoading}
               style={{
                 background: "#111111",
                 color: "#ffffff",
                 border: "none",
                 borderRadius: 8,
-                padding: "10px 22px",
-                fontSize: 14,
+                padding: "10px 18px",
+                fontSize: 13,
                 fontWeight: 700,
                 cursor: "pointer",
                 flexShrink: 0,
                 whiteSpace: "nowrap",
                 transition: "background 0.2s",
+                opacity: isLoading ? 0.7 : 1,
               }}
             >
-              Track Order
+              {isLoading ? "Searching..." : "Track Order"}
             </button>
           </form>
 
-          {/* Active Order Tracker Card */}
-          {activeOrder ? (
+          {searchError && (
             <div
               style={{
-                background: "#ffffff",
-                borderRadius: 16,
-                padding: "32px",
-                border: "1px solid #e5e7eb",
-                boxShadow: "0 10px 30px rgba(0,0,0,0.04)",
+                background: "#fef2f2",
+                border: "1px solid #fee2e2",
+                color: "#dc2626",
+                padding: "12px 16px",
+                borderRadius: 10,
+                fontSize: 13,
+                maxWidth: 640,
+                margin: "0 auto 30px",
+                textAlign: "center",
               }}
             >
+              {searchError}
+            </div>
+          )}
+
+          {/* Active Order Tracker Card */}
+          {activeOrder ? (
+            <div className="track-card">
               {/* Top Order Metadata Banner */}
               <div
                 style={{
@@ -354,29 +480,14 @@ export default function TrackOrderPage() {
                     return (
                       <div
                         key={stage.key}
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "center",
-                          textAlign: "center",
-                          zIndex: 2,
-                          width: "18%",
-                        }}
+                        className="track-stage-node"
                       >
                         <div
+                          className="track-stage-circle"
                           style={{
-                            width: 36,
-                            height: 36,
-                            borderRadius: "50%",
                             background: isPassed ? "#15803d" : "#ffffff",
                             border: `2px solid ${isPassed ? "#15803d" : "#d1d5db"}`,
                             color: isPassed ? "#ffffff" : "#6b7280",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            fontWeight: 700,
-                            fontSize: 14,
-                            marginBottom: 8,
                             boxShadow: isCurrent
                               ? "0 0 0 4px rgba(21, 128, 61, 0.2)"
                               : "none",
@@ -385,8 +496,8 @@ export default function TrackOrderPage() {
                           {isPassed ? "✓" : idx + 1}
                         </div>
                         <div
+                          className="track-stage-label"
                           style={{
-                            fontSize: 13,
                             fontWeight: isCurrent ? 800 : 600,
                             color: isPassed ? "#111827" : "#9ca3af",
                           }}
@@ -520,7 +631,7 @@ export default function TrackOrderPage() {
                   </div>
                 </div>
 
-                <div style={{ display: "flex", gap: 10 }}>
+                <div className="track-actions-wrap">
                   <button
                     onClick={() => setReturnModalOpen(true)}
                     style={{
@@ -532,8 +643,9 @@ export default function TrackOrderPage() {
                       fontSize: 13,
                       fontWeight: 600,
                       cursor: "pointer",
-                      display: "flex",
+                      display: "inline-flex",
                       alignItems: "center",
+                      justifyContent: "center",
                       gap: 6,
                     }}
                   >
@@ -542,7 +654,7 @@ export default function TrackOrderPage() {
                   </button>
 
                   <Link
-                    href="/collection"
+                    href="/shop"
                     style={{
                       background: "#111111",
                       color: "#ffffff",
@@ -553,6 +665,7 @@ export default function TrackOrderPage() {
                       textDecoration: "none",
                       display: "inline-flex",
                       alignItems: "center",
+                      justifyContent: "center",
                       gap: 6,
                     }}
                   >
@@ -562,8 +675,67 @@ export default function TrackOrderPage() {
               </div>
             </div>
           ) : (
-            <div style={{ textAlign: "center", padding: "60px 20px" }}>
-              <p>No order loaded. Please enter your order reference above.</p>
+            <div
+              style={{
+                background: "#ffffff",
+                borderRadius: 16,
+                padding: "48px 24px",
+                border: "1px solid #e5e7eb",
+                boxShadow: "0 10px 30px rgba(0,0,0,0.04)",
+                textAlign: "center",
+              }}
+            >
+              <div
+                style={{
+                  width: 56,
+                  height: 56,
+                  borderRadius: "50%",
+                  background: "#fdf3eb",
+                  color: "#f35c27",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  margin: "0 auto 16px",
+                }}
+              >
+                <FiPackage size={26} />
+              </div>
+              <h3 style={{ fontSize: 18, fontWeight: 800, margin: "0 0 8px", color: "#111827" }}>
+                Ready to Track Your Handcrafted Khadi Shipment
+              </h3>
+              <p style={{ color: "#6b7280", fontSize: 14, maxWidth: 460, margin: "0 auto 24px", lineHeight: 1.6 }}>
+                Enter your Order Reference from your order confirmation (e.g. <strong>SUM-28211</strong>) or your registered checkout email address to view live courier transit milestones.
+              </p>
+              <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+                <Link
+                  href="/shop"
+                  style={{
+                    background: "#111111",
+                    color: "#ffffff",
+                    padding: "10px 20px",
+                    borderRadius: 8,
+                    fontSize: 13,
+                    fontWeight: 700,
+                    textDecoration: "none",
+                  }}
+                >
+                  Explore Collection
+                </Link>
+                <Link
+                  href="/contact"
+                  style={{
+                    background: "#f3f4f6",
+                    color: "#374151",
+                    padding: "10px 20px",
+                    borderRadius: 8,
+                    fontSize: 13,
+                    fontWeight: 700,
+                    textDecoration: "none",
+                  }}
+                >
+                  Contact Support
+                </Link>
+              </div>
             </div>
           )}
         </div>

@@ -381,43 +381,62 @@ export default function JournalPage() {
           padding: clamp(28px, 5vw, 44px);
           position: relative;
           border: 1px solid rgba(44, 32, 22, 0.15);
+        .side-pattern-decor {
+          width: 24px;
+          background-size: 24px auto;
+          opacity: 0.12;
+        }
+        @media (max-width: 768px) {
+          .side-pattern-decor {
+            width: 16px !important;
+            background-size: 16px auto !important;
+            opacity: 0.1 !important;
+          }
+          .journal-page {
+            padding: 95px 22px 60px !important;
+          }
+          .journal-container {
+            padding: 0 !important;
+          }
         }
       `}</style>
 
       <div className="journal-page">
-        {/* ─── LEFT SIDE REPEATING PATTERN IMAGE (bgele2.png) ─── */}
+        {/* ─── LEFT SIDE REPEATING PATTERN IMAGE (bgele2.png, SLIM & LOW OPACITY) ─── */}
         <div
+          className="side-pattern-decor"
           style={{
             position: "absolute",
             left: 0,
             top: 0,
             bottom: 0,
-            width: "48px",
+            width: "24px",
             backgroundImage: 'url("/assets/bgele2.png")',
             backgroundRepeat: "repeat-y",
             backgroundPosition: "left top",
-            backgroundSize: "48px auto",
-            opacity: 0.28,
+            backgroundSize: "24px auto",
+            opacity: 0.12,
             pointerEvents: "none",
             zIndex: 1,
           }}
           aria-hidden="true"
         />
 
-        {/* ─── RIGHT SIDE REPEATING PATTERN IMAGE (bgele2.png, MIRRORED) ─── */}
+        {/* ─── RIGHT SIDE REPEATING PATTERN IMAGE (bgele2.png, MIRRORED, SLIM & LOW OPACITY) ─── */}
         <div
+          className="side-pattern-decor"
           style={{
             position: "absolute",
             right: 0,
             top: 0,
             bottom: 0,
-            width: "48px",
+            width: "24px",
             backgroundImage: 'url("/assets/bgele2.png")',
             backgroundRepeat: "repeat-y",
             backgroundPosition: "left top",
-            backgroundSize: "48px auto",
+            backgroundSize: "24px auto",
             transform: "scaleX(-1)",
-            opacity: 0.28,
+            opacity: 0.12,
             pointerEvents: "none",
             zIndex: 1,
           }}

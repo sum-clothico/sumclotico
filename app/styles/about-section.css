@@ -4,8 +4,6 @@
   height: 100vh;
   min-height: 640px;
   display: flex;
-  flex-direction: column;
-  gap: 28px;
   align-items: center;
   justify-content: center;
   overflow: hidden;
@@ -14,41 +12,32 @@
   padding: 24px 20px;
 }
 
-/* ─── Textured BG ─── */
+/* ─── Textured BG: 751.jpg low opacity ─── */
 .about-section__bg {
   position: absolute;
   inset: 0;
   background-image: url("/assets/751.jpg");
   background-size: cover;
   background-position: center;
-  opacity: 0.35;
+  opacity: 0.55;
+  mix-blend-mode: multiply;
   z-index: 0;
+  pointer-events: none;
 }
 
-.about-section__bg::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(237, 232, 220, 0.55) 0%,
-    rgba(237, 232, 220, 0.75) 100%
-  );
-}
-
-/* ─── Card wrapper — earthy, readable ─── */
+/* ─── Card wrapper — earthy, readable, centered ─── */
 .about-section__card {
-  position: relative;
-  z-index: 1;
+  position: absolute;
+  z-index: 2;
   width: min(560px, 90vw);
-  padding: 42px 40px 36px;
-  background-color: var(--bg-cream, #f5f0e8);
-  border: 1px solid rgba(44, 32, 22, 0.12);
+  padding: 44px 40px 38px;
+  background-color: #faf6f0;
   border-radius: 8px;
   box-sizing: border-box;
   box-shadow:
-    0 2px 6px rgba(44, 32, 22, 0.06),
-    0 12px 40px rgba(44, 32, 22, 0.08);
+    0 2px 6px rgba(44, 32, 22, 0.05),
+    0 16px 48px rgba(44, 32, 22, 0.09);
+  transition: transform 0.3s ease;
 }
 
 /* ─── Inner content ─── */
@@ -56,7 +45,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.2rem;
+  gap: 1.15rem;
   text-align: center;
 }
 
@@ -64,8 +53,7 @@
 .about-section__logo {
   width: 90px;
   height: auto;
-  opacity: 0.85;
-  /* Don't invert — logo should show on light beige */
+  opacity: 0.88;
 }
 
 /* ─── Divider ─── */
@@ -73,60 +61,64 @@
   width: 48px;
   height: 1px;
   background-color: var(--color-earth, #8b6f47);
-  opacity: 0.5;
+  opacity: 0.45;
   margin: 0 auto;
 }
 
-/* ─── Text lines ─── */
+/* ─── Text lines — Harmonized Typography ─── */
 .about-section__lines {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.45rem;
 }
 
 .about-line {
   font-family: "Epilogue", sans-serif;
-  font-size: clamp(1.1rem, 2.5vw, 1.6rem);
-  line-height: 1.5;
-  /* Dark earthy brown — high contrast on light card */
-  color: var(--color-dark, #2c2016);
+  font-size: clamp(1.2rem, 2.2vw, 1.55rem);
+  line-height: 1.45;
+  color: #1f1610;
   font-weight: 600;
-  letter-spacing: -0.3px;
+  letter-spacing: -0.02em;
   opacity: 0;
   margin: 0;
 }
 
-.about-line:nth-child(2) {
-  font-style: italic;
-  font-weight: 400;
-}
-
+/* Ethos statement line */
 .about-line:last-child {
   font-family: "Poppins", sans-serif;
-  font-size: clamp(0.8rem, 1.2vw, 0.95rem);
-  font-weight: 400;
+  font-size: clamp(0.75rem, 1.1vw, 0.82rem);
+  font-weight: 700;
   font-style: normal;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--color-earth, #8b6f47);
+  color: #8b6f47;
   opacity: 0;
+  margin-top: 8px;
 }
 
 /* ─── Sub-label ─── */
 .about-section__sub {
   font-family: "Poppins", sans-serif;
-  font-size: 0.85rem;
-  line-height: 1.6;
-  color: var(--color-dark-soft, #3d2e1e);
-  opacity: 0.6;
-  max-width: 340px;
-  margin: 0 auto;
+  font-size: clamp(0.85rem, 1.1vw, 0.92rem);
+  line-height: 1.65;
+  color: #4a3a2a;
+  opacity: 0.85;
+  max-width: 400px;
+  margin: 2px auto 0;
 }
 
-/* ─── Merged CTA ─── */
+/* ─── Merged CTA (Centered overlay) ─── */
 .about-cta {
+  position: absolute;
+  z-index: 3;
+  width: min(600px, 90vw);
   text-align: center;
-  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.about-cta.is-active {
+  pointer-events: auto;
 }
 
 .about-cta__title {
@@ -208,10 +200,12 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   text-decoration: none;
-  transition: background 0.2s ease, color 0.2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
 .about-section__cta-inline:hover {
   background: #660608;
-  color: #EDE8DC;
+  color: #ede8dc;
 }

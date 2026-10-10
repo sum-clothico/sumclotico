@@ -65,48 +65,68 @@ function AstakaCardSvg({ fill = "#EDE8DC" }) {
   );
 }
 
-const BELIEFS = [
-  {
-    num: "01",
-    title: "Room Over Restriction",
-    desc: "Clothes should work with changing bodies.",
-  },
-  {
-    num: "02",
-    title: "Function Over Fuss",
-    desc: "Pockets, movement and details that have a reason to exist.",
-  },
-  {
-    num: "03",
-    title: "Personality Over Template",
-    desc: "The clothes shouldn't wear you.",
-  },
-  {
-    num: "04",
-    title: "Repeat Over Replace",
-    desc: "The best piece is the one you keep reaching for.",
-  },
+const BELIEF_PAIRS = [
+  { left: "Room", right: "Restriction" },
+  { left: "Function", right: "Fuss" },
+  { left: "Personality", right: "Template" },
+  { left: "Repeat", right: "Replace" },
 ];
 
-const JOURNEY_STEPS = [
-  { label: "Fibre", image: "/assets/ctn.jpg", caption: "Raw cotton, straight from the land." },
-  { label: "Artisan", image: "/assets/chakra.jpg", caption: "Hands at the charkha, spinning yarn." },
-  { label: "Fabric", image: "/assets/wev.jpg", caption: "Yarn becomes cloth on the pit loom." },
-  { label: "Design", image: "/assets/fabric.jpg", caption: "Cloth meets pattern — shape begins." },
-  { label: "Tailor", image: "/assets/clt.jpg", caption: "Measuring, cutting, stitching, finishing." },
-  { label: "Garment", image: "/assets/khadi.jpg", caption: "A finished Sum piece, ready to live in." },
-  { label: "You", image: "/assets/han.jpg", caption: "It becomes yours when you wear it your way." },
+const JOURNEY = [
+  {
+    label: "SPUN",
+    image: "/assets/homepage/14887305-5caf-4e77-b3fa-c79443ced34b.png",
+    caption: "Yarn by hand on the charkha.",
+  },
+  {
+    label: "WOVEN",
+    image: "/assets/khadi.jpg",
+    caption: "Pit loom. Human rhythm.",
+  },
+  {
+    label: "SOURCED",
+    image: "/assets/homepage/IMG_3721.JPG",
+    caption: "Cloth chosen with care.",
+  },
+  {
+    label: "DESIGNED",
+    image: "/assets/homepage/IMG_5069%20(1).JPG",
+    caption: "Easy silhouettes, honest cuts.",
+  },
+  {
+    label: "CUT",
+    image: "/assets/homepage/c6aa1e50-2390-4fe4-b79e-fcf044fe17ca.jpg",
+    caption: "Measured and shaped by hand.",
+  },
+  {
+    label: "STITCHED",
+    image: "/assets/homepage/IMG_7669.JPG",
+    caption: "Women tailors, piece by piece.",
+  },
+  {
+    label: "WORN",
+    image: "/assets/homepage/IMG_1046.JPG",
+    caption: "Then it becomes yours.",
+  },
 ];
 
 export default function OurStoryClient() {
   const containerRef = useRef(null);
   const [journeyIdx, setJourneyIdx] = useState(0);
+  const [beliefIdx, setBeliefIdx] = useState(0);
 
   useEffect(() => {
     const id = setInterval(() => {
-      setJourneyIdx((i) => (i + 1) % JOURNEY_STEPS.length);
+      setJourneyIdx((i) => (i + 1) % JOURNEY.length);
     }, 2400);
     return () => clearInterval(id);
+  }, []);
+
+  useEffect(() => {
+    const bId = setInterval(() => {
+      setBeliefIdx((i) => (i + 1) % BELIEF_PAIRS.length);
+    }, 2400);
+    return () => clearInterval(bId);
   }, []);
 
   useEffect(() => {
@@ -273,37 +293,41 @@ export default function OurStoryClient() {
     >
       <div className="os-noise" />
 
+      {/* ─── LEFT SIDE REPEATING PATTERN IMAGE (bgele2.png, SLIM & LOW OPACITY) ─── */}
       <div
+        className="side-pattern-decor"
         style={{
           position: "absolute",
           left: 0,
           top: 0,
           bottom: 0,
-          width: "48px",
+          width: "24px",
           backgroundImage: 'url("/assets/bgele2.png")',
           backgroundRepeat: "repeat-y",
           backgroundPosition: "left top",
-          backgroundSize: "48px auto",
-          opacity: 0.28,
+          backgroundSize: "24px auto",
+          opacity: 0.12,
           pointerEvents: "none",
           zIndex: 1,
         }}
         aria-hidden="true"
       />
 
+      {/* ─── RIGHT SIDE REPEATING PATTERN IMAGE (bgele2.png, MIRRORED, SLIM & LOW OPACITY) ─── */}
       <div
+        className="side-pattern-decor"
         style={{
           position: "absolute",
           right: 0,
           top: 0,
           bottom: 0,
-          width: "48px",
+          width: "24px",
           backgroundImage: 'url("/assets/bgele2.png")',
           backgroundRepeat: "repeat-y",
           backgroundPosition: "left top",
-          backgroundSize: "48px auto",
+          backgroundSize: "24px auto",
           transform: "scaleX(-1)",
-          opacity: 0.28,
+          opacity: 0.12,
           pointerEvents: "none",
           zIndex: 1,
         }}
@@ -339,57 +363,30 @@ export default function OurStoryClient() {
             <h1
               className="os-hero-title"
               style={{
-                fontSize: "clamp(2.3rem, 4vw, 3.5rem)",
-                lineHeight: 1.16,
-                fontWeight: 500,
+                fontSize: "clamp(2.1rem, 3.8vw, 3.2rem)",
+                lineHeight: 1.25,
+                fontWeight: 600,
                 fontFamily: "serif",
                 color: "#1a140e",
-                margin: "0 0 24px",
+                margin: "0 0 16px",
               }}
             >
-              <AnimatedWords text="We wanted to make clothes differently. Not dramatically. Just thoughtfully." />
+              <AnimatedWords text="Sum is a sum of people, ideas, skills, places, techniques." />
             </h1>
 
             <div
               style={{
-                fontSize: "1.06rem",
-                lineHeight: 1.85,
-                color: "#4a3c30",
                 marginBottom: "32px",
               }}
             >
               <p
                 className="os-hero-para"
                 style={{
-                  margin: "0 0 18px",
-                  fontStyle: "italic",
-                  fontFamily: "serif",
-                  color: "#660608",
-                  fontSize: "1.05rem",
-                }}
-              >
-                SUM is the coming together of heritage, modernity, functionality
-                and individuality — just as every woman is the sum of many
-                identities, experiences and possibilities.
-              </p>
-              <p
-                className="os-hero-para"
-                style={{
-                  margin: "0 0 6px",
-                  fontWeight: 700,
-                  color: "#1a140e",
-                  fontSize: "1.12rem",
-                }}
-              >
-                Sum is a sum of people, ideas, skills, places, techniques.
-              </p>
-              <p
-                className="os-hero-para"
-                style={{
                   margin: 0,
                   fontWeight: 700,
+                  fontFamily: "serif",
                   color: "#660608",
-                  fontSize: "1.12rem",
+                  fontSize: "clamp(1.25rem, 2.2vw, 1.65rem)",
                 }}
               >
                 And eventually, you.
@@ -465,7 +462,7 @@ export default function OurStoryClient() {
                 }}
               >
                 <img
-                  src="/assets/khadi.jpg"
+                  src="/assets/homepage/WhatsApp Image 2026-10-05 at 2.13.53 PM.jpeg"
                   alt="Sum Clothico Handwoven Textile"
                   className="os-image-hover"
                   style={{
@@ -635,13 +632,14 @@ export default function OurStoryClient() {
       <section
         className="os-anim-block"
         style={{
-          maxWidth: 980,
-          margin: "0 auto 100px",
+          maxWidth: 880,
+          margin: "0 auto 90px",
           padding: "0 clamp(24px, 4vw, 48px)",
           position: "relative",
           zIndex: 2,
           borderTop: "1px solid rgba(44, 32, 22, 0.14)",
           paddingTop: 56,
+          textAlign: "center",
         }}
       >
         <div className="os-block-badge">
@@ -667,6 +665,8 @@ export default function OurStoryClient() {
             fontSize: "1.08rem",
             lineHeight: 1.85,
             color: "#3f3329",
+            maxWidth: 680,
+            margin: "0 auto",
           }}
         >
           <p className="os-text-item" style={{ margin: "0 0 12px" }}>
@@ -695,7 +695,7 @@ export default function OurStoryClient() {
         </div>
       </section>
 
-      {/* ─── THE PEOPLE OF SUM ─── */}
+      {/* ─── THE PEOPLE OF SUM (Highlighted Pattern Background Card) ─── */}
       <section
         className="os-anim-block"
         style={{
@@ -707,51 +707,76 @@ export default function OurStoryClient() {
         }}
       >
         <div
-          style={{ textAlign: "center", maxWidth: 780, margin: "0 auto 36px" }}
+          style={{
+            position: "relative",
+            maxWidth: 880,
+            margin: "0 auto 36px",
+            padding: "44px clamp(20px, 4vw, 40px)",
+            borderRadius: 24,
+            border: "1.5px solid rgba(102, 6, 8, 0.22)",
+            backgroundColor: "#FAF6F0",
+            backgroundImage: 'url("/assets/751.jpg")',
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            boxShadow: "0 18px 45px -12px rgba(44, 32, 22, 0.12)",
+            overflow: "hidden",
+            textAlign: "center",
+          }}
         >
-          <div className="os-block-badge">
-            <IndianArchBadge style={{ marginBottom: "14px" }}>
-              The People of Sum
-            </IndianArchBadge>
-          </div>
-          <h2
-            className="os-block-title"
-            style={{
-              fontFamily: "serif",
-              fontSize: "clamp(1.9rem, 3.2vw, 2.6rem)",
-              color: "#1a140e",
-              margin: "0 0 20px",
-              lineHeight: 1.25,
-            }}
-          >
-            <AnimatedWords text="Before there is a garment, there are people." />
-          </h2>
-          <p
-            className="os-text-item"
-            style={{
-              fontSize: "1.06rem",
-              lineHeight: 1.85,
-              color: "#3f3329",
-              margin: "0 0 20px",
-            }}
-          >
-            A Sum piece passes through human hands at almost every possible
-            stage.
-          </p>
+          {/* Subtle translucent parchment overlay for high contrast text readability */}
           <div
-            className="os-text-item"
             style={{
-              fontSize: "1.05rem",
-              lineHeight: 1.9,
-              color: "#660608",
-              fontFamily: "serif",
-              fontStyle: "italic",
+              position: "absolute",
+              inset: 0,
+              backgroundColor: "rgba(250, 246, 240, 0.92)",
+              pointerEvents: "none",
             }}
-          >
-            <p style={{ margin: "4px 0" }}>From fibre to fabric.</p>
-            <p style={{ margin: "4px 0" }}>From an idea to a pattern.</p>
-            <p style={{ margin: "4px 0" }}>From cutting to stitching.</p>
-            <p style={{ margin: "4px 0" }}>From us to you.</p>
+          />
+          <div style={{ position: "relative", zIndex: 1 }}>
+            <div className="os-block-badge">
+              <IndianArchBadge style={{ marginBottom: "14px" }}>
+                The People of Sum
+              </IndianArchBadge>
+            </div>
+            <h2
+              className="os-block-title"
+              style={{
+                fontFamily: "serif",
+                fontSize: "clamp(1.9rem, 3.2vw, 2.6rem)",
+                color: "#1a140e",
+                margin: "0 0 20px",
+                lineHeight: 1.25,
+              }}
+            >
+              <AnimatedWords text="Before there is a garment, there are people." />
+            </h2>
+            <p
+              className="os-text-item"
+              style={{
+                fontSize: "1.06rem",
+                lineHeight: 1.85,
+                color: "#3f3329",
+                margin: "0 0 20px",
+              }}
+            >
+              A Sum piece passes through human hands at almost every possible
+              stage.
+            </p>
+            <div
+              className="os-text-item"
+              style={{
+                fontSize: "1.05rem",
+                lineHeight: 1.9,
+                color: "#660608",
+                fontFamily: "serif",
+                fontStyle: "italic",
+              }}
+            >
+              <p style={{ margin: "4px 0" }}>From fibre to fabric.</p>
+              <p style={{ margin: "4px 0" }}>From an idea to a pattern.</p>
+              <p style={{ margin: "4px 0" }}>From cutting to stitching.</p>
+              <p style={{ margin: "4px 0" }}>From us to you.</p>
+            </div>
           </div>
         </div>
 
@@ -765,10 +790,22 @@ export default function OurStoryClient() {
           }}
         >
           {[
-            { src: "/assets/chakra.jpg", tag: "Spinner" },
-            { src: "/assets/wev.jpg", tag: "Weaver" },
-            { src: "/assets/clt.jpg", tag: "Tailor" },
-            { src: "/assets/khadi.jpg", tag: "Wearer" },
+            {
+              src: "/assets/homepage/14887305-5caf-4e77-b3fa-c79443ced34b.png",
+              tag: "Spinner",
+            },
+            {
+              src: "/assets/homepage/IMG_3720.JPG",
+              tag: "Weaver",
+            },
+            {
+              src: "/assets/homepage/c6aa1e50-2390-4fe4-b79e-fcf044fe17ca.jpg",
+              tag: "Tailor",
+            },
+            {
+              src: "/assets/homepage/WhatsApp Image 2026-10-05 at 2.13.58 PM (1).jpeg",
+              tag: "Wearer",
+            },
           ].map((img) => (
             <div
               key={img.tag}
@@ -890,8 +927,8 @@ export default function OurStoryClient() {
               }}
             >
               <img
-                src="/assets/wev.jpg"
-                alt="Weaver on handloom"
+                src="/assets/homepage/IMG_1046.JPG"
+                alt="Spinners and weavers making the cloth"
                 className="os-image-hover"
                 style={{
                   width: "100%",
@@ -910,8 +947,8 @@ export default function OurStoryClient() {
               }}
             >
               <img
-                src="/assets/han.jpg"
-                alt="Spinner at charkha"
+                src="/assets/homepage/WhatsApp Image 2026-10-05 at 2.14.11 PM (4).jpeg"
+                alt="Weaving rhythm and artisan technique"
                 className="os-image-hover"
                 style={{
                   width: "100%",
@@ -960,7 +997,7 @@ export default function OurStoryClient() {
               }}
             >
               <img
-                src="/assets/751.jpg"
+                src="/assets/homepage/WhatsApp Image 2026-03-16 at 2.54.57 PM.jpeg"
                 alt="Aditi Singh — founder, Sum Clothico"
                 className="os-image-hover"
                 style={{
@@ -1123,44 +1160,23 @@ export default function OurStoryClient() {
             alignItems: "center",
           }}
         >
-          <div
-            style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}
-          >
+          <div className="os-image-box" style={{ maxWidth: 440, margin: "0 auto", width: "100%" }}>
             <div
-              className="os-image-box"
               style={{
-                borderRadius: 14,
+                borderRadius: 18,
                 overflow: "hidden",
-                border: "1px solid rgba(44, 32, 22, 0.14)",
+                border: "1px solid rgba(44, 32, 22, 0.16)",
+                boxShadow: "0 20px 45px -14px rgba(44, 32, 22, 0.18)",
+                aspectRatio: "4/5",
               }}
             >
               <img
-                src="/assets/clt.jpg"
-                alt="Woman tailor stitching"
+                src="/assets/homepage/c6aa1e50-2390-4fe4-b79e-fcf044fe17ca.jpg"
+                alt="Master women tailors crafting Sum garments"
                 className="os-image-hover"
                 style={{
                   width: "100%",
-                  aspectRatio: "3/4",
-                  objectFit: "cover",
-                  display: "block",
-                }}
-              />
-            </div>
-            <div
-              className="os-image-box"
-              style={{
-                borderRadius: 14,
-                overflow: "hidden",
-                border: "1px solid rgba(44, 32, 22, 0.14)",
-              }}
-            >
-              <img
-                src="/assets/fabric.jpg"
-                alt="Garment in making"
-                className="os-image-hover"
-                style={{
-                  width: "100%",
-                  aspectRatio: "3/4",
+                  height: "100%",
                   objectFit: "cover",
                   display: "block",
                 }}
@@ -1265,7 +1281,7 @@ export default function OurStoryClient() {
           }}
         >
           <img
-            src="/assets/khadi.jpg"
+            src="/assets/homepage/IMG_1040.JPG"
             alt="A Sum garment worn"
             style={{
               width: "100%",
@@ -1288,51 +1304,17 @@ export default function OurStoryClient() {
           className="os-block-title"
           style={{
             fontFamily: "serif",
-            fontSize: "clamp(1.9rem, 3.2vw, 2.6rem)",
+            fontSize: "clamp(2rem, 3.6vw, 3rem)",
             color: "#1a140e",
-            margin: "0 0 22px",
-            lineHeight: 1.25,
+            margin: 0,
+            lineHeight: 1.3,
+            maxWidth: 760,
+            marginLeft: "auto",
+            marginRight: "auto",
           }}
         >
-          <AnimatedWords text="Because a garment isn't finished when we finish making it." />
+          <AnimatedWords text="Thought by us. Shaped by many hands. Lived in by you." />
         </h2>
-        <div
-          style={{ fontSize: "1.06rem", lineHeight: 1.85, color: "#3f3329" }}
-        >
-          <p className="os-text-item" style={{ margin: "0 0 20px" }}>
-            It becomes yours when you wear it your way.
-          </p>
-          <div
-            className="os-text-item"
-            style={{
-              fontFamily: "serif",
-              color: "#660608",
-              fontSize: "1.08rem",
-              margin: "0 0 24px",
-              lineHeight: 1.9,
-            }}
-          >
-            <p style={{ margin: "2px 0" }}>Style it differently.</p>
-            <p style={{ margin: "2px 0" }}>Live differently in it.</p>
-            <p style={{ margin: "2px 0" }}>Repeat it.</p>
-            <p style={{ margin: "2px 0" }}>Change it.</p>
-          </div>
-          <p className="os-text-item" style={{ margin: "0 0 10px" }}>
-            That&apos;s the final part of the Sum.
-          </p>
-          <p
-            className="os-text-item"
-            style={{
-              margin: 0,
-              fontWeight: 800,
-              color: "#1a140e",
-              fontFamily: "serif",
-              fontSize: "2rem",
-            }}
-          >
-            You.
-          </p>
-        </div>
       </section>
 
       {/* ─── HUMAN-LED JOURNEY ─── */}
@@ -1353,127 +1335,44 @@ export default function OurStoryClient() {
             </IndianArchBadge>
           </div>
         </div>
-        <div
-          className="os-text-item os-journey-visual"
-          style={{
-            position: "relative",
-            maxWidth: 720,
-            margin: "0 auto 24px",
-            borderRadius: 18,
-            overflow: "hidden",
-            aspectRatio: "16/9",
-            border: "1px solid rgba(44, 32, 22, 0.14)",
-            boxShadow: "0 18px 40px -14px rgba(44, 32, 22, 0.18)",
-            background: "#1a140e",
-          }}
-        >
-          {JOURNEY_STEPS.map((step, i) => (
-            <img
-              key={step.label}
-              src={step.image}
-              alt={step.label}
-              style={{
-                position: "absolute",
-                inset: 0,
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                opacity: i === journeyIdx ? 1 : 0,
-                transition: "opacity 0.7s ease",
-              }}
-            />
-          ))}
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              background:
-                "linear-gradient(to top, rgba(26,20,14,0.72) 0%, rgba(26,20,14,0.1) 55%, transparent 100%)",
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              left: 24,
-              bottom: 20,
-              right: 24,
-              color: "#EDE8DC",
-            }}
-          >
-            <span
-              style={{
-                fontSize: "0.72rem",
-                letterSpacing: "0.22em",
-                textTransform: "uppercase",
-                fontWeight: 800,
-                color: "#D4C4A8",
-                display: "block",
-                marginBottom: 6,
-              }}
-            >
-              Step {String(journeyIdx + 1).padStart(2, "0")} / {String(JOURNEY_STEPS.length).padStart(2, "0")}
-            </span>
-            <p
-              key={journeyIdx}
-              style={{
-                margin: 0,
-                fontFamily: "serif",
-                fontStyle: "italic",
-                fontSize: "clamp(1rem, 1.6vw, 1.3rem)",
-                lineHeight: 1.4,
-                animation: "osFadeUp 0.6s ease",
-              }}
-            >
-              {JOURNEY_STEPS[journeyIdx].caption}
-            </p>
+        <div className="mc-journey" style={{ margin: "0 auto 32px" }}>
+          <div className="mc-journey__visual">
+            {JOURNEY.map((step, i) => (
+              <img
+                key={step.label}
+                src={step.image}
+                alt={step.label}
+                style={{ opacity: i === journeyIdx ? 1 : 0 }}
+              />
+            ))}
+            <div className="mc-journey__scrim" />
+            <div className="mc-journey__caption">
+              <span className="mc-journey__step-num">
+                {String(journeyIdx + 1).padStart(2, "0")} / {String(JOURNEY.length).padStart(2, "0")}
+              </span>
+              <p key={journeyIdx}>{JOURNEY[journeyIdx].caption}</p>
+            </div>
           </div>
-        </div>
-        <div
-          className="os-text-item os-journey-flow"
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: 10,
-            margin: "0 0 24px",
-          }}
-        >
-          {JOURNEY_STEPS.map((step, i) => (
-            <React.Fragment key={step.label}>
-              <button
-                type="button"
-                onClick={() => setJourneyIdx(i)}
-                style={{
-                  padding: "10px 18px",
-                  borderRadius: 99,
-                  background: i === journeyIdx ? "#660608" : "#EDE8DC",
-                  color: i === journeyIdx ? "#EDE8DC" : "#1a140e",
-                  border: "1.5px solid rgba(102, 6, 8, 0.35)",
-                  fontFamily: "serif",
-                  fontWeight: 700,
-                  fontSize: "0.95rem",
-                  letterSpacing: "0.04em",
-                  cursor: "pointer",
-                  transition: "background 0.25s ease, color 0.25s ease, transform 0.2s ease",
-                  transform: i === journeyIdx ? "scale(1.05)" : "scale(1)",
-                }}
-              >
-                {step.label}
-              </button>
-              {i < JOURNEY_STEPS.length - 1 && (
-                <span
-                  style={{
-                    color: "#660608",
-                    fontSize: "1.2rem",
-                    fontWeight: 800,
-                  }}
-                >
-                  →
-                </span>
-              )}
-            </React.Fragment>
-          ))}
+          <div className="mc-journey__word-display">
+            <div key={journeyIdx} className="mc-journey__flashing-word">
+              {JOURNEY[journeyIdx].label}
+            </div>
+            <div className="mc-journey__dots">
+              {JOURNEY.map((step, i) => (
+                <button
+                  key={step.label}
+                  type="button"
+                  onClick={() => setJourneyIdx(i)}
+                  className={
+                    "mc-journey__dot" +
+                    (i === journeyIdx ? " mc-journey__dot--active" : "")
+                  }
+                  aria-label={`Step ${i + 1}: ${step.label}`}
+                  title={step.label}
+                />
+              ))}
+            </div>
+          </div>
         </div>
         <p
           className="os-text-item"
@@ -1522,59 +1421,75 @@ export default function OurStoryClient() {
           </h2>
         </div>
 
+        {/* Single line with just the changing words — no buttons */}
         <div
           style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-            gap: 28,
+            position: "relative",
+            maxWidth: 820,
+            margin: "0 auto",
+            padding: "54px 24px",
+            background: "rgba(255, 255, 255, 0.72)",
+            border: "1.5px solid rgba(102, 6, 8, 0.22)",
+            borderRadius: 24,
+            boxShadow: "0 20px 48px -16px rgba(44, 32, 22, 0.12)",
+            textAlign: "center",
           }}
         >
-          {BELIEFS.map((belief) => (
-            <div
-              key={belief.num}
-              className="os-text-item"
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "clamp(12px, 3.5vw, 40px)",
+              flexWrap: "wrap",
+            }}
+          >
+            <span
+              key={`left-${beliefIdx}`}
               style={{
-                borderTop: "2px solid #660608",
-                paddingTop: 18,
-                transition: "transform 0.3s ease",
+                fontFamily: "serif",
+                fontSize: "clamp(2.1rem, 4.8vw, 3.8rem)",
+                fontWeight: 700,
+                color: "#1a140e",
+                letterSpacing: "0.02em",
+                animation: "osFadeUp 0.45s ease",
               }}
             >
-              <span
-                style={{
-                  fontSize: "0.78rem",
-                  fontWeight: 800,
-                  color: "#660608",
-                  letterSpacing: "0.15em",
-                  display: "block",
-                  marginBottom: 8,
-                }}
-              >
-                {belief.num}
-              </span>
-              <h3
-                style={{
-                  fontFamily: "serif",
-                  fontSize: "1.28rem",
-                  color: "#1a140e",
-                  margin: "0 0 10px",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.04em",
-                }}
-              >
-                {belief.title}
-              </h3>
-              <p
-                style={{
-                  fontSize: "0.95rem",
-                  lineHeight: 1.68,
-                  color: "#55483d",
-                  margin: 0,
-                }}
-              >
-                {belief.desc}
-              </p>
-            </div>
-          ))}
+              {BELIEF_PAIRS[beliefIdx].left}
+            </span>
+
+            <span
+              style={{
+                fontFamily: "serif",
+                fontSize: "clamp(1.4rem, 2.8vw, 2.3rem)",
+                fontWeight: 800,
+                fontStyle: "italic",
+                color: "#660608",
+                background: "rgba(102, 6, 8, 0.08)",
+                padding: "8px 22px",
+                borderRadius: 99,
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                border: "1px dashed rgba(102, 6, 8, 0.4)",
+              }}
+            >
+              Over
+            </span>
+
+            <span
+              key={`right-${beliefIdx}`}
+              style={{
+                fontFamily: "serif",
+                fontSize: "clamp(2.1rem, 4.8vw, 3.8rem)",
+                fontWeight: 700,
+                color: "#1a140e",
+                letterSpacing: "0.02em",
+                animation: "osFadeUp 0.45s ease",
+              }}
+            >
+              {BELIEF_PAIRS[beliefIdx].right}
+            </span>
+          </div>
         </div>
       </section>
 
@@ -1605,7 +1520,7 @@ export default function OurStoryClient() {
             lineHeight: 1.22,
           }}
         >
-          <AnimatedWords text="Khadi is where we're starting." />
+          <AnimatedWords text="Khadi is where we started." />
         </h2>
         <h3
           className="os-block-title"
@@ -1655,27 +1570,58 @@ export default function OurStoryClient() {
             One story at a time.
           </p>
         </div>
-        <Link
-          href="/fabric"
-          className="os-text-item"
+        <div
           style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 8,
-            background: "#660608",
-            color: "#EDE8DC",
-            padding: "14px 30px",
-            borderRadius: 99,
-            fontWeight: 800,
-            fontSize: "0.8rem",
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            textDecoration: "none",
-            boxShadow: "0 4px 18px rgba(102, 6, 8, 0.25)",
+            display: "flex",
+            gap: 16,
+            justifyContent: "center",
+            flexWrap: "wrap",
+            marginTop: 8,
           }}
         >
-          Follow the Fabric Journey <FiArrowRight />
-        </Link>
+          <Link
+            href="/fabric"
+            className="os-text-item"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              background: "#660608",
+              color: "#EDE8DC",
+              padding: "14px 30px",
+              borderRadius: 99,
+              fontWeight: 800,
+              fontSize: "0.8rem",
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              textDecoration: "none",
+              boxShadow: "0 4px 18px rgba(102, 6, 8, 0.25)",
+            }}
+          >
+            Follow the Fabric <FiArrowRight />
+          </Link>
+          <Link
+            href="/journal"
+            className="os-text-item"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              background: "transparent",
+              color: "#1a140e",
+              border: "1.5px solid #1a140e",
+              padding: "14px 30px",
+              borderRadius: 99,
+              fontWeight: 800,
+              fontSize: "0.8rem",
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              textDecoration: "none",
+            }}
+          >
+            Read the Journal
+          </Link>
+        </div>
       </section>
 
       {/* ─── VISION ─── */}
@@ -1709,50 +1655,30 @@ export default function OurStoryClient() {
         </h2>
         <div
           style={{
-            fontSize: "1.06rem",
-            lineHeight: 1.85,
+            fontSize: "1.12rem",
+            lineHeight: 1.8,
             color: "#4a3c30",
-            maxWidth: 700,
+            maxWidth: 680,
             margin: "0 auto 36px",
           }}
         >
-          <p className="os-text-item" style={{ marginBottom: 10 }}>
-            We&apos;re slowly building a brand around clothing, textiles, people
-            and stories.
+          <p className="os-text-item" style={{ marginBottom: 18 }}>
+            We&apos;re building a space where textiles, people and everyday
+            clothing come together beyond trends.
           </p>
-          <p className="os-text-item" style={{ marginBottom: 10 }}>
-            We want to discover handwoven textiles from different parts of
-            India.
-          </p>
-          <p className="os-text-item" style={{ marginBottom: 10 }}>
-            Meet the people behind them.
-          </p>
-          <p className="os-text-item" style={{ marginBottom: 10 }}>
-            Bring those textiles into contemporary wardrobes.
-          </p>
-          <p className="os-text-item" style={{ marginBottom: 24 }}>
-            And create a space where the conversation around clothing goes
-            beyond what is trending.
-          </p>
-          <div
+          <p
             className="os-text-item"
             style={{
-              borderTop: "1px solid rgba(44, 32, 22, 0.14)",
-              paddingTop: 24,
-              fontStyle: "italic",
+              margin: "24px 0 0",
               fontFamily: "serif",
-              fontSize: "1.28rem",
-              color: "#1a140e",
+              fontStyle: "italic",
+              fontSize: "1.35rem",
+              color: "#660608",
+              fontWeight: 600,
             }}
           >
-            <p style={{ margin: "4px 0" }}>We&apos;re still figuring it out.</p>
-            <p style={{ margin: "4px 0" }}>
-              But we know how we want it to feel.
-            </p>
-            <p style={{ margin: "8px 0", fontWeight: 700, color: "#660608" }}>
-              Thoughtful. Human. Easy. And entirely Sum.
-            </p>
-          </div>
+            Thoughtful. Human. Sum.
+          </p>
         </div>
 
         <div

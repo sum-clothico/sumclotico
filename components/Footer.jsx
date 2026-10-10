@@ -15,27 +15,29 @@ export default function Footer() {
         borderBottom: "none",
         borderLeft: "none",
         borderRight: "none",
-        padding: "64px 32px 32px",
+        padding: "clamp(40px, 6vw, 64px) clamp(16px, 4vw, 32px) 32px",
         width: "100%",
         maxWidth: "100%",
         margin: 0,
         boxSizing: "border-box",
         position: "relative",
+        overflow: "hidden",
       }}
     >
       {/* ─── Top Brand Wordmark & Tagline ─── */}
-      <div style={{ textAlign: "center", marginBottom: "32px", width: "100%" }}>
-        <div style={{ display: "inline-block", marginBottom: "10px" }}>
+      <div style={{ textAlign: "center", marginBottom: "32px", width: "100%", maxWidth: "100%", overflow: "hidden" }}>
+        <div style={{ display: "inline-block", marginBottom: "10px", maxWidth: "100%" }}>
           <span
             style={{
               fontFamily: "var(--font-epilogue, 'Epilogue', serif)",
               fontWeight: 800,
-              fontSize: "clamp(2.8rem, 8vw, 6.2rem)",
-              letterSpacing: "0.08em",
+              fontSize: "clamp(1.6rem, 7.5vw, 6.2rem)",
+              letterSpacing: "clamp(0.02em, 1.5vw, 0.08em)",
               textTransform: "uppercase",
               color: "#2C2016",
-              lineHeight: 1,
+              lineHeight: 1.1,
               display: "block",
+              maxWidth: "100%",
             }}
           >
             सम् CLOTHICO
@@ -43,8 +45,8 @@ export default function Footer() {
         </div>
         <p
           style={{
-            fontSize: "14px",
-            letterSpacing: "3px",
+            fontSize: "clamp(11px, 2.5vw, 14px)",
+            letterSpacing: "clamp(1.5px, 0.8vw, 3px)",
             fontWeight: 700,
             color: "#660608",
             margin: 0,
@@ -55,16 +57,11 @@ export default function Footer() {
         </p>
       </div>
 
-      {/* Traditional Indian Border Pattern Divider — Stretched 100% Edge-to-Edge */}
+      {/* Traditional Indian Border Pattern Divider */}
       <div
         className="footer-pattern-divider"
         style={{
-          width: "100vw",
-          position: "relative",
-          left: "50%",
-          right: "50%",
-          marginLeft: "-50vw",
-          marginRight: "-50vw",
+          width: "100%",
           height: "26px",
           backgroundImage: 'url("/assets/footerpattern-accent.png")',
           backgroundRepeat: "repeat-x",

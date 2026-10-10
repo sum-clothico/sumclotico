@@ -78,11 +78,17 @@ object {
 }
 
 /* ─── Base Elements ──────────────────────────────────────────────────────────── */
+html,
+body {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
 body {
   background-color: var(--bg-color);
   font-family: "Poppins", sans-serif;
   color: var(--color-dark);
-  overflow-x: hidden;
   scrollbar-width: none;
   -ms-overflow-style: none;
   cursor:

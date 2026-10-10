@@ -467,33 +467,33 @@ const INITIAL_POLICIES = {
   },
   returns: {
     key: "returns",
-    title: "Returns, Exchanges & Refund Policy",
-    subtitle: "7-Day Hassle-Free Exchange & Return Window",
-    lastUpdated: "September 2026",
+    title: "Returns, Exchanges & Store Credit Policy",
+    subtitle: "7-Day Exchange & Store Credit Window",
+    lastUpdated: "October 2026",
     sections: [
       {
         id: "sec-1",
-        title: "1. 7-Day Hassle-Free Returns & Exchanges",
+        title: "1. 7-Day Exchange & Return for Store Credit",
         content:
-          "We want you to love the feel and drape of our handspun khadi. If your garment doesn't fit comfortably or meet expectations, you may request a free size exchange or return within 7 calendar days from the date of package delivery.",
+          "We want you to love the feel and drape of our handspun khadi. If your garment doesn't fit comfortably or meet expectations, you may request a free size exchange or return for store credit within 7 calendar days from the date of package delivery.",
       },
       {
         id: "sec-2",
         title: "2. Eligibility Criteria",
         content:
-          "To qualify for a return or exchange:\n• The garment must be in its original, unworn, unwashed, and undamaged condition.\n• All original brand tags, labels, and craft packaging must be intact.\n• Custom tailored or bespoke length pieces are non-returnable unless defective.",
+          "To qualify for an exchange or store credit return:\n• The garment must be in its original, unworn, unwashed, and undamaged condition.\n• All original brand tags, labels, and craft packaging must be intact.\n• Custom tailored or bespoke length pieces are non-returnable unless defective.",
       },
       {
         id: "sec-3",
-        title: "3. How to Initiate a Return",
+        title: "3. How to Initiate an Exchange or Return",
         content:
-          "1. Visit our Order Tracking Page.\n2. Search for your Order Reference (e.g. SUM-98214).\n3. Click 'Return / Exchange' and select your reason.\n4. Our courier partner will pick up the package within 48 hours.",
+          "1. Visit our Order Tracking Page or reach out to us directly on WhatsApp.\n2. Search for your Order Reference (e.g. SUM-98214).\n3. Click 'Return / Exchange' and select your size replacement or store credit preference.\n4. Our courier partner will arrange package pickup within 48 hours.",
       },
       {
         id: "sec-4",
-        title: "4. Refund Processing",
+        title: "4. Store Credit Processing",
         content:
-          "Once your returned item passes quality inspection at our Kolkata studio, refunds are credited back to the original payment source (UPI / Card / NetBanking) within 5 to 7 business days.",
+          "Because each Sum Clothico piece is handcrafted in limited artisan batches, we do not issue direct monetary refunds to bank accounts or cards. Once your returned garment passes quality inspection at our studio, you will receive 100% store credit in the form of a voucher code valid for 1 year from the date of issue.",
       },
     ],
   },
@@ -703,7 +703,18 @@ export function StoreProvider({ children }) {
       if (savedCategories) setCategories(JSON.parse(savedCategories));
 
       const savedPolicies = localStorage.getItem("sum_policies");
-      if (savedPolicies) setPolicies(JSON.parse(savedPolicies));
+      if (savedPolicies) {
+        try {
+          const parsed = JSON.parse(savedPolicies);
+          if (parsed?.returns?.title?.includes("Refund")) {
+            parsed.returns = INITIAL_POLICIES.returns;
+            localStorage.setItem("sum_policies", JSON.stringify(parsed));
+          }
+          setPolicies(parsed);
+        } catch {
+          setPolicies(INITIAL_POLICIES);
+        }
+      }
 
       const savedCoupons = localStorage.getItem("sum_coupons");
       if (savedCoupons) setCoupons(JSON.parse(savedCoupons));

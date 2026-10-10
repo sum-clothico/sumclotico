@@ -3,8 +3,29 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useStore } from "@/context/StoreContext";
-import { FiShoppingBag, FiCheck, FiX, FiChevronLeft, FiChevronRight, FiShield, FiTruck, FiRefreshCw } from "react-icons/fi";
+import { FiShoppingBag, FiCheck, FiX, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { trackViewItem, trackEvent } from "@/lib/analytics";
+
+const COLOR_HEX_MAP = {
+  "natural khadi": "#EBE5D8",
+  "forest sage": "#556B55",
+  "indigo earth": "#2B3D4D",
+  "terracotta": "#9D5544",
+  "raw cotton": "#F4EFE6",
+  "white": "#FAF8F5",
+  "black": "#222222",
+  "olive": "#556B2F",
+  "rust": "#B7410E",
+  "sage": "#77815C",
+  "beige": "#D4C5B9",
+  "navy": "#1B2A4A",
+};
+
+const getColorHex = (name) => {
+  if (!name) return "#EBE5D8";
+  const key = name.toLowerCase().trim();
+  return COLOR_HEX_MAP[key] || "#D4C5B9";
+};
 
 export default function ProductQuickView() {
   const { quickViewProduct, setQuickViewProduct, addToCart, setIsCartOpen, setIsSizeGuideOpen } = useStore();
@@ -81,7 +102,6 @@ export default function ProductQuickView() {
           maxWidth: 1040,
           width: "94%",
           maxHeight: "92vh",
-          gridTemplateColumns: "1fr 1fr",
           borderRadius: 20,
           overflow: "hidden",
           boxShadow: "0 30px 80px rgba(0, 0, 0, 0.35)",
@@ -117,6 +137,7 @@ export default function ProductQuickView() {
 
         {/* ─── BIG EDITORIAL IMAGE GALLERY ─── */}
         <div
+          className="quickview-gallery"
           style={{
             background: "#FAF6F0",
             display: "flex",
@@ -131,6 +152,7 @@ export default function ProductQuickView() {
         >
           {/* Main Large Showcase Image Stage */}
           <div
+            className="quickview-stage"
             style={{
               position: "relative",
               width: "100%",
@@ -587,31 +609,33 @@ export default function ProductQuickView() {
                 >
                   Color Tone: <strong style={{ color: "#111111" }}>{selectedColor || quickViewProduct.colors[0]}</strong>
                 </label>
-                <div style={{ display: "flex", gap: 10 }}>
+                <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
                   {quickViewProduct.colors.map((color) => {
                     const isSelected = (selectedColor || quickViewProduct.colors[0]) === color;
+                    const bg = getColorHex(color);
                     return (
                       <button
                         key={color}
-                        className={`quickview-size-pill ${isSelected ? "selected" : ""}`}
+                        type="button"
                         onClick={() => {
                           setSelectedColor(color);
                           trackEvent("select_variant_color", { product_id: quickViewProduct.id, color, product_name: quickViewProduct.name });
                         }}
+                        title={color}
+                        aria-label={`Select color ${color}`}
                         style={{
-                          padding: "8px 16px",
-                          fontSize: 13,
-                          fontWeight: 600,
-                          borderRadius: 8,
-                          border: isSelected ? "2px solid #111111" : "1px solid #d1d5db",
-                          background: isSelected ? "#111111" : "#f9fafb",
-                          color: isSelected ? "#ffffff" : "#374151",
+                          width: 32,
+                          height: 32,
+                          borderRadius: "50%",
+                          backgroundColor: bg,
+                          border: isSelected ? "2.5px solid #660608" : "1.5px solid rgba(42,31,20,0.25)",
+                          boxShadow: isSelected ? "0 0 0 2px #EDE8DC, 0 4px 10px rgba(102,6,8,0.25)" : "0 2px 4px rgba(0,0,0,0.06)",
                           cursor: "pointer",
-                          transition: "all 0.15s ease",
+                          padding: 0,
+                          transition: "all 0.2s ease",
+                          transform: isSelected ? "scale(1.12)" : "scale(1)",
                         }}
-                      >
-                        {color}
-                      </button>
+                      />
                     );
                   })}
                 </div>
@@ -736,39 +760,12 @@ export default function ProductQuickView() {
                 fontWeight: 700,
                 color: "#111111",
                 textDecoration: "underline",
-                marginBottom: 16,
+                marginBottom: 6,
                 cursor: "pointer",
               }}
             >
               View Full Product Details &amp; Specifications →
             </Link>
-
-            {/* Assurance Badges */}
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr 1fr",
-                gap: 10,
-                borderTop: "1px solid #f3f4f6",
-                paddingTop: 16,
-                fontSize: 11,
-                color: "#6b7280",
-                textAlign: "center",
-              }}
-            >
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-                <FiTruck size={16} color="#111827" />
-                <span>Free Shipping ₹1,999+</span>
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-                <FiRefreshCw size={16} color="#111827" />
-                <span>7-Day Returns</span>
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-                <FiShield size={16} color="#111827" />
-                <span>Cashfree Encrypted</span>
-              </div>
-            </div>
           </div>
         </div>
       </div>

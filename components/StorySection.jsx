@@ -5,7 +5,7 @@ import "../app/styles/story-section.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const PIN_DURATION = 7000;
+const PIN_DURATION = 1400;
 
 const phases = [
   {
@@ -33,34 +33,7 @@ const StorySection = () => {
 
       const isDesktop =
         typeof window !== "undefined" && window.innerWidth > 900;
-      const PIN = isDesktop ? PIN_DURATION : 2200;
-
-      // Pin the section
-      ScrollTrigger.create({
-        trigger: section,
-        start: "top top",
-        end: `+=${PIN}`,
-        pin: true,
-        pinSpacing: true,
-        refreshPriority: 1,
-      });
-
-      // Frame stroke-draw
-      const framePath = frameRef.current;
-      if (framePath) {
-        const len = framePath.getTotalLength();
-        gsap.set(framePath, { strokeDasharray: len, strokeDashoffset: len });
-        gsap.to(framePath, {
-          strokeDashoffset: 0,
-          ease: "power2.inOut",
-          scrollTrigger: {
-            trigger: section,
-            start: "top 30%",
-            end: "top top",
-            scrub: 1,
-          },
-        });
-      }
+      const PIN = isDesktop ? PIN_DURATION : 1000;
 
       // Heading Word-by-Word Kinetic Reveal
       const headingWords = section.querySelectorAll(".story-heading-word");
@@ -77,54 +50,84 @@ const StorySection = () => {
             ease: "power4.out",
             scrollTrigger: {
               trigger: section,
-              start: "top 70%",
+              start: "top 75%",
             },
           },
         );
       }
 
-      // Single master timeline for all 3 text phases, scrubbed to pin range
+      // Single Unified Master Timeline: Pins section & drives all synchronized animations
       const masterTl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
           start: "top top",
-          end: `+=${PIN_DURATION}`,
+          end: () => `+=${PIN}`,
+          pin: true,
+          pinSpacing: true,
           scrub: 1,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
         },
       });
 
-      // Each phase: fade in (10%) → hold (23%) → fade out (10%) → gap (7%) ≈ 33% each
-      textEls.forEach((el) => {
+      // Frame stroke-draw in early stage of pin
+      const framePath = frameRef.current;
+      if (framePath) {
+        const len = framePath.getTotalLength ? framePath.getTotalLength() : 1100;
+        gsap.set(framePath, { strokeDasharray: len, strokeDashoffset: len });
+        masterTl.to(
+          framePath,
+          {
+            strokeDashoffset: 0,
+            duration: 0.15,
+            ease: "power2.inOut",
+          },
+          0,
+        );
+      }
+
+      // Side cloth animation on scroll (moves smoothly while background stays locked)
+      const clothEl = section.querySelector(".story-section__cloth");
+      if (clothEl) {
+        masterTl.to(
+          clothEl,
+          {
+            xPercent: -70,
+            duration: 1,
+            ease: "none",
+          },
+          0,
+        );
+      }
+
+      // 3 Text Phases timed evenly across the pin duration
+      textEls.forEach((el, idx) => {
+        const startPoint = idx * 0.33;
         masterTl
           .fromTo(
             el,
-            { opacity: 0, y: 40, scale: 0.96 },
-            { opacity: 1, y: 0, scale: 1, duration: 0.12, ease: "power3.out" },
+            { opacity: 0, y: 35, scale: 0.96 },
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              duration: 0.1,
+              ease: "power3.out",
+            },
+            startPoint,
           )
-          .to({}, { duration: 0.15 }) // hold
-          .to(el, {
-            opacity: 0,
-            y: -30,
-            scale: 0.98,
-            duration: 0.08,
-            ease: "power2.in",
-          });
+          .to(
+            el,
+            {
+              opacity: 0,
+              y: -25,
+              scale: 0.98,
+              duration: 0.08,
+              ease: "power2.in",
+            },
+            startPoint + 0.23,
+          );
       });
-
-      // Cloth slide animation
-      const clothEl = section.querySelector(".story-section__cloth");
-      if (clothEl) {
-        gsap.to(clothEl, {
-          xPercent: -80,
-          ease: "none",
-          scrollTrigger: {
-            trigger: section,
-            start: "top top",
-            end: `+=${PIN_DURATION}`,
-            scrub: true,
-          },
-        });
-      }
     }, sectionRef);
 
     return () => ctx.revert();
@@ -144,40 +147,33 @@ const StorySection = () => {
 
   return (
     <section ref={sectionRef} className="story-section" id="story">
-      {/* Heading with Masked Words */}
-      <h2
-        className="story-section__heading"
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "center",
-          gap: "0.26em",
-        }}
-      >
-        {storyHeadingWords.map((word, idx) => (
-          <span
-            key={idx}
-            style={{
-              display: "inline-block",
-              overflow: "hidden",
-              verticalAlign: "top",
-              paddingBottom: "4px",
-            }}
-          >
+      {/* Centered Heading + Subtitle Header Block */}
+      <div className="story-section__header">
+        <h2 className="story-section__heading">
+          {storyHeadingWords.map((word, idx) => (
             <span
-              className="story-heading-word"
+              key={idx}
               style={{
                 display: "inline-block",
-                transformOrigin: "bottom left",
+                overflow: "hidden",
+                verticalAlign: "top",
+                paddingBottom: "4px",
               }}
             >
-              {word}
+              <span
+                className="story-heading-word"
+                style={{
+                  display: "inline-block",
+                  transformOrigin: "bottom left",
+                }}
+              >
+                {word}
+              </span>
             </span>
-          </span>
-        ))}
-      </h2>
-
-      <p className="story-section__subline">{storySubline}</p>
+          ))}
+        </h2>
+        <p className="story-section__subline">{storySubline}</p>
+      </div>
 
       {/* SVG Frame */}
       <svg className="story-section__frame" viewBox="0 0 240 330">
@@ -194,6 +190,14 @@ const StorySection = () => {
           strokeWidth="1.5"
         />
       </svg>
+
+      {/* Static Center Portrait Card */}
+      <div className="story-section__portrait">
+        <img
+          src="/assets/homepage/IMG_1048.JPG"
+          alt="Handcrafted Khadi Garment"
+        />
+      </div>
 
       {/* Phase texts */}
       {phases.map((phase, i) => (
@@ -217,7 +221,7 @@ const StorySection = () => {
 
       {/* Background */}
       <div className="story-section__bg">
-        <img src="/assets/751.jpg" alt="Landscape Background" />
+        <img src="/assets/homepage/IMG_8945.jpg" alt="Fabric Texture Background" />
       </div>
     </section>
   );

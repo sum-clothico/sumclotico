@@ -425,18 +425,18 @@
   background: #ffffff;
   color: #111111;
   width: 100%;
-  max-width: 800px;
-  border-radius: 12px;
+  max-width: 1040px;
+  border-radius: 20px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   overflow: hidden;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
   position: relative;
 }
 
 .quickview-gallery {
-  background: #f6f6f6;
-  padding: 20px;
+  background: #FAF6F0;
+  padding: 24px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -474,9 +474,38 @@
 }
 
 @media (max-width: 768px) {
+  .quickview-overlay {
+    padding: 12px !important;
+    align-items: flex-end !important;
+  }
   .quickview-card {
-    grid-template-columns: 1fr;
-    max-height: 90vh;
-    overflow-y: auto;
+    display: flex !important;
+    flex-direction: column !important;
+    max-height: 86vh !important;
+    overflow-y: auto !important;
+    width: 100% !important;
+    border-radius: 18px 18px 0 0 !important;
+  }
+  .quickview-gallery {
+    padding: 16px 14px 10px !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+  .quickview-stage {
+    max-width: 260px !important;
+    max-height: 38vh !important;
+    aspect-ratio: 3 / 4 !important;
+    margin: 0 auto !important;
+  }
+  .quickview-details {
+    padding: 18px 16px 28px !important;
+    overflow: visible !important;
+  }
+  .cart-close-btn {
+    top: 12px !important;
+    right: 12px !important;
+    width: 36px !important;
+    height: 36px !important;
+    z-index: 50 !important;
   }
 }

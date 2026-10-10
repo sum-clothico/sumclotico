@@ -6,6 +6,24 @@
   overflow: hidden;
 }
 
+.side-pattern-decor {
+  width: 24px;
+  background-size: 24px auto;
+  opacity: 0.12;
+}
+
+@media (max-width: 768px) {
+  .side-pattern-decor {
+    width: 16px !important;
+    background-size: 16px auto !important;
+    opacity: 0.1 !important;
+  }
+  .fab-section, .fab-hero {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+}
+
 /* Utilities */
 .text-center { text-align: center; }
 .mb-40 { margin-bottom: 40px; }

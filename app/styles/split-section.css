@@ -142,6 +142,12 @@
   align-items: flex-end;
 }
 
+.split-section__model picture {
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+
 .split-section__model img {
   height: 90%;
   width: auto;
@@ -155,9 +161,9 @@
 }
 
 .split-section--reversed .split-section__frame {
-  left: auto;
-  right: 18%;
-  transform: translate(50%, -50%);
+  left: 82%;
+  right: auto;
+  transform: translate(-50%, -50%);
 }
 
 .split-section--reversed .split-section__model {
@@ -231,15 +237,9 @@
     max-width: 100% !important;
   }
 
+  /* Hide empty right column spacer div on mobile */
   .split-section__right {
-    width: 100% !important;
-    height: 360px !important;
-    position: relative !important;
-    overflow: hidden !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: flex-end !important;
-    background: linear-gradient(135deg, #D4B896 0%, #C8A87A 100%) !important;
+    display: none !important;
   }
 
   .split-section__model,
@@ -250,23 +250,41 @@
     top: auto !important;
     bottom: 0 !important;
     transform: none !important;
-    height: 360px !important;
-    max-height: 360px !important;
+    height: auto !important;
+    max-height: none !important;
     width: 100% !important;
     display: flex !important;
     justify-content: center !important;
-    align-items: flex-end !important;
+    align-items: center !important;
+    margin: 8px 0 36px !important;
+    padding: 0 16px !important;
+    box-sizing: border-box !important;
+  }
+
+  .split-section__model picture,
+  .split-section--reversed .split-section__model picture {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+    max-width: 330px !important;
+    height: auto !important;
   }
 
   .split-section__model img,
   .split-section--reversed .split-section__model img {
-    height: 100% !important;
-    max-height: 340px !important;
-    width: auto !important;
-    object-fit: contain !important;
-    object-position: bottom center !important;
+    width: 100% !important;
+    max-width: 330px !important;
+    height: auto !important;
+    max-height: 450px !important;
+    aspect-ratio: 3 / 4.3 !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    border-radius: 14px !important;
+    box-shadow: 0 16px 40px rgba(44, 32, 22, 0.16) !important;
+    filter: none !important;
     transform: none !important;
-    filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.15)) !important;
+    display: block !important;
   }
 
   .split-section__mahay {

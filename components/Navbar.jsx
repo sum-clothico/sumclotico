@@ -128,10 +128,11 @@ export default function Navbar() {
       {/* ─── Top Announcement Ribbon with Dynamic Coupon & WhatsApp Push CTA ─── */}
       {!isBannerDismissed && (
         <div
+          className="top-announcement-bar"
           style={{
             background: "#2A1F14", // Warm brand dark brown from client swatch
             color: "#FAF6F0",
-            padding: "6px 24px",
+            padding: "6px 20px",
             fontSize: "12px",
             fontWeight: 700,
             letterSpacing: "0.4px",
@@ -139,7 +140,7 @@ export default function Navbar() {
             alignItems: "center",
             justifyContent: "space-between",
             borderBottom: "1px solid rgba(255,255,255,0.08)",
-            flexWrap: "wrap",
+            flexWrap: "nowrap",
             gap: "8px",
           }}
         >
@@ -151,13 +152,14 @@ export default function Navbar() {
               handleWhatsAppClick();
               setIsWhatsAppQROpen(true);
             }}
+            className="top-announcement-wa-btn"
             style={{
               display: "inline-flex",
               alignItems: "center",
               gap: "6px",
               background: "#25D366",
               color: "#000000",
-              padding: "4px 12px",
+              padding: "4px 10px",
               borderRadius: "999px",
               fontSize: "11px",
               fontWeight: 800,
@@ -166,14 +168,28 @@ export default function Navbar() {
               border: "1px solid #1ebc59",
               cursor: "pointer",
               transition: "transform 0.15s ease",
+              flexShrink: 0,
             }}
           >
             <FaWhatsapp size={13} color="#000000" />
-            <span>Chat on WhatsApp (Scan QR)</span>
+            <span className="desktop-only">Chat on WhatsApp (Scan QR)</span>
+            <span className="mobile-only" style={{ display: "none" }}>WhatsApp</span>
           </button>
 
           {/* Center: Dynamic Admin Coupon Announcement */}
-          <div style={{ textAlign: "center", flex: 1, minWidth: "240px", fontSize: "11px", letterSpacing: "0.5px" }}>
+          <div
+            className="top-announcement-msg"
+            style={{
+              textAlign: "center",
+              flex: 1,
+              minWidth: 0,
+              fontSize: "11px",
+              letterSpacing: "0.4px",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+            }}
+          >
             <span>
               {activeBannerCoupon ? (
                 <>
@@ -191,7 +207,7 @@ export default function Navbar() {
           </div>
 
           {/* Right: Close / Cross Button to Dismiss Banner */}
-          <div style={{ display: "flex", alignItems: "center" }}>
+          <div style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
             <button
               type="button"
               onClick={handleDismissBanner}
@@ -304,13 +320,17 @@ export default function Navbar() {
             href="/"
             className="logo-main"
             style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              textDecoration: "none",
+              color: "#1a140e",
               fontWeight: 800,
               fontSize: "20px",
               letterSpacing: "0.15em",
               textTransform: "uppercase",
               whiteSpace: "nowrap",
-              color: "#111111",
-              textDecoration: "none",
+              transition: "opacity 0.2s ease",
             }}
           >
             सम् CLOTHICO
@@ -630,6 +650,11 @@ export default function Navbar() {
       <div className={`nav-mobile-menu ${isMobileMenuOpen ? "is-open" : ""}`}>
         <div className="nav-mobile-menu-inner">
           {[
+            {
+              label: "Home",
+              href: "/",
+              isActive: pathname === "/",
+            },
             {
               label: "Shop",
               href: "/shop",

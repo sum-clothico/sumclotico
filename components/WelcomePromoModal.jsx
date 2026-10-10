@@ -30,14 +30,14 @@ export default function WelcomePromoModal() {
         localStorage.getItem("sum_welcome_dismissed_at") === "permanent";
       if (isPermanentlyDismissed) return;
 
-      // Show after 3.2 seconds
+      // Show after 30 seconds
       const timer = setTimeout(() => {
         setIsOpen(true);
         trackEvent("view_welcome_popup", {
-          trigger: "timer_3.2s",
+          trigger: "timer_30s",
           coupon: activePromo.code,
         });
-      }, 3200);
+      }, 30000);
       return () => clearTimeout(timer);
     } catch {}
   }, [activePromo.code]);

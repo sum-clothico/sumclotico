@@ -9,67 +9,55 @@ import IndianArchBadge from "@/components/IndianArchBadge";
 
 gsap.registerPlugin(InertiaPlugin, ScrollTrigger);
 
-const PHASE_TEXTS = [
-  "Human hands, at almost every step.",
-  "Made with time, skill and attention before it ever reaches you.",
-];
-
 const JOURNEY = [
-  { label: "SPUN", image: "/assets/chakra.jpg", caption: "Yarn by hand on the charkha." },
-  { label: "WOVEN", image: "/assets/wev.jpg", caption: "Pit loom. Human rhythm." },
-  { label: "SOURCED", image: "/assets/fabric.jpg", caption: "Cloth chosen with care." },
-  { label: "DESIGNED", image: "/assets/khadi.jpg", caption: "Easy silhouettes, honest cuts." },
-  { label: "CUT", image: "/assets/han.jpg", caption: "Measured and shaped by hand." },
-  { label: "STITCHED", image: "/assets/clt.jpg", caption: "Women tailors, piece by piece." },
-  { label: "WORN", image: "/assets/khadi.jpg", caption: "Then it becomes yours." },
+  {
+    label: "SPUN",
+    image: "/assets/homepage/14887305-5caf-4e77-b3fa-c79443ced34b.png",
+    caption: "Yarn by hand on the charkha.",
+  },
+  {
+    label: "WOVEN",
+    image: "/assets/khadi.jpg",
+    caption: "Pit loom. Human rhythm.",
+  },
+  {
+    label: "SOURCED",
+    image: "/assets/homepage/IMG_3721.JPG",
+    caption: "Cloth chosen with care.",
+  },
+  {
+    label: "DESIGNED",
+    image: "/assets/homepage/IMG_5069%20(1).JPG",
+    caption: "Easy silhouettes, honest cuts.",
+  },
+  {
+    label: "CUT",
+    image: "/assets/homepage/c6aa1e50-2390-4fe4-b79e-fcf044fe17ca.jpg",
+    caption: "Measured and shaped by hand.",
+  },
+  {
+    label: "STITCHED",
+    image: "/assets/homepage/IMG_7669.JPG",
+    caption: "Women tailors, piece by piece.",
+  },
+  {
+    label: "WORN",
+    image: "/assets/homepage/IMG_1046.JPG",
+    caption: "Then it becomes yours.",
+  },
 ];
 
 export default function MotionCards() {
   const sectionRef = useRef(null);
   const containerRef = useRef(null);
-  const phaseTextRef = useRef(null);
-  const [phaseIndex, setPhaseIndex] = useState(0);
   const [journeyIdx, setJourneyIdx] = useState(0);
-  const isAnimating = useRef(false);
 
   useEffect(() => {
     const id = setInterval(() => {
       setJourneyIdx((i) => (i + 1) % JOURNEY.length);
-    }, 2200);
+    }, 2400);
     return () => clearInterval(id);
   }, []);
-
-  // Advance to next phase text on click
-  const handleTextClick = () => {
-    if (isAnimating.current) return;
-    isAnimating.current = true;
-
-    const el = phaseTextRef.current;
-    if (!el) return;
-
-    gsap.to(el, {
-      opacity: 0,
-      y: -16,
-      duration: 0.28,
-      ease: "power2.in",
-      onComplete: () => {
-        setPhaseIndex((prev) => (prev + 1) % PHASE_TEXTS.length);
-        gsap.fromTo(
-          el,
-          { opacity: 0, y: 18 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.38,
-            ease: "power2.out",
-            onComplete: () => {
-              isAnimating.current = false;
-            },
-          },
-        );
-      },
-    });
-  };
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -214,18 +202,10 @@ export default function MotionCards() {
         ))}
       </h2>
 
-      {/* ─── Click-to-cycle Text ─── */}
-      <div
-        className="mc-texts mc-texts--clickable"
-        onClick={handleTextClick}
-        role="button"
-        tabIndex={0}
-        onKeyDown={(e) => e.key === "Enter" && handleTextClick()}
-        aria-label="Click to see next use case"
-        title="Click to see more"
-      >
-        <p ref={phaseTextRef} className="mc-phase-text mc-phase-text--active">
-          {PHASE_TEXTS[phaseIndex]}
+      {/* ─── Static Story Text Block ─── */}
+      <div className="mc-texts">
+        <p className="mc-phase-text mc-phase-text--active">
+          Human hands, at almost every step.
         </p>
         <span className="mc-click-hint">tap to explore stories</span>
       </div>
@@ -249,24 +229,26 @@ export default function MotionCards() {
             <p key={journeyIdx}>{JOURNEY[journeyIdx].caption}</p>
           </div>
         </div>
-        <div className="mc-journey__pills">
-          {JOURNEY.map((step, i) => (
-            <React.Fragment key={step.label}>
+        {/* Flashing single word per slide without arrows */}
+        <div className="mc-journey__word-display">
+          <div key={journeyIdx} className="mc-journey__flashing-word">
+            {JOURNEY[journeyIdx].label}
+          </div>
+          <div className="mc-journey__dots">
+            {JOURNEY.map((step, i) => (
               <button
+                key={step.label}
                 type="button"
                 onClick={() => setJourneyIdx(i)}
                 className={
-                  "mc-journey__pill" +
-                  (i === journeyIdx ? " mc-journey__pill--active" : "")
+                  "mc-journey__dot" +
+                  (i === journeyIdx ? " mc-journey__dot--active" : "")
                 }
-              >
-                {step.label}
-              </button>
-              {i < JOURNEY.length - 1 && (
-                <span className="mc-journey__arrow">→</span>
-              )}
-            </React.Fragment>
-          ))}
+                aria-label={`Step ${i + 1}: ${step.label}`}
+                title={step.label}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
@@ -277,7 +259,7 @@ export default function MotionCards() {
           <div className="motion-card__card motion-card__card--1">
             <div className="motion-card__card-image">
               <img
-                src="/assets/chakra.jpg"
+                src="/assets/homepage/14887305-5caf-4e77-b3fa-c79443ced34b.png"
                 loading="lazy"
                 alt="Handspinning raw cotton on Charkha"
                 className="cover-image"
@@ -290,7 +272,7 @@ export default function MotionCards() {
           <div className="motion-card__card motion-card__card--2">
             <div className="motion-card__card-image">
               <img
-                src="/assets/wev.jpg"
+                src="/assets/khadi.jpg"
                 loading="lazy"
                 alt="Pit loom artisan hand weaving"
                 className="cover-image"
@@ -303,7 +285,7 @@ export default function MotionCards() {
           <div className="motion-card__card motion-card__card--3">
             <div className="motion-card__card-image">
               <img
-                src="/assets/han.jpg"
+                src="/assets/homepage/IMG_7669.JPG"
                 loading="lazy"
                 alt="Master hands cutting and hand tailoring"
                 className="cover-image"
@@ -316,7 +298,7 @@ export default function MotionCards() {
           <div className="motion-card__card motion-card__card--4">
             <div className="motion-card__card-image">
               <img
-                src="/assets/khadi.jpg"
+                src="/assets/homepage/IMG_1046.JPG"
                 loading="lazy"
                 alt="Finished living handspun Khadi cloth"
                 className="cover-image"

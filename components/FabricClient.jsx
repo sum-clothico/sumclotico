@@ -266,39 +266,41 @@ export default function FabricClient() {
           backgroundColor: "#EDE8DC",
         }}
       >
-        {/* ─── LEFT SIDE REPEATING PATTERN IMAGE (bgele2.png) ─── */}
+        {/* ─── LEFT SIDE REPEATING PATTERN IMAGE (bgele2.png, SLIM & LOW OPACITY) ─── */}
         <div
+          className="side-pattern-decor"
           style={{
             position: "absolute",
             left: 0,
             top: 0,
             bottom: 0,
-            width: "48px",
+            width: "24px",
             backgroundImage: 'url("/assets/bgele2.png")',
             backgroundRepeat: "repeat-y",
             backgroundPosition: "left top",
-            backgroundSize: "48px auto",
-            opacity: 0.28,
+            backgroundSize: "24px auto",
+            opacity: 0.12,
             pointerEvents: "none",
             zIndex: 1,
           }}
           aria-hidden="true"
         />
 
-        {/* ─── RIGHT SIDE REPEATING PATTERN IMAGE (bgele2.png, MIRRORED) ─── */}
+        {/* ─── RIGHT SIDE REPEATING PATTERN IMAGE (bgele2.png, MIRRORED, SLIM & LOW OPACITY) ─── */}
         <div
+          className="side-pattern-decor"
           style={{
             position: "absolute",
             right: 0,
             top: 0,
             bottom: 0,
-            width: "48px",
+            width: "24px",
             backgroundImage: 'url("/assets/bgele2.png")',
             backgroundRepeat: "repeat-y",
             backgroundPosition: "left top",
-            backgroundSize: "48px auto",
+            backgroundSize: "24px auto",
             transform: "scaleX(-1)",
-            opacity: 0.28,
+            opacity: 0.12,
             pointerEvents: "none",
             zIndex: 1,
           }}
@@ -378,48 +380,27 @@ export default function FabricClient() {
             <div
               className="fab-hero-visual"
               style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: 12,
+                maxWidth: 480,
+                width: "100%",
+                margin: "0 auto",
               }}
             >
               <div
                 className="fab-image-reveal"
                 style={{
-                  borderRadius: 14,
+                  borderRadius: 18,
                   overflow: "hidden",
-                  border: "1px solid rgba(44, 32, 22, 0.14)",
-                  boxShadow: "0 18px 40px -14px rgba(44, 32, 22, 0.18)",
+                  border: "1px solid rgba(44, 32, 22, 0.16)",
+                  boxShadow: "0 22px 48px -16px rgba(44, 32, 22, 0.22)",
+                  aspectRatio: "4/5",
                 }}
               >
                 <img
-                  src="/assets/chakra.jpg"
-                  alt="Woman spinning yarn on charkha"
+                  src="/assets/homepage/WhatsApp Image 2026-10-05 at 2.14.11 PM (4).jpeg"
+                  alt="Sum Clothico Handwoven Craft"
                   style={{
                     width: "100%",
                     height: "100%",
-                    aspectRatio: "3/4",
-                    objectFit: "cover",
-                    display: "block",
-                  }}
-                />
-              </div>
-              <div
-                className="fab-image-reveal"
-                style={{
-                  borderRadius: 14,
-                  overflow: "hidden",
-                  border: "1px solid rgba(44, 32, 22, 0.14)",
-                  boxShadow: "0 18px 40px -14px rgba(44, 32, 22, 0.18)",
-                }}
-              >
-                <img
-                  src="/assets/han.jpg"
-                  alt="Hands weaving khadi on loom"
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    aspectRatio: "3/4",
                     objectFit: "cover",
                     display: "block",
                   }}
@@ -543,16 +524,307 @@ export default function FabricClient() {
               style={{
                 borderRadius: 16,
                 overflow: "hidden",
-                aspectRatio: "4/3",
+                aspectRatio: "4/5",
+                maxWidth: 460,
+                width: "100%",
+                margin: "0 auto",
                 background: "#e8dfd0",
                 border: "1px solid rgba(44, 32, 22, 0.12)",
+                boxShadow: "0 18px 45px -14px rgba(44, 32, 22, 0.16)",
               }}
             >
               <img
-                src="/assets/fabric.jpg"
+                src="/assets/homepage/WhatsApp Image 2026-10-05 at 8.56.14 PM.jpeg"
                 alt="Khadi Handspun Cotton Weave"
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
               />
+            </div>
+          </div>
+        </section>
+
+        {/* ─── COOPERATIVE VALIDATION & COMMUNITY ARCHIVE (SLIDES 3 & 4) ─── */}
+        <section
+          className="fab-anim-block"
+          style={{
+            maxWidth: 1080,
+            margin: "0 auto 80px",
+            padding: "0 clamp(24px, 4vw, 56px)",
+            position: "relative",
+            zIndex: 2,
+          }}
+        >
+          <div
+            style={{
+              background: "linear-gradient(145deg, #FBF8F2 0%, #F4ECE0 100%)",
+              borderRadius: 20,
+              border: "1.5px solid rgba(102, 6, 8, 0.22)",
+              padding: "clamp(24px, 4vw, 42px)",
+              boxShadow: "0 18px 45px -15px rgba(44, 32, 22, 0.14)",
+              position: "relative",
+              overflow: "hidden",
+            }}
+          >
+            {/* Subtle woven pattern overlay */}
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                backgroundImage: "url('/assets/cloth.png')",
+                opacity: 0.08,
+                backgroundSize: "cover",
+                pointerEvents: "none",
+              }}
+              aria-hidden="true"
+            />
+
+            {/* Validation Header */}
+            <div
+              style={{
+                textAlign: "center",
+                marginBottom: 32,
+                position: "relative",
+                zIndex: 1,
+              }}
+            >
+              <div className="fab-block-badge">
+                <IndianArchBadge style={{ marginBottom: "12px" }}>
+                  Validation &amp; Craft Origins
+                </IndianArchBadge>
+              </div>
+              <p
+                style={{
+                  fontSize: "0.82rem",
+                  letterSpacing: "0.14em",
+                  textTransform: "uppercase",
+                  fontWeight: 800,
+                  color: "#660608",
+                  margin: "0 0 6px",
+                }}
+              >
+                Government Verified Artisan Cooperative
+              </p>
+            </div>
+
+            {/* Grid of Validation Elements */}
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+                gap: 22,
+                position: "relative",
+                zIndex: 1,
+                alignItems: "stretch",
+              }}
+            >
+              {/* Card 1: Society Emblem & Stamp */}
+              <div
+                className="fab-image-reveal"
+                style={{
+                  background: "rgba(255, 255, 255, 0.78)",
+                  backdropFilter: "blur(6px)",
+                  borderRadius: 16,
+                  padding: "26px 20px",
+                  border: "1px solid rgba(44, 32, 22, 0.12)",
+                  textAlign: "center",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  boxShadow: "0 6px 18px rgba(0,0,0,0.04)",
+                }}
+              >
+                <h4
+                  style={{
+                    fontFamily: "serif",
+                    fontSize: "1.12rem",
+                    color: "#881a1c",
+                    margin: "0 0 4px",
+                    lineHeight: 1.4,
+                    fontWeight: 700,
+                  }}
+                >
+                  हाथकरघा एवं दस्तकारी सहकारी समिति मर्यादित
+                </h4>
+                <p
+                  style={{
+                    fontFamily: "serif",
+                    fontSize: "0.98rem",
+                    color: "#660608",
+                    margin: "0 0 16px",
+                    fontWeight: 600,
+                  }}
+                >
+                  भरतपुर, जिला-सीधी
+                </p>
+                <div
+                  style={{
+                    width: 140,
+                    height: 140,
+                    borderRadius: "50%",
+                    overflow: "hidden",
+                    border: "2px solid #881a1c",
+                    padding: 6,
+                    background: "#fff",
+                    boxShadow: "0 6px 18px rgba(102, 6, 8, 0.12)",
+                  }}
+                >
+                  <img
+                    src="/assets/bharatpur-emblem.jpg"
+                    alt="हाथकरघा एवं दस्तकारी सहकारी समिति मर्यादित सील"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "contain",
+                      display: "block",
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* Card 2: Building Photograph */}
+              <div
+                className="fab-image-reveal"
+                style={{
+                  background: "rgba(255, 255, 255, 0.78)",
+                  backdropFilter: "blur(6px)",
+                  borderRadius: 16,
+                  overflow: "hidden",
+                  border: "1px solid rgba(44, 32, 22, 0.12)",
+                  display: "flex",
+                  flexDirection: "column",
+                  boxShadow: "0 6px 18px rgba(0,0,0,0.04)",
+                }}
+              >
+                <div style={{ padding: "14px 18px 10px", textAlign: "center" }}>
+                  <h4
+                    style={{
+                      fontFamily: "serif",
+                      fontSize: "1.12rem",
+                      color: "#881a1c",
+                      margin: 0,
+                      fontWeight: 700,
+                    }}
+                  >
+                    भरतपुर क्राफ्ट – कुछ क्षणचित्र
+                  </h4>
+                </div>
+                <div style={{ flex: 1, minHeight: 180, position: "relative" }}>
+                  <img
+                    src="/assets/bharatpur-building.jpg"
+                    alt="हाथकरघा एवं दस्तकारी सहकारी समिति मर्या. भरतपुर"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      display: "block",
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* Card 3: Women Artisans Outdoors */}
+              <div
+                className="fab-image-reveal"
+                style={{
+                  background: "rgba(255, 255, 255, 0.78)",
+                  backdropFilter: "blur(6px)",
+                  borderRadius: 16,
+                  overflow: "hidden",
+                  border: "1px solid rgba(44, 32, 22, 0.12)",
+                  display: "flex",
+                  flexDirection: "column",
+                  boxShadow: "0 6px 18px rgba(0,0,0,0.04)",
+                }}
+              >
+                <div style={{ flex: 1, minHeight: 180, position: "relative" }}>
+                  <img
+                    src="/assets/bharatpur-spinners.jpg"
+                    alt="Rural Artisan Women Spinning Charkha in Bharatpur"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      display: "block",
+                    }}
+                  />
+                </div>
+                <div style={{ padding: "12px 16px", textAlign: "center" }}>
+                  <p
+                    style={{
+                      margin: 0,
+                      fontFamily: "serif",
+                      fontStyle: "italic",
+                      fontSize: "0.95rem",
+                      color: "#4a3c30",
+                    }}
+                  >
+                    Traditional Charkha Spinning by Rural Women Artisans
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Official Source Link & Affirmation */}
+            <div
+              style={{
+                marginTop: 26,
+                paddingTop: 18,
+                borderTop: "1px solid rgba(102, 6, 8, 0.14)",
+                display: "flex",
+                flexWrap: "wrap",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: 14,
+                position: "relative",
+                zIndex: 1,
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                  flexWrap: "wrap",
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: "0.78rem",
+                    fontWeight: 800,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.1em",
+                    color: "#660608",
+                  }}
+                >
+                  Official Source:
+                </span>
+                <a
+                  href="https://sidhi.nic.in/en/document/bharatpur-handicrafts-success-story/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    color: "#1a140e",
+                    textDecoration: "underline",
+                    fontSize: "0.85rem",
+                    fontWeight: 600,
+                    wordBreak: "break-all",
+                  }}
+                >
+                  https://sidhi.nic.in/en/document/bharatpur-handicrafts-success-story/
+                </a>
+              </div>
+              <p
+                style={{
+                  margin: 0,
+                  fontFamily: "serif",
+                  fontStyle: "italic",
+                  fontSize: "1.12rem",
+                  color: "#660608",
+                  fontWeight: 600,
+                }}
+              >
+                And this is only the beginning.
+              </p>
             </div>
           </div>
         </section>
@@ -667,135 +939,194 @@ export default function FabricClient() {
             </h2>
           </div>
 
-          {/* What is Khadi — Clean Editorial */}
+          {/* What is Khadi — Woven Fabric Pattern Background Card (Slide 4) */}
           <div
             className="fab-text-item"
             style={{
-              borderTop: "1.5px solid #660608",
-              borderBottom: "1px solid rgba(44, 32, 22, 0.12)",
-              padding: "32px 0",
-              marginBottom: 50,
+              position: "relative",
+              borderRadius: 20,
+              padding: "44px clamp(24px, 4vw, 52px)",
+              marginBottom: 56,
+              overflow: "hidden",
+              border: "1.5px solid rgba(102, 6, 8, 0.22)",
+              boxShadow: "0 14px 40px -12px rgba(44, 32, 22, 0.12)",
+              background: "#FAF6F0",
             }}
           >
-            <span
-              style={{
-                fontSize: "0.74rem",
-                fontWeight: 800,
-                letterSpacing: "0.16em",
-                textTransform: "uppercase",
-                color: "#660608",
-                display: "block",
-                marginBottom: 8,
-              }}
-            >
-              Foundation
-            </span>
-            <h3
-              className="fab-block-title"
-              style={{
-                fontFamily: "serif",
-                fontSize: "clamp(1.6rem, 2.5vw, 2.2rem)",
-                color: "#1a140e",
-                margin: "0 0 14px",
-              }}
-            >
-              <AnimatedWords text="What is Khadi?" />
-            </h3>
-            <p
-              style={{
-                fontSize: "1.08rem",
-                lineHeight: 1.8,
-                color: "#443528",
-                marginBottom: 20,
-              }}
-            >
-              Khadi is a fabric made from natural fibers like cotton, but what
-              makes it special is how it is made.
-            </p>
+            {/* Woven fabric texture pattern */}
             <div
               style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-                gap: 28,
-                margin: "24px 0",
+                position: "absolute",
+                inset: 0,
+                backgroundImage:
+                  "radial-gradient(#660608 0.75px, transparent 0.75px), radial-gradient(#2c2016 0.75px, transparent 0.75px)",
+                backgroundSize: "16px 16px",
+                backgroundPosition: "0 0, 8px 8px",
+                opacity: 0.08,
+                pointerEvents: "none",
               }}
-            >
-              <div
-                className="fab-compare-col"
-                style={{ borderLeft: "2.5px solid #660608", paddingLeft: 18 }}
-              >
-                <strong
-                  style={{
-                    color: "#660608",
-                    display: "block",
-                    marginBottom: 6,
-                    fontSize: "1.05rem",
-                    fontFamily: "serif",
-                  }}
-                >
-                  ✦ Hand-spun
-                </strong>
-                <span
-                  style={{
-                    fontSize: "0.95rem",
-                    lineHeight: 1.6,
-                    color: "#55483D",
-                  }}
-                >
-                  Thread made by hand using the traditional charkha.
-                </span>
-              </div>
-              <div
-                className="fab-compare-col"
-                style={{ borderLeft: "2.5px solid #660608", paddingLeft: 18 }}
-              >
-                <strong
-                  style={{
-                    color: "#660608",
-                    display: "block",
-                    marginBottom: 6,
-                    fontSize: "1.05rem",
-                    fontFamily: "serif",
-                  }}
-                >
-                  ✦ Handwoven
-                </strong>
-                <span
-                  style={{
-                    fontSize: "0.95rem",
-                    lineHeight: 1.6,
-                    color: "#55483D",
-                  }}
-                >
-                  Fabric made on wooden pit looms, never high-speed mass
-                  machines.
-                </span>
-              </div>
-            </div>
-            <p
+              aria-hidden="true"
+            />
+            {/* Fine cloth weave overlay */}
+            <div
               style={{
-                fontSize: "1.02rem",
-                lineHeight: 1.7,
-                color: "#660608",
-                fontStyle: "italic",
-                margin: "20px 0 0",
+                position: "absolute",
+                inset: 0,
+                backgroundImage: "url('/assets/cloth.png')",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                opacity: 0.1,
+                mixBlendMode: "multiply",
+                pointerEvents: "none",
               }}
-            >
-              This means every thread has slight variations, and every fabric
-              has its own character. It&apos;s not perfect and that&apos;s
-              exactly the point.
-            </p>
+              aria-hidden="true"
+            />
+            <div style={{ position: "relative", zIndex: 1 }}>
+              <span
+                style={{
+                  fontSize: "0.74rem",
+                  fontWeight: 800,
+                  letterSpacing: "0.16em",
+                  textTransform: "uppercase",
+                  color: "#660608",
+                  display: "block",
+                  marginBottom: 8,
+                }}
+              >
+                Foundation
+              </span>
+              <h3
+                className="fab-block-title"
+                style={{
+                  fontFamily: "serif",
+                  fontSize: "clamp(1.7rem, 2.7vw, 2.3rem)",
+                  color: "#1a140e",
+                  margin: "0 0 14px",
+                }}
+              >
+                <AnimatedWords text="What is Khadi?" />
+              </h3>
+              <p
+                style={{
+                  fontSize: "1.08rem",
+                  lineHeight: 1.8,
+                  color: "#443528",
+                  marginBottom: 20,
+                }}
+              >
+                Khadi is a fabric made from natural fibers like cotton, but what
+                makes it special is how it is made.
+              </p>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+                  gap: 28,
+                  margin: "24px 0",
+                }}
+              >
+                <div
+                  className="fab-compare-col"
+                  style={{
+                    background: "rgba(255, 255, 255, 0.65)",
+                    borderRadius: 12,
+                    padding: "18px 20px",
+                    borderLeft: "3.5px solid #660608",
+                  }}
+                >
+                  <strong
+                    style={{
+                      color: "#660608",
+                      display: "block",
+                      marginBottom: 6,
+                      fontSize: "1.05rem",
+                      fontFamily: "serif",
+                    }}
+                  >
+                    ✦ Hand-spun
+                  </strong>
+                  <span
+                    style={{
+                      fontSize: "0.95rem",
+                      lineHeight: 1.6,
+                      color: "#55483D",
+                    }}
+                  >
+                    Thread made by hand using the traditional charkha.
+                  </span>
+                </div>
+                <div
+                  className="fab-compare-col"
+                  style={{
+                    background: "rgba(255, 255, 255, 0.65)",
+                    borderRadius: 12,
+                    padding: "18px 20px",
+                    borderLeft: "3.5px solid #660608",
+                  }}
+                >
+                  <strong
+                    style={{
+                      color: "#660608",
+                      display: "block",
+                      marginBottom: 6,
+                      fontSize: "1.05rem",
+                      fontFamily: "serif",
+                    }}
+                  >
+                    ✦ Handwoven
+                  </strong>
+                  <span
+                    style={{
+                      fontSize: "0.95rem",
+                      lineHeight: 1.6,
+                      color: "#55483D",
+                    }}
+                  >
+                    Fabric made on wooden pit looms, never high-speed mass
+                    machines.
+                  </span>
+                </div>
+              </div>
+              <p
+                style={{
+                  fontSize: "1.05rem",
+                  lineHeight: 1.7,
+                  color: "#660608",
+                  fontStyle: "italic",
+                  margin: "20px 0 0",
+                }}
+              >
+                This means every thread has slight variations, and every fabric
+                has its own character. It&apos;s not perfect and that&apos;s
+                exactly the point.
+              </p>
+            </div>
           </div>
 
-          {/* 4 Steps: How Khadi Is Made — ASTAKA Scalloped Cards */}
-          <div style={{ textAlign: "center", margin: "40px 0 30px" }}>
+          {/* 4 Steps: Highlighted Editorial for How Khadi Is Made (Slide 4) */}
+          <div
+            className="fab-text-item"
+            style={{
+              textAlign: "center",
+              margin: "50px 0 36px",
+              padding: "28px 20px 24px",
+              background:
+                "linear-gradient(180deg, rgba(232, 223, 208, 0.45) 0%, transparent 100%)",
+              borderRadius: 18,
+              borderTop: "2.5px solid #660608",
+            }}
+          >
+            <div style={{ display: "inline-block", marginBottom: 12 }}>
+              <IndianArchBadge>The Craft</IndianArchBadge>
+            </div>
             <h3
               className="fab-block-title"
               style={{
                 fontFamily: "serif",
-                fontSize: "clamp(1.6rem, 2.6vw, 2.2rem)",
+                fontSize: "clamp(1.8rem, 3vw, 2.5rem)",
                 color: "#1a140e",
                 margin: 0,
+                fontWeight: 600,
               }}
             >
               <AnimatedWords text="How Khadi Is Made (And Why That Changes Everything)" />
@@ -804,9 +1135,9 @@ export default function FabricClient() {
               className="fab-text-item"
               style={{
                 fontFamily: "serif",
-                fontSize: "1.12rem",
+                fontSize: "1.22rem",
                 fontWeight: 700,
-                color: "#1a140e",
+                color: "#660608",
                 margin: "16px 0 0",
                 lineHeight: 1.5,
               }}
@@ -1228,8 +1559,8 @@ export default function FabricClient() {
                 }}
               >
                 <img
-                  src="/assets/fabric.jpg"
-                  alt="Khadi weave"
+                  src="/assets/homepage/Airy - 1.png"
+                  alt="Airy Khadi Texture 1"
                   style={{
                     width: "100%",
                     aspectRatio: "4/3",
@@ -1246,8 +1577,8 @@ export default function FabricClient() {
                 }}
               >
                 <img
-                  src="/assets/ctn.jpg"
-                  alt="Cotton weave"
+                  src="/assets/homepage/Airy - 2.png"
+                  alt="Airy Khadi Texture 2"
                   style={{
                     width: "100%",
                     aspectRatio: "4/3",
@@ -1264,8 +1595,8 @@ export default function FabricClient() {
                 }}
               >
                 <img
-                  src="/assets/khadi.jpg"
-                  alt="Khadi texture"
+                  src="/assets/homepage/Airy - 3.png"
+                  alt="Airy Khadi Texture 3"
                   style={{
                     width: "100%",
                     aspectRatio: "4/3",
@@ -1462,8 +1793,8 @@ export default function FabricClient() {
                 }}
               >
                 <img
-                  src="/assets/khadi.jpg"
-                  alt="Khadi fabric close-up"
+                  src="/assets/homepage/IMG_9011.jpg"
+                  alt="Why we chose Khadi texture"
                   style={{
                     width: "100%",
                     aspectRatio: "4/5",
@@ -1531,176 +1862,87 @@ export default function FabricClient() {
             </div>
           </div>
 
-          {/* ─── WHY KHADI STILL MATTERS IN A FAST FASHION WORLD ─── */}
+          {/* ─── WHY KHADI STILL MATTERS (SLIDE 1) ─── */}
           <div
             style={{
-              borderTop: "1px solid rgba(44, 32, 22, 0.14)",
+              borderTop: "1.5px solid #660608",
               paddingTop: 48,
-              marginBottom: 70,
+              marginBottom: 64,
+              textAlign: "center",
             }}
           >
-            <div
-              style={{
-                textAlign: "center",
-                maxWidth: 700,
-                margin: "0 auto 30px",
-              }}
-            >
-              <div className="fab-block-badge">
-                <IndianArchBadge style={{ marginBottom: "14px" }}>
-                  Reclaiming Pace
-                </IndianArchBadge>
-              </div>
-              <h3
-                className="fab-block-title"
-                style={{
-                  fontFamily: "serif",
-                  fontSize: "clamp(1.8rem, 3vw, 2.5rem)",
-                  fontWeight: 600,
-                  color: "#1a140e",
-                  margin: "0 0 14px",
-                }}
-              >
-                <AnimatedWords text="Why Khadi Still Matters in a Fast Fashion World" />
-              </h3>
-              <p
-                style={{
-                  fontSize: "1.04rem",
-                  lineHeight: 1.8,
-                  color: "#4a3c30",
-                  margin: 0,
-                }}
-              >
-                Fast fashion is built on:{" "}
-                <strong>Speed · Mass production · Uniformity</strong>. Khadi
-                stands in complete contrast.
-              </p>
+            <div className="fab-block-badge">
+              <IndianArchBadge style={{ marginBottom: "14px" }}>
+                Reclaiming Pace
+              </IndianArchBadge>
             </div>
-
-            <div
+            <h3
+              className="fab-block-title"
               style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-                gap: 28,
-                margin: "30px 0",
-              }}
-            >
-              <div className="fab-feature-col" style={{ borderTop: "1.5px solid #660608", paddingTop: 16 }}>
-                <strong
-                  style={{
-                    color: "#1a140e",
-                    display: "block",
-                    marginBottom: 6,
-                    fontSize: "1.05rem",
-                    fontFamily: "serif",
-                  }}
-                >
-                  ✦ Because it cannot be rushed
-                </strong>
-                <span
-                  style={{
-                    fontSize: "0.92rem",
-                    lineHeight: 1.65,
-                    color: "#55483d",
-                  }}
-                >
-                  Each piece takes time, which means less waste, intentional
-                  making, and lasting value.
-                </span>
-              </div>
-              <div className="fab-feature-col" style={{ borderTop: "1.5px solid #660608", paddingTop: 16 }}>
-                <strong
-                  style={{
-                    color: "#1a140e",
-                    display: "block",
-                    marginBottom: 6,
-                    fontSize: "1.05rem",
-                    fontFamily: "serif",
-                  }}
-                >
-                  ✦ People, not just machines
-                </strong>
-                <span
-                  style={{
-                    fontSize: "0.92rem",
-                    lineHeight: 1.65,
-                    color: "#55483d",
-                  }}
-                >
-                  Every step directly supports handloom artisan families and
-                  preserves living traditions.
-                </span>
-              </div>
-              <div className="fab-feature-col" style={{ borderTop: "1.5px solid #660608", paddingTop: 16 }}>
-                <strong
-                  style={{
-                    color: "#1a140e",
-                    display: "block",
-                    marginBottom: 6,
-                    fontSize: "1.05rem",
-                    fontFamily: "serif",
-                  }}
-                >
-                  ✦ Made in small quantities
-                </strong>
-                <span
-                  style={{
-                    fontSize: "0.92rem",
-                    lineHeight: 1.65,
-                    color: "#55483d",
-                  }}
-                >
-                  Not thousands of identical pieces, but limited, thoughtful,
-                  small-batch production.
-                </span>
-              </div>
-            </div>
-            <p
-              style={{
+                fontFamily: "serif",
+                fontSize: "clamp(2rem, 3.4vw, 2.7rem)",
                 fontWeight: 600,
                 color: "#1a140e",
-                fontSize: "1.05rem",
-                textAlign: "center",
-                margin: "24px 0 0",
+                margin: "0 0 16px",
               }}
             >
-              When you wear Khadi, you are choosing: Fewer, better clothes ·
-              Something that lasts · Something that has meaning.
+              <AnimatedWords text="Why Khadi Still Matters" />
+            </h3>
+            <p
+              className="fab-text-item"
+              style={{
+                fontSize: "1.18rem",
+                lineHeight: 1.8,
+                color: "#4a3c30",
+                maxWidth: 680,
+                margin: "0 auto 20px",
+              }}
+            >
+              It takes time. It carries human hands. And it isn’t made to look
+              exactly like everything else.
+            </p>
+            <p
+              className="fab-text-item"
+              style={{
+                fontFamily: "serif",
+                fontStyle: "italic",
+                fontSize: "1.1rem",
+                color: "#660608",
+                fontWeight: 600,
+                margin: 0,
+              }}
+            >
+              Made slowly. • Shaped by hands. • Produced thoughtfully
             </p>
           </div>
 
-          {/* ─── HOW KHADI IS SUSTAINABLE (IN A REAL WAY) ─── */}
+          {/* ─── SUSTAINABILITY, BUILT INTO THE PROCESS (SLIDE 1) ─── */}
           <div
             style={{
               borderTop: "1px solid rgba(44, 32, 22, 0.14)",
               paddingTop: 48,
               marginBottom: 70,
+              textAlign: "center",
             }}
           >
-            <div
+            <div className="fab-block-badge">
+              <IndianArchBadge style={{ marginBottom: "14px" }}>
+                Conscious Making
+              </IndianArchBadge>
+            </div>
+            <h3
+              className="fab-block-title"
               style={{
-                textAlign: "center",
-                maxWidth: 700,
-                margin: "0 auto 32px",
+                fontFamily: "serif",
+                fontSize: "clamp(1.9rem, 3.2vw, 2.6rem)",
+                margin: "0 0 24px",
+                color: "#1a140e",
+                fontWeight: 600,
               }}
             >
-              <div className="fab-block-badge">
-                <IndianArchBadge style={{ marginBottom: "14px" }}>
-                  Conscious Making
-                </IndianArchBadge>
-              </div>
-              <h3
-                className="fab-block-title"
-                style={{
-                  fontFamily: "serif",
-                  fontSize: "clamp(1.8rem, 3vw, 2.5rem)",
-                  margin: "0 0 16px",
-                  color: "#1a140e",
-                }}
-              >
-                <AnimatedWords text="How Khadi Is Sustainable (In a Real Way)" />
-              </h3>
-            </div>
+              <AnimatedWords text="Sustainability, Built Into the Process." />
+            </h3>
+
             <div
               className="fab-image-reveal"
               style={{
@@ -1708,14 +1950,16 @@ export default function FabricClient() {
                 borderRadius: 16,
                 overflow: "hidden",
                 border: "1px solid rgba(44, 32, 22, 0.14)",
-                marginBottom: 36,
-                aspectRatio: "16/5",
+                marginBottom: 24,
+                aspectRatio: "16/6",
                 boxShadow: "0 18px 40px -16px rgba(44, 32, 22, 0.18)",
+                maxWidth: 920,
+                margin: "0 auto 24px",
               }}
             >
               <img
-                src="/assets/wev.jpg"
-                alt="Artisan at wooden loom"
+                src="/assets/homepage/WhatsApp Image 2026-10-05 at 2.14.11 PM (3).jpeg"
+                alt="Conscious handloom making"
                 style={{
                   width: "100%",
                   height: "100%",
@@ -1728,7 +1972,7 @@ export default function FabricClient() {
                   position: "absolute",
                   inset: 0,
                   background:
-                    "linear-gradient(to right, rgba(26,20,14,0.55) 0%, rgba(26,20,14,0.1) 55%, transparent 100%)",
+                    "linear-gradient(to right, rgba(26,20,14,0.6) 0%, rgba(26,20,14,0.15) 60%, transparent 100%)",
                 }}
               />
               <div
@@ -1741,133 +1985,64 @@ export default function FabricClient() {
                   fontStyle: "italic",
                   fontSize: "clamp(0.95rem, 1.6vw, 1.2rem)",
                   maxWidth: "60%",
+                  textAlign: "left",
                 }}
               >
                 Wooden looms. Hand power. No fossil fuel.
               </div>
             </div>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-                gap: 28,
-              }}
-            >
-              <div className="fab-sus-col" style={{ borderTop: "1.5px solid #660608", paddingTop: 16 }}>
-                <h4
-                  style={{
-                    fontFamily: "serif",
-                    fontSize: "1.25rem",
-                    color: "#660608",
-                    margin: "0 0 8px",
-                  }}
-                >
-                  Low Energy
-                </h4>
-                <p
-                  style={{
-                    fontSize: "0.92rem",
-                    color: "#443528",
-                    margin: "0 0 6px",
-                  }}
-                >
-                  <strong>Why:</strong> No heavy industrial machinery.
-                </p>
-                <p style={{ fontSize: "0.92rem", color: "#6e5d4e", margin: 0 }}>
-                  <strong>How it helps:</strong> Less electricity, zero fossil
-                  fuel looms, lower carbon impact.
-                </p>
-              </div>
-              <div className="fab-sus-col" style={{ borderTop: "1.5px solid #660608", paddingTop: 16 }}>
-                <h4
-                  style={{
-                    fontFamily: "serif",
-                    fontSize: "1.25rem",
-                    color: "#660608",
-                    margin: "0 0 8px",
-                  }}
-                >
-                  Minimal Processing
-                </h4>
-                <p
-                  style={{
-                    fontSize: "0.92rem",
-                    color: "#443528",
-                    margin: "0 0 6px",
-                  }}
-                >
-                  <strong>Why:</strong> Fewer harsh industrial chemicals.
-                </p>
-                <p style={{ fontSize: "0.92rem", color: "#6e5d4e", margin: 0 }}>
-                  <strong>How it helps:</strong> Better for your skin and kind
-                  to local groundwater.
-                </p>
-              </div>
-              <div className="fab-sus-col" style={{ borderTop: "1.5px solid #660608", paddingTop: 16 }}>
-                <h4
-                  style={{
-                    fontFamily: "serif",
-                    fontSize: "1.25rem",
-                    color: "#660608",
-                    margin: "0 0 8px",
-                  }}
-                >
-                  Human-Centered
-                </h4>
-                <p
-                  style={{
-                    fontSize: "0.92rem",
-                    color: "#443528",
-                    margin: "0 0 6px",
-                  }}
-                >
-                  <strong>Why:</strong> Made by rural artisans.
-                </p>
-                <p style={{ fontSize: "0.92rem", color: "#6e5d4e", margin: 0 }}>
-                  <strong>How it helps:</strong> Generates dignified rural
-                  livelihood and preserves heritage craft.
-                </p>
-              </div>
-            </div>
+
             <p
+              className="fab-text-item"
               style={{
-                fontStyle: "italic",
                 fontFamily: "serif",
-                fontSize: "1.15rem",
+                fontSize: "1.2rem",
                 color: "#660608",
-                marginTop: 28,
-                textAlign: "center",
+                fontWeight: 700,
+                margin: "20px 0 0",
+                letterSpacing: "0.02em",
               }}
             >
-              Sustainability here is not a trend. It&apos;s how the fabric has
-              always been made.
+              Less energy. • Less processing. • More human hands
             </p>
           </div>
 
-          {/* ─── HOW KHADI IS EVOLVING TODAY & WHY PEOPLE CHOOSE IT ─── */}
+          {/* ─── MODERN DIRECTION & EVERYDAY RELEVANCE (SLIDE 2) ─── */}
           <div
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-              gap: 40,
+              gap: 36,
               borderTop: "1px solid rgba(44, 32, 22, 0.14)",
               paddingTop: 48,
               marginBottom: 70,
             }}
           >
-            <div className="fab-evolve-col" style={{ borderLeft: "2.5px solid #660608", paddingLeft: 22 }}>
+            {/* Left Card: Modern Direction */}
+            <div
+              className="fab-evolve-col"
+              style={{
+                background: "#FAF6F0",
+                borderRadius: 16,
+                padding: "28px 24px",
+                border: "1px solid rgba(44, 32, 22, 0.12)",
+                boxShadow: "0 8px 24px -10px rgba(44, 32, 22, 0.08)",
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
               <div
                 style={{
                   borderRadius: 12,
                   overflow: "hidden",
                   border: "1px solid rgba(44, 32, 22, 0.14)",
-                  marginBottom: 16,
-                  aspectRatio: "16/9",
+                  marginBottom: 18,
+                  aspectRatio: "16/10",
                 }}
               >
                 <img
-                  src="/assets/clt.jpg"
-                  alt="Contemporary khadi garment"
+                  src="/assets/homepage/WhatsApp Image 2026-10-05 at 2.27.02 PM.jpeg"
+                  alt="Modern direction of Sum"
                   style={{
                     width: "100%",
                     height: "100%",
@@ -1893,74 +2068,73 @@ export default function FabricClient() {
                 className="fab-block-title"
                 style={{
                   fontFamily: "serif",
-                  fontSize: "1.5rem",
+                  fontSize: "1.65rem",
                   color: "#1a140e",
-                  margin: "0 0 14px",
+                  margin: "0 0 12px",
+                  fontWeight: 600,
                 }}
               >
-                <AnimatedWords text="How Khadi Is Evolving Today" />
+                <AnimatedWords text="Khadi, Made for Now." />
               </h3>
               <p
                 style={{
-                  fontSize: "0.96rem",
-                  lineHeight: 1.7,
-                  color: "#55483d",
-                  marginBottom: 14,
-                }}
-              >
-                Khadi is no longer limited to traditional ceremonial wear. It is
-                changing — quietly:
-              </p>
-              <div
-                style={{
-                  fontSize: "0.92rem",
-                  lineHeight: 1.8,
-                  color: "#1a140e",
+                  fontSize: "1.06rem",
                   fontWeight: 600,
-                  marginBottom: 18,
+                  color: "#1a140e",
+                  margin: "0 0 8px",
                 }}
               >
-                <p style={{ margin: "4px 0" }}>
-                  ✦ Lighter weaves for everyday comfort
-                </p>
-                <p style={{ margin: "4px 0" }}>
-                  ✦ Softer finishes for modern use
-                </p>
-                <p style={{ margin: "4px 0" }}>
-                  ✦ Contemporary silhouettes and cuts
-                </p>
-                <p style={{ margin: "4px 0" }}>
-                  ✦ Neutral tones and minimal aesthetics
-                </p>
-              </div>
-              <div
+                Lighter. Softer. Easier to wear.
+              </p>
+              <p
                 style={{
-                  borderTop: "1px solid rgba(44,32,22,0.1)",
-                  paddingTop: 14,
-                  fontSize: "0.94rem",
-                  color: "#443528",
-                  lineHeight: 1.65,
+                  fontSize: "0.98rem",
+                  lineHeight: 1.7,
+                  color: "#4a3c30",
+                  margin: "0 0 16px",
                 }}
               >
-                At Sum Clothico, this is where we come in. We take a fabric with
-                history and design it for how women live today. Not heavy. Not
-                complicated. Just easy to wear, every day.
-              </div>
+                Traditional craft, shaped for everyday wardrobes.
+              </p>
+              <p
+                style={{
+                  fontFamily: "serif",
+                  fontStyle: "italic",
+                  fontSize: "1.1rem",
+                  color: "#660608",
+                  margin: "auto 0 0",
+                  fontWeight: 600,
+                }}
+              >
+                That’s where Sum comes in.
+              </p>
             </div>
 
-            <div className="fab-evolve-col" style={{ borderLeft: "2.5px solid #660608", paddingLeft: 22 }}>
+            {/* Right Card: Everyday Relevance */}
+            <div
+              className="fab-evolve-col"
+              style={{
+                background: "#FAF6F0",
+                borderRadius: 16,
+                padding: "28px 24px",
+                border: "1px solid rgba(44, 32, 22, 0.12)",
+                boxShadow: "0 8px 24px -10px rgba(44, 32, 22, 0.08)",
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
               <div
                 style={{
                   borderRadius: 12,
                   overflow: "hidden",
                   border: "1px solid rgba(44, 32, 22, 0.14)",
-                  marginBottom: 16,
-                  aspectRatio: "16/9",
+                  marginBottom: 18,
+                  aspectRatio: "16/10",
                 }}
               >
                 <img
-                  src="/assets/chakra.jpg"
-                  alt="Khadi being worn in everyday life"
+                  src="/assets/homepage/WhatsApp Image 2026-10-05 at 2.13.56 PM.jpeg"
+                  alt="Everyday relevance of Khadi"
                   style={{
                     width: "100%",
                     height: "100%",
@@ -1986,60 +2160,42 @@ export default function FabricClient() {
                 className="fab-block-title"
                 style={{
                   fontFamily: "serif",
-                  fontSize: "1.5rem",
+                  fontSize: "1.65rem",
                   color: "#1a140e",
-                  margin: "0 0 14px",
+                  margin: "0 0 12px",
+                  fontWeight: 600,
                 }}
               >
-                <AnimatedWords text="Why People Choose Khadi Today" />
+                <AnimatedWords text="Why Choose Khadi Today?" />
               </h3>
               <p
                 style={{
-                  fontSize: "0.96rem",
-                  lineHeight: 1.7,
-                  color: "#55483d",
-                  marginBottom: 14,
-                }}
-              >
-                Not because it is traditional. But because it feels right:
-              </p>
-              <div
-                style={{
-                  padding: "10px 0",
-                  marginBottom: 12,
+                  fontSize: "1.06rem",
                   fontWeight: 600,
-                  color: "#660608",
-                  fontSize: "0.92rem",
+                  color: "#1a140e",
+                  margin: "0 0 12px",
+                  lineHeight: 1.6,
                 }}
               >
-                <p style={{ margin: "3px 0" }}>✓ On your skin</p>
-                <p style={{ margin: "3px 0" }}>✓ In your lifestyle</p>
-                <p style={{ margin: "3px 0" }}>✓ In your conscious choices</p>
-              </div>
-              <div
+                For how it feels. How it breathes. And how it’s made.
+              </p>
+              <p
                 style={{
-                  fontSize: "0.92rem",
-                  lineHeight: 1.7,
-                  color: "#55483d",
+                  fontFamily: "serif",
+                  fontStyle: "italic",
+                  fontSize: "1.1rem",
+                  color: "#660608",
+                  margin: "auto 0 0",
+                  fontWeight: 600,
                 }}
               >
-                <p style={{ margin: "0 0 6px" }}>
-                  ✦ A conscious choice towards nature — processing does not
-                  require litres of industrial water.
-                </p>
-                <p style={{ margin: "0 0 6px" }}>
-                  ✦ Used for centuries, originated and proudly Indian.
-                </p>
-                <p style={{ margin: 0 }}>
-                  ✦ Made to be rough and tough — it will never make you feel
-                  guilty of not giving too much attention.
-                </p>
-              </div>
+                Rooted in craft. Relevant to everyday life.
+              </p>
             </div>
           </div>
         </section>
 
-        {/* ─── AUTHENTICITY + IMAGE (Left text, Right image) ─── */}
+        {/* ─── AUTHENTICITY (SLIDE 3) ─── */}
         <section
           className="fab-anim-block"
           style={{
@@ -2054,7 +2210,7 @@ export default function FabricClient() {
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-              gap: 56,
+              gap: 48,
               alignItems: "center",
             }}
           >
@@ -2071,58 +2227,34 @@ export default function FabricClient() {
                   fontSize: "clamp(1.9rem, 3.2vw, 2.6rem)",
                   color: "#1a140e",
                   margin: "0 0 18px",
+                  lineHeight: 1.25,
                 }}
               >
                 <AnimatedWords text="We care about what happens behind the label." />
               </h2>
               <div
                 style={{
-                  fontSize: "1.03rem",
+                  fontSize: "1.08rem",
                   lineHeight: 1.85,
                   color: "#443528",
                 }}
               >
-                <div className="fab-text-item">
-                  <p style={{ marginBottom: 14 }}>
-                    &quot;Handwoven&quot; tells you something about how a textile
-                    is made. But we want to know more.
-                  </p>
-                </div>
-                <div
+                <p className="fab-text-item" style={{ marginBottom: 16 }}>
+                  Where it comes from. Who made it. How it was made.
+                </p>
+                <p
                   className="fab-text-item"
                   style={{
-                    borderLeft: "2.5px solid #660608",
-                    paddingLeft: 18,
-                    margin: "18px 0",
-                    color: "#1a140e",
+                    fontStyle: "italic",
+                    fontFamily: "serif",
+                    fontSize: "1.18rem",
+                    color: "#660608",
+                    margin: "20px 0 0",
                     fontWeight: 600,
                   }}
                 >
-                  <p style={{ margin: "5px 0" }}>✦ Where did it come from?</p>
-                  <p style={{ margin: "5px 0" }}>✦ Who made it?</p>
-                  <p style={{ margin: "5px 0" }}>
-                    ✦ What kind of loom was used?
-                  </p>
-                  <p style={{ margin: "5px 0" }}>
-                    ✦ What does the region do differently?
-                  </p>
-                  <p style={{ margin: "5px 0" }}>
-                    ✦ What can we learn from it?
-                  </p>
-                </div>
-                <div className="fab-text-item">
-                  <p
-                    style={{
-                      fontStyle: "italic",
-                      fontFamily: "serif",
-                      fontSize: "1.18rem",
-                      color: "#660608",
-                      margin: "20px 0 0",
-                    }}
-                  >
-                    That&apos;s the journey Sum is beginning.
-                  </p>
-                </div>
+                  Because “handwoven” should tell a story, not just sit on a label.
+                </p>
               </div>
             </div>
             <div
@@ -2136,110 +2268,15 @@ export default function FabricClient() {
               }}
             >
               <img
-                src="/assets/wev.jpg"
-                alt="Handloom weavers at work"
+                src="/assets/homepage/IMG_1048.JPG"
+                alt="Authentic handwoven craft"
                 style={{ width: "100%", height: "100%", objectFit: "cover" }}
               />
             </div>
           </div>
         </section>
 
-        {/* ─── BEYOND KHADI + IMAGE (Right text, Left image) ─── */}
-        <section
-          className="fab-anim-block"
-          style={{
-            maxWidth: 1080,
-            margin: "0 auto 80px",
-            padding: "0 clamp(24px, 4vw, 56px)",
-            position: "relative",
-            zIndex: 2,
-          }}
-        >
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-              gap: 56,
-              alignItems: "center",
-            }}
-          >
-            {/* Image first on desktop */}
-            <div
-              className="fab-image-reveal"
-              style={{
-                borderRadius: 16,
-                overflow: "hidden",
-                aspectRatio: "4/3",
-                background: "#e8dfd0",
-                border: "1px solid rgba(44, 32, 22, 0.12)",
-                order: 0,
-              }}
-            >
-              <img
-                src="/assets/han.jpg"
-                alt="Indian handloom textile traditions"
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
-              />
-            </div>
-            <div style={{ order: 0 }}>
-              <div className="fab-block-badge">
-                <IndianArchBadge style={{ marginBottom: "14px" }}>
-                  Expansion
-                </IndianArchBadge>
-              </div>
-              <h2
-                className="fab-block-title"
-                style={{
-                  fontFamily: "serif",
-                  fontSize: "clamp(1.8rem, 3vw, 2.5rem)",
-                  color: "#1a140e",
-                  margin: "0 0 18px",
-                }}
-              >
-                <AnimatedWords text="This is our first chapter, not the whole story." />
-              </h2>
-              <div
-                style={{
-                  fontSize: "1.03rem",
-                  lineHeight: 1.85,
-                  color: "#443528",
-                }}
-              >
-                <div className="fab-text-item">
-                  <p style={{ marginBottom: 12 }}>
-                    We&apos;re exploring handwoven textiles across India.
-                  </p>
-                  <p style={{ marginBottom: 12 }}>
-                    Different regions. Different fibres. Different techniques.
-                    Different stories.
-                  </p>
-                </div>
-                <div className="fab-text-item">
-                  <p style={{ marginBottom: 20 }}>
-                    We don&apos;t want to collect textiles simply to add more
-                    names to a product description. We want to understand them
-                    first.
-                  </p>
-                  <p
-                    style={{
-                      fontWeight: 600,
-                      color: "#660608",
-                      margin: 0,
-                      fontStyle: "italic",
-                      fontFamily: "serif",
-                      fontSize: "1.18rem",
-                    }}
-                  >
-                    And when we find something worth bringing home, we&apos;ll
-                    tell you where it came from.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ─── SOURCING APPROACH — Full-width editorial with background strip + image ─── */}
+        {/* ─── GROUND TRUTH (SLIDE 4) ─── */}
         <section
           className="fab-anim-block"
           style={{ position: "relative", zIndex: 2, marginBottom: 80 }}
@@ -2251,7 +2288,7 @@ export default function FabricClient() {
               padding: "0 clamp(24px, 4vw, 56px)",
               display: "grid",
               gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-              gap: 56,
+              gap: 52,
               alignItems: "center",
             }}
           >
@@ -2268,39 +2305,23 @@ export default function FabricClient() {
                   fontSize: "clamp(1.9rem, 3.2vw, 2.6rem)",
                   color: "#1a140e",
                   margin: "0 0 18px",
+                  lineHeight: 1.25,
                 }}
               >
-                <AnimatedWords text="Go there. Look closely. Ask questions." />
+                <AnimatedWords text="Some stories are better seen up close." />
               </h2>
               <div
                 style={{
-                  fontSize: "1.03rem",
+                  fontSize: "1.08rem",
                   lineHeight: 1.85,
                   color: "#443528",
                   marginBottom: 28,
                 }}
               >
-                <div className="fab-text-item">
-                  <p style={{ marginBottom: 10 }}>
-                    Whenever possible, we want our sourcing journey to begin with
-                    curiosity rather than a catalogue.
-                  </p>
-                  <p style={{ marginBottom: 10 }}>
-                    To visit places. Meet makers. Understand the textile. Learn
-                    what makes it special.
-                  </p>
-                </div>
-                <div className="fab-text-item">
-                  <p
-                    style={{
-                      fontWeight: 600,
-                      color: "#1a140e",
-                      margin: "0 0 28px",
-                    }}
-                  >
-                    And build relationships that go beyond a transaction.
-                  </p>
-                </div>
+                <p className="fab-text-item" style={{ margin: 0 }}>
+                  We’re following fabrics back to the places, people and processes
+                  behind them.
+                </p>
               </div>
               <div className="fab-pill-anim" style={{ display: "inline-block" }}>
                 <Link
@@ -2320,7 +2341,7 @@ export default function FabricClient() {
                     textDecoration: "none",
                   }}
                 >
-                  <span>Follow Our Journey</span>
+                  <span>Read from the Journal</span>
                   <FiArrowRight />
                 </Link>
               </div>
@@ -2337,8 +2358,8 @@ export default function FabricClient() {
                 }}
               >
                 <img
-                  src="/assets/chakra.jpg"
-                  alt="Charkha spinning wheel — the heart of Khadi"
+                  src="/assets/homepage/WhatsApp Image 2026-10-05 at 8.59.27 PM.jpeg"
+                  alt="Ground truth artisan craft"
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
               </div>
@@ -2353,8 +2374,8 @@ export default function FabricClient() {
                 }}
               >
                 <img
-                  src="/assets/ctn.jpg"
-                  alt="Raw cotton ready for spinning"
+                  src="/assets/homepage/WhatsApp Image 2026-10-05 at 2.14.11 PM (1).jpeg"
+                  alt="Ground truth close up"
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
               </div>
@@ -2362,7 +2383,7 @@ export default function FabricClient() {
           </div>
         </section>
 
-        {/* ─── FINAL SECTION (ASTAKA PLACARD FRAMED BANNER) ─── */}
+        {/* ─── FINAL CLOSING BANNER (SLIDE 4) ─── */}
         <section
           className="fab-anim-block fab-placard-anim"
           style={{
@@ -2415,10 +2436,10 @@ export default function FabricClient() {
                 fontFamily: "serif",
                 fontSize: "clamp(2rem, 3.8vw, 3rem)",
                 color: "#1a140e",
-                margin: "0 0 24px",
+                margin: "0 0 28px",
               }}
             >
-              <AnimatedWords text="The cloth has a story. We want you to know it." />
+              <AnimatedWords text="Know the cloth. Make it yours." />
             </h2>
             <div
               style={{
@@ -2435,7 +2456,7 @@ export default function FabricClient() {
                     display: "inline-flex",
                     alignItems: "center",
                     gap: 8,
-                    padding: "15px 30px",
+                    padding: "14px 28px",
                     borderRadius: 99,
                     background: "#660608",
                     color: "#FAF6F0",
@@ -2447,7 +2468,7 @@ export default function FabricClient() {
                   }}
                 >
                   <FiShoppingBag size={16} />
-                  <span>Explore Pieces Made From It</span>
+                  <span>Shop</span>
                 </Link>
               </div>
               <div className="fab-pill-anim">
@@ -2457,7 +2478,7 @@ export default function FabricClient() {
                     display: "inline-flex",
                     alignItems: "center",
                     gap: 8,
-                    padding: "15px 30px",
+                    padding: "14px 28px",
                     borderRadius: 99,
                     background: "transparent",
                     color: "#1a140e",
@@ -2470,7 +2491,30 @@ export default function FabricClient() {
                   }}
                 >
                   <FiBookOpen size={16} />
-                  <span>Read The Journal</span>
+                  <span>Journal</span>
+                </Link>
+              </div>
+              <div className="fab-pill-anim">
+                <Link
+                  href="/our-story"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 8,
+                    padding: "14px 28px",
+                    borderRadius: 99,
+                    background: "transparent",
+                    color: "#660608",
+                    border: "1.5px solid #660608",
+                    fontWeight: 800,
+                    fontSize: "0.82rem",
+                    letterSpacing: "0.12em",
+                    textTransform: "uppercase",
+                    textDecoration: "none",
+                  }}
+                >
+                  <span>Follow</span>
+                  <FiArrowRight size={15} />
                 </Link>
               </div>
             </div>

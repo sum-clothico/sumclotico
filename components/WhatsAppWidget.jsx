@@ -48,14 +48,15 @@ export default function WhatsAppWidget() {
 
   return (
     <div
+      className="whatsapp-widget-container"
       style={{
         position: "fixed",
-        bottom: 24,
-        left: 24,
+        bottom: 20,
+        right: 20,
         zIndex: 998,
         display: "flex",
         flexDirection: "column",
-        alignItems: "flex-start",
+        alignItems: "flex-end",
         gap: 8,
       }}
     >
