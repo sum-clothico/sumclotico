@@ -1,11 +1,10 @@
-import React, { useLayoutEffect, useRef } from "react";
+import React, { useLayoutEffect, useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "../app/styles/traveling-image.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const TEXT_SCROLL_DISTANCE = 400;
 const TOTAL_PIN_DISTANCE = 1300;
 const STORY_PIN = 1400;
 
@@ -19,7 +18,7 @@ const SPLIT_IMAGES = [
 const TravelingImage = () => {
   const containerRef = useRef(null);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const el = containerRef.current;
     const originalParent = el?.parentElement;
     const hWords = document.querySelector(".horizontal-words-section");
@@ -34,11 +33,11 @@ const TravelingImage = () => {
 
     gsap.set(el, {
       opacity: 0,
-      scale: 0.85,
+      scale: 1,
       xPercent: -50,
       yPercent: -50,
       left: "50%",
-      top: "58%",
+      top: "57%",
     });
     el.classList.add("ti-ready");
 
@@ -48,90 +47,96 @@ const TravelingImage = () => {
         trigger: hWords,
         start: "top top",
         end: `+=${TOTAL_PIN_DISTANCE}`,
-        scrub: 1,
+        scrub: true,
       },
     });
     triggers.push(fadeInTl.scrollTrigger);
-    fadeInTl.to({}, { duration: TEXT_SCROLL_DISTANCE });
+    fadeInTl.to({}, { duration: 150 });
     fadeInTl.to(el, {
       opacity: 1,
       scale: 1,
-      duration: TOTAL_PIN_DISTANCE - TEXT_SCROLL_DISTANCE,
-      ease: "power3.out",
+      duration: TOTAL_PIN_DISTANCE - 150,
+      ease: "power2.out",
     });
 
     const hFrame = hWords.querySelector(".section-frame-path");
     if (hFrame) {
-      const len = hFrame.getTotalLength();
+      const len = hFrame.getTotalLength ? hFrame.getTotalLength() : 1100;
       gsap.set(hFrame, { strokeDasharray: len, strokeDashoffset: len });
       fadeInTl.to(
         hFrame,
         {
           strokeDashoffset: 0,
           ease: "power2.inOut",
-          duration: TOTAL_PIN_DISTANCE - TEXT_SCROLL_DISTANCE,
+          duration: TOTAL_PIN_DISTANCE - 150,
         },
         "<",
       );
     }
 
     // ═══ PHASE 1 — Travel to StorySection ═══
+    // Both sections share frame position at left: 50%, top: 57%
     const travelToStoryTl = gsap.timeline({
       scrollTrigger: {
         trigger: storySection,
-        start: "top 40%",
+        start: "top bottom",
         end: "top top",
-        scrub: 1.5,
+        scrub: true,
       },
     });
     triggers.push(travelToStoryTl.scrollTrigger);
-    travelToStoryTl.fromTo(
-      el,
-      { left: "50%", top: "58%", scale: 1 },
-      {
-        left: "50%",
-        top: "56%",
-        scale: 1,
-        duration: 1,
-        ease: "expo.inOut",
-      },
-    );
+    travelToStoryTl.to(el, {
+      left: "50%",
+      top: "57%",
+      scale: 1,
+      duration: 1,
+      ease: "none",
+    });
 
-    // ═══ PHASE 2 — Curtain reveal in StorySection ═══
+    // ═══ PHASE 2 — 3-Curtain reveal in StorySection ═══
     const curtain0 = el.querySelector(".curtain-0");
     const curtain1 = el.querySelector(".curtain-1");
+    const curtain2 = el.querySelector(".curtain-2");
 
     const splitTl = gsap.timeline({
       scrollTrigger: {
         trigger: storySection,
         start: "top top",
         end: `+=${STORY_PIN}`,
-        scrub: 1,
+        scrub: true,
       },
     });
     triggers.push(splitTl.scrollTrigger);
 
-    gsap.set([curtain0, curtain1], { clipPath: "inset(0% 0% 0% 0%)" });
-    splitTl.to({}, { duration: 0.3 });
+    gsap.set([curtain0, curtain1, curtain2], {
+      clipPath: "inset(0% 0% 0% 0%)",
+    });
+
+    // Phase 1 hold on IMG_1048.JPG
+    splitTl.to({}, { duration: 0.28 });
     if (curtain0) {
       splitTl.to(curtain0, {
         clipPath: "inset(100% 0% 0% 0%)",
-        duration: 0.35,
-        ease: "expo.inOut",
-      });
-    }
-    splitTl.to({}, { duration: 0.3 });
-    if (curtain1) {
-      splitTl.to(curtain1, {
-        clipPath: "inset(100% 0% 0% 0%)",
-        duration: 0.35,
-        ease: "expo.inOut",
+        duration: 0.12,
+        ease: "power2.inOut",
       });
     }
 
+    // Phase 2 hold on 14887305-5caf-4e77-b3fa-c79443ced34b.png
+    splitTl.to({}, { duration: 0.25 });
+    if (curtain1) {
+      splitTl.to(curtain1, {
+        clipPath: "inset(100% 0% 0% 0%)",
+        duration: 0.12,
+        ease: "power2.inOut",
+      });
+    }
+
+    // Phase 3 hold on IMG_0110.jpg
+    splitTl.to({}, { duration: 0.23 });
+
     // ═══ PHASE 3 — Travel through all split sections, swap image ═══
     const splitImgs = el.querySelectorAll(".ti-split");
-    // hide all via clip — base image shows through until first section
     gsap.set(splitImgs, { clipPath: "inset(100% 0% 0% 0%)" });
 
     splitSections.forEach((section, i) => {
@@ -144,15 +149,16 @@ const TravelingImage = () => {
           : splitSections[i - 1].classList.contains("split-section--reversed")
             ? "82%"
             : "18%";
-      const prevTop = i === 0 ? "50%" : "30%";
-      const prevScale = i === 0 ? 1 : 1.02;
+      const prevTop = i === 0 ? "57%" : "38%";
+      const prevScale = 1;
 
+      // Moves promptly as section enters viewport so it arrives right into frame
       const travelTl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
-          start: "top top",
-          end: "top -40%",
-          scrub: 1.5,
+          start: "top 90%",
+          end: "top 15%",
+          scrub: true,
         },
       });
       triggers.push(travelTl.scrollTrigger);
@@ -161,40 +167,45 @@ const TravelingImage = () => {
         { left: prevLeft, top: prevTop, scale: prevScale },
         {
           left: targetLeft,
-          top: "30%",
-          scale: 1.02,
+          top: "38%",
+          scale: 1,
           duration: 1,
-          ease: "expo.inOut",
+          ease: "power2.inOut",
         },
       );
 
       const frame = section.querySelector(".section-frame-path");
       if (frame) {
-        const len = frame.getTotalLength();
+        const len = frame.getTotalLength ? frame.getTotalLength() : 1100;
         gsap.set(frame, { strokeDasharray: len, strokeDashoffset: len });
-        travelTl.to(
-          frame,
-          { strokeDashoffset: 0, ease: "power2.inOut", duration: 1 },
-          0,
-        );
+        const frameSt = ScrollTrigger.create({
+          trigger: section,
+          start: "top 75%",
+          end: "top 25%",
+          scrub: true,
+          onUpdate: (self) => {
+            gsap.set(frame, { strokeDashoffset: len * (1 - self.progress) });
+          },
+        });
+        triggers.push(frameSt);
       }
 
-      // curtain reveal — same as Showreel split animation
+      // Smooth curtain reveal for single dress images
       const imgSt = ScrollTrigger.create({
         trigger: section,
         start: "top 60%",
         onEnter: () => {
           gsap.to(splitImgs[i], {
             clipPath: "inset(0% 0% 0% 0%)",
-            duration: 0.7,
-            ease: "expo.inOut",
+            duration: 0.6,
+            ease: "expo.out",
           });
         },
         onLeaveBack: () => {
           gsap.to(splitImgs[i], {
             clipPath: "inset(100% 0% 0% 0%)",
-            duration: 0.5,
-            ease: "expo.inOut",
+            duration: 0.4,
+            ease: "expo.in",
           });
         },
       });
@@ -228,6 +239,7 @@ const TravelingImage = () => {
       },
     });
     triggers.push(lockST);
+    ScrollTrigger.refresh();
 
     return () => {
       triggers.forEach((st) => st && st.kill());
@@ -239,16 +251,20 @@ const TravelingImage = () => {
 
   return (
     <div ref={containerRef} className="traveling-image">
-      <img
-        className="traveling-image__base"
-        src="/assets/img/12.png"
-        alt="Khadi Product"
-      />
+      <div className="traveling-image__curtain curtain-2">
+        <img
+          src="/assets/homepage/IMG_0110.jpg"
+          alt="Handcrafted Khadi Texture"
+        />
+      </div>
       <div className="traveling-image__curtain curtain-1">
-        <img src="/assets/khadi.jpg" alt="" />
+        <img
+          src="/assets/homepage/14887305-5caf-4e77-b3fa-c79443ced34b.png"
+          alt="Weaving Process"
+        />
       </div>
       <div className="traveling-image__curtain curtain-0">
-        <img src="/assets/fabric.jpg" alt="" />
+        <img src="/assets/homepage/IMG_1048.JPG" alt="Khadi Artisan Craft" />
       </div>
       {SPLIT_IMAGES.map((src, i) => (
         <img key={i} className="ti-split" src={src} alt="" />

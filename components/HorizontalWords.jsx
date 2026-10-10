@@ -27,9 +27,40 @@ export default function HorizontalWords() {
         end: () => `+=${TOTAL_PIN_DISTANCE}`,
         pin: true,
         pinSpacing: true,
+        anticipatePin: 1,
+        preventOverlaps: true,
         invalidateOnRefresh: true,
         refreshPriority: 2,
       });
+
+      // Fade out editorial content & frame cleanly before unpinning to avoid collision with next section
+      if (content) {
+        gsap.to(content, {
+          opacity: 0,
+          y: -25,
+          ease: "power2.inOut",
+          scrollTrigger: {
+            trigger: container,
+            start: () => `top+=${TOTAL_PIN_DISTANCE - 240} top`,
+            end: () => `top+=${TOTAL_PIN_DISTANCE} top`,
+            scrub: true,
+          },
+        });
+      }
+
+      const hFrameSvg = container.querySelector(".horizontal-words__frame");
+      if (hFrameSvg) {
+        gsap.to(hFrameSvg, {
+          opacity: 0,
+          ease: "power2.inOut",
+          scrollTrigger: {
+            trigger: container,
+            start: () => `top+=${TOTAL_PIN_DISTANCE - 240} top`,
+            end: () => `top+=${TOTAL_PIN_DISTANCE} top`,
+            scrub: true,
+          },
+        });
+      }
 
       // Frame stroke animation
       const hFrame = container.querySelector(".section-frame-path");

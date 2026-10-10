@@ -155,9 +155,9 @@
 }
 
 .split-section--reversed .split-section__frame {
-  left: auto;
-  right: 18%;
-  transform: translate(50%, -50%);
+  left: 82%;
+  right: auto;
+  transform: translate(-50%, -50%);
 }
 
 .split-section--reversed .split-section__model {

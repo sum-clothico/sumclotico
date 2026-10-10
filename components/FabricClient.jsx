@@ -378,48 +378,27 @@ export default function FabricClient() {
             <div
               className="fab-hero-visual"
               style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: 12,
+                maxWidth: 480,
+                width: "100%",
+                margin: "0 auto",
               }}
             >
               <div
                 className="fab-image-reveal"
                 style={{
-                  borderRadius: 14,
+                  borderRadius: 18,
                   overflow: "hidden",
-                  border: "1px solid rgba(44, 32, 22, 0.14)",
-                  boxShadow: "0 18px 40px -14px rgba(44, 32, 22, 0.18)",
+                  border: "1px solid rgba(44, 32, 22, 0.16)",
+                  boxShadow: "0 22px 48px -16px rgba(44, 32, 22, 0.22)",
+                  aspectRatio: "4/5",
                 }}
               >
                 <img
-                  src="/assets/chakra.jpg"
-                  alt="Woman spinning yarn on charkha"
+                  src="/assets/homepage/WhatsApp Image 2026-10-05 at 2.14.11 PM (4).jpeg"
+                  alt="Sum Clothico Handwoven Craft"
                   style={{
                     width: "100%",
                     height: "100%",
-                    aspectRatio: "3/4",
-                    objectFit: "cover",
-                    display: "block",
-                  }}
-                />
-              </div>
-              <div
-                className="fab-image-reveal"
-                style={{
-                  borderRadius: 14,
-                  overflow: "hidden",
-                  border: "1px solid rgba(44, 32, 22, 0.14)",
-                  boxShadow: "0 18px 40px -14px rgba(44, 32, 22, 0.18)",
-                }}
-              >
-                <img
-                  src="/assets/han.jpg"
-                  alt="Hands weaving khadi on loom"
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    aspectRatio: "3/4",
                     objectFit: "cover",
                     display: "block",
                   }}
@@ -543,15 +522,19 @@ export default function FabricClient() {
               style={{
                 borderRadius: 16,
                 overflow: "hidden",
-                aspectRatio: "4/3",
+                aspectRatio: "4/5",
+                maxWidth: 460,
+                width: "100%",
+                margin: "0 auto",
                 background: "#e8dfd0",
                 border: "1px solid rgba(44, 32, 22, 0.12)",
+                boxShadow: "0 18px 45px -14px rgba(44, 32, 22, 0.16)",
               }}
             >
               <img
-                src="/assets/chakra.jpg"
+                src="/assets/homepage/WhatsApp Image 2026-10-05 at 8.56.14 PM.jpeg"
                 alt="Khadi Handspun Cotton Weave"
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
               />
             </div>
           </div>
@@ -1574,8 +1557,8 @@ export default function FabricClient() {
                 }}
               >
                 <img
-                  src="/assets/chakra.jpg"
-                  alt="Woman spinning on traditional charkha"
+                  src="/assets/homepage/Airy - 1.png"
+                  alt="Airy Khadi Texture 1"
                   style={{
                     width: "100%",
                     aspectRatio: "4/3",
@@ -1592,8 +1575,8 @@ export default function FabricClient() {
                 }}
               >
                 <img
-                  src="/assets/ctn.jpg"
-                  alt="Raw handspun cotton bolls"
+                  src="/assets/homepage/Airy - 2.png"
+                  alt="Airy Khadi Texture 2"
                   style={{
                     width: "100%",
                     aspectRatio: "4/3",
@@ -1610,8 +1593,8 @@ export default function FabricClient() {
                 }}
               >
                 <img
-                  src="/assets/han.jpg"
-                  alt="Hands weaving on traditional pit loom"
+                  src="/assets/homepage/Airy - 3.png"
+                  alt="Airy Khadi Texture 3"
                   style={{
                     width: "100%",
                     aspectRatio: "4/3",
@@ -1808,8 +1791,8 @@ export default function FabricClient() {
                 }}
               >
                 <img
-                  src="/assets/han.jpg"
-                  alt="Hands weaving khadi on wooden pit loom"
+                  src="/assets/homepage/IMG_9011.jpg"
+                  alt="Why we chose Khadi texture"
                   style={{
                     width: "100%",
                     aspectRatio: "4/5",
@@ -1973,8 +1956,8 @@ export default function FabricClient() {
               }}
             >
               <img
-                src="/assets/wev.jpg"
-                alt="Artisan at wooden pit loom"
+                src="/assets/homepage/WhatsApp Image 2026-10-05 at 2.14.11 PM (3).jpeg"
+                alt="Conscious handloom making"
                 style={{
                   width: "100%",
                   height: "100%",
@@ -2056,8 +2039,8 @@ export default function FabricClient() {
                 }}
               >
                 <img
-                  src="/assets/ctn.jpg"
-                  alt="Raw handspun cotton yarn"
+                  src="/assets/homepage/WhatsApp Image 2026-10-05 at 2.27.02 PM.jpeg"
+                  alt="Modern direction of Sum"
                   style={{
                     width: "100%",
                     height: "100%",
@@ -2148,8 +2131,8 @@ export default function FabricClient() {
                 }}
               >
                 <img
-                  src="/assets/chakra.jpg"
-                  alt="Traditional charkha spinning"
+                  src="/assets/homepage/WhatsApp Image 2026-10-05 at 2.13.56 PM.jpeg"
+                  alt="Everyday relevance of Khadi"
                   style={{
                     width: "100%",
                     height: "100%",
@@ -2283,8 +2266,8 @@ export default function FabricClient() {
               }}
             >
               <img
-                src="/assets/wev.jpg"
-                alt="Handloom weaving in progress"
+                src="/assets/homepage/IMG_1048.JPG"
+                alt="Authentic handwoven craft"
                 style={{ width: "100%", height: "100%", objectFit: "cover" }}
               />
             </div>
@@ -2373,8 +2356,8 @@ export default function FabricClient() {
                 }}
               >
                 <img
-                  src="/assets/chakra.jpg"
-                  alt="Charkha spinning wheel"
+                  src="/assets/homepage/WhatsApp Image 2026-10-05 at 8.59.27 PM.jpeg"
+                  alt="Ground truth artisan craft"
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
               </div>
@@ -2389,8 +2372,8 @@ export default function FabricClient() {
                 }}
               >
                 <img
-                  src="/assets/ctn.jpg"
-                  alt="Raw cotton bolls ready for spinning"
+                  src="/assets/homepage/WhatsApp Image 2026-10-05 at 2.14.11 PM (1).jpeg"
+                  alt="Ground truth close up"
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
               </div>

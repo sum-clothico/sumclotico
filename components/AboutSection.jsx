@@ -20,68 +20,116 @@ export default function AboutSection() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      const lines = sectionRef.current.querySelectorAll(".about-line");
-
-      ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: "top top",
-        end: `+=${PIN_DISTANCE}`,
-        pin: true,
-        pinSpacing: true,
-      });
+      const section = sectionRef.current;
+      const lines = section.querySelectorAll(".about-line");
+      const subLabel = section.querySelector(".about-section__sub");
+      const card = section.querySelector(".about-section__card");
+      const cta = section.querySelector(".about-cta");
+      const ctaWords = section.querySelectorAll(".about-cta-word");
+      const ctaDesc = section.querySelector(".about-cta__desc");
+      const ctaBtns = section.querySelectorAll(".about-cta__btn");
 
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: sectionRef.current,
+          trigger: section,
           start: "top top",
           end: `+=${PIN_DISTANCE}`,
-          scrub: 1.5,
+          pin: true,
+          pinSpacing: true,
+          scrub: 1.2,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
         },
       });
 
-      const seg = 1 / LINES.length;
-
-      lines.forEach((line, i) => {
-        const start = i * seg;
+      // ─── Step 1: Reveal card manifesto lines ───
+      lines.forEach((line) => {
         tl.fromTo(
           line,
-          { opacity: 0, y: 28 },
-          { opacity: 1, y: 0, duration: seg * 0.5, ease: "power3.out" },
-          start,
+          { opacity: 0, y: 22 },
+          { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" },
         );
       });
 
-      const subLabel = sectionRef.current.querySelector(".about-section__sub");
       if (subLabel) {
         tl.fromTo(
           subLabel,
-          { opacity: 0, y: 18 },
-          { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" },
-          "-=0.2"
+          { opacity: 0, y: 16 },
+          { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" },
         );
       }
 
-      // Animate CTA fading in at the end
-      const cta = sectionRef.current.querySelector(".about-cta");
-      const ctaWords = sectionRef.current.querySelectorAll(".about-cta-word");
-      const ctaBtns = sectionRef.current.querySelectorAll(".about-cta__btn");
-      if (cta) {
+      // Hold reading time on card
+      tl.to({}, { duration: 0.6 });
+
+      // ─── Step 2: Smooth dissolve of card and reveal of centered brand ethos CTA ───
+      if (card && cta) {
+        tl.to(card, {
+          opacity: 0,
+          scale: 0.95,
+          y: -20,
+          duration: 0.5,
+          ease: "power2.inOut",
+        });
+
+        tl.fromTo(
+          cta,
+          { opacity: 0, scale: 0.95, y: 25 },
+          {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            duration: 0.5,
+            ease: "power2.out",
+            onStart: () => cta.classList.add("is-active"),
+            onReverseComplete: () => cta.classList.remove("is-active"),
+          },
+          "<+=0.15",
+        );
+
         if (ctaWords.length > 0) {
           tl.fromTo(
             ctaWords,
-            { y: "130%", rotate: 3, opacity: 0 },
-            { y: "0%", rotate: 0, opacity: 1, duration: 1.1, stagger: 0.06, ease: "power4.out" },
-            "+=0.05"
+            { y: "120%", rotate: 2, opacity: 0 },
+            {
+              y: "0%",
+              rotate: 0,
+              opacity: 1,
+              duration: 0.6,
+              stagger: 0.05,
+              ease: "power4.out",
+            },
+            "<+=0.1",
           );
         }
+
+        if (ctaDesc) {
+          tl.fromTo(
+            ctaDesc,
+            { opacity: 0, y: 14 },
+            { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" },
+            "-=0.2",
+          );
+        }
+
         if (ctaBtns.length > 0) {
           tl.fromTo(
             ctaBtns,
-            { opacity: 0, y: 22, scale: 0.94 },
-            { opacity: 1, y: 0, scale: 1, duration: 0.8, stagger: 0.12, ease: "back.out(1.4)" },
-            "-=0.5"
+            { opacity: 0, y: 18, scale: 0.94 },
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              duration: 0.5,
+              stagger: 0.1,
+              ease: "back.out(1.4)",
+            },
+            "-=0.25",
           );
         }
+
+        // Hold reading time on closing CTA
+        tl.to({}, { duration: 0.5 });
       }
     }, sectionRef);
 
@@ -231,6 +279,7 @@ export default function AboutSection() {
         </h2>
 
         <p
+          className="about-cta__desc"
           style={{
             fontSize: "clamp(0.95rem, 1.4vw, 1.12rem)",
             color: "#4a3c30",

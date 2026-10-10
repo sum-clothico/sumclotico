@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useStore } from "@/context/StoreContext";
-import { FiShoppingBag, FiCheck, FiX, FiChevronLeft, FiChevronRight, FiShield, FiTruck, FiRefreshCw } from "react-icons/fi";
+import { FiShoppingBag, FiCheck, FiX, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { trackViewItem, trackEvent } from "@/lib/analytics";
 
 const COLOR_HEX_MAP = {
@@ -759,39 +759,12 @@ export default function ProductQuickView() {
                 fontWeight: 700,
                 color: "#111111",
                 textDecoration: "underline",
-                marginBottom: 16,
+                marginBottom: 6,
                 cursor: "pointer",
               }}
             >
               View Full Product Details &amp; Specifications →
             </Link>
-
-            {/* Assurance Badges */}
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr 1fr",
-                gap: 10,
-                borderTop: "1px solid #f3f4f6",
-                paddingTop: 16,
-                fontSize: 11,
-                color: "#6b7280",
-                textAlign: "center",
-              }}
-            >
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-                <FiTruck size={16} color="#111827" />
-                <span>Free Shipping ₹1,999+</span>
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-                <FiRefreshCw size={16} color="#111827" />
-                <span>7-Day Returns</span>
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-                <FiShield size={16} color="#111827" />
-                <span>Cashfree Encrypted</span>
-              </div>
-            </div>
           </div>
         </div>
       </div>

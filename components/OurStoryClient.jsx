@@ -66,20 +66,48 @@ function AstakaCardSvg({ fill = "#EDE8DC" }) {
 }
 
 const BELIEF_PAIRS = [
-  { num: "01", left: "Room", right: "Restriction" },
-  { num: "02", left: "Function", right: "Fuss" },
-  { num: "03", left: "Personality", right: "Template" },
-  { num: "04", left: "Repeat", right: "Replace" },
+  { left: "Room", right: "Restriction" },
+  { left: "Function", right: "Fuss" },
+  { left: "Personality", right: "Template" },
+  { left: "Repeat", right: "Replace" },
 ];
 
-const JOURNEY_STEPS = [
-  { label: "Fibre", image: "/assets/ctn.jpg", caption: "Raw cotton, straight from the land." },
-  { label: "Artisan", image: "/assets/chakra.jpg", caption: "Hands at the charkha, spinning yarn." },
-  { label: "Fabric", image: "/assets/wev.jpg", caption: "Yarn becomes cloth on the pit loom." },
-  { label: "Design", image: "/assets/fabric.jpg", caption: "Cloth meets pattern — shape begins." },
-  { label: "Tailor", image: "/assets/clt.jpg", caption: "Measuring, cutting, stitching, finishing." },
-  { label: "Garment", image: "/assets/khadi.jpg", caption: "A finished Sum piece, ready to live in." },
-  { label: "You", image: "/assets/han.jpg", caption: "It becomes yours when you wear it your way." },
+const JOURNEY = [
+  {
+    label: "SPUN",
+    image: "/assets/homepage/14887305-5caf-4e77-b3fa-c79443ced34b.png",
+    caption: "Yarn by hand on the charkha.",
+  },
+  {
+    label: "WOVEN",
+    image: "/assets/khadi.jpg",
+    caption: "Pit loom. Human rhythm.",
+  },
+  {
+    label: "SOURCED",
+    image: "/assets/homepage/IMG_3721.JPG",
+    caption: "Cloth chosen with care.",
+  },
+  {
+    label: "DESIGNED",
+    image: "/assets/homepage/IMG_5069%20(1).JPG",
+    caption: "Easy silhouettes, honest cuts.",
+  },
+  {
+    label: "CUT",
+    image: "/assets/homepage/c6aa1e50-2390-4fe4-b79e-fcf044fe17ca.jpg",
+    caption: "Measured and shaped by hand.",
+  },
+  {
+    label: "STITCHED",
+    image: "/assets/homepage/IMG_7669.JPG",
+    caption: "Women tailors, piece by piece.",
+  },
+  {
+    label: "WORN",
+    image: "/assets/homepage/IMG_1046.JPG",
+    caption: "Then it becomes yours.",
+  },
 ];
 
 export default function OurStoryClient() {
@@ -89,7 +117,7 @@ export default function OurStoryClient() {
 
   useEffect(() => {
     const id = setInterval(() => {
-      setJourneyIdx((i) => (i + 1) % JOURNEY_STEPS.length);
+      setJourneyIdx((i) => (i + 1) % JOURNEY.length);
     }, 2400);
     return () => clearInterval(id);
   }, []);
@@ -97,7 +125,7 @@ export default function OurStoryClient() {
   useEffect(() => {
     const bId = setInterval(() => {
       setBeliefIdx((i) => (i + 1) % BELIEF_PAIRS.length);
-    }, 2600);
+    }, 2400);
     return () => clearInterval(bId);
   }, []);
 
@@ -430,7 +458,7 @@ export default function OurStoryClient() {
                 }}
               >
                 <img
-                  src="/assets/khadi.jpg"
+                  src="/assets/homepage/WhatsApp Image 2026-10-05 at 2.13.53 PM.jpeg"
                   alt="Sum Clothico Handwoven Textile"
                   className="os-image-hover"
                   style={{
@@ -758,10 +786,22 @@ export default function OurStoryClient() {
           }}
         >
           {[
-            { src: "/assets/chakra.jpg", tag: "Spinner" },
-            { src: "/assets/wev.jpg", tag: "Weaver" },
-            { src: "/assets/ctn.jpg", tag: "Tailor" },
-            { src: "/assets/han.jpg", tag: "Wearer" },
+            {
+              src: "/assets/homepage/14887305-5caf-4e77-b3fa-c79443ced34b.png",
+              tag: "Spinner",
+            },
+            {
+              src: "/assets/homepage/IMG_3720.JPG",
+              tag: "Weaver",
+            },
+            {
+              src: "/assets/homepage/c6aa1e50-2390-4fe4-b79e-fcf044fe17ca.jpg",
+              tag: "Tailor",
+            },
+            {
+              src: "/assets/homepage/WhatsApp Image 2026-10-05 at 2.13.58 PM (1).jpeg",
+              tag: "Wearer",
+            },
           ].map((img) => (
             <div
               key={img.tag}
@@ -883,8 +923,8 @@ export default function OurStoryClient() {
               }}
             >
               <img
-                src="/assets/wev.jpg"
-                alt="Weaver on handloom"
+                src="/assets/homepage/IMG_1046.JPG"
+                alt="Spinners and weavers making the cloth"
                 className="os-image-hover"
                 style={{
                   width: "100%",
@@ -903,8 +943,8 @@ export default function OurStoryClient() {
               }}
             >
               <img
-                src="/assets/han.jpg"
-                alt="Spinner at charkha"
+                src="/assets/homepage/WhatsApp Image 2026-10-05 at 2.14.11 PM (4).jpeg"
+                alt="Weaving rhythm and artisan technique"
                 className="os-image-hover"
                 style={{
                   width: "100%",
@@ -953,7 +993,7 @@ export default function OurStoryClient() {
               }}
             >
               <img
-                src="/assets/751.jpg"
+                src="/assets/homepage/WhatsApp Image 2026-03-16 at 2.54.57 PM.jpeg"
                 alt="Aditi Singh — founder, Sum Clothico"
                 className="os-image-hover"
                 style={{
@@ -1116,44 +1156,23 @@ export default function OurStoryClient() {
             alignItems: "center",
           }}
         >
-          <div
-            style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}
-          >
+          <div className="os-image-box" style={{ maxWidth: 440, margin: "0 auto", width: "100%" }}>
             <div
-              className="os-image-box"
               style={{
-                borderRadius: 14,
+                borderRadius: 18,
                 overflow: "hidden",
-                border: "1px solid rgba(44, 32, 22, 0.14)",
+                border: "1px solid rgba(44, 32, 22, 0.16)",
+                boxShadow: "0 20px 45px -14px rgba(44, 32, 22, 0.18)",
+                aspectRatio: "4/5",
               }}
             >
               <img
-                src="/assets/ctn.jpg"
-                alt="Hands holding raw spun cotton yarn"
+                src="/assets/homepage/c6aa1e50-2390-4fe4-b79e-fcf044fe17ca.jpg"
+                alt="Master women tailors crafting Sum garments"
                 className="os-image-hover"
                 style={{
                   width: "100%",
-                  aspectRatio: "3/4",
-                  objectFit: "cover",
-                  display: "block",
-                }}
-              />
-            </div>
-            <div
-              className="os-image-box"
-              style={{
-                borderRadius: 14,
-                overflow: "hidden",
-                border: "1px solid rgba(44, 32, 22, 0.14)",
-              }}
-            >
-              <img
-                src="/assets/chakra.jpg"
-                alt="Artisan spinning on traditional charkha"
-                className="os-image-hover"
-                style={{
-                  width: "100%",
-                  aspectRatio: "3/4",
+                  height: "100%",
                   objectFit: "cover",
                   display: "block",
                 }}
@@ -1258,7 +1277,7 @@ export default function OurStoryClient() {
           }}
         >
           <img
-            src="/assets/khadi.jpg"
+            src="/assets/homepage/IMG_1040.JPG"
             alt="A Sum garment worn"
             style={{
               width: "100%",
@@ -1312,135 +1331,43 @@ export default function OurStoryClient() {
             </IndianArchBadge>
           </div>
         </div>
-        <div
-          className="os-text-item os-journey-visual"
-          style={{
-            position: "relative",
-            maxWidth: 720,
-            margin: "0 auto 24px",
-            borderRadius: 18,
-            overflow: "hidden",
-            aspectRatio: "16/9",
-            border: "1px solid rgba(44, 32, 22, 0.14)",
-            boxShadow: "0 18px 40px -14px rgba(44, 32, 22, 0.18)",
-            background: "#1a140e",
-          }}
-        >
-          {JOURNEY_STEPS.map((step, i) => (
-            <img
-              key={step.label}
-              src={step.image}
-              alt={step.label}
-              style={{
-                position: "absolute",
-                inset: 0,
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                opacity: i === journeyIdx ? 1 : 0,
-                transition: "opacity 0.7s ease",
-              }}
-            />
-          ))}
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              background:
-                "linear-gradient(to top, rgba(26,20,14,0.72) 0%, rgba(26,20,14,0.1) 55%, transparent 100%)",
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              left: 24,
-              bottom: 20,
-              right: 24,
-              color: "#EDE8DC",
-            }}
-          >
-            <span
-              style={{
-                fontSize: "0.72rem",
-                letterSpacing: "0.22em",
-                textTransform: "uppercase",
-                fontWeight: 800,
-                color: "#D4C4A8",
-                display: "block",
-                marginBottom: 6,
-              }}
-            >
-              Step {String(journeyIdx + 1).padStart(2, "0")} / {String(JOURNEY_STEPS.length).padStart(2, "0")}
-            </span>
-            <p
-              key={journeyIdx}
-              style={{
-                margin: 0,
-                fontFamily: "serif",
-                fontStyle: "italic",
-                fontSize: "clamp(1rem, 1.6vw, 1.3rem)",
-                lineHeight: 1.4,
-                animation: "osFadeUp 0.6s ease",
-              }}
-            >
-              {JOURNEY_STEPS[journeyIdx].caption}
-            </p>
-          </div>
-        </div>
-        <div
-          className="os-text-item"
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: 14,
-            margin: "0 0 24px",
-          }}
-        >
-          <div
-            key={journeyIdx}
-            style={{
-              fontFamily: "serif",
-              fontSize: "clamp(1.8rem, 3.2vw, 2.6rem)",
-              fontWeight: 700,
-              letterSpacing: "0.12em",
-              color: "#660608",
-              textTransform: "uppercase",
-              animation: "osFadeUp 0.45s ease",
-            }}
-          >
-            {JOURNEY_STEPS[journeyIdx].label}
-          </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              gap: 8,
-              flexWrap: "wrap",
-            }}
-          >
-            {JOURNEY_STEPS.map((step, i) => (
-              <button
+        <div className="mc-journey" style={{ margin: "0 auto 32px" }}>
+          <div className="mc-journey__visual">
+            {JOURNEY.map((step, i) => (
+              <img
                 key={step.label}
-                type="button"
-                onClick={() => setJourneyIdx(i)}
-                style={{
-                  padding: "6px 14px",
-                  borderRadius: 99,
-                  background: i === journeyIdx ? "#660608" : "#EDE8DC",
-                  color: i === journeyIdx ? "#EDE8DC" : "#55483d",
-                  border: "1px solid rgba(102, 6, 8, 0.35)",
-                  fontFamily: "serif",
-                  fontWeight: 700,
-                  fontSize: "0.82rem",
-                  letterSpacing: "0.04em",
-                  cursor: "pointer",
-                  transition: "all 0.25s ease",
-                }}
-              >
-                {step.label}
-              </button>
+                src={step.image}
+                alt={step.label}
+                style={{ opacity: i === journeyIdx ? 1 : 0 }}
+              />
             ))}
+            <div className="mc-journey__scrim" />
+            <div className="mc-journey__caption">
+              <span className="mc-journey__step-num">
+                {String(journeyIdx + 1).padStart(2, "0")} / {String(JOURNEY.length).padStart(2, "0")}
+              </span>
+              <p key={journeyIdx}>{JOURNEY[journeyIdx].caption}</p>
+            </div>
+          </div>
+          <div className="mc-journey__word-display">
+            <div key={journeyIdx} className="mc-journey__flashing-word">
+              {JOURNEY[journeyIdx].label}
+            </div>
+            <div className="mc-journey__dots">
+              {JOURNEY.map((step, i) => (
+                <button
+                  key={step.label}
+                  type="button"
+                  onClick={() => setJourneyIdx(i)}
+                  className={
+                    "mc-journey__dot" +
+                    (i === journeyIdx ? " mc-journey__dot--active" : "")
+                  }
+                  aria-label={`Step ${i + 1}: ${step.label}`}
+                  title={step.label}
+                />
+              ))}
+            </div>
           </div>
         </div>
         <p
@@ -1490,13 +1417,13 @@ export default function OurStoryClient() {
           </h2>
         </div>
 
-        {/* Visual Beliefs Spotlight — Fixed OVER with cycling contrast words */}
+        {/* Single line with just the changing words — no buttons */}
         <div
           style={{
             position: "relative",
-            maxWidth: 780,
-            margin: "0 auto 36px",
-            padding: "44px 24px",
+            maxWidth: 820,
+            margin: "0 auto",
+            padding: "54px 24px",
             background: "rgba(255, 255, 255, 0.72)",
             border: "1.5px solid rgba(102, 6, 8, 0.22)",
             borderRadius: 24,
@@ -1504,7 +1431,6 @@ export default function OurStoryClient() {
             textAlign: "center",
           }}
         >
-          {/* Active Visual Pair with Fixed OVER in center */}
           <div
             style={{
               display: "flex",
@@ -1560,93 +1486,6 @@ export default function OurStoryClient() {
               {BELIEF_PAIRS[beliefIdx].right}
             </span>
           </div>
-
-          {/* Quick Stage Switcher Pills */}
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              gap: 10,
-              marginTop: 28,
-              flexWrap: "wrap",
-            }}
-          >
-            {BELIEF_PAIRS.map((pair, idx) => (
-              <button
-                key={pair.num}
-                type="button"
-                onClick={() => setBeliefIdx(idx)}
-                style={{
-                  background: idx === beliefIdx ? "#660608" : "transparent",
-                  color: idx === beliefIdx ? "#EDE8DC" : "#55483d",
-                  border: "1.5px solid rgba(102, 6, 8, 0.35)",
-                  borderRadius: 99,
-                  padding: "7px 16px",
-                  fontSize: "0.78rem",
-                  fontWeight: 800,
-                  letterSpacing: "0.08em",
-                  textTransform: "uppercase",
-                  cursor: "pointer",
-                  transition: "all 0.25s ease",
-                }}
-              >
-                {pair.num} • {pair.left} / {pair.right}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Clean visual overview without repetitive sublines */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-            gap: 16,
-            maxWidth: 880,
-            margin: "0 auto",
-          }}
-        >
-          {BELIEF_PAIRS.map((pair, idx) => (
-            <div
-              key={pair.num}
-              onClick={() => setBeliefIdx(idx)}
-              style={{
-                background: idx === beliefIdx ? "rgba(102, 6, 8, 0.08)" : "rgba(255, 255, 255, 0.45)",
-                border: idx === beliefIdx ? "1.5px solid #660608" : "1px solid rgba(44, 32, 22, 0.14)",
-                borderRadius: 14,
-                padding: "16px 14px",
-                textAlign: "center",
-                cursor: "pointer",
-                transition: "all 0.25s ease",
-              }}
-            >
-              <span
-                style={{
-                  fontSize: "0.72rem",
-                  fontWeight: 800,
-                  color: "#660608",
-                  letterSpacing: "0.15em",
-                  display: "block",
-                  marginBottom: 6,
-                }}
-              >
-                {pair.num}
-              </span>
-              <div
-                style={{
-                  fontFamily: "serif",
-                  fontSize: "1.05rem",
-                  fontWeight: 700,
-                  color: "#1a140e",
-                  lineHeight: 1.3,
-                }}
-              >
-                <span>{pair.left}</span>
-                <span style={{ color: "#660608", fontStyle: "italic", margin: "0 6px" }}>over</span>
-                <span>{pair.right}</span>
-              </div>
-            </div>
-          ))}
         </div>
       </section>
 
