@@ -249,24 +249,26 @@ export default function MotionCards() {
             <p key={journeyIdx}>{JOURNEY[journeyIdx].caption}</p>
           </div>
         </div>
-        <div className="mc-journey__pills">
-          {JOURNEY.map((step, i) => (
-            <React.Fragment key={step.label}>
+        {/* Flashing single word per slide without arrows */}
+        <div className="mc-journey__word-display">
+          <div key={journeyIdx} className="mc-journey__flashing-word">
+            {JOURNEY[journeyIdx].label}
+          </div>
+          <div className="mc-journey__dots">
+            {JOURNEY.map((step, i) => (
               <button
+                key={step.label}
                 type="button"
                 onClick={() => setJourneyIdx(i)}
                 className={
-                  "mc-journey__pill" +
-                  (i === journeyIdx ? " mc-journey__pill--active" : "")
+                  "mc-journey__dot" +
+                  (i === journeyIdx ? " mc-journey__dot--active" : "")
                 }
-              >
-                {step.label}
-              </button>
-              {i < JOURNEY.length - 1 && (
-                <span className="mc-journey__arrow">→</span>
-              )}
-            </React.Fragment>
-          ))}
+                aria-label={`Step ${i + 1}: ${step.label}`}
+                title={step.label}
+              />
+            ))}
+          </div>
         </div>
       </div>
 

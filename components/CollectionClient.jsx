@@ -164,43 +164,16 @@ export default function CollectionClient() {
       <div className="os-noise" />
 
       {/* Hero Header */}
-      <section className="col-hero" style={{ paddingBottom: "24px", textAlign: "center", maxWidth: 840, margin: "28px auto 36px" }}>
+      <section className="col-hero" style={{ paddingBottom: "16px", textAlign: "center", maxWidth: 780, margin: "28px auto 32px" }}>
         <div style={{ display: "flex", justifyContent: "center", marginBottom: "16px" }}>
-          <IndianArchBadge>Handcrafted Everyday Silhouettes</IndianArchBadge>
+          <IndianArchBadge>Handcrafted Everyday Wear</IndianArchBadge>
         </div>
         <h1 className="prod-fade" style={{ fontFamily: "serif", fontSize: "clamp(2.2rem, 4vw, 3.2rem)", fontWeight: 600, color: "#2C2016", marginBottom: 16 }}>
           Clothes you&apos;ll want to wear again.
         </h1>
-        <p className="prod-fade" style={{ fontSize: "1.08rem", lineHeight: 1.8, color: "#5C4A3E", maxWidth: 640, margin: "0 auto 24px" }}>
-          Easy pieces. Thoughtful details. Handwoven beginnings.
-          <br />
-          Made for everyday life however yours happens to look.
+        <p className="prod-fade" style={{ fontSize: "1.1rem", lineHeight: 1.75, color: "#5C4A3E", maxWidth: 600, margin: "0 auto" }}>
+          Easy silhouettes. Handwoven beginnings. Made for real days.
         </p>
-        
-        <div className="col-details prod-fade" style={{ justifyContent: "center", gap: 20 }}>
-          <div className="detail-item"><span>Textile:</span> 100% Handspun Khadi Cotton</div>
-          <div className="detail-item"><span>Origin:</span> Madhya Pradesh, India</div>
-          <div className="detail-item">
-            <button
-              onClick={() => setIsSizeGuideOpen(true)}
-              style={{
-                background: "none",
-                border: "none",
-                color: "#660608",
-                fontWeight: 700,
-                fontSize: 13,
-                cursor: "pointer",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 4,
-                textDecoration: "underline",
-              }}
-            >
-              <span>Size Guide Chart</span>
-              <FiArrowUpRight size={14} />
-            </button>
-          </div>
-        </div>
       </section>
 
       {/* ─── FILTERS & SORTING BAR ─── */}

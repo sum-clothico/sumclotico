@@ -9,7 +9,7 @@ import { FiArrowRight, FiMapPin } from "react-icons/fi";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const TOTAL_PIN_DISTANCE = 3300;
+const TOTAL_PIN_DISTANCE = 1300;
 
 export default function HorizontalWords() {
   const sectionRef = useRef(null);
@@ -42,7 +42,7 @@ export default function HorizontalWords() {
           scrollTrigger: {
             trigger: container,
             start: "top top",
-            end: "+=1200",
+            end: `+=${TOTAL_PIN_DISTANCE}`,
             scrub: 1,
           },
         });
@@ -123,7 +123,7 @@ export default function HorizontalWords() {
         />
       </svg>
 
-      {/* ─── New Elegant Editorial Content ─── */}
+      {/* ─── Elegant Editorial Content ─── */}
       <div
         ref={contentRef}
         style={{
@@ -133,7 +133,7 @@ export default function HorizontalWords() {
           maxWidth: "1200px",
           height: "100%",
           margin: "0 auto",
-          padding: "60px 24px 40px",
+          padding: "36px 24px 28px",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
@@ -143,7 +143,7 @@ export default function HorizontalWords() {
       >
         {/* Top Header */}
         <div
-          style={{ textAlign: "center", maxWidth: "800px" }}
+          style={{ textAlign: "center", maxWidth: "800px", marginBottom: "8px" }}
           className="hw-editorial-item"
         >
           <span
@@ -154,17 +154,17 @@ export default function HorizontalWords() {
               textTransform: "uppercase",
               color: "#f35c27",
               display: "inline-block",
-              marginBottom: "10px",
+              marginBottom: "8px",
             }}
           >
             The Beginning of the Journey
           </span>
           <h2
             style={{
-              fontSize: "clamp(30px, 5vw, 54px)",
+              fontSize: "clamp(24px, 3.8vw, 42px)",
               fontWeight: 800,
-              lineHeight: 1.12,
-              letterSpacing: "-0.03em",
+              lineHeight: 1.15,
+              letterSpacing: "-0.02em",
               color: "#111827",
               margin: 0,
             }}

@@ -10,7 +10,7 @@ const LINES = [
   "Clothes should leave room for you.",
   "For changing bodies. Changing plans.",
   "Different moods. Different versions of yourself.",
-  "No template. Just clothes you can make your own.",
+  "NO TEMPLATE. JUST CLOTHES YOU CAN MAKE YOUR OWN.",
 ];
 
 const PIN_DISTANCE = 500 * LINES.length;
@@ -88,7 +88,8 @@ export default function AboutSection() {
     return () => ctx.revert();
   }, []);
 
-  const ctaWords = ["Find", "something", "you'll", "want", "to", "live", "in."];
+  const ctaWordsLine1 = ["Made", "with", "time."];
+  const ctaWordsLine2 = ["Made", "for", "living."];
 
   return (
     <section ref={sectionRef} className="about-section">
@@ -167,7 +168,7 @@ export default function AboutSection() {
           </p>
 
           <Link
-            href="/our-story"
+            href="/our-story#why-sum-exists"
             className="about-section__cta-inline"
           >
             Why Sum Exists →
@@ -175,43 +176,88 @@ export default function AboutSection() {
         </div>
       </div>
 
-      {/* Merged CTA */}
+      {/* Brand Ethos CTA Section */}
       <div className="about-cta">
         <h2
           className="about-cta__title"
           style={{
             display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "center",
-            gap: "0.26em",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "0.2em",
+            margin: "0 0 16px",
           }}
         >
-          {ctaWords.map((word, idx) => (
-            <span
-              key={idx}
-              style={{
-                display: "inline-block",
-                overflow: "hidden",
-                verticalAlign: "top",
-                paddingBottom: "4px",
-              }}
-            >
+          <div style={{ display: "flex", gap: "0.26em" }}>
+            {ctaWordsLine1.map((word, idx) => (
               <span
-                className="about-cta-word"
-                style={{ display: "inline-block", transformOrigin: "bottom left" }}
+                key={idx}
+                style={{
+                  display: "inline-block",
+                  overflow: "hidden",
+                  verticalAlign: "top",
+                  paddingBottom: "4px",
+                }}
               >
-                {word}
+                <span
+                  className="about-cta-word"
+                  style={{ display: "inline-block", transformOrigin: "bottom left" }}
+                >
+                  {word}
+                </span>
               </span>
-            </span>
-          ))}
+            ))}
+          </div>
+          <div style={{ display: "flex", gap: "0.26em" }}>
+            {ctaWordsLine2.map((word, idx) => (
+              <span
+                key={idx}
+                style={{
+                  display: "inline-block",
+                  overflow: "hidden",
+                  verticalAlign: "top",
+                  paddingBottom: "4px",
+                }}
+              >
+                <span
+                  className="about-cta-word"
+                  style={{ display: "inline-block", transformOrigin: "bottom left" }}
+                >
+                  {word}
+                </span>
+              </span>
+            ))}
+          </div>
         </h2>
+
+        <p
+          style={{
+            fontSize: "clamp(0.95rem, 1.4vw, 1.12rem)",
+            color: "#4a3c30",
+            maxWidth: "520px",
+            margin: "0 auto 28px",
+            lineHeight: 1.6,
+            textAlign: "center",
+          }}
+        >
+          Thoughtful everyday clothing rooted in handwoven textiles.
+        </p>
+
         <div className="about-cta__buttons">
-          <Link href="/shop" className="about-cta__btn about-cta__btn--primary">
-            Shop All Pieces
+          <Link href="/our-story" className="about-cta__btn about-cta__btn--primary">
+            Our Story
           </Link>
-          <Link href="/our-story" className="about-cta__btn about-cta__btn--secondary">
-            Read Our Story
+          <Link href="/shop" className="about-cta__btn about-cta__btn--secondary">
+            Shop Now
           </Link>
+          <a
+            href="https://www.instagram.com/sumclothico"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="about-cta__btn about-cta__btn--secondary"
+          >
+            Socials
+          </a>
         </div>
       </div>
     </section>

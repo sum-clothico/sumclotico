@@ -304,13 +304,17 @@ export default function Navbar() {
             href="/"
             className="logo-main"
             style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              textDecoration: "none",
+              color: "#1a140e",
               fontWeight: 800,
               fontSize: "20px",
               letterSpacing: "0.15em",
               textTransform: "uppercase",
               whiteSpace: "nowrap",
-              color: "#111111",
-              textDecoration: "none",
+              transition: "opacity 0.2s ease",
             }}
           >
             सम् CLOTHICO

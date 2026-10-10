@@ -432,39 +432,57 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.mc-journey__pills {
+.mc-journey__word-display {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
-  margin-top: 20px;
+  justify-content: center;
+  margin-top: 22px;
+  gap: 12px;
 }
 
-.mc-journey__pill {
-  padding: 9px 16px;
-  border-radius: 99px;
-  background: #EDE8DC;
-  color: #1a140e;
-  border: 1.5px solid rgba(102, 6, 8, 0.35);
+.mc-journey__flashing-word {
   font-family: serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
   font-weight: 700;
-  font-size: 0.9rem;
-  letter-spacing: 0.08em;
-  cursor: pointer;
-  transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease;
-}
-
-.mc-journey__pill--active {
-  background: #660608;
-  color: #EDE8DC;
-  transform: scale(1.05);
-}
-
-.mc-journey__arrow {
+  letter-spacing: 0.18em;
   color: #660608;
-  font-size: 1.1rem;
-  font-weight: 800;
+  text-transform: uppercase;
+  animation: mcWordFlash 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes mcWordFlash {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.mc-journey__dots {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.mc-journey__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(102, 6, 8, 0.25);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.mc-journey__dot--active {
+  width: 28px;
+  border-radius: 99px;
+  background: #660608;
 }
 
 @media (max-width: 560px) {

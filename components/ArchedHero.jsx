@@ -7,8 +7,8 @@ import { FiVolume2, FiVolumeX } from "react-icons/fi";
 export default function ArchedHero() {
   const containerRef = useRef(null);
   const videoPortalRef = useRef(null);
+  const logoRef = useRef(null);
   const taglineRef = useRef(null);
-  const descRef = useRef(null);
   const ctaRef = useRef(null);
   const videoRef = useRef(null);
   const [isMuted, setIsMuted] = useState(true);
@@ -22,21 +22,21 @@ export default function ArchedHero() {
     );
 
     gsap.fromTo(
+      logoRef.current,
+      { y: 15, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1.2, delay: 0.45, ease: "power3.out" },
+    );
+
+    gsap.fromTo(
       taglineRef.current,
       { y: 15, opacity: 0 },
       { y: 0, opacity: 1, duration: 1.2, delay: 0.6, ease: "power3.out" },
     );
 
     gsap.fromTo(
-      descRef.current,
-      { y: 15, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1.2, delay: 0.8, ease: "power3.out" },
-    );
-
-    gsap.fromTo(
       ctaRef.current,
       { y: 15, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1.2, delay: 1.0, ease: "power3.out" },
+      { y: 0, opacity: 1, duration: 1.2, delay: 0.85, ease: "power3.out" },
     );
   }, []);
 
@@ -55,21 +55,18 @@ export default function ArchedHero() {
       {/* Right-aligned Background Image (Watermark illustration) */}
       <img src="/assets/751.jpg" alt="" className="arched-hero__bg-right" />
 
-      {/* Brand Name — Left Side (Restored earlier design) */}
+      {/* Hero Left Content — Logo + Airy Earthy Fluid + CTAs */}
       <div className="arched-hero__brand-wrap">
-        <div className="arched-hero__brand-left">
-          {/* सम् — with chandrabindu/anusvara to match logo */}
-          <span className="arched-hero__hindi">सम्</span>
-          <span className="arched-hero__latin">CLOTHICO</span>
+        <div ref={logoRef} className="arched-hero__logo-wrap">
+          <img
+            src="/assets/logo.svg"
+            alt="सम् CLOTHICO"
+            className="arched-hero__logo"
+          />
         </div>
-        <div ref={taglineRef} className="arched-hero__tagline">
-          Made with time.
-          <br />
-          Made for living.
+        <div ref={taglineRef} className="arched-hero__trio-tagline">
+          AIRY, EARTHY, FLUID
         </div>
-        <p ref={descRef} className="arched-hero__desc">
-          Thoughtful everyday clothing rooted in handwoven textiles.
-        </p>
         <div ref={ctaRef} className="arched-hero__cta-row">
           <a
             href="/shop"
@@ -95,13 +92,16 @@ export default function ArchedHero() {
           <video
             ref={videoRef}
             className="arched-hero__video"
-            src="/assets/videos/vid1.mp4"
+            src="/assets/homepage/Homepage%20vid.mp4"
             autoPlay
             muted
             loop
             playsInline
             preload="metadata"
-          />
+          >
+            <source src="/assets/homepage/Homepage%20vid.mp4" type="video/mp4" />
+            <source src="/assets/homepage/Homepage vid.mp4" type="video/mp4" />
+          </video>
           <div className="arched-hero__vignette" />
 
           {/* Sound Toggle */}

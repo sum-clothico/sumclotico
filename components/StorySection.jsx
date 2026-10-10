@@ -5,7 +5,7 @@ import "../app/styles/story-section.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const PIN_DURATION = 7000;
+const PIN_DURATION = 1400;
 
 const phases = [
   {
@@ -33,13 +33,13 @@ const StorySection = () => {
 
       const isDesktop =
         typeof window !== "undefined" && window.innerWidth > 900;
-      const PIN = isDesktop ? PIN_DURATION : 2200;
+      const PIN = isDesktop ? PIN_DURATION : 1000;
 
       // Pin the section
       ScrollTrigger.create({
         trigger: section,
         start: "top top",
-        end: `+=${PIN}`,
+        end: () => `+=${PIN}`,
         pin: true,
         pinSpacing: true,
         refreshPriority: 1,
@@ -88,7 +88,7 @@ const StorySection = () => {
         scrollTrigger: {
           trigger: section,
           start: "top top",
-          end: `+=${PIN_DURATION}`,
+          end: () => `+=${PIN}`,
           scrub: 1,
         },
       });
@@ -120,7 +120,7 @@ const StorySection = () => {
           scrollTrigger: {
             trigger: section,
             start: "top top",
-            end: `+=${PIN_DURATION}`,
+            end: () => `+=${PIN}`,
             scrub: true,
           },
         });

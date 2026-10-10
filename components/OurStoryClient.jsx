@@ -65,27 +65,11 @@ function AstakaCardSvg({ fill = "#EDE8DC" }) {
   );
 }
 
-const BELIEFS = [
-  {
-    num: "01",
-    title: "Room Over Restriction",
-    desc: "Clothes should work with changing bodies.",
-  },
-  {
-    num: "02",
-    title: "Function Over Fuss",
-    desc: "Pockets, movement and details that have a reason to exist.",
-  },
-  {
-    num: "03",
-    title: "Personality Over Template",
-    desc: "The clothes shouldn't wear you.",
-  },
-  {
-    num: "04",
-    title: "Repeat Over Replace",
-    desc: "The best piece is the one you keep reaching for.",
-  },
+const BELIEF_PAIRS = [
+  { num: "01", left: "Room", right: "Restriction" },
+  { num: "02", left: "Function", right: "Fuss" },
+  { num: "03", left: "Personality", right: "Template" },
+  { num: "04", left: "Repeat", right: "Replace" },
 ];
 
 const JOURNEY_STEPS = [
@@ -101,12 +85,20 @@ const JOURNEY_STEPS = [
 export default function OurStoryClient() {
   const containerRef = useRef(null);
   const [journeyIdx, setJourneyIdx] = useState(0);
+  const [beliefIdx, setBeliefIdx] = useState(0);
 
   useEffect(() => {
     const id = setInterval(() => {
       setJourneyIdx((i) => (i + 1) % JOURNEY_STEPS.length);
     }, 2400);
     return () => clearInterval(id);
+  }, []);
+
+  useEffect(() => {
+    const bId = setInterval(() => {
+      setBeliefIdx((i) => (i + 1) % BELIEF_PAIRS.length);
+    }, 2600);
+    return () => clearInterval(bId);
   }, []);
 
   useEffect(() => {
@@ -339,57 +331,30 @@ export default function OurStoryClient() {
             <h1
               className="os-hero-title"
               style={{
-                fontSize: "clamp(2.3rem, 4vw, 3.5rem)",
-                lineHeight: 1.16,
-                fontWeight: 500,
+                fontSize: "clamp(2.1rem, 3.8vw, 3.2rem)",
+                lineHeight: 1.25,
+                fontWeight: 600,
                 fontFamily: "serif",
                 color: "#1a140e",
-                margin: "0 0 24px",
+                margin: "0 0 16px",
               }}
             >
-              <AnimatedWords text="We wanted to make clothes differently. Not dramatically. Just thoughtfully." />
+              <AnimatedWords text="Sum is a sum of people, ideas, skills, places, techniques." />
             </h1>
 
             <div
               style={{
-                fontSize: "1.06rem",
-                lineHeight: 1.85,
-                color: "#4a3c30",
                 marginBottom: "32px",
               }}
             >
               <p
                 className="os-hero-para"
                 style={{
-                  margin: "0 0 18px",
-                  fontStyle: "italic",
-                  fontFamily: "serif",
-                  color: "#660608",
-                  fontSize: "1.05rem",
-                }}
-              >
-                SUM is the coming together of heritage, modernity, functionality
-                and individuality — just as every woman is the sum of many
-                identities, experiences and possibilities.
-              </p>
-              <p
-                className="os-hero-para"
-                style={{
-                  margin: "0 0 6px",
-                  fontWeight: 700,
-                  color: "#1a140e",
-                  fontSize: "1.12rem",
-                }}
-              >
-                Sum is a sum of people, ideas, skills, places, techniques.
-              </p>
-              <p
-                className="os-hero-para"
-                style={{
                   margin: 0,
                   fontWeight: 700,
+                  fontFamily: "serif",
                   color: "#660608",
-                  fontSize: "1.12rem",
+                  fontSize: "clamp(1.25rem, 2.2vw, 1.65rem)",
                 }}
               >
                 And eventually, you.
@@ -635,13 +600,14 @@ export default function OurStoryClient() {
       <section
         className="os-anim-block"
         style={{
-          maxWidth: 980,
-          margin: "0 auto 100px",
+          maxWidth: 880,
+          margin: "0 auto 90px",
           padding: "0 clamp(24px, 4vw, 48px)",
           position: "relative",
           zIndex: 2,
           borderTop: "1px solid rgba(44, 32, 22, 0.14)",
           paddingTop: 56,
+          textAlign: "center",
         }}
       >
         <div className="os-block-badge">
@@ -667,6 +633,8 @@ export default function OurStoryClient() {
             fontSize: "1.08rem",
             lineHeight: 1.85,
             color: "#3f3329",
+            maxWidth: 680,
+            margin: "0 auto",
           }}
         >
           <p className="os-text-item" style={{ margin: "0 0 12px" }}>
@@ -695,7 +663,7 @@ export default function OurStoryClient() {
         </div>
       </section>
 
-      {/* ─── THE PEOPLE OF SUM ─── */}
+      {/* ─── THE PEOPLE OF SUM (Highlighted Pattern Background Card) ─── */}
       <section
         className="os-anim-block"
         style={{
@@ -707,51 +675,76 @@ export default function OurStoryClient() {
         }}
       >
         <div
-          style={{ textAlign: "center", maxWidth: 780, margin: "0 auto 36px" }}
+          style={{
+            position: "relative",
+            maxWidth: 880,
+            margin: "0 auto 36px",
+            padding: "44px clamp(20px, 4vw, 40px)",
+            borderRadius: 24,
+            border: "1.5px solid rgba(102, 6, 8, 0.22)",
+            backgroundColor: "#FAF6F0",
+            backgroundImage: 'url("/assets/751.jpg")',
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            boxShadow: "0 18px 45px -12px rgba(44, 32, 22, 0.12)",
+            overflow: "hidden",
+            textAlign: "center",
+          }}
         >
-          <div className="os-block-badge">
-            <IndianArchBadge style={{ marginBottom: "14px" }}>
-              The People of Sum
-            </IndianArchBadge>
-          </div>
-          <h2
-            className="os-block-title"
-            style={{
-              fontFamily: "serif",
-              fontSize: "clamp(1.9rem, 3.2vw, 2.6rem)",
-              color: "#1a140e",
-              margin: "0 0 20px",
-              lineHeight: 1.25,
-            }}
-          >
-            <AnimatedWords text="Before there is a garment, there are people." />
-          </h2>
-          <p
-            className="os-text-item"
-            style={{
-              fontSize: "1.06rem",
-              lineHeight: 1.85,
-              color: "#3f3329",
-              margin: "0 0 20px",
-            }}
-          >
-            A Sum piece passes through human hands at almost every possible
-            stage.
-          </p>
+          {/* Subtle translucent parchment overlay for high contrast text readability */}
           <div
-            className="os-text-item"
             style={{
-              fontSize: "1.05rem",
-              lineHeight: 1.9,
-              color: "#660608",
-              fontFamily: "serif",
-              fontStyle: "italic",
+              position: "absolute",
+              inset: 0,
+              backgroundColor: "rgba(250, 246, 240, 0.92)",
+              pointerEvents: "none",
             }}
-          >
-            <p style={{ margin: "4px 0" }}>From fibre to fabric.</p>
-            <p style={{ margin: "4px 0" }}>From an idea to a pattern.</p>
-            <p style={{ margin: "4px 0" }}>From cutting to stitching.</p>
-            <p style={{ margin: "4px 0" }}>From us to you.</p>
+          />
+          <div style={{ position: "relative", zIndex: 1 }}>
+            <div className="os-block-badge">
+              <IndianArchBadge style={{ marginBottom: "14px" }}>
+                The People of Sum
+              </IndianArchBadge>
+            </div>
+            <h2
+              className="os-block-title"
+              style={{
+                fontFamily: "serif",
+                fontSize: "clamp(1.9rem, 3.2vw, 2.6rem)",
+                color: "#1a140e",
+                margin: "0 0 20px",
+                lineHeight: 1.25,
+              }}
+            >
+              <AnimatedWords text="Before there is a garment, there are people." />
+            </h2>
+            <p
+              className="os-text-item"
+              style={{
+                fontSize: "1.06rem",
+                lineHeight: 1.85,
+                color: "#3f3329",
+                margin: "0 0 20px",
+              }}
+            >
+              A Sum piece passes through human hands at almost every possible
+              stage.
+            </p>
+            <div
+              className="os-text-item"
+              style={{
+                fontSize: "1.05rem",
+                lineHeight: 1.9,
+                color: "#660608",
+                fontFamily: "serif",
+                fontStyle: "italic",
+              }}
+            >
+              <p style={{ margin: "4px 0" }}>From fibre to fabric.</p>
+              <p style={{ margin: "4px 0" }}>From an idea to a pattern.</p>
+              <p style={{ margin: "4px 0" }}>From cutting to stitching.</p>
+              <p style={{ margin: "4px 0" }}>From us to you.</p>
+            </div>
           </div>
         </div>
 
@@ -767,8 +760,8 @@ export default function OurStoryClient() {
           {[
             { src: "/assets/chakra.jpg", tag: "Spinner" },
             { src: "/assets/wev.jpg", tag: "Weaver" },
-            { src: "/assets/clt.jpg", tag: "Tailor" },
-            { src: "/assets/khadi.jpg", tag: "Wearer" },
+            { src: "/assets/ctn.jpg", tag: "Tailor" },
+            { src: "/assets/han.jpg", tag: "Wearer" },
           ].map((img) => (
             <div
               key={img.tag}
@@ -1135,8 +1128,8 @@ export default function OurStoryClient() {
               }}
             >
               <img
-                src="/assets/clt.jpg"
-                alt="Woman tailor stitching"
+                src="/assets/ctn.jpg"
+                alt="Hands holding raw spun cotton yarn"
                 className="os-image-hover"
                 style={{
                   width: "100%",
@@ -1155,8 +1148,8 @@ export default function OurStoryClient() {
               }}
             >
               <img
-                src="/assets/fabric.jpg"
-                alt="Garment in making"
+                src="/assets/chakra.jpg"
+                alt="Artisan spinning on traditional charkha"
                 className="os-image-hover"
                 style={{
                   width: "100%",
@@ -1288,51 +1281,17 @@ export default function OurStoryClient() {
           className="os-block-title"
           style={{
             fontFamily: "serif",
-            fontSize: "clamp(1.9rem, 3.2vw, 2.6rem)",
+            fontSize: "clamp(2rem, 3.6vw, 3rem)",
             color: "#1a140e",
-            margin: "0 0 22px",
-            lineHeight: 1.25,
+            margin: 0,
+            lineHeight: 1.3,
+            maxWidth: 760,
+            marginLeft: "auto",
+            marginRight: "auto",
           }}
         >
-          <AnimatedWords text="Because a garment isn't finished when we finish making it." />
+          <AnimatedWords text="Thought by us. Shaped by many hands. Lived in by you." />
         </h2>
-        <div
-          style={{ fontSize: "1.06rem", lineHeight: 1.85, color: "#3f3329" }}
-        >
-          <p className="os-text-item" style={{ margin: "0 0 20px" }}>
-            It becomes yours when you wear it your way.
-          </p>
-          <div
-            className="os-text-item"
-            style={{
-              fontFamily: "serif",
-              color: "#660608",
-              fontSize: "1.08rem",
-              margin: "0 0 24px",
-              lineHeight: 1.9,
-            }}
-          >
-            <p style={{ margin: "2px 0" }}>Style it differently.</p>
-            <p style={{ margin: "2px 0" }}>Live differently in it.</p>
-            <p style={{ margin: "2px 0" }}>Repeat it.</p>
-            <p style={{ margin: "2px 0" }}>Change it.</p>
-          </div>
-          <p className="os-text-item" style={{ margin: "0 0 10px" }}>
-            That&apos;s the final part of the Sum.
-          </p>
-          <p
-            className="os-text-item"
-            style={{
-              margin: 0,
-              fontWeight: 800,
-              color: "#1a140e",
-              fontFamily: "serif",
-              fontSize: "2rem",
-            }}
-          >
-            You.
-          </p>
-        </div>
       </section>
 
       {/* ─── HUMAN-LED JOURNEY ─── */}
@@ -1429,51 +1388,60 @@ export default function OurStoryClient() {
           </div>
         </div>
         <div
-          className="os-text-item os-journey-flow"
+          className="os-text-item"
           style={{
             display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "center",
+            flexDirection: "column",
             alignItems: "center",
-            gap: 10,
+            gap: 14,
             margin: "0 0 24px",
           }}
         >
-          {JOURNEY_STEPS.map((step, i) => (
-            <React.Fragment key={step.label}>
+          <div
+            key={journeyIdx}
+            style={{
+              fontFamily: "serif",
+              fontSize: "clamp(1.8rem, 3.2vw, 2.6rem)",
+              fontWeight: 700,
+              letterSpacing: "0.12em",
+              color: "#660608",
+              textTransform: "uppercase",
+              animation: "osFadeUp 0.45s ease",
+            }}
+          >
+            {JOURNEY_STEPS[journeyIdx].label}
+          </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              gap: 8,
+              flexWrap: "wrap",
+            }}
+          >
+            {JOURNEY_STEPS.map((step, i) => (
               <button
+                key={step.label}
                 type="button"
                 onClick={() => setJourneyIdx(i)}
                 style={{
-                  padding: "10px 18px",
+                  padding: "6px 14px",
                   borderRadius: 99,
                   background: i === journeyIdx ? "#660608" : "#EDE8DC",
-                  color: i === journeyIdx ? "#EDE8DC" : "#1a140e",
-                  border: "1.5px solid rgba(102, 6, 8, 0.35)",
+                  color: i === journeyIdx ? "#EDE8DC" : "#55483d",
+                  border: "1px solid rgba(102, 6, 8, 0.35)",
                   fontFamily: "serif",
                   fontWeight: 700,
-                  fontSize: "0.95rem",
+                  fontSize: "0.82rem",
                   letterSpacing: "0.04em",
                   cursor: "pointer",
-                  transition: "background 0.25s ease, color 0.25s ease, transform 0.2s ease",
-                  transform: i === journeyIdx ? "scale(1.05)" : "scale(1)",
+                  transition: "all 0.25s ease",
                 }}
               >
                 {step.label}
               </button>
-              {i < JOURNEY_STEPS.length - 1 && (
-                <span
-                  style={{
-                    color: "#660608",
-                    fontSize: "1.2rem",
-                    fontWeight: 800,
-                  }}
-                >
-                  →
-                </span>
-              )}
-            </React.Fragment>
-          ))}
+            ))}
+          </div>
         </div>
         <p
           className="os-text-item"
@@ -1522,57 +1490,161 @@ export default function OurStoryClient() {
           </h2>
         </div>
 
+        {/* Visual Beliefs Spotlight — Fixed OVER with cycling contrast words */}
+        <div
+          style={{
+            position: "relative",
+            maxWidth: 780,
+            margin: "0 auto 36px",
+            padding: "44px 24px",
+            background: "rgba(255, 255, 255, 0.72)",
+            border: "1.5px solid rgba(102, 6, 8, 0.22)",
+            borderRadius: 24,
+            boxShadow: "0 20px 48px -16px rgba(44, 32, 22, 0.12)",
+            textAlign: "center",
+          }}
+        >
+          {/* Active Visual Pair with Fixed OVER in center */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "clamp(12px, 3.5vw, 40px)",
+              flexWrap: "wrap",
+            }}
+          >
+            <span
+              key={`left-${beliefIdx}`}
+              style={{
+                fontFamily: "serif",
+                fontSize: "clamp(2.1rem, 4.8vw, 3.8rem)",
+                fontWeight: 700,
+                color: "#1a140e",
+                letterSpacing: "0.02em",
+                animation: "osFadeUp 0.45s ease",
+              }}
+            >
+              {BELIEF_PAIRS[beliefIdx].left}
+            </span>
+
+            <span
+              style={{
+                fontFamily: "serif",
+                fontSize: "clamp(1.4rem, 2.8vw, 2.3rem)",
+                fontWeight: 800,
+                fontStyle: "italic",
+                color: "#660608",
+                background: "rgba(102, 6, 8, 0.08)",
+                padding: "8px 22px",
+                borderRadius: 99,
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                border: "1px dashed rgba(102, 6, 8, 0.4)",
+              }}
+            >
+              Over
+            </span>
+
+            <span
+              key={`right-${beliefIdx}`}
+              style={{
+                fontFamily: "serif",
+                fontSize: "clamp(2.1rem, 4.8vw, 3.8rem)",
+                fontWeight: 700,
+                color: "#1a140e",
+                letterSpacing: "0.02em",
+                animation: "osFadeUp 0.45s ease",
+              }}
+            >
+              {BELIEF_PAIRS[beliefIdx].right}
+            </span>
+          </div>
+
+          {/* Quick Stage Switcher Pills */}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              gap: 10,
+              marginTop: 28,
+              flexWrap: "wrap",
+            }}
+          >
+            {BELIEF_PAIRS.map((pair, idx) => (
+              <button
+                key={pair.num}
+                type="button"
+                onClick={() => setBeliefIdx(idx)}
+                style={{
+                  background: idx === beliefIdx ? "#660608" : "transparent",
+                  color: idx === beliefIdx ? "#EDE8DC" : "#55483d",
+                  border: "1.5px solid rgba(102, 6, 8, 0.35)",
+                  borderRadius: 99,
+                  padding: "7px 16px",
+                  fontSize: "0.78rem",
+                  fontWeight: 800,
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  cursor: "pointer",
+                  transition: "all 0.25s ease",
+                }}
+              >
+                {pair.num} • {pair.left} / {pair.right}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Clean visual overview without repetitive sublines */}
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-            gap: 28,
+            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+            gap: 16,
+            maxWidth: 880,
+            margin: "0 auto",
           }}
         >
-          {BELIEFS.map((belief) => (
+          {BELIEF_PAIRS.map((pair, idx) => (
             <div
-              key={belief.num}
-              className="os-text-item"
+              key={pair.num}
+              onClick={() => setBeliefIdx(idx)}
               style={{
-                borderTop: "2px solid #660608",
-                paddingTop: 18,
-                transition: "transform 0.3s ease",
+                background: idx === beliefIdx ? "rgba(102, 6, 8, 0.08)" : "rgba(255, 255, 255, 0.45)",
+                border: idx === beliefIdx ? "1.5px solid #660608" : "1px solid rgba(44, 32, 22, 0.14)",
+                borderRadius: 14,
+                padding: "16px 14px",
+                textAlign: "center",
+                cursor: "pointer",
+                transition: "all 0.25s ease",
               }}
             >
               <span
                 style={{
-                  fontSize: "0.78rem",
+                  fontSize: "0.72rem",
                   fontWeight: 800,
                   color: "#660608",
                   letterSpacing: "0.15em",
                   display: "block",
-                  marginBottom: 8,
+                  marginBottom: 6,
                 }}
               >
-                {belief.num}
+                {pair.num}
               </span>
-              <h3
+              <div
                 style={{
                   fontFamily: "serif",
-                  fontSize: "1.28rem",
+                  fontSize: "1.05rem",
+                  fontWeight: 700,
                   color: "#1a140e",
-                  margin: "0 0 10px",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.04em",
+                  lineHeight: 1.3,
                 }}
               >
-                {belief.title}
-              </h3>
-              <p
-                style={{
-                  fontSize: "0.95rem",
-                  lineHeight: 1.68,
-                  color: "#55483d",
-                  margin: 0,
-                }}
-              >
-                {belief.desc}
-              </p>
+                <span>{pair.left}</span>
+                <span style={{ color: "#660608", fontStyle: "italic", margin: "0 6px" }}>over</span>
+                <span>{pair.right}</span>
+              </div>
             </div>
           ))}
         </div>
@@ -1605,7 +1677,7 @@ export default function OurStoryClient() {
             lineHeight: 1.22,
           }}
         >
-          <AnimatedWords text="Khadi is where we're starting." />
+          <AnimatedWords text="Khadi is where we started." />
         </h2>
         <h3
           className="os-block-title"
@@ -1655,27 +1727,58 @@ export default function OurStoryClient() {
             One story at a time.
           </p>
         </div>
-        <Link
-          href="/fabric"
-          className="os-text-item"
+        <div
           style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 8,
-            background: "#660608",
-            color: "#EDE8DC",
-            padding: "14px 30px",
-            borderRadius: 99,
-            fontWeight: 800,
-            fontSize: "0.8rem",
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            textDecoration: "none",
-            boxShadow: "0 4px 18px rgba(102, 6, 8, 0.25)",
+            display: "flex",
+            gap: 16,
+            justifyContent: "center",
+            flexWrap: "wrap",
+            marginTop: 8,
           }}
         >
-          Follow the Fabric Journey <FiArrowRight />
-        </Link>
+          <Link
+            href="/fabric"
+            className="os-text-item"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              background: "#660608",
+              color: "#EDE8DC",
+              padding: "14px 30px",
+              borderRadius: 99,
+              fontWeight: 800,
+              fontSize: "0.8rem",
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              textDecoration: "none",
+              boxShadow: "0 4px 18px rgba(102, 6, 8, 0.25)",
+            }}
+          >
+            Follow the Fabric <FiArrowRight />
+          </Link>
+          <Link
+            href="/journal"
+            className="os-text-item"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              background: "transparent",
+              color: "#1a140e",
+              border: "1.5px solid #1a140e",
+              padding: "14px 30px",
+              borderRadius: 99,
+              fontWeight: 800,
+              fontSize: "0.8rem",
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              textDecoration: "none",
+            }}
+          >
+            Read the Journal
+          </Link>
+        </div>
       </section>
 
       {/* ─── VISION ─── */}
@@ -1709,50 +1812,30 @@ export default function OurStoryClient() {
         </h2>
         <div
           style={{
-            fontSize: "1.06rem",
-            lineHeight: 1.85,
+            fontSize: "1.12rem",
+            lineHeight: 1.8,
             color: "#4a3c30",
-            maxWidth: 700,
+            maxWidth: 680,
             margin: "0 auto 36px",
           }}
         >
-          <p className="os-text-item" style={{ marginBottom: 10 }}>
-            We&apos;re slowly building a brand around clothing, textiles, people
-            and stories.
+          <p className="os-text-item" style={{ marginBottom: 18 }}>
+            We&apos;re building a space where textiles, people and everyday
+            clothing come together beyond trends.
           </p>
-          <p className="os-text-item" style={{ marginBottom: 10 }}>
-            We want to discover handwoven textiles from different parts of
-            India.
-          </p>
-          <p className="os-text-item" style={{ marginBottom: 10 }}>
-            Meet the people behind them.
-          </p>
-          <p className="os-text-item" style={{ marginBottom: 10 }}>
-            Bring those textiles into contemporary wardrobes.
-          </p>
-          <p className="os-text-item" style={{ marginBottom: 24 }}>
-            And create a space where the conversation around clothing goes
-            beyond what is trending.
-          </p>
-          <div
+          <p
             className="os-text-item"
             style={{
-              borderTop: "1px solid rgba(44, 32, 22, 0.14)",
-              paddingTop: 24,
-              fontStyle: "italic",
+              margin: "24px 0 0",
               fontFamily: "serif",
-              fontSize: "1.28rem",
-              color: "#1a140e",
+              fontStyle: "italic",
+              fontSize: "1.35rem",
+              color: "#660608",
+              fontWeight: 600,
             }}
           >
-            <p style={{ margin: "4px 0" }}>We&apos;re still figuring it out.</p>
-            <p style={{ margin: "4px 0" }}>
-              But we know how we want it to feel.
-            </p>
-            <p style={{ margin: "8px 0", fontWeight: 700, color: "#660608" }}>
-              Thoughtful. Human. Easy. And entirely Sum.
-            </p>
-          </div>
+            Thoughtful. Human. Sum.
+          </p>
         </div>
 
         <div

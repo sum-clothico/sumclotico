@@ -18,6 +18,27 @@ import {
 } from "react-icons/fi";
 import IndianArchBadge from "@/components/IndianArchBadge";
 
+const COLOR_HEX_MAP = {
+  "natural khadi": "#EBE5D8",
+  "forest sage": "#556B55",
+  "indigo earth": "#2B3D4D",
+  "terracotta": "#9D5544",
+  "raw cotton": "#F4EFE6",
+  "white": "#FAF8F5",
+  "black": "#222222",
+  "olive": "#556B2F",
+  "rust": "#B7410E",
+  "sage": "#77815C",
+  "beige": "#D4C5B9",
+  "navy": "#1B2A4A",
+};
+
+const getColorHex = (name) => {
+  if (!name) return "#EBE5D8";
+  const key = name.toLowerCase().trim();
+  return COLOR_HEX_MAP[key] || "#D4C5B9";
+};
+
 export default function ProductPage() {
   const params = useParams();
   const router = useRouter();
@@ -258,19 +279,28 @@ export default function ProductPage() {
           background: rgba(26, 20, 14, 0.06);
         }
         .pdp-spec-row {
-          display: flex;
-          justify-content: space-between;
+          display: grid;
+          grid-template-columns: 120px 1fr;
           align-items: baseline;
-          gap: 20px;
-          padding: 14px 0;
+          gap: 16px;
+          padding: 13px 0;
           border-bottom: 1px solid rgba(44, 32, 22, 0.1);
           font-size: 14px;
+          text-align: left;
         }
         .pdp-spec-row > span:first-child {
-          flex-shrink: 0;
+          text-align: left;
+          color: #8A7A6C;
+          font-weight: 700;
+          text-transform: uppercase;
+          font-size: 0.78rem;
+          letter-spacing: 0.08em;
         }
         .pdp-spec-row > span:last-child {
-          text-align: right;
+          text-align: left;
+          color: #1a140e;
+          font-weight: 600;
+          line-height: 1.5;
         }
       `}</style>
 
@@ -414,32 +444,38 @@ export default function ProductPage() {
                 </p>
               </div>
 
-              {/* Color Selection (if multiple colors) */}
+              {/* Color Selection (if multiple colors) — Visual Swatches */}
               {product.colors?.length > 1 && (
                 <div>
                   <span style={{ fontSize: 12, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "#6b5d52", display: "block", marginBottom: 10 }}>
                     Color: <strong style={{ color: "#1a140e" }}>{selectedColor}</strong>
                   </span>
-                  <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                    {product.colors.map((color) => (
-                      <button
-                        key={color}
-                        onClick={() => setSelectedColor(color)}
-                        style={{
-                          padding: "8px 16px",
-                          border: `1.5px solid ${selectedColor === color ? "#1a140e" : "rgba(42,31,20,0.2)"}`,
-                          borderRadius: 999,
-                          background: selectedColor === color ? "#1a140e" : "#ffffff",
-                          color: selectedColor === color ? "#FAF6F0" : "#1a140e",
-                          fontSize: 13,
-                          fontWeight: 600,
-                          cursor: "pointer",
-                          transition: "all 0.2s",
-                        }}
-                      >
-                        {color}
-                      </button>
-                    ))}
+                  <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+                    {product.colors.map((color) => {
+                      const isSelected = selectedColor === color;
+                      const bg = getColorHex(color);
+                      return (
+                        <button
+                          key={color}
+                          type="button"
+                          onClick={() => setSelectedColor(color)}
+                          title={color}
+                          aria-label={`Select color ${color}`}
+                          style={{
+                            width: 32,
+                            height: 32,
+                            borderRadius: "50%",
+                            backgroundColor: bg,
+                            border: isSelected ? "2.5px solid #660608" : "1.5px solid rgba(42,31,20,0.25)",
+                            boxShadow: isSelected ? "0 0 0 2px #EDE8DC, 0 4px 10px rgba(102,6,8,0.25)" : "0 2px 4px rgba(0,0,0,0.06)",
+                            cursor: "pointer",
+                            padding: 0,
+                            transition: "all 0.2s ease",
+                            transform: isSelected ? "scale(1.12)" : "scale(1)",
+                          }}
+                        />
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -561,18 +597,10 @@ export default function ProductPage() {
                 </div>
               </div>
 
-              {/* Trust Features */}
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, padding: "16px 0", borderTop: "1px solid rgba(42,31,20,0.1)" }}>
-                {[
-                  { icon: <FiTruck size={17} />, label: "Free shipping over ₹1,999" },
-                  { icon: <FiRefreshCw size={17} />, label: "7-day easy returns" },
-                  { icon: <FiShield size={17} />, label: "Direct weaver verified" },
-                ].map(({ icon, label }) => (
-                  <div key={label} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, textAlign: "center" }}>
-                    <div style={{ color: "#b36338" }}>{icon}</div>
-                    <div style={{ fontSize: 11, fontWeight: 600, color: "#6e5d4e", lineHeight: 1.3 }}>{label}</div>
-                  </div>
-                ))}
+              {/* Trust Features - Free Shipping */}
+              <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "16px 0", borderTop: "1px solid rgba(42,31,20,0.1)", color: "#5C4A3E", fontSize: 13, fontWeight: 600 }}>
+                <FiTruck size={18} color="#b36338" />
+                <span>Free express shipping on all orders over ₹1,999 across India</span>
               </div>
 
             </div>
@@ -667,36 +695,40 @@ export default function ProductPage() {
           </section>
 
           {/* 3. Wardrobe Fit / Made For You If... — Clean Seamless Editorial (No Dark Box) */}
-          <section style={{ maxWidth: 740, margin: "0 auto 60px", padding: "28px 0", borderTop: "1px solid rgba(44, 32, 22, 0.12)", borderBottom: "1px solid rgba(44, 32, 22, 0.12)" }}>
-            <span style={{ fontSize: "0.76rem", fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: "#660608", display: "block", textAlign: "center", marginBottom: 8 }}>
-              Wardrobe Fit
-            </span>
-            <h3 style={{ fontFamily: "serif", fontSize: "clamp(1.5rem, 2.4vw, 2rem)", color: "#1a140e", textAlign: "center", margin: "0 0 20px" }}>
-              Made for you if...
-            </h3>
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              {madeForYouIf.map((item, idx) => (
-                <div key={idx} style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
-                  <span style={{ color: "#660608", fontSize: "1.1rem", lineHeight: 1.4, flexShrink: 0 }}>✦</span>
-                  <span style={{ fontSize: "1rem", lineHeight: 1.7, color: "#4A3B30" }}>
-                    {item}
-                  </span>
-                </div>
-              ))}
+          <section style={{ maxWidth: 900, margin: "0 auto 60px", padding: "36px 0", borderTop: "1px solid rgba(44, 32, 22, 0.12)", borderBottom: "1px solid rgba(44, 32, 22, 0.12)" }}>
+            <div style={{ maxWidth: 680, margin: "0 auto" }}>
+              <span style={{ fontSize: "0.76rem", fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: "#660608", display: "block", textAlign: "center", marginBottom: 8 }}>
+                Wardrobe Fit
+              </span>
+              <h3 style={{ fontFamily: "serif", fontSize: "clamp(1.5rem, 2.4vw, 2rem)", color: "#1a140e", textAlign: "center", margin: "0 0 20px" }}>
+                Made for you if...
+              </h3>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                {madeForYouIf.map((item, idx) => (
+                  <div key={idx} style={{ display: "flex", alignItems: "flex-start", gap: 12, textAlign: "left" }}>
+                    <span style={{ color: "#660608", fontSize: "1.1rem", lineHeight: 1.4, flexShrink: 0 }}>✦</span>
+                    <span style={{ fontSize: "1rem", lineHeight: 1.7, color: "#4A3B30" }}>
+                      {item}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
           </section>
 
           {/* 4. Origin & Intention — Story Block (No Floating White Box) */}
-          <section style={{ maxWidth: 740, margin: "0 auto 60px", textAlign: "center" }}>
-            <span style={{ fontSize: "0.78rem", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "#660608", display: "block", marginBottom: 10 }}>
-              Origin & Intention
-            </span>
-            <h3 style={{ fontFamily: "serif", fontSize: "clamp(1.6rem, 2.5vw, 2.2rem)", color: "#1a140e", margin: "0 0 16px" }}>
-              Why we made it.
-            </h3>
-            <p style={{ fontSize: "1.06rem", lineHeight: 1.85, color: "#4A3B30", margin: "0 auto" }}>
-              {story}
-            </p>
+          <section style={{ maxWidth: 900, margin: "0 auto 60px" }}>
+            <div style={{ maxWidth: 720, margin: "0 auto", textAlign: "center" }}>
+              <span style={{ fontSize: "0.78rem", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "#660608", display: "block", marginBottom: 10 }}>
+                Origin & Intention
+              </span>
+              <h3 style={{ fontFamily: "serif", fontSize: "clamp(1.6rem, 2.5vw, 2.2rem)", color: "#1a140e", margin: "0 0 16px" }}>
+                Why we made it.
+              </h3>
+              <p style={{ fontSize: "1.06rem", lineHeight: 1.85, color: "#4A3B30", margin: "0 auto" }}>
+                {story}
+              </p>
+            </div>
           </section>
 
           {/* 5. Styling Possibilities / One Piece. Your Way. (No Floating White Boxes) */}

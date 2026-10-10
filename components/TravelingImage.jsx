@@ -5,9 +5,9 @@ import "../app/styles/traveling-image.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const TEXT_SCROLL_DISTANCE = 2500;
-const TOTAL_PIN_DISTANCE = 3300;
-const STORY_PIN = 4500;
+const TEXT_SCROLL_DISTANCE = 400;
+const TOTAL_PIN_DISTANCE = 1300;
+const STORY_PIN = 1400;
 
 const SPLIT_IMAGES = [
   "/assets/img/12.png",
@@ -38,7 +38,7 @@ const TravelingImage = () => {
       xPercent: -50,
       yPercent: -50,
       left: "50%",
-      top: "55%",
+      top: "58%",
     });
     el.classList.add("ti-ready");
 
@@ -87,10 +87,10 @@ const TravelingImage = () => {
     triggers.push(travelToStoryTl.scrollTrigger);
     travelToStoryTl.fromTo(
       el,
-      { left: "50%", top: "55%", scale: 1 },
+      { left: "50%", top: "58%", scale: 1 },
       {
         left: "50%",
-        top: "50%",
+        top: "56%",
         scale: 1,
         duration: 1,
         ease: "expo.inOut",
