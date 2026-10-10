@@ -97,6 +97,6 @@
 /* ─── Mobile ────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .traveling-image {
-    display: none;
+    display: none !important;
   }
 }
