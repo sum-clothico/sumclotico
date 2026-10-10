@@ -146,10 +146,11 @@ export default function JournalPreviewSection() {
       id="home-journal"
       style={{
         background: "var(--bg-color, #EDE8DC)",
-        padding: "100px 24px 110px",
+        padding: "clamp(60px, 8vw, 100px) clamp(16px, 4vw, 24px) clamp(70px, 9vw, 110px)",
         position: "relative",
         borderTop: "1px solid rgba(44, 32, 22, 0.08)",
         borderBottom: "1px solid rgba(44, 32, 22, 0.08)",
+        overflow: "hidden",
       }}
     >
       <div style={{ maxWidth: 1240, margin: "0 auto" }}>
@@ -419,7 +420,7 @@ export default function JournalPreviewSection() {
           className="jp-banner"
           style={{
             position: "relative",
-            padding: "36px 44px",
+            padding: "clamp(24px, 5vw, 36px) clamp(18px, 4vw, 44px)",
             background: "transparent",
             display: "flex",
             flexWrap: "wrap",
@@ -427,6 +428,10 @@ export default function JournalPreviewSection() {
             justifyContent: "space-between",
             gap: 24,
             boxShadow: "none",
+            width: "100%",
+            maxWidth: "100%",
+            boxSizing: "border-box",
+            overflow: "hidden",
           }}
         >
           {/* SVG Placard with Stepped Scalloped Corners and Inner Hairline Border */}
@@ -460,36 +465,37 @@ export default function JournalPreviewSection() {
             />
           </svg>
 
-          <div style={{ maxWidth: 580, position: "relative", zIndex: 1 }}>
-            <IndianArchBadge style={{ marginBottom: 12 }}>
-              <span>Clothes have stories. We&apos;d like to hear yours.</span>
+          <div style={{ maxWidth: 580, width: "100%", position: "relative", zIndex: 1 }}>
+            <IndianArchBadge style={{ marginBottom: 12, maxWidth: "100%" }}>
+              <span>Clothes have stories</span>
             </IndianArchBadge>
             <h4
               style={{
-                fontSize: "clamp(20px, 2.5vw, 26px)",
+                fontSize: "clamp(18px, 2.5vw, 26px)",
                 fontWeight: 800,
                 color: "#2C2016",
                 margin: "0 0 10px",
                 letterSpacing: "-0.02em",
+                lineHeight: 1.25,
               }}
             >
               Before it becomes your clothes, it passes through many hands.
             </h4>
-            <p style={{ fontSize: 14, color: "#6B5A4E", margin: 0, lineHeight: 1.65 }}>
+            <p style={{ fontSize: "clamp(13px, 1.4vw, 14px)", color: "#6B5A4E", margin: 0, lineHeight: 1.65 }}>
               A textile from your hometown. A garment you still remember. A place
               we should visit. Or simply something you&apos;d like to tell us.
             </p>
           </div>
 
-          <div style={{ display: "flex", gap: 14, flexWrap: "wrap", alignItems: "center", position: "relative", zIndex: 1 }}>
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center", position: "relative", zIndex: 1 }}>
             <Link
               href="/journal"
               style={{
                 background: "#660608", // Accent #660608 CTA button
                 color: "#FAF6F0",
-                padding: "14px 28px",
+                padding: "12px 24px",
                 borderRadius: 999,
-                fontSize: 14,
+                fontSize: 13.5,
                 fontWeight: 700,
                 textDecoration: "none",
                 display: "inline-flex",
@@ -515,9 +521,9 @@ export default function JournalPreviewSection() {
               style={{
                 background: "#EBE5D9",
                 color: "#2C2016",
-                padding: "14px 24px",
+                padding: "12px 20px",
                 borderRadius: 999,
-                fontSize: 14,
+                fontSize: 13.5,
                 fontWeight: 700,
                 textDecoration: "none",
                 display: "inline-flex",

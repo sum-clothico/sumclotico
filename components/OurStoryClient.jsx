@@ -293,37 +293,41 @@ export default function OurStoryClient() {
     >
       <div className="os-noise" />
 
+      {/* ─── LEFT SIDE REPEATING PATTERN IMAGE (bgele2.png, SLIM & LOW OPACITY) ─── */}
       <div
+        className="side-pattern-decor"
         style={{
           position: "absolute",
           left: 0,
           top: 0,
           bottom: 0,
-          width: "48px",
+          width: "24px",
           backgroundImage: 'url("/assets/bgele2.png")',
           backgroundRepeat: "repeat-y",
           backgroundPosition: "left top",
-          backgroundSize: "48px auto",
-          opacity: 0.28,
+          backgroundSize: "24px auto",
+          opacity: 0.12,
           pointerEvents: "none",
           zIndex: 1,
         }}
         aria-hidden="true"
       />
 
+      {/* ─── RIGHT SIDE REPEATING PATTERN IMAGE (bgele2.png, MIRRORED, SLIM & LOW OPACITY) ─── */}
       <div
+        className="side-pattern-decor"
         style={{
           position: "absolute",
           right: 0,
           top: 0,
           bottom: 0,
-          width: "48px",
+          width: "24px",
           backgroundImage: 'url("/assets/bgele2.png")',
           backgroundRepeat: "repeat-y",
           backgroundPosition: "left top",
-          backgroundSize: "48px auto",
+          backgroundSize: "24px auto",
           transform: "scaleX(-1)",
-          opacity: 0.28,
+          opacity: 0.12,
           pointerEvents: "none",
           zIndex: 1,
         }}

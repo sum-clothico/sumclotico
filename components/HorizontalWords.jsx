@@ -20,32 +20,36 @@ export default function HorizontalWords() {
       const container = sectionRef.current;
       const content = contentRef.current;
 
-      // Pin the section while the story and traveling image reveal
-      ScrollTrigger.create({
-        trigger: container,
-        start: "top top",
-        end: () => `+=${TOTAL_PIN_DISTANCE}`,
-        pin: true,
-        pinSpacing: true,
-        anticipatePin: 1,
-        preventOverlaps: true,
-        invalidateOnRefresh: true,
-        refreshPriority: 2,
-      });
+      const isDesktop = typeof window !== "undefined" && window.innerWidth > 768;
 
-      // Fade out editorial content & frame cleanly before unpinning to avoid collision with next section
-      if (content) {
-        gsap.to(content, {
-          opacity: 0,
-          y: -25,
-          ease: "power2.inOut",
-          scrollTrigger: {
-            trigger: container,
-            start: () => `top+=${TOTAL_PIN_DISTANCE - 240} top`,
-            end: () => `top+=${TOTAL_PIN_DISTANCE} top`,
-            scrub: true,
-          },
+      // Pin the section while the story reveals on desktop
+      if (isDesktop) {
+        ScrollTrigger.create({
+          trigger: container,
+          start: "top top",
+          end: () => `+=${TOTAL_PIN_DISTANCE}`,
+          pin: true,
+          pinSpacing: true,
+          anticipatePin: 1,
+          preventOverlaps: true,
+          invalidateOnRefresh: true,
+          refreshPriority: 2,
         });
+
+        // Fade out editorial content & frame cleanly before unpinning to avoid collision with next section
+        if (content) {
+          gsap.to(content, {
+            opacity: 0,
+            y: -25,
+            ease: "power2.inOut",
+            scrollTrigger: {
+              trigger: container,
+              start: () => `top+=${TOTAL_PIN_DISTANCE - 240} top`,
+              end: () => `top+=${TOTAL_PIN_DISTANCE} top`,
+              scrub: true,
+            },
+          });
+        }
       }
 
       const hFrameSvg = container.querySelector(".horizontal-words__frame");
@@ -157,6 +161,7 @@ export default function HorizontalWords() {
       {/* ─── Elegant Editorial Content ─── */}
       <div
         ref={contentRef}
+        className="hw-content-wrapper"
         style={{
           position: "relative",
           zIndex: 10,
@@ -205,22 +210,11 @@ export default function HorizontalWords() {
         </div>
 
         {/* Flanking Story Columns (Left & Right of the Central Portrait Frame) */}
-        <div
-          style={{
-            width: "100%",
-            display: "grid",
-            gridTemplateColumns: "1fr 280px 1fr",
-            gap: "24px",
-            alignItems: "center",
-            margin: "auto 0",
-          }}
-        >
+        <div className="hw-story-grid">
           {/* Left Column Narrative */}
           <div
-            className="hw-editorial-item"
+            className="hw-editorial-item hw-editorial-item--left"
             style={{
-              textAlign: "right",
-              paddingRight: "20px",
               display: "flex",
               flexDirection: "column",
               gap: "12px",
@@ -245,36 +239,28 @@ export default function HorizontalWords() {
                 margin: 0,
               }}
             >
-              We're exploring handwoven textiles from across India — beginning
+              We&apos;re exploring handwoven textiles from across India — beginning
               close to home.
             </p>
           </div>
 
-          {/* Center spacer — dedicated for the SVG Frame & Traveling Image */}
-          <div style={{ minHeight: "330px" }} aria-hidden="true" />
+          {/* Center Static Portrait Card */}
+          <div className="hw-portrait-card">
+            <img
+              src="/assets/homepage/14887305-5caf-4e77-b3fa-c79443ced34b.png"
+              alt="Artisan Handspinning Pure Khadi"
+            />
+          </div>
 
           {/* Right Column Narrative */}
           <div
-            className="hw-editorial-item"
+            className="hw-editorial-item hw-editorial-item--right"
             style={{
-              textAlign: "left",
-              paddingLeft: "20px",
               display: "flex",
               flexDirection: "column",
               gap: "12px",
             }}
           >
-            {/* <p
-              style={{
-                fontSize: "clamp(14px, 1.4vw, 17px)",
-                lineHeight: 1.65,
-                color: "#374151",
-                margin: 0,
-                fontWeight: 500,
-              }}
-            >
-              The way the yarn is spun. The way the loom moves at human rhythm.
-            </p> */}
             <p
               style={{
                 fontSize: "clamp(13px, 1.2vw, 15px)",

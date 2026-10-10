@@ -102,7 +102,6 @@ export default function ProductQuickView() {
           maxWidth: 1040,
           width: "94%",
           maxHeight: "92vh",
-          gridTemplateColumns: "1fr 1fr",
           borderRadius: 20,
           overflow: "hidden",
           boxShadow: "0 30px 80px rgba(0, 0, 0, 0.35)",
@@ -138,6 +137,7 @@ export default function ProductQuickView() {
 
         {/* ─── BIG EDITORIAL IMAGE GALLERY ─── */}
         <div
+          className="quickview-gallery"
           style={{
             background: "#FAF6F0",
             display: "flex",
@@ -152,6 +152,7 @@ export default function ProductQuickView() {
         >
           {/* Main Large Showcase Image Stage */}
           <div
+            className="quickview-stage"
             style={{
               position: "relative",
               width: "100%",

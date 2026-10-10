@@ -51,7 +51,8 @@
     }
 
     .logo-main {
-        width: 100px;
+        width: auto !important;
+        max-width: none !important;
     }
 
     .logo-work-container {

@@ -151,6 +151,46 @@
   white-space: nowrap;
 }
 
+/* ─── Editorial Story Grid ─── */
+.hw-story-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 280px 1fr;
+  gap: 24px;
+  align-items: center;
+  margin: auto 0;
+}
+
+.hw-editorial-item--left {
+  text-align: right;
+  padding-right: 20px;
+}
+
+.hw-editorial-item--right {
+  text-align: left;
+  padding-left: 20px;
+}
+
+/* ─── Static Portrait Card in Center ─── */
+.hw-portrait-card {
+  width: 230px;
+  height: 320px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 14px 44px rgba(44, 32, 22, 0.16);
+  border: 1.5px solid rgba(61, 43, 31, 0.25);
+  margin: 0 auto;
+  position: relative;
+  z-index: 5;
+}
+
+.hw-portrait-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 /* ─── Mobile Responsiveness ─── */
 @media (max-width: 768px) {
   .horizontal-words__h2 {
@@ -184,5 +224,49 @@
     font-size: 12rem;
     right: -10vw;
     top: -5vh;
+  }
+
+  .horizontal-words-section {
+    height: auto !important;
+    min-height: 100svh !important;
+    padding: 36px 16px 44px !important;
+    overflow: visible !important;
+  }
+
+  .hw-content-wrapper {
+    height: auto !important;
+    min-height: auto !important;
+    padding: 0 !important;
+    gap: 16px !important;
+  }
+
+  /* Stack story narrative on mobile instead of crushing into 30px side columns */
+  .hw-story-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    align-items: center !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 14px auto !important;
+  }
+
+  .hw-portrait-card {
+    width: 200px !important;
+    height: 260px !important;
+    max-width: 75% !important;
+    border-radius: 12px !important;
+    margin: 6px auto !important;
+    box-shadow: 0 10px 30px rgba(44, 32, 22, 0.14) !important;
+  }
+
+  .hw-editorial-item--left,
+  .hw-editorial-item--right {
+    text-align: center !important;
+    padding: 0 16px !important;
+    align-items: center !important;
+    width: 100% !important;
+    max-width: 480px !important;
+    box-sizing: border-box !important;
   }
 }

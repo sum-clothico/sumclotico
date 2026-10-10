@@ -23,6 +23,8 @@ export default function IndianArchBadge({
         position: "relative",
         boxShadow: "none",
         filter: "none",
+        maxWidth: "100%",
+        boxSizing: "border-box",
         ...style,
       }}
     >
@@ -53,12 +55,15 @@ export default function IndianArchBadge({
           alignItems: "center",
           justifyContent: "center",
           gap: "8px",
-          fontSize: "11px",
+          fontSize: "clamp(9.5px, 2.4vw, 11px)",
           fontWeight: 800,
-          letterSpacing: "2.5px",
+          letterSpacing: "clamp(1px, 0.35vw, 2.5px)",
           textTransform: "uppercase",
           boxShadow: "none",
           whiteSpace: "nowrap",
+          maxWidth: "calc(100vw - 64px)",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
         }}
       >
         {children}

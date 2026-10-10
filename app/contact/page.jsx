@@ -378,42 +378,96 @@ export default function ContactPage() {
           color: #6e5d4e;
           line-height: 1.5;
         }
+
+        .side-pattern-decor {
+          width: 24px;
+          background-size: 24px auto;
+          opacity: 0.12;
+        }
+
+        @media (max-width: 768px) {
+          .side-pattern-decor {
+            width: 16px !important;
+            background-size: 16px auto !important;
+            opacity: 0.1 !important;
+          }
+          .contact-page {
+            padding: 95px 22px 60px !important;
+          }
+          .contact-container {
+            padding: 0 !important;
+            max-width: 100% !important;
+          }
+          .contact-form-section {
+            padding: 24px 16px !important;
+            background: #FAF6F0 !important;
+            border-radius: 14px !important;
+            border: 1.5px solid rgba(44, 32, 22, 0.18) !important;
+          }
+          .contact-form-section > svg {
+            display: none !important;
+          }
+          .contact-col-card {
+            background: #FAF6F0 !important;
+            border-radius: 12px !important;
+            border: 1px solid rgba(44, 32, 22, 0.16) !important;
+            padding: 20px 16px !important;
+          }
+          .contact-col-card > svg {
+            display: none !important;
+          }
+          .contact-options-grid {
+            grid-template-columns: 1fr !important;
+            gap: 16px !important;
+            margin-bottom: 40px !important;
+          }
+          .contact-submit-btn {
+            width: 100% !important;
+            justify-content: center !important;
+          }
+          .contact-radio-pill {
+            padding: 7px 12px !important;
+            font-size: 11px !important;
+          }
+        }
       `}</style>
 
       <div className="contact-page">
-        {/* ─── LEFT SIDE REPEATING PATTERN IMAGE (bgele2.png) ─── */}
+        {/* ─── LEFT SIDE REPEATING PATTERN IMAGE (bgele2.png, SLIM & LOW OPACITY) ─── */}
         <div
+          className="side-pattern-decor"
           style={{
             position: "absolute",
             left: 0,
             top: 0,
             bottom: 0,
-            width: "48px",
+            width: "24px",
             backgroundImage: 'url("/assets/bgele2.png")',
             backgroundRepeat: "repeat-y",
             backgroundPosition: "left top",
-            backgroundSize: "48px auto",
-            opacity: 0.28,
+            backgroundSize: "24px auto",
+            opacity: 0.12,
             pointerEvents: "none",
             zIndex: 1,
           }}
           aria-hidden="true"
         />
 
-        {/* ─── RIGHT SIDE REPEATING PATTERN IMAGE (bgele2.png, MIRRORED) ─── */}
+        {/* ─── RIGHT SIDE REPEATING PATTERN IMAGE (bgele2.png, MIRRORED, SLIM & LOW OPACITY) ─── */}
         <div
+          className="side-pattern-decor"
           style={{
             position: "absolute",
             right: 0,
             top: 0,
             bottom: 0,
-            width: "48px",
+            width: "24px",
             backgroundImage: 'url("/assets/bgele2.png")',
             backgroundRepeat: "repeat-y",
             backgroundPosition: "left top",
-            backgroundSize: "48px auto",
+            backgroundSize: "24px auto",
             transform: "scaleX(-1)",
-            opacity: 0.28,
+            opacity: 0.12,
             pointerEvents: "none",
             zIndex: 1,
           }}

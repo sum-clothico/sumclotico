@@ -19,6 +19,28 @@
   pointer-events: none;
 }
 
+/* ─── Static Center Portrait ─── */
+.story-section__portrait {
+  position: absolute;
+  top: 57%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 230px;
+  height: 320px;
+  border-radius: 8px;
+  overflow: hidden;
+  z-index: 7;
+  box-shadow: 0 16px 48px rgba(44, 32, 22, 0.22);
+  border: 1.5px solid rgba(61, 43, 31, 0.25);
+}
+
+.story-section__portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 /* ─── Centered Header Container (Heading + Subline in unified flow) ─── */
 .story-section__header {
   position: absolute;
@@ -197,45 +219,91 @@
     padding: 0;
   }
 
+  .story-section__header {
+    top: 36px !important;
+    width: 92% !important;
+    gap: 8px !important;
+  }
+
   .story-section__heading {
-    top: 48px !important;
-    font-size: clamp(1.6rem, 5.5vw, 2.2rem) !important;
-    padding: 0 20px;
-    width: 100%;
-    line-height: 1.2 !important;
+    font-size: clamp(1.4rem, 5.2vw, 1.9rem) !important;
+    padding: 0 10px !important;
+    line-height: 1.25 !important;
     color: #1a1714 !important;
+  }
+
+  .story-section__subline {
+    font-size: 0.85rem !important;
+    line-height: 1.5 !important;
+    color: #4a3c30 !important;
+    padding: 0 10px !important;
+  }
+
+  /* Static Center Portrait on Mobile */
+  .story-section__portrait {
+    position: absolute !important;
+    top: 48% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 200px !important;
+    height: 270px !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    z-index: 6 !important;
+    box-shadow: 0 14px 40px rgba(44, 32, 22, 0.22) !important;
+  }
+
+  .story-section__portrait img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
   }
 
   .story-phase-text {
     position: absolute;
-    top: 52% !important;
+    bottom: 58px !important;
+    top: auto !important;
     left: 50% !important;
     right: auto !important;
-    transform: translate(-50%, -50%) !important;
+    transform: translateX(-50%) !important;
     text-align: center !important;
-    max-width: 88%;
-    width: 100%;
-    padding: 16px 20px;
-    background: rgba(237, 232, 220, 0.75);
-    backdrop-filter: blur(8px);
-    border-radius: 14px;
-    border: 1px solid rgba(61, 43, 31, 0.15);
+    max-width: 90% !important;
+    width: 90% !important;
+    padding: 12px 16px !important;
+    background: rgba(250, 246, 240, 0.94) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border-radius: 12px !important;
+    border: 1.5px solid rgba(61, 43, 31, 0.16) !important;
+    box-shadow: 0 8px 30px rgba(44, 32, 22, 0.1) !important;
+    z-index: 10 !important;
   }
 
   .story-phase-text p {
-    font-size: 1.1rem !important;
+    font-size: 0.92rem !important;
     font-weight: 600 !important;
     color: #1a1714 !important;
-    line-height: 1.55 !important;
+    line-height: 1.5 !important;
   }
 
   .story-section__frame {
     display: none !important;
   }
 
+  /* Full coverage background on mobile instead of cutting in half */
   .story-section__bg {
-    height: 45%;
-    opacity: 0.65;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    opacity: 0.24 !important;
+  }
+
+  .story-section__bg img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
   }
 
   .story-section__cloth {
@@ -252,26 +320,15 @@
   }
 }
 
-
-@media (max-width: 900px) {
-  .story-section__subline {
-    top: 96px !important;
-    font-size: 0.9rem !important;
-    padding: 0 20px;
-  }
-}
-
 @media (max-width: 600px) {
   .story-section__heading {
-    font-size: clamp(1.5rem, 7vw, 2rem) !important;
+    font-size: clamp(1.35rem, 6vw, 1.75rem) !important;
     gap: 0.15em !important;
   }
-  .story-section__subline {
-    top: 110px !important;
-    font-size: 0.88rem !important;
-  }
   .story-phase-text {
-    font-size: 0.85rem !important;
-    padding: 0 16px !important;
+    padding: 16px 18px !important;
+  }
+  .story-phase-text p {
+    font-size: 0.95rem !important;
   }
 }

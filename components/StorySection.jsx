@@ -191,6 +191,14 @@ const StorySection = () => {
         />
       </svg>
 
+      {/* Static Center Portrait Card */}
+      <div className="story-section__portrait">
+        <img
+          src="/assets/homepage/IMG_1048.JPG"
+          alt="Handcrafted Khadi Garment"
+        />
+      </div>
+
       {/* Phase texts */}
       {phases.map((phase, i) => (
         <div

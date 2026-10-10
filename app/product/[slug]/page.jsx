@@ -192,11 +192,40 @@ export default function ProductPage() {
           background-color: #FAF6F0;
           color: #1a140e;
           min-height: 100vh;
-          padding: 110px 24px 80px;
+          padding: 120px 24px 90px;
+        }
+        @media (max-width: 768px) {
+          .pdp-wrapper {
+            padding: 95px 16px 90px;
+          }
         }
         .pdp-container {
           max-width: 1200px;
           margin: 0 auto;
+        }
+        .pdp-hero-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 56px;
+          align-items: start;
+          margin-bottom: 70px;
+        }
+        .pdp-gallery-col {
+          position: sticky;
+          top: 110px;
+        }
+        @media (max-width: 900px) {
+          .pdp-hero-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+            margin-bottom: 40px;
+          }
+          .pdp-gallery-col {
+            position: static !important;
+            top: auto !important;
+            width: 100%;
+          }
         }
         .pdp-thumb {
           cursor: pointer;
@@ -317,10 +346,10 @@ export default function ProductPage() {
           </nav>
 
           {/* ─── PRODUCT HERO ─── */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 56, alignItems: "start", marginBottom: 70 }}>
+          <div className="pdp-hero-grid">
 
             {/* LEFT: Gallery Visuals */}
-            <div style={{ position: "sticky", top: 110 }}>
+            <div className="pdp-gallery-col">
               <div style={{ borderRadius: 18, overflow: "hidden", background: "#e8dfd0", aspectRatio: "3/4", marginBottom: 16, position: "relative", border: "1px solid rgba(42,31,20,0.08)" }}>
                 {isVideoActive && product.videoUrl ? (
                   <video
@@ -653,7 +682,7 @@ export default function ProductPage() {
 
             {/* 2. Clean Specifications Grid Directly on Background (No floating white box) */}
             <div style={{ borderTop: "1px solid rgba(44, 32, 22, 0.14)", padding: "10px 0 0" }}>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: "0 48px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "0 48px" }}>
                 <div className="pdp-spec-row">
                   <span style={{ fontWeight: 700, color: "#8A7A6C", textTransform: "uppercase", fontSize: "0.78rem", letterSpacing: "0.1em" }}>Textile</span>
                   <span style={{ fontWeight: 600, color: "#1a140e" }}>{product.fabricComposition || "100% Handspun Khadi Cotton"}</span>

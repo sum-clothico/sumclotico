@@ -13,6 +13,7 @@ const PANELS = [
     how: "Comfort that doesn't ask you to compromise on looking good — easy shapes with effortless attitude.",
     label: ["PRINCIPLE", "EASY"],
     model: "/assets/model.png",
+    mobileModel: "/assets/img/15.png",
   },
   {
     reversed: true,
@@ -21,6 +22,7 @@ const PANELS = [
     how: "Thoughtful silhouettes, functional deep pockets, and cuts designed for real days and spontaneous plans.",
     label: ["PRINCIPLE", "THOUGHTFUL"],
     model: "/assets/m2.png",
+    mobileModel: "/assets/img/14.png",
   },
   {
     reversed: false,
@@ -29,6 +31,7 @@ const PANELS = [
     how: "Starting with pure Khadi cotton sourced from Madhya Pradesh, woven at human pace on wooden looms.",
     label: ["PRINCIPLE", "ROOTED"],
     model: "/assets/m3.png",
+    mobileModel: "/assets/img/24.png",
   },
   {
     reversed: true,
@@ -37,10 +40,11 @@ const PANELS = [
     how: "Pieces you can wear more than one way, softening and relaxing naturally with every wash.",
     label: ["PRINCIPLE", "LONG-WEARING"],
     model: "/assets/m1.png",
+    mobileModel: "/assets/img/26.png",
   },
 ];
 
-const SplitPanel = ({ reversed, title, why, how, label, model }) => {
+const SplitPanel = ({ reversed, title, why, how, label, model, mobileModel }) => {
   const sectionRef = useRef(null);
   const modelRef = useRef(null);
 
@@ -197,7 +201,10 @@ const SplitPanel = ({ reversed, title, why, how, label, model }) => {
       <div className="split-section__right" />
 
       <div ref={modelRef} className="split-section__model">
-        <img src={model} alt="Khadi Model" />
+        <picture>
+          {mobileModel && <source media="(max-width: 900px)" srcSet={mobileModel} />}
+          <img src={model} alt="Khadi Model" />
+        </picture>
       </div>
     </section>
   );
