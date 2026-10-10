@@ -244,12 +244,15 @@ export default function HorizontalWords() {
             </p>
           </div>
 
-          {/* Center Static Portrait Card */}
-          <div className="hw-portrait-card">
-            <img
-              src="/assets/homepage/14887305-5caf-4e77-b3fa-c79443ced34b.png"
-              alt="Artisan Handspinning Pure Khadi"
-            />
+          {/* Center Column Slot (Frame is at 50% center on desktop) */}
+          <div className="hw-center-slot" aria-hidden="true">
+            {/* Center Static Portrait Card (MOBILE ONLY) */}
+            <div className="hw-portrait-card">
+              <img
+                src="/assets/homepage/14887305-5caf-4e77-b3fa-c79443ced34b.png"
+                alt="Artisan Handspinning Pure Khadi"
+              />
+            </div>
           </div>
 
           {/* Right Column Narrative */}

@@ -38,7 +38,7 @@ export default function Home() {
       <HorizontalWords />
       <StorySection />
       <SplitSection />
-      {/* TravelingImage removed: images are now cleanly embedded and static in each section */}
+      <TravelingImage />
       {/* Traditional Indian Border Pattern Divider */}
       <div
         className="section-pattern-divider"

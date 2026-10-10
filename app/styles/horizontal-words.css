@@ -171,24 +171,18 @@
   padding-left: 20px;
 }
 
-/* ─── Static Portrait Card in Center ─── */
-.hw-portrait-card {
-  width: 230px;
-  height: 320px;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 14px 44px rgba(44, 32, 22, 0.16);
-  border: 1.5px solid rgba(61, 43, 31, 0.25);
-  margin: 0 auto;
-  position: relative;
-  z-index: 5;
+/* ─── Center Slot for TravelingImage ─── */
+.hw-center-slot {
+  min-height: 330px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.hw-portrait-card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+/* ─── Static Portrait Card in Center (MOBILE ONLY: hidden on PC desktop) ─── */
+.hw-portrait-card {
+  display: none;
 }
 
 /* ─── Mobile Responsiveness ─── */
@@ -251,13 +245,33 @@
     margin: 14px auto !important;
   }
 
+  .hw-desktop-spacer {
+    display: none !important;
+  }
+
+  .hw-center-slot {
+    min-height: auto !important;
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+  }
+
   .hw-portrait-card {
+    display: block !important;
     width: 200px !important;
     height: 260px !important;
     max-width: 75% !important;
     border-radius: 12px !important;
     margin: 6px auto !important;
     box-shadow: 0 10px 30px rgba(44, 32, 22, 0.14) !important;
+    overflow: hidden !important;
+  }
+
+  .hw-portrait-card img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
   }
 
   .hw-editorial-item--left,

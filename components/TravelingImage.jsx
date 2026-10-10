@@ -27,19 +27,22 @@ const TravelingImage = () => {
 
     if (!el || !hWords || !storySection || splitSections.length === 0) return;
 
-    const lastSplit = splitSections[splitSections.length - 1];
-    const triggers = [];
-    let isLanded = false;
+    const mm = gsap.matchMedia();
 
-    gsap.set(el, {
-      opacity: 0,
-      scale: 1,
-      xPercent: -50,
-      yPercent: -50,
-      left: "50%",
-      top: "57%",
-    });
-    el.classList.add("ti-ready");
+    mm.add("(min-width: 769px)", () => {
+      const lastSplit = splitSections[splitSections.length - 1];
+      const triggers = [];
+      let isLanded = false;
+
+      gsap.set(el, {
+        opacity: 0,
+        scale: 1,
+        xPercent: -50,
+        yPercent: -50,
+        left: "50%",
+        top: "57%",
+      });
+      el.classList.add("ti-ready");
 
     // ═══ PHASE 0 — Fade in during HorizontalWords ═══
     const fadeInTl = gsap.timeline({
@@ -55,9 +58,26 @@ const TravelingImage = () => {
     fadeInTl.to(el, {
       opacity: 1,
       scale: 1,
+      left: "50%",
+      top: "57%",
       duration: TOTAL_PIN_DISTANCE - 150,
       ease: "power2.out",
     });
+
+    // Reset when scrolling back up above HorizontalWords
+    const resetTrigger = ScrollTrigger.create({
+      trigger: hWords,
+      start: "top top",
+      onLeaveBack: () => {
+        gsap.set(el, {
+          opacity: 0,
+          scale: 1,
+          left: "50%",
+          top: "57%",
+        });
+      },
+    });
+    triggers.push(resetTrigger);
 
     const hFrame = hWords.querySelector(".section-frame-path");
     if (hFrame) {
@@ -164,13 +184,14 @@ const TravelingImage = () => {
       triggers.push(travelTl.scrollTrigger);
       travelTl.fromTo(
         el,
-        { left: prevLeft, top: prevTop, scale: prevScale },
+        { left: prevLeft, top: prevTop, scale: prevScale, immediateRender: false },
         {
           left: targetLeft,
           top: "38%",
           scale: 1,
           duration: 1,
           ease: "power2.inOut",
+          immediateRender: false,
         },
       );
 
@@ -241,12 +262,15 @@ const TravelingImage = () => {
     triggers.push(lockST);
     ScrollTrigger.refresh();
 
-    return () => {
-      triggers.forEach((st) => st && st.kill());
-      if (el && originalParent && el.parentElement !== originalParent) {
-        originalParent.appendChild(el);
-      }
-    };
+      return () => {
+        triggers.forEach((st) => st && st.kill());
+        if (el && originalParent && el.parentElement !== originalParent) {
+          originalParent.appendChild(el);
+        }
+      };
+    });
+
+    return () => mm.revert();
   }, []);
 
   return (
