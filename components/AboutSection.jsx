@@ -13,7 +13,7 @@ const LINES = [
   "NO TEMPLATE. JUST CLOTHES YOU CAN MAKE YOUR OWN.",
 ];
 
-const PIN_DISTANCE = 500 * LINES.length;
+const PIN_DISTANCE = 320 * LINES.length;
 
 export default function AboutSection() {
   const sectionRef = useRef(null);
@@ -36,7 +36,7 @@ export default function AboutSection() {
           end: `+=${PIN_DISTANCE}`,
           pin: true,
           pinSpacing: true,
-          scrub: 1.2,
+          scrub: 0.8,
           anticipatePin: 1,
           invalidateOnRefresh: true,
         },

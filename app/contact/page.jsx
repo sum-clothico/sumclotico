@@ -476,49 +476,62 @@ export default function ContactPage() {
 
         <div className="contact-container">
 
-          {/* ─── Hero: Two-Column Editorial ─── */}
+          {/* ─── Hero: Centered Editorial Masthead ─── */}
           <div
             style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-              gap: 60,
-              alignItems: "center",
-              padding: "0 0 64px",
+              textAlign: "center",
+              maxWidth: 840,
+              margin: "0 auto 48px",
+              paddingBottom: "36px",
               borderBottom: "1px solid rgba(44,32,22,0.12)",
-              marginBottom: 60,
             }}
           >
-            {/* Left: heading copy */}
-            <div>
-              <div className="contact-hero-badge">
-                <IndianArchBadge style={{ marginBottom: "18px" }}>
-                  Get In Touch
-                </IndianArchBadge>
+            <div className="contact-hero-badge" style={{ display: "inline-block", marginBottom: "18px" }}>
+              <IndianArchBadge>
+                Get In Touch
+              </IndianArchBadge>
+            </div>
+            <h1 className="contact-hero__headline" style={{ marginBottom: 16 }}>
+              <AnimatedWords text="Come say hello." />
+            </h1>
+            <p className="contact-hero__copy" style={{ maxWidth: 620, margin: "0 auto 24px" }}>
+              Whether you need help finding your size, want to collaborate, or just want to share something — we read every message.
+            </p>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                flexWrap: "wrap",
+                gap: "8px 24px",
+                fontSize: "0.88rem",
+                color: "#55483d",
+                marginBottom: 28,
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#660608", flexShrink: 0 }} />
+                We typically reply within 24 hours
               </div>
-              <h1 className="contact-hero__headline" style={{ marginBottom: 20 }}>
-                <AnimatedWords text="Come say hello." />
-              </h1>
-              <p className="contact-hero__copy" style={{ marginBottom: 28 }}>
-                Whether you need help finding your size, want to collaborate, or just want to share something — we read every message.
-              </p>
-              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 10, fontSize: "0.9rem", color: "#55483d" }}>
-                  <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#660608", flexShrink: 0 }} />
-                  We typically reply within 24 hours
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: 10, fontSize: "0.9rem", color: "#55483d" }}>
-                  <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#660608", flexShrink: 0 }} />
-                  Available Mon–Sat, 10 AM – 6 PM IST
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: 10, fontSize: "0.9rem", color: "#55483d" }}>
-                  <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#660608", flexShrink: 0 }} />
-                  All messages are read by a real person
-                </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#660608", flexShrink: 0 }} />
+                Mon–Sat, 10 AM – 6 PM IST
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#660608", flexShrink: 0 }} />
+                Read by a real person
               </div>
             </div>
 
-            {/* Right: 3 stat / fact mini-placards */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            {/* 3 stat / fact mini-placards in a balanced row */}
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+                gap: 16,
+                maxWidth: 780,
+                margin: "0 auto",
+              }}
+            >
               {[
                 { label: "Response Time", value: "Under 24h", note: "on all inquiries" },
                 { label: "Reach us directly", value: "hello@sumclothico.com", note: "or WhatsApp us" },
@@ -529,10 +542,12 @@ export default function ContactPage() {
                   className="contact-anim-stat"
                   style={{
                     position: "relative",
-                    padding: "18px 20px",
+                    padding: "16px 18px",
                     display: "flex",
-                    justifyContent: "space-between",
+                    flexDirection: "column",
                     alignItems: "center",
+                    textAlign: "center",
+                    gap: 4,
                   }}
                 >
                   <svg
@@ -555,11 +570,15 @@ export default function ContactPage() {
                       strokeOpacity="0.28"
                     />
                   </svg>
-                  <div style={{ position: "relative", zIndex: 1 }}>
-                    <span style={{ fontSize: "0.7rem", fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: "#8a7a6c", display: "block", marginBottom: 2 }}>{item.label}</span>
-                    <span style={{ fontSize: "1.05rem", fontWeight: 600, color: "#1a140e", fontFamily: "serif" }}>{item.value}</span>
-                  </div>
-                  <span style={{ position: "relative", zIndex: 1, fontSize: "0.78rem", color: "#660608", fontStyle: "italic" }}>{item.note}</span>
+                  <span style={{ position: "relative", zIndex: 1, fontSize: "0.72rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.12em", color: "#660608" }}>
+                    {item.label}
+                  </span>
+                  <span style={{ position: "relative", zIndex: 1, fontFamily: "serif", fontSize: "1.02rem", fontWeight: 700, color: "#1a140e" }}>
+                    {item.value}
+                  </span>
+                  <span style={{ position: "relative", zIndex: 1, fontSize: "0.76rem", color: "#6e5d4e" }}>
+                    {item.note}
+                  </span>
                 </div>
               ))}
             </div>
