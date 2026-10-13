@@ -9,7 +9,7 @@ import { FiArrowRight, FiMapPin } from "react-icons/fi";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const TOTAL_PIN_DISTANCE = 1300;
+const TOTAL_PIN_DISTANCE = 950;
 
 export default function HorizontalWords() {
   const sectionRef = useRef(null);
@@ -44,9 +44,9 @@ export default function HorizontalWords() {
             ease: "power2.inOut",
             scrollTrigger: {
               trigger: container,
-              start: () => `top+=${TOTAL_PIN_DISTANCE - 240} top`,
+              start: () => `top+=${TOTAL_PIN_DISTANCE - 180} top`,
               end: () => `top+=${TOTAL_PIN_DISTANCE} top`,
-              scrub: true,
+              scrub: 0.8,
             },
           });
         }
@@ -59,9 +59,9 @@ export default function HorizontalWords() {
           ease: "power2.inOut",
           scrollTrigger: {
             trigger: container,
-            start: () => `top+=${TOTAL_PIN_DISTANCE - 240} top`,
+            start: () => `top+=${TOTAL_PIN_DISTANCE - 180} top`,
             end: () => `top+=${TOTAL_PIN_DISTANCE} top`,
-            scrub: true,
+            scrub: 0.8,
           },
         });
       }

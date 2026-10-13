@@ -5,7 +5,7 @@ import "../app/styles/story-section.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const PIN_DURATION = 1400;
+const PIN_DURATION = 1000;
 
 const phases = [
   {
@@ -33,7 +33,7 @@ const StorySection = () => {
 
       const isDesktop =
         typeof window !== "undefined" && window.innerWidth > 900;
-      const PIN = isDesktop ? PIN_DURATION : 1000;
+      const PIN = isDesktop ? PIN_DURATION : 800;
 
       // Heading Word-by-Word Kinetic Reveal
       const headingWords = section.querySelectorAll(".story-heading-word");
@@ -64,7 +64,7 @@ const StorySection = () => {
           end: () => `+=${PIN}`,
           pin: true,
           pinSpacing: true,
-          scrub: 1,
+          scrub: 0.8,
           anticipatePin: 1,
           invalidateOnRefresh: true,
         },

@@ -307,7 +307,7 @@ export default function FabricClient() {
           aria-hidden="true"
         />
 
-        {/* ─── HERO = THE SOURCE ─── */}
+        {/* ─── HERO = THE SOURCE (CENTERED EDITORIAL MASTHEAD) ─── */}
         <section
           className="fab-hero"
           style={{
@@ -316,75 +316,68 @@ export default function FabricClient() {
             margin: "0 auto",
             position: "relative",
             zIndex: 2,
+            textAlign: "center",
           }}
         >
-          <div
-            className="fab-hero-grid"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1.05fr 0.95fr",
-              gap: "clamp(32px, 5vw, 56px)",
-              alignItems: "center",
-            }}
-          >
-            <div>
-              <div className="fab-hero-badge">
-                <IndianArchBadge style={{ marginBottom: "18px" }}>
-                  The Source
-                </IndianArchBadge>
-              </div>
-              <h1
-                className="fab-hero-title"
-                style={{
-                  fontFamily: "serif",
-                  fontSize: "clamp(2.2rem, 4vw, 3.4rem)",
-                  fontWeight: 500,
-                  lineHeight: 1.18,
-                  color: "#1a140e",
-                  margin: "0 0 24px",
-                }}
-              >
-                <AnimatedWords text="The garment is only one part of the story." />
-              </h1>
-              <div
-                className="fab-hero-sub"
-                style={{
-                  fontSize: "1.05rem",
-                  lineHeight: 1.8,
-                  color: "#4a3c30",
-                }}
-              >
-                <p style={{ margin: "0 0 12px" }}>
-                  <AnimatedWords text="We are building Sum around a deeper relationship with handwoven textiles." />
-                </p>
-                <p style={{ margin: "0 0 12px" }}>
-                  <AnimatedWords text="Not because they're fashionable." />
-                </p>
-                <p style={{ margin: "0 0 18px" }}>
-                  <AnimatedWords text="Because they carry something that mass production often leaves behind — time, place, skill and character." />
-                </p>
-                <p
-                  style={{
-                    margin: 0,
-                    fontStyle: "italic",
-                    fontFamily: "serif",
-                    fontSize: "1.15rem",
-                    color: "#660608",
-                  }}
-                >
-                  <AnimatedWords text="And behind the textile, there is a place, a process and a whole lot of human work." />
-                </p>
-              </div>
+          <div style={{ maxWidth: 840, margin: "0 auto 48px" }}>
+            <div className="fab-hero-badge" style={{ display: "inline-block", marginBottom: "18px" }}>
+              <IndianArchBadge>
+                The Source
+              </IndianArchBadge>
             </div>
-
-            <div
-              className="fab-hero-visual"
+            <h1
+              className="fab-hero-title"
               style={{
-                maxWidth: 480,
-                width: "100%",
+                fontFamily: "serif",
+                fontSize: "clamp(2.4rem, 4.4vw, 3.6rem)",
+                fontWeight: 500,
+                lineHeight: 1.18,
+                color: "#1a140e",
+                margin: "0 auto 24px",
+                maxWidth: 820,
+              }}
+            >
+              <AnimatedWords text="The garment is only one part of the story." />
+            </h1>
+            <div
+              className="fab-hero-sub"
+              style={{
+                fontSize: "1.08rem",
+                lineHeight: 1.8,
+                color: "#4a3c30",
+                maxWidth: 720,
                 margin: "0 auto",
               }}
             >
+              <p style={{ margin: "0 0 12px" }}>
+                <AnimatedWords text="We are building Sum around a deeper relationship with handwoven textiles." />
+              </p>
+              <p style={{ margin: "0 0 14px" }}>
+                <AnimatedWords text="Because they carry something that mass production often leaves behind — time, place, skill and character." />
+              </p>
+              <p
+                style={{
+                  margin: 0,
+                  fontStyle: "italic",
+                  fontFamily: "serif",
+                  fontSize: "1.2rem",
+                  color: "#660608",
+                  fontWeight: 600,
+                }}
+              >
+                <AnimatedWords text="And behind the textile, there is a place, a process and a whole lot of human work." />
+              </p>
+            </div>
+          </div>
+
+          <div
+            className="fab-hero-visual"
+            style={{
+              maxWidth: 640,
+              width: "100%",
+              margin: "0 auto",
+            }}
+          >
               <div
                 className="fab-image-reveal"
                 style={{
@@ -407,8 +400,7 @@ export default function FabricClient() {
                 />
               </div>
             </div>
-          </div>
-        </section>
+          </section>
 
         {/* ─── OUR STARTING POINT (SEAMLESS EDITORIAL) ─── */}
         <section

@@ -344,102 +344,95 @@ export default function OurStoryClient() {
           zIndex: 2,
         }}
       >
+        {/* Centered Hero Masthead */}
         <div
-          className="os-hero-grid"
           style={{
-            display: "grid",
-            gridTemplateColumns: "1.15fr 0.85fr",
-            gap: "clamp(40px, 6vw, 64px)",
-            alignItems: "center",
+            textAlign: "center",
+            maxWidth: 840,
+            margin: "0 auto 48px",
           }}
         >
-          <div>
-            <div className="os-hero-badge">
-              <IndianArchBadge style={{ marginBottom: "20px" }}>
-                Why Sum
-              </IndianArchBadge>
-            </div>
-
-            <h1
-              className="os-hero-title"
-              style={{
-                fontSize: "clamp(2.1rem, 3.8vw, 3.2rem)",
-                lineHeight: 1.25,
-                fontWeight: 600,
-                fontFamily: "serif",
-                color: "#1a140e",
-                margin: "0 0 16px",
-              }}
-            >
-              <AnimatedWords text="Sum is a sum of people, ideas, skills, places, techniques." />
-            </h1>
-
-            <div
-              style={{
-                marginBottom: "32px",
-              }}
-            >
-              <p
-                className="os-hero-para"
-                style={{
-                  margin: 0,
-                  fontWeight: 700,
-                  fontFamily: "serif",
-                  color: "#660608",
-                  fontSize: "clamp(1.25rem, 2.2vw, 1.65rem)",
-                }}
-              >
-                And eventually, you.
-              </p>
-            </div>
-
-            <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
-              <a
-                href="#why-sum-exists"
-                className="os-hero-cta"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 8,
-                  background: "#660608",
-                  color: "#EDE8DC",
-                  padding: "14px 28px",
-                  borderRadius: 99,
-                  fontWeight: 800,
-                  fontSize: "0.8rem",
-                  letterSpacing: "0.12em",
-                  textTransform: "uppercase",
-                  textDecoration: "none",
-                  boxShadow: "0 4px 16px rgba(102, 6, 8, 0.25)",
-                }}
-              >
-                Read Our Journey <FiArrowRight />
-              </a>
-              <Link
-                href="/fabric"
-                className="os-hero-cta"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 8,
-                  background: "transparent",
-                  color: "#1a140e",
-                  border: "1.5px solid rgba(26, 20, 14, 0.35)",
-                  padding: "14px 28px",
-                  borderRadius: 99,
-                  fontWeight: 800,
-                  fontSize: "0.8rem",
-                  letterSpacing: "0.12em",
-                  textTransform: "uppercase",
-                  textDecoration: "none",
-                }}
-              >
-                The Fabric
-              </Link>
-            </div>
+          <div className="os-hero-badge" style={{ display: "inline-block", marginBottom: "18px" }}>
+            <IndianArchBadge>
+              Why Sum
+            </IndianArchBadge>
           </div>
 
-          <div className="os-hero-visual" style={{ position: "relative" }}>
+          <h1
+            className="os-hero-title"
+            style={{
+              fontSize: "clamp(2.2rem, 4.2vw, 3.4rem)",
+              lineHeight: 1.22,
+              fontWeight: 600,
+              fontFamily: "serif",
+              color: "#1a140e",
+              margin: "0 auto 16px",
+              maxWidth: 780,
+            }}
+          >
+            <AnimatedWords text="Sum is a sum of people, ideas, skills, places, techniques." />
+          </h1>
+
+          <p
+            className="os-hero-para"
+            style={{
+              margin: "0 auto 28px",
+              fontWeight: 700,
+              fontFamily: "serif",
+              color: "#660608",
+              fontSize: "clamp(1.25rem, 2.2vw, 1.65rem)",
+            }}
+          >
+            And eventually, you.
+          </p>
+
+          <div style={{ display: "flex", gap: "16px", justifyContent: "center", flexWrap: "wrap" }}>
+            <a
+              href="#why-sum-exists"
+              className="os-hero-cta"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                background: "#660608",
+                color: "#EDE8DC",
+                padding: "14px 28px",
+                borderRadius: 99,
+                fontWeight: 800,
+                fontSize: "0.8rem",
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                textDecoration: "none",
+                boxShadow: "0 4px 16px rgba(102, 6, 8, 0.25)",
+              }}
+            >
+              Read Our Journey <FiArrowRight />
+            </a>
+            <Link
+              href="/fabric"
+              className="os-hero-cta"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                background: "transparent",
+                color: "#1a140e",
+                border: "1.5px solid rgba(26, 20, 14, 0.35)",
+                padding: "14px 28px",
+                borderRadius: 99,
+                fontWeight: 800,
+                fontSize: "0.8rem",
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                textDecoration: "none",
+              }}
+            >
+              The Fabric
+            </Link>
+          </div>
+        </div>
+
+        <div className="os-hero-visual" style={{ position: "relative", maxWidth: 640, margin: "0 auto" }}>
             <div
               style={{
                 position: "relative",
@@ -553,8 +546,7 @@ export default function OurStoryClient() {
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
       {/* ─── SECTION 01 — WHY SUM EXISTS ─── */}
       <section

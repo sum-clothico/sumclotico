@@ -5,8 +5,8 @@ import "../app/styles/traveling-image.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const TOTAL_PIN_DISTANCE = 1300;
-const STORY_PIN = 1400;
+const TOTAL_PIN_DISTANCE = 950;
+const STORY_PIN = 1000;
 
 const SPLIT_IMAGES = [
   "/assets/img/12.png",
@@ -50,7 +50,7 @@ const TravelingImage = () => {
         trigger: hWords,
         start: "top top",
         end: `+=${TOTAL_PIN_DISTANCE}`,
-        scrub: true,
+        scrub: 0.8,
       },
     });
     triggers.push(fadeInTl.scrollTrigger);
@@ -101,7 +101,7 @@ const TravelingImage = () => {
         trigger: storySection,
         start: "top bottom",
         end: "top top",
-        scrub: true,
+        scrub: 0.8,
       },
     });
     triggers.push(travelToStoryTl.scrollTrigger);
@@ -123,7 +123,7 @@ const TravelingImage = () => {
         trigger: storySection,
         start: "top top",
         end: `+=${STORY_PIN}`,
-        scrub: true,
+        scrub: 0.8,
       },
     });
     triggers.push(splitTl.scrollTrigger);
@@ -178,7 +178,7 @@ const TravelingImage = () => {
           trigger: section,
           start: "top 90%",
           end: "top 15%",
-          scrub: true,
+          scrub: 0.8,
         },
       });
       triggers.push(travelTl.scrollTrigger);
