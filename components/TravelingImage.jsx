@@ -40,7 +40,7 @@ const TravelingImage = () => {
         xPercent: -50,
         yPercent: -50,
         left: "50%",
-        top: "57%",
+        top: "72%",
       });
       el.classList.add("ti-ready");
 
@@ -59,7 +59,7 @@ const TravelingImage = () => {
       opacity: 1,
       scale: 1,
       left: "50%",
-      top: "57%",
+      top: "72%",
       duration: TOTAL_PIN_DISTANCE - 150,
       ease: "power2.out",
     });
@@ -73,7 +73,7 @@ const TravelingImage = () => {
           opacity: 0,
           scale: 1,
           left: "50%",
-          top: "57%",
+          top: "72%",
         });
       },
     });
@@ -107,7 +107,7 @@ const TravelingImage = () => {
     triggers.push(travelToStoryTl.scrollTrigger);
     travelToStoryTl.to(el, {
       left: "50%",
-      top: "57%",
+      top: "72%",
       scale: 1,
       duration: 1,
       ease: "none",
@@ -169,7 +169,7 @@ const TravelingImage = () => {
           : splitSections[i - 1].classList.contains("split-section--reversed")
             ? "82%"
             : "18%";
-      const prevTop = i === 0 ? "57%" : "38%";
+      const prevTop = i === 0 ? "72%" : "32%";
       const prevScale = 1;
 
       // Moves promptly as section enters viewport so it arrives right into frame
@@ -187,7 +187,7 @@ const TravelingImage = () => {
         { left: prevLeft, top: prevTop, scale: prevScale, immediateRender: false },
         {
           left: targetLeft,
-          top: "38%",
+          top: "32%",
           scale: 1,
           duration: 1,
           ease: "power2.inOut",

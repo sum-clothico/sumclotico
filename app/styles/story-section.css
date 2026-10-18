@@ -10,7 +10,7 @@
 /* ─── SVG Frame (centered, matches traveling image size) ── */
 .story-section__frame {
   position: absolute;
-  top: 57%;
+  top: 72%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 240px;
@@ -73,7 +73,7 @@
 /* ─── Phase Text ────────────────────────────────────────── */
 .story-phase-text {
   position: absolute;
-  top: 57%;
+  top: 72%;
   transform: translateY(-50%);
   max-width: 380px;
   opacity: 0;

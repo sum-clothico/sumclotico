@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useStore } from "@/context/StoreContext";
 import { fileToBase32, base32ToDataUrl } from "@/lib/base32";
+import { uploadApi } from "@/lib/api";
 import { FiEdit2, FiTrash2, FiPlus, FiCheck, FiFolderPlus, FiX, FiExternalLink } from "react-icons/fi";
 
 const DEFAULT_SIZE_PRESETS = ["XS", "S", "M", "L", "XL", "XXL", "Free Size"];
@@ -210,6 +211,41 @@ export default function AdminProductsPage() {
       setForm((prev) => ({ ...prev, category: clean }));
       setNewCategoryInput("");
       setIsCreatingCategory(false);
+    }
+  };
+
+  // Video upload state
+  const [videoUploading, setVideoUploading] = useState(false);
+  const [videoUploadError, setVideoUploadError] = useState("");
+
+  // Handle video file upload to Cloudinary via backend
+  const handleVideoFileUpload = async (e, isEdit = false) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith("video/")) {
+      setVideoUploadError("Please select a video file");
+      return;
+    }
+    const maxBytes = 200 * 1024 * 1024;
+    if (file.size > maxBytes) {
+      setVideoUploadError("Video exceeds 200MB limit");
+      return;
+    }
+    try {
+      setVideoUploadError("");
+      setVideoUploading(true);
+      const { video } = await uploadApi.uploadVideo(file);
+      if (isEdit) {
+        setEditForm((prev) => ({ ...prev, videoUrl: video.url }));
+      } else {
+        setForm((prev) => ({ ...prev, videoUrl: video.url }));
+      }
+    } catch (err) {
+      console.error("Video upload failed:", err);
+      setVideoUploadError(err.message || "Upload failed");
+    } finally {
+      setVideoUploading(false);
+      e.target.value = "";
     }
   };
 
@@ -1188,12 +1224,25 @@ export default function AdminProductsPage() {
             </div>
 
             <div className="admin-form-group">
-              <label className="admin-form-label">Cloudinary Video URL (Stored in DB)</label>
+              <label className="admin-form-label">Product Video (Cloudinary)</label>
+              <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 8 }}>
+                <input
+                  type="file"
+                  accept="video/*"
+                  onChange={(e) => handleVideoFileUpload(e, false)}
+                  disabled={videoUploading}
+                  style={{ flex: 1 }}
+                />
+                {videoUploading && <span style={{ fontSize: 12, color: "#660608" }}>Uploading…</span>}
+              </div>
+              {videoUploadError && (
+                <div style={{ color: "#b00020", fontSize: 12, marginBottom: 6 }}>{videoUploadError}</div>
+              )}
               <input
                 type="url"
                 name="videoUrl"
                 className="admin-form-input"
-                placeholder="e.g. https://res.cloudinary.com/.../video.mp4"
+                placeholder="Or paste existing https://res.cloudinary.com/.../video.mp4"
                 value={form.videoUrl}
                 onChange={handleChange}
               />
@@ -2096,12 +2145,25 @@ export default function AdminProductsPage() {
                 </div>
 
                 <div className="auth-form-group" style={{ gridColumn: "1 / -1" }}>
-                  <label className="auth-label">Cloudinary Video URL (Stored in DB)</label>
+                  <label className="auth-label">Product Video (Cloudinary)</label>
+                  <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 8 }}>
+                    <input
+                      type="file"
+                      accept="video/*"
+                      onChange={(e) => handleVideoFileUpload(e, true)}
+                      disabled={videoUploading}
+                      style={{ flex: 1 }}
+                    />
+                    {videoUploading && <span style={{ fontSize: 12, color: "#660608" }}>Uploading…</span>}
+                  </div>
+                  {videoUploadError && (
+                    <div style={{ color: "#b00020", fontSize: 12, marginBottom: 6 }}>{videoUploadError}</div>
+                  )}
                   <input
                     type="url"
                     name="videoUrl"
                     className="auth-input"
-                    placeholder="e.g. https://res.cloudinary.com/.../video.mp4"
+                    placeholder="Or paste existing https://res.cloudinary.com/.../video.mp4"
                     value={editForm.videoUrl || ""}
                     onChange={handleEditChange}
                   />

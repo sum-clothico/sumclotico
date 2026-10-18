@@ -5,25 +5,43 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useStore } from "@/context/StoreContext";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+
 export default function AdminLoginPage() {
   const router = useRouter();
   const { loginAdmin } = useStore();
-  const [email, setEmail] = useState("admin@sumclotico.com");
-  const [password, setPassword] = useState("admin123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [verificationMode, setVerificationMode] = useState(false);
   const [verificationCode, setVerificationCode] = useState("");
   const [error, setError] = useState("");
   const [infoMessage, setInfoMessage] = useState("");
+  const [pendingUser, setPendingUser] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleInitialSubmit = (e) => {
+  const handleInitialSubmit = async (e) => {
     e.preventDefault();
+    setError("");
     if (!email || !password) return;
-
-    // Simulate sending 2FA verification link / token to admin email
-    setVerificationMode(true);
-    setInfoMessage(
-      `Secure 6-digit verification code sent to ${email} (Demo code: 772914)`,
-    );
+    setSubmitting(true);
+    try {
+      const res = await fetch(`${API_BASE_URL}/auth/admin-login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || "Invalid credentials");
+      }
+      setPendingUser(data.data);
+      setVerificationMode(true);
+      setInfoMessage(`Secure 6-digit verification code sent to ${email} (Demo code: 772914)`);
+    } catch (err) {
+      setError(err.message || "Login failed");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleVerifySubmit = (e) => {
@@ -32,14 +50,18 @@ export default function AdminLoginPage() {
       setError("Invalid verification code. Please enter 772914.");
       return;
     }
-
-    loginAdmin(email, password);
+    if (pendingUser?.token) {
+      try {
+        localStorage.setItem("sum_token", pendingUser.token);
+        localStorage.setItem("sum_admin_token", pendingUser.token);
+      } catch {}
+    }
+    loginAdmin(pendingUser?.user || { email });
     router.push("/admin");
   };
 
   const handleOAuthAdmin = () => {
-    loginAdmin("bimal.admin@sumclotico.com", "oauth_pass");
-    router.push("/admin");
+    setError("Google OAuth admin login not configured. Use email + password.");
   };
 
   return (

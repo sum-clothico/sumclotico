@@ -14,13 +14,29 @@
 /* ─── SVG Frame for Traveling Image ──────────────────────────────────── */
 .horizontal-words__frame {
   position: absolute;
-  top: 57%;
+  top: 72%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 240px;
-  height: 330px;
+  width: 220px;
+  height: 300px;
   z-index: 50;
   pointer-events: none;
+}
+
+/* ─── Pin heading to top, prevent flex-center drift into image ────────── */
+.hw-content-wrapper {
+  justify-content: flex-start !important;
+  gap: 20px !important;
+  padding-top: 40px !important;
+}
+.hw-content-wrapper > div:first-child {
+  margin-bottom: 0 !important;
+}
+.hw-story-grid {
+  margin: 24px auto 0 !important;
+}
+.hw-content-wrapper > div:last-child {
+  margin-top: auto !important;
 }
 
 /* ─── Corner Ornaments ────────────────────────────────────────────────── */
@@ -173,11 +189,12 @@
 
 /* ─── Center Slot for TravelingImage ─── */
 .hw-center-slot {
-  min-height: 330px;
+  min-height: 360px;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 40px;
 }
 
 /* ─── Static Portrait Card in Center (MOBILE ONLY: hidden on PC desktop) ─── */

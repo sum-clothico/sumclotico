@@ -329,8 +329,8 @@
   }
 }
 
-/* ─── Tablet / laptop (prevent brand/portal overlap) ─── */
-@media (min-width: 901px) and (max-width: 1500px) {
+/* ─── Desktop (stacked layout at all widths to prevent brand/portal overlap) ─── */
+@media (min-width: 901px) {
   .arched-hero {
     min-height: 100svh;
     height: auto;

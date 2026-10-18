@@ -1,7 +1,7 @@
 .traveling-image {
   position: fixed;
   left: 50%;
-  top: 57%;
+  top: 72%;
   transform: translate(-50%, -50%);
   opacity: 0;
   visibility: hidden;
