@@ -238,25 +238,29 @@ const TravelingImage = () => {
       trigger: lastSplit,
       start: "top 2%",
       onEnter: () => {
-        if (isLanded) return;
+        if (isLanded || !el?.isConnected) return;
         isLanded = true;
-        const elRect = el.getBoundingClientRect();
-        const splitRect = lastSplit.getBoundingClientRect();
-        const absLeft = elRect.left + elRect.width / 2 - splitRect.left;
-        const absTop = elRect.top + elRect.height / 2 - splitRect.top;
-        lastSplit.appendChild(el);
-        gsap.set(el, { position: "absolute", left: absLeft, top: absTop });
+        try {
+          const elRect = el.getBoundingClientRect();
+          const splitRect = lastSplit.getBoundingClientRect();
+          const absLeft = elRect.left + elRect.width / 2 - splitRect.left;
+          const absTop = elRect.top + elRect.height / 2 - splitRect.top;
+          lastSplit.appendChild(el);
+          gsap.set(el, { position: "absolute", left: absLeft, top: absTop });
+        } catch (_) {}
       },
       onLeaveBack: () => {
-        if (!isLanded) return;
+        if (!isLanded || !el?.isConnected) return;
         isLanded = false;
-        const elRect = el.getBoundingClientRect();
-        document.body.appendChild(el);
-        gsap.set(el, {
-          position: "fixed",
-          left: elRect.left + elRect.width / 2,
-          top: elRect.top + elRect.height / 2,
-        });
+        try {
+          const elRect = el.getBoundingClientRect();
+          document.body.appendChild(el);
+          gsap.set(el, {
+            position: "fixed",
+            left: elRect.left + elRect.width / 2,
+            top: elRect.top + elRect.height / 2,
+          });
+        } catch (_) {}
       },
     });
     triggers.push(lockST);
@@ -264,13 +268,23 @@ const TravelingImage = () => {
 
       return () => {
         triggers.forEach((st) => st && st.kill());
-        if (el && originalParent && el.parentElement !== originalParent) {
-          originalParent.appendChild(el);
+        // Detach el from any non-React parent so React's unmount can safely remove it.
+        try {
+          if (el && el.parentElement && el.parentElement !== originalParent) {
+            el.parentElement.removeChild(el);
+          }
+          if (el && originalParent && !originalParent.contains(el)) {
+            originalParent.appendChild(el);
+          }
+        } catch (err) {
+          // Node already detached — ignore
         }
       };
     });
 
-    return () => mm.revert();
+    return () => {
+      try { mm.revert(); } catch (_) {}
+    };
   }, []);
 
   return (
