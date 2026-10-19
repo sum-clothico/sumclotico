@@ -10,18 +10,18 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/a
 export default function AdminLoginPage() {
   const router = useRouter();
   const { loginAdmin } = useStore();
+  const [step, setStep] = useState("creds"); // "creds" | "otp"
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [verificationMode, setVerificationMode] = useState(false);
-  const [verificationCode, setVerificationCode] = useState("");
+  const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
-  const [infoMessage, setInfoMessage] = useState("");
-  const [pendingUser, setPendingUser] = useState(null);
+  const [info, setInfo] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   const handleInitialSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setInfo("");
     if (!email || !password) return;
     setSubmitting(true);
     try {
@@ -34,9 +34,8 @@ export default function AdminLoginPage() {
       if (!res.ok || !data.success) {
         throw new Error(data.message || "Invalid credentials");
       }
-      setPendingUser(data.data);
-      setVerificationMode(true);
-      setInfoMessage(`Secure 6-digit verification code sent to ${email} (Demo code: 772914)`);
+      setStep("otp");
+      setInfo(data.message || "Verification code sent to admin email.");
     } catch (err) {
       setError(err.message || "Login failed");
     } finally {
@@ -44,24 +43,44 @@ export default function AdminLoginPage() {
     }
   };
 
-  const handleVerifySubmit = (e) => {
+  const handleVerifyOtp = async (e) => {
     e.preventDefault();
-    if (verificationCode !== "772914" && verificationCode.length < 4) {
-      setError("Invalid verification code. Please enter 772914.");
+    setError("");
+    if (!otp || otp.length < 4) {
+      setError("Enter the 6-digit code from email");
       return;
     }
-    if (pendingUser?.token) {
-      try {
-        localStorage.setItem("sum_token", pendingUser.token);
-        localStorage.setItem("sum_admin_token", pendingUser.token);
-      } catch {}
+    setSubmitting(true);
+    try {
+      const res = await fetch(`${API_BASE_URL}/auth/admin-verify`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, code: otp }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || "Verification failed");
+      }
+      if (data.data?.token) {
+        try {
+          localStorage.setItem("sum_token", data.data.token);
+          localStorage.setItem("sum_admin_token", data.data.token);
+        } catch {}
+      }
+      loginAdmin(data.data?.user || { email });
+      router.push("/admin");
+    } catch (err) {
+      setError(err.message || "Verification failed");
+    } finally {
+      setSubmitting(false);
     }
-    loginAdmin(pendingUser?.user || { email });
-    router.push("/admin");
   };
 
-  const handleOAuthAdmin = () => {
-    setError("Google OAuth admin login not configured. Use email + password.");
+  const resetToCreds = () => {
+    setStep("creds");
+    setOtp("");
+    setError("");
+    setInfo("");
   };
 
   return (
@@ -131,7 +150,7 @@ export default function AdminLoginPage() {
           </div>
         )}
 
-        {infoMessage && (
+        {info && (
           <div
             style={{
               background: "#1e3a8a",
@@ -143,11 +162,11 @@ export default function AdminLoginPage() {
               marginBottom: 18,
             }}
           >
-            {infoMessage}
+            {info}
           </div>
         )}
 
-        {!verificationMode ? (
+        {step === "creds" && (
           <form onSubmit={handleInitialSubmit}>
             <div className="admin-form-group">
               <label className="admin-form-label">Admin Work Email</label>
@@ -173,6 +192,7 @@ export default function AdminLoginPage() {
 
             <button
               type="submit"
+              disabled={submitting}
               className="admin-btn admin-btn-primary"
               style={{
                 width: "100%",
@@ -180,30 +200,34 @@ export default function AdminLoginPage() {
                 padding: 14,
                 fontSize: 14,
                 marginTop: 10,
+                opacity: submitting ? 0.6 : 1,
               }}
             >
-              Authenticate with Credentials →
+              {submitting ? "Sending code…" : "Send Verification Code →"}
             </button>
           </form>
-        ) : (
-          <form onSubmit={handleVerifySubmit}>
+        )}
+
+        {step === "otp" && (
+          <form onSubmit={handleVerifyOtp}>
             <div className="admin-form-group">
-              <label className="admin-form-label">
-                Enter 6-Digit Email Verification Code
-              </label>
+              <label className="admin-form-label">6-Digit Code from Email</label>
               <input
                 type="text"
+                inputMode="numeric"
+                maxLength={6}
                 className="admin-form-input"
-                placeholder="772914"
-                value={verificationCode}
-                onChange={(e) => setVerificationCode(e.target.value)}
-                style={{ textAlign: "center", fontSize: 20, letterSpacing: 6 }}
+                value={otp}
+                onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
+                style={{ textAlign: "center", fontSize: 22, letterSpacing: 8 }}
+                autoFocus
                 required
               />
             </div>
 
             <button
               type="submit"
+              disabled={submitting}
               className="admin-btn admin-btn-primary"
               style={{
                 width: "100%",
@@ -211,34 +235,30 @@ export default function AdminLoginPage() {
                 padding: 14,
                 fontSize: 14,
                 marginTop: 10,
+                opacity: submitting ? 0.6 : 1,
               }}
             >
-              Verify & Enter Dashboard
+              {submitting ? "Verifying…" : "Verify & Enter Dashboard"}
+            </button>
+
+            <button
+              type="button"
+              onClick={resetToCreds}
+              style={{
+                background: "transparent",
+                border: "none",
+                color: "#9ca3af",
+                fontSize: 12,
+                marginTop: 12,
+                cursor: "pointer",
+                textDecoration: "underline",
+                width: "100%",
+              }}
+            >
+              ← Use different credentials
             </button>
           </form>
         )}
-
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            margin: "24px 0 20px",
-            color: "#4b5563",
-            fontSize: 12,
-          }}
-        >
-          <div style={{ flex: 1, height: 1, background: "#232732" }}></div>
-          <span style={{ padding: "0 10px" }}>OR SINGLE SIGN-ON</span>
-          <div style={{ flex: 1, height: 1, background: "#232732" }}></div>
-        </div>
-
-        <button
-          className="admin-btn admin-btn-secondary"
-          style={{ width: "100%", justifyContent: "center", padding: 12 }}
-          onClick={handleOAuthAdmin}
-        >
-          Continue with Google Admin OAuth
-        </button>
 
         <div style={{ textAlign: "center", marginTop: 24 }}>
           <Link

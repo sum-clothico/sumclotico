@@ -1,9 +1,15 @@
 {
   "permissions": {
     "allow": [
-      "Bash(claude plugin list)"
+      "Bash(claude plugin list)",
+      "Bash(node --check src/controllers/authController.js)",
+      "Bash(node --check src/routes/authRoutes.js)"
     ],
     "deny": [],
-    "ask": []
+    "ask": [],
+    "additionalDirectories": [
+      "c:\\Users\\bimal\\Documents\\GitHub\\sumclothico_backend\\src\\controllers",
+      "c:\\Users\\bimal\\Documents\\GitHub\\sumclothico_backend\\src\\routes"
+    ]
   }
 }
