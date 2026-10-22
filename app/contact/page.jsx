@@ -135,7 +135,7 @@ export default function ContactPage() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.name || !form.email || !form.message) return;
 
@@ -148,6 +148,24 @@ export default function ContactPage() {
       category: form.category,
       has_message: Boolean(form.message),
     });
+
+    try {
+      await fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "CONTACT_INQUIRY",
+          data: {
+            name: form.name,
+            email: form.email,
+            category: form.category,
+            message: form.message,
+          },
+        }),
+      });
+    } catch (err) {
+      console.error("Contact form email dispatch failed:", err);
+    }
 
     setIsSubmitted(true);
   };

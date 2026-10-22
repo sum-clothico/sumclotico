@@ -41,15 +41,18 @@ export const metadata = {
 
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "G-4PDRN1Q81Y";
 
-const CLERK_PUBLISHABLE_KEY =
-  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ||
-  "pk_test_YW1hemVkLWRlZXItNDIxMy5jbGVyay5hY2NvdW50cy5kZXYk";
+const CLERK_PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || "";
+
+if (process.env.NODE_ENV === "production" && !CLERK_PUBLISHABLE_KEY) {
+  // Fail loud in prod so bad-env Clerk SDK doesn't poison React portal (causes removeChild NotFoundError on /sign-in)
+  console.error("[Clerk] NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY missing in production.");
+}
 
 import GlobalFooter from "@/components/GlobalFooter";
 
 export default function RootLayout({ children }) {
   return (
-    <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY}>
+    <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY || undefined}>
       <html lang="en" translate="no" suppressHydrationWarning>
         <head>
           {/* Google Analytics 4 (GA4) Tracking Scripts */}

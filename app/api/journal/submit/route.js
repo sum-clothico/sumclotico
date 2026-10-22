@@ -33,6 +33,20 @@ export async function POST(request) {
       `${submission.name} (${submission.category}) - Share Allowed: ${submission.allowSocialShare}`
     );
 
+    try {
+      const origin = request.headers.get("origin") || `http://localhost:${process.env.PORT || 3000}`;
+      await fetch(`${origin}/api/send-email`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "JOURNAL_SUBMISSION",
+          data: submission,
+        }),
+      });
+    } catch (err) {
+      console.error("[journal/submit] email dispatch failed:", err.message);
+    }
+
     return Response.json({
       success: true,
       message: "Thank you for sharing your story with Sum Clothico. Our editorial team will review it thoughtfully.",

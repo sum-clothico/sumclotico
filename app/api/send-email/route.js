@@ -6,7 +6,8 @@ export async function POST(request) {
     const { type, to, data } = body;
 
     const apiKey = process.env.RESEND_API_KEY;
-    const fromEmail = process.env.RESEND_FROM_EMAIL || "orders@sumclotico.com";
+    const fromEmail = process.env.RESEND_FROM_EMAIL || "Sum Clothico <support@sumclothico.com>";
+    const adminEmail = process.env.ADMIN_EMAIL || "support@sumclothico.com";
 
     let subject = "Sum Clothico Notification";
     let htmlContent = "";
@@ -75,7 +76,7 @@ export async function POST(request) {
             </div>
 
             <div style="margin-top: 28px; padding: 16px; background: #f9fafb; border-radius: 8px; font-size: 12px; color: #6b7280; text-align: center;">
-              Questions? Message our stylists on WhatsApp (+91 9329587707) or email us at <a href="mailto:support@sumclothico.com" style="color: #f35c27;">support@sumclothico.com</a>
+              Questions? Message our stylists on WhatsApp (+91 9329587707) or email <a href="mailto:support@sumclothico.com" style="color: #f35c27;">support@sumclothico.com</a>
             </div>
           </div>
         </div>
@@ -102,6 +103,36 @@ export async function POST(request) {
           </p>
         </div>
       `;
+    }
+
+    // ── 4. Contact Form Inquiry → Admin ──
+    else if (type === "CONTACT_INQUIRY") {
+      subject = `[Contact] ${data.category || "Inquiry"} from ${data.name || "Visitor"}`;
+      htmlContent = `
+        <div style="font-family:system-ui,sans-serif;max-width:620px;margin:0 auto;background:#faf6f0;padding:28px;border-radius:10px;">
+          <h2 style="margin:0 0 12px;color:#2c2016;">New Contact Form Submission</h2>
+          <p style="margin:6px 0;"><strong>Name:</strong> ${data.name || "-"}</p>
+          <p style="margin:6px 0;"><strong>Email:</strong> ${data.email || "-"}</p>
+          <p style="margin:6px 0;"><strong>Category:</strong> ${data.category || "-"}</p>
+          <p style="margin:14px 0 6px;"><strong>Message:</strong></p>
+          <div style="padding:14px;background:#fff;border:1px solid #eee;border-radius:6px;white-space:pre-wrap;color:#333;">${(data.message || "").replace(/</g, "&lt;")}</div>
+        </div>`;
+    }
+
+    // ── 5. Journal Story Submission → Admin ──
+    else if (type === "JOURNAL_SUBMISSION") {
+      subject = `[Journal] New story from ${data.name || "Anonymous"}`;
+      htmlContent = `
+        <div style="font-family:system-ui,sans-serif;max-width:620px;margin:0 auto;background:#faf6f0;padding:28px;border-radius:10px;">
+          <h2 style="margin:0 0 12px;color:#2c2016;">New Journal Story</h2>
+          <p style="margin:6px 0;"><strong>Name:</strong> ${data.name || "-"}</p>
+          <p style="margin:6px 0;"><strong>Email:</strong> ${data.email || "-"}</p>
+          <p style="margin:6px 0;"><strong>Instagram:</strong> ${data.instagramHandle || "-"}</p>
+          <p style="margin:6px 0;"><strong>Category:</strong> ${data.category || "-"}</p>
+          <p style="margin:6px 0;"><strong>Allow social share:</strong> ${data.allowSocialShare ? "Yes" : "No"}</p>
+          <p style="margin:14px 0 6px;"><strong>Story:</strong></p>
+          <div style="padding:14px;background:#fff;border:1px solid #eee;border-radius:6px;white-space:pre-wrap;color:#333;">${(data.message || "").replace(/</g, "&lt;")}</div>
+        </div>`;
     }
 
     // ── 3. Abandoned Cart Recovery Email to Customer ──
@@ -132,6 +163,14 @@ export async function POST(request) {
       `;
     }
 
+    const adminTypes = new Set([
+      "LOW_STOCK_ALERT",
+      "CONTACT_INQUIRY",
+      "JOURNAL_SUBMISSION",
+      "ADMIN_NEW_ORDER_ALERT",
+    ]);
+    const recipient = to || (adminTypes.has(type) ? adminEmail : adminEmail);
+
     // ── Dispatch via Resend API if API key exists ──
     if (apiKey && !apiKey.includes("test_key")) {
       const res = await fetch("https://api.resend.com/emails", {
@@ -142,7 +181,7 @@ export async function POST(request) {
         },
         body: JSON.stringify({
           from: fromEmail,
-          to: [to || "customer@sumclotico.com"],
+          to: [recipient],
           subject,
           html: htmlContent,
         }),
@@ -153,8 +192,8 @@ export async function POST(request) {
     }
 
     // Safe simulation mode if in development
-    console.log(`[Resend Email Simulated] Dispatched "${subject}" to ${to}`);
-    return NextResponse.json({ success: true, simulated: true, subject, to });
+    console.log(`[Resend Email Simulated] Dispatched "${subject}" to ${recipient}`);
+    return NextResponse.json({ success: true, simulated: true, subject, to: recipient });
   } catch (error) {
     console.error("Failed to send transactional email:", error);
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
