@@ -25,7 +25,7 @@ const isPublicRoute = createRouteMatcher([
 ]);
 
 const publishableKey =
-  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ||
+  process.env.CLERK_PUBLISHABLE_KEY ||
   "pk_test_YW1hemVkLWRlZXItNDIxMy5jbGVyay5hY2NvdW50cy5kZXYk";
 const secretKey =
   process.env.CLERK_SECRET_KEY ||

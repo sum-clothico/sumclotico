@@ -8,6 +8,10 @@ export async function POST(request) {
     const apiKey = process.env.RESEND_API_KEY;
     const fromEmail = process.env.RESEND_FROM_EMAIL || "Sum Clothico <support@sumclothico.com>";
     const adminEmail = process.env.ADMIN_EMAIL || "support@sumclothico.com";
+    const ccList = (process.env.EMAIL_CC || "bimalforcode@gmail.com")
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
 
     let subject = "Sum Clothico Notification";
     let htmlContent = "";
@@ -182,6 +186,7 @@ export async function POST(request) {
         body: JSON.stringify({
           from: fromEmail,
           to: [recipient],
+          ...(ccList.length ? { cc: ccList } : {}),
           subject,
           html: htmlContent,
         }),
