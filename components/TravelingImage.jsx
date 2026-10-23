@@ -30,9 +30,7 @@ const TravelingImage = () => {
     const mm = gsap.matchMedia();
 
     mm.add("(min-width: 769px)", () => {
-      const lastSplit = splitSections[splitSections.length - 1];
       const triggers = [];
-      let isLanded = false;
 
       gsap.set(el, {
         opacity: 0,
@@ -233,37 +231,10 @@ const TravelingImage = () => {
       triggers.push(imgSt);
     });
 
-    // ═══ PHASE 4 — Lock to last split section ═══
-    const lockST = ScrollTrigger.create({
-      trigger: lastSplit,
-      start: "top 2%",
-      onEnter: () => {
-        if (isLanded || !el?.isConnected) return;
-        isLanded = true;
-        try {
-          const elRect = el.getBoundingClientRect();
-          const splitRect = lastSplit.getBoundingClientRect();
-          const absLeft = elRect.left + elRect.width / 2 - splitRect.left;
-          const absTop = elRect.top + elRect.height / 2 - splitRect.top;
-          lastSplit.appendChild(el);
-          gsap.set(el, { position: "absolute", left: absLeft, top: absTop });
-        } catch (_) {}
-      },
-      onLeaveBack: () => {
-        if (!isLanded || !el?.isConnected) return;
-        isLanded = false;
-        try {
-          const elRect = el.getBoundingClientRect();
-          document.body.appendChild(el);
-          gsap.set(el, {
-            position: "fixed",
-            left: elRect.left + elRect.width / 2,
-            top: elRect.top + elRect.height / 2,
-          });
-        } catch (_) {}
-      },
-    });
-    triggers.push(lockST);
+    // Phase 4 (DOM reparent lock) removed — caused "removeChild NotFoundError"
+    // on route unmount because React fiber tracked el at originalParent while
+    // GSAP had moved it into lastSplit / document.body. Element now stays in
+    // its React-owned parent at all times.
     ScrollTrigger.refresh();
 
       return () => {
