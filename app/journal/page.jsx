@@ -509,10 +509,10 @@ export default function JournalPage() {
 
               <div style={{ position: "relative", zIndex: 1 }}>
                 <p style={{ fontSize: "1.06rem", lineHeight: 1.75, color: "#4A3B30", margin: "0 0 6px" }}>
-                  Clothes are rarely just clothes. They carry memories. They tell us where we&apos;ve been. They introduce us to people and places. And sometimes, they make us feel like ourselves again.
+                  From textiles and places to everyday clothing stories, the Sum Journal is where we share what we discover and hear from you.
                 </p>
                 <p style={{ margin: 0, fontWeight: 700, color: "#660608", fontStyle: "italic", fontFamily: "serif", fontSize: "1.12rem" }}>
-                  The Sum Journal is a space for those stories.
+                  Things worth talking about.
                 </p>
               </div>
             </div>
@@ -917,15 +917,15 @@ export default function JournalPage() {
             </svg>
 
             <div style={{ position: "relative", zIndex: 1 }}>
-              <div style={{ textAlign: "center", maxWidth: 620, margin: "0 auto 30px" }}>
+              <div style={{ textAlign: "center", maxWidth: 640, margin: "0 auto 30px" }}>
                 <IndianArchBadge style={{ marginBottom: "12px" }}>
                   Submission
                 </IndianArchBadge>
                 <h2 style={{ fontFamily: "serif", fontSize: "clamp(2rem, 3.2vw, 2.6rem)", color: "#1a140e", margin: "0 0 12px" }}>
-                  Tell us something.
+                  Have something to share?
                 </h2>
                 <p style={{ fontSize: "1rem", lineHeight: 1.65, color: "#55483d", margin: 0 }}>
-                  We&apos;d love to hear what clothing means to you. You can share a story, a suggestion, a memory, a place we should explore, a textile we should know about — or simply tell us what you think.
+                  A clothing memory, a fabric you love, a place we should explore or simply a suggestion — we&apos;d love to hear from you.
                 </p>
               </div>
 
@@ -1152,7 +1152,7 @@ export default function JournalPage() {
                     }}
                   >
                     <FiSend size={14} />
-                    <span>{isSubmitting ? "Sending..." : "SEND IT OUR WAY"}</span>
+                    <span>{isSubmitting ? "Sending..." : "SHARE YOUR STORY"}</span>
                   </button>
                 </form>
               )}

@@ -5,13 +5,12 @@ import Loader from "@/components/Loader";
 import SvgSymbols from "@/components/SvgSymbols";
 import Navbar from "@/components/Navbar";
 import ArchedHero from "@/components/ArchedHero";
-import HorizontalWords from "@/components/HorizontalWords";
 import FeaturedProductsSection from "@/components/FeaturedProductsSection";
+import HorizontalWords from "@/components/HorizontalWords";
 import StorySection from "@/components/StorySection";
 import SplitSection from "@/components/SplitSection";
-import TravelingImage from "@/components/TravelingImage";
-import AboutSection from "@/components/AboutSection";
 import MotionCards from "@/components/MotionCards";
+import AboutSection from "@/components/AboutSection";
 import JournalPreviewSection from "@/components/JournalPreviewSection";
 import SmoothScroll from "@/components/SmoothScroll";
 
@@ -38,7 +37,7 @@ export default function Home() {
       <HorizontalWords />
       <StorySection />
       <SplitSection />
-      <TravelingImage />
+
       {/* Traditional Indian Border Pattern Divider */}
       <div
         className="section-pattern-divider"

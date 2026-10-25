@@ -5,11 +5,12 @@ import { gsap } from "gsap";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useStore } from "@/context/StoreContext";
-import { FiShoppingBag, FiUser, FiSearch, FiMessageSquare, FiX, FiTruck, FiRefreshCw, FiLogOut } from "react-icons/fi";
+import { FiShoppingBag, FiUser, FiSearch, FiMessageSquare, FiX, FiTruck, FiRefreshCw, FiLogOut, FiHeart } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa";
 import { useUser, useClerk } from "@clerk/nextjs";
 import { trackEvent } from "@/lib/analytics";
 import WhatsAppQRModal from "@/components/WhatsAppQRModal";
+import WishlistDrawer from "@/components/WishlistDrawer";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -19,7 +20,7 @@ export default function Navbar() {
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [isBannerDismissed, setIsBannerDismissed] = useState(false);
   const profileRef = useRef(null);
-  const { cartTotalItems, setIsCartOpen, currentUser, logoutCustomer, setIsAuthModalOpen, setIsSearchOpen, coupons = [] } = useStore();
+  const { cartTotalItems, setIsCartOpen, currentUser, logoutCustomer, setIsAuthModalOpen, setIsSearchOpen, coupons = [], wishlistCount = 0, setIsWishlistOpen } = useStore();
 
   let userState = null;
   let isClerkSignedIn = false;
@@ -346,6 +347,51 @@ export default function Navbar() {
             position: "relative",
           }}
         >
+          {/* Wishlist Trigger */}
+          <button
+            onClick={() => setIsWishlistOpen(true)}
+            style={{
+              background: "none",
+              border: "1px solid #e5e7eb",
+              borderRadius: "50%",
+              width: 38,
+              height: 38,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "#111111",
+              cursor: "pointer",
+              position: "relative",
+              transition: "transform 0.2s, background 0.2s",
+            }}
+            aria-label="View Wishlist"
+            title="My Wishlist"
+          >
+            <FiHeart size={16} />
+            {wishlistCount > 0 && (
+              <span
+                style={{
+                  position: "absolute",
+                  top: -4,
+                  right: -4,
+                  backgroundColor: "#660608",
+                  color: "#ffffff",
+                  fontSize: 10,
+                  fontWeight: 800,
+                  borderRadius: "50%",
+                  width: 17,
+                  height: 17,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  lineHeight: 1,
+                }}
+              >
+                {wishlistCount}
+              </span>
+            )}
+          </button>
+
           {/* Instant Predictive Search Trigger */}
           <button
             onClick={() => {
@@ -752,6 +798,9 @@ export default function Navbar() {
 
       {/* WhatsApp Scan-to-Chat QR Modal */}
       <WhatsAppQRModal isOpen={isWhatsAppQROpen} onClose={() => setIsWhatsAppQROpen(false)} />
+
+      {/* Wishlist Drawer */}
+      <WishlistDrawer />
     </header>
   );
 }

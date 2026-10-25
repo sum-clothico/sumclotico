@@ -199,6 +199,44 @@ export function StoreProvider({ children }) {
   // Quick View State
   const [quickViewProduct, setQuickViewProduct] = useState(null);
 
+  // Wishlist State
+  const [wishlist, setWishlist] = useState([]);
+  const [isWishlistOpen, setIsWishlistOpen] = useState(false);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("sum_wishlist");
+      if (saved) {
+        setWishlist(JSON.parse(saved));
+      }
+    } catch {}
+  }, []);
+
+  const saveWishlist = (items) => {
+    setWishlist(items);
+    try {
+      localStorage.setItem("sum_wishlist", JSON.stringify(items));
+    } catch {}
+  };
+
+  const toggleWishlist = (prod) => {
+    if (!prod) return;
+    const exists = wishlist.some((item) => item.id === prod.id);
+    let next;
+    if (exists) {
+      next = wishlist.filter((item) => item.id !== prod.id);
+      trackEvent("remove_from_wishlist", { product_id: prod.id });
+    } else {
+      next = [...wishlist, prod];
+      trackEvent("add_to_wishlist", { product_id: prod.id });
+    }
+    saveWishlist(next);
+  };
+
+  const isInWishlist = (prodId) => {
+    return wishlist.some((item) => item.id === prodId);
+  };
+
   // Search & Size Guide Modals
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -1767,6 +1805,15 @@ export function StoreProvider({ children }) {
         // Quick View & Modals
         quickViewProduct,
         setQuickViewProduct,
+
+        // Wishlist
+        wishlist,
+        setWishlist,
+        isWishlistOpen,
+        setIsWishlistOpen,
+        toggleWishlist,
+        isInWishlist,
+        wishlistCount: wishlist.length,
         isSearchOpen,
         setIsSearchOpen,
         searchQuery,

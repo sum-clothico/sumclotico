@@ -100,6 +100,40 @@ const StorySection = () => {
         );
       }
 
+      // Static Center Portrait Card fades in at start and out near end
+      const portraitEl = section.querySelector(".story-section__portrait");
+      if (portraitEl) {
+        masterTl.fromTo(
+          portraitEl,
+          { opacity: 0, scale: 0.94 },
+          { opacity: 1, scale: 1, duration: 0.15, ease: "power2.out" },
+          0,
+        );
+        masterTl.to(
+          portraitEl,
+          { opacity: 0, scale: 0.96, duration: 0.12, ease: "power2.in" },
+          0.88,
+        );
+
+        // Cross-fade the 3 images synchronized with the 3 story phases
+        const img0 = section.querySelector(".story-img--0");
+        const img1 = section.querySelector(".story-img--1");
+        const img2 = section.querySelector(".story-img--2");
+
+        if (img0 && img1 && img2) {
+          gsap.set(img0, { opacity: 1 });
+          gsap.set([img1, img2], { opacity: 0 });
+
+          // Phase 0 -> Phase 1 cross-fade
+          masterTl.to(img0, { opacity: 0, duration: 0.08, ease: "power2.inOut" }, 0.28);
+          masterTl.to(img1, { opacity: 1, duration: 0.08, ease: "power2.inOut" }, 0.31);
+
+          // Phase 1 -> Phase 2 cross-fade
+          masterTl.to(img1, { opacity: 0, duration: 0.08, ease: "power2.inOut" }, 0.61);
+          masterTl.to(img2, { opacity: 1, duration: 0.08, ease: "power2.inOut" }, 0.64);
+        }
+      }
+
       // 3 Text Phases timed evenly across the pin duration
       textEls.forEach((el, idx) => {
         const startPoint = idx * 0.33;
@@ -175,28 +209,39 @@ const StorySection = () => {
         <p className="story-section__subline">{storySubline}</p>
       </div>
 
-      {/* SVG Frame */}
-      <svg className="story-section__frame" viewBox="0 0 240 330">
-        <rect
-          ref={frameRef}
-          className="section-frame-path"
-          x="5"
-          y="5"
-          width="230"
-          height="320"
-          rx="8"
-          fill="none"
-          stroke="#3d2b1f"
-          strokeWidth="1.5"
-        />
-      </svg>
-
-      {/* Static Center Portrait Card */}
+      {/* Static Center Portrait Card with Integrated Frame & 3 Cross-Fading Images */}
       <div className="story-section__portrait">
-        <img
-          src="/assets/homepage/IMG_1048.JPG"
-          alt="Handcrafted Khadi Garment"
-        />
+        <svg className="story-portrait-frame" viewBox="0 0 240 330" aria-hidden="true">
+          <rect
+            ref={frameRef}
+            className="section-frame-path"
+            x="5"
+            y="5"
+            width="230"
+            height="320"
+            rx="8"
+            fill="none"
+            stroke="#3d2b1f"
+            strokeWidth="1.5"
+          />
+        </svg>
+        <div className="story-images-stack">
+          <img
+            className="story-img story-img--0"
+            src="/assets/homepage/IMG_1048.JPG"
+            alt="Handcrafted Thread Spun by Hand"
+          />
+          <img
+            className="story-img story-img--1"
+            src="/assets/homepage/14887305-5caf-4e77-b3fa-c79443ced34b.png"
+            alt="Handcrafted Garment Cut and Stitched"
+          />
+          <img
+            className="story-img story-img--2"
+            src="/assets/homepage/IMG_0110.jpg"
+            alt="Finished Natural Khadi Clothing"
+          />
+        </div>
       </div>
 
       {/* Phase texts */}

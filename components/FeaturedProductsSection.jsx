@@ -13,6 +13,7 @@ import {
   FiMinus,
   FiChevronLeft,
   FiChevronRight,
+  FiHeart,
 } from "react-icons/fi";
 import { trackEvent } from "@/lib/analytics";
 
@@ -28,6 +29,8 @@ export default function FeaturedProductsSection() {
     addToCart,
     cart = [],
     updateQuantity,
+    toggleWishlist,
+    isInWishlist,
   } = useStore();
   const [selectedSizes, setSelectedSizes] = useState({});
   const sliderRef = useRef(null);
@@ -230,8 +233,7 @@ export default function FeaturedProductsSection() {
               lineHeight: 1.65,
             }}
           >
-            Work. Errands. Travel. Dinner. And everything your day becomes in
-            between.
+            Contemporary Khadi for work, weekends and everything in between.
           </p>
 
           {/* Slider Prev / Next Arrows — ONLY SHOWN IF CONTENT ACTUALLY OVERFLOWS */}
@@ -455,6 +457,59 @@ export default function FeaturedProductsSection() {
                       </span>
                     </div>
                   )}
+
+                  {/* Wishlist Floating Button */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleWishlist(prod);
+                    }}
+                    style={{
+                      position: "absolute",
+                      top: 12,
+                      right: 12,
+                      background: isInWishlist(prod.id)
+                        ? "#660608"
+                        : "rgba(250, 246, 240, 0.94)",
+                      backdropFilter: "blur(6px)",
+                      border: isInWishlist(prod.id)
+                        ? "1px solid #660608"
+                        : "1px solid rgba(44, 32, 22, 0.15)",
+                      borderRadius: "50%",
+                      width: 36,
+                      height: 36,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: isInWishlist(prod.id) ? "#ffffff" : "#2C2016",
+                      cursor: "pointer",
+                      boxShadow: "0 4px 12px rgba(44, 32, 22, 0.12)",
+                      zIndex: 2,
+                      transition:
+                        "transform 0.15s ease, background 0.15s ease, color 0.15s ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = "scale(1.1)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = "scale(1)";
+                    }}
+                    title={
+                      isInWishlist(prod.id)
+                        ? "Remove from Wishlist"
+                        : "Add to Wishlist"
+                    }
+                    aria-label={
+                      isInWishlist(prod.id)
+                        ? "Remove from Wishlist"
+                        : "Add to Wishlist"
+                    }
+                  >
+                    <FiHeart
+                      size={16}
+                      fill={isInWishlist(prod.id) ? "currentColor" : "none"}
+                    />
+                  </button>
 
                   {/* Quick View Floating Button */}
                   <button
@@ -723,20 +778,29 @@ export default function FeaturedProductsSection() {
           })}
         </div>
 
-        {/* Prominent Bottom CTA Button to Shop */}
-        <div style={{ marginTop: 44, textAlign: "center" }}>
+        {/* Dual Bottom CTA Buttons per PDF Page 13 */}
+        <div
+          style={{
+            marginTop: 48,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 16,
+            flexWrap: "wrap",
+          }}
+        >
           <Link
             href="/shop"
             style={{
               display: "inline-flex",
               alignItems: "center",
               gap: 10,
-              padding: "16px 38px",
+              padding: "16px 36px",
               fontSize: 15,
               fontWeight: 800,
               borderRadius: 999,
               textDecoration: "none",
-              background: "#660608", // Accent #660608
+              background: "#660608", // Accent burgundy
               color: "#ffffff",
               boxShadow: "0 8px 24px rgba(102, 6, 8, 0.28)",
               transition: "transform 0.2s ease, background 0.2s ease",
@@ -750,8 +814,39 @@ export default function FeaturedProductsSection() {
               e.currentTarget.style.background = "#660608";
             }}
           >
-            <span>Shop All Pieces</span>
+            <span>Shop the Collection</span>
             <FiArrowRight size={17} />
+          </Link>
+
+          <Link
+            href="/our-story"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 10,
+              padding: "15px 32px",
+              fontSize: 15,
+              fontWeight: 700,
+              borderRadius: 999,
+              textDecoration: "none",
+              background: "transparent",
+              color: "#2C2016",
+              border: "1.5px solid #2C2016",
+              transition:
+                "transform 0.2s ease, background 0.2s ease, color 0.2s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "scale(1.04)";
+              e.currentTarget.style.background = "#2C2016";
+              e.currentTarget.style.color = "#FAF6F0";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "scale(1)";
+              e.currentTarget.style.background = "transparent";
+              e.currentTarget.style.color = "#2C2016";
+            }}
+          >
+            <span>Our Story</span>
           </Link>
         </div>
       </div>

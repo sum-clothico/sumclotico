@@ -68,28 +68,29 @@ export default function AdminDashboardPage() {
       {lowStockProducts.length > 0 && (
         <div
           style={{
-            background: "linear-gradient(135deg, #450a0a 0%, #1f242d 100%)",
-            border: "1px solid #ef4444",
-            borderRadius: 10,
-            padding: "16px 20px",
-            marginBottom: 24,
+            background: "linear-gradient(135deg, rgba(136, 26, 28, 0.28) 0%, rgba(34, 29, 25, 0.95) 100%)",
+            border: "1px solid rgba(136, 26, 28, 0.45)",
+            borderRadius: 14,
+            padding: "18px 22px",
+            marginBottom: 28,
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
             flexWrap: "wrap",
             gap: 12,
+            boxShadow: "0 8px 24px rgba(0,0,0,0.2)",
           }}
         >
           <div>
-            <div style={{ color: "#fca5a5", fontWeight: 800, fontSize: 14, display: "flex", alignItems: "center", gap: 8 }}>
-              <span>⚠️ LOW-STOCK AUTO ALERT: {lowStockProducts.length} {lowStockProducts.length === 1 ? "garment requires" : "garments require"} restocking</span>
+            <div style={{ color: "#FAF6F0", fontWeight: 700, fontSize: 14, display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ color: "#E8A87C" }}>✦ LOW-STOCK INVENTORY ALERT:</span> {lowStockProducts.length} {lowStockProducts.length === 1 ? "garment requires" : "garments require"} replenishment
             </div>
-            <div style={{ color: "#d1d5db", fontSize: 12, marginTop: 4 }}>
-              Auto-notification email was sent to <strong>admin@sumclotico.com</strong>. Items: {lowStockProducts.map((p) => `${p.name} (${p.stock} left)`).join(", ")}.
+            <div style={{ color: "#A39688", fontSize: 12.5, marginTop: 4 }}>
+              Auto-notification logged for <strong>admin@sumclotico.com</strong>. Items: {lowStockProducts.map((p) => `${p.name} (${p.stock} left)`).join(", ")}.
             </div>
           </div>
           <div style={{ display: "flex", gap: 8 }}>
-            <Link href="/admin/products" className="admin-btn" style={{ background: "#ef4444", color: "#fff", fontSize: 12, padding: "6px 14px" }}>
+            <Link href="/admin/products" className="admin-btn admin-btn-primary" style={{ fontSize: 12, padding: "8px 18px" }}>
               Replenish Inventory →
             </Link>
           </div>

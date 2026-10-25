@@ -46,8 +46,8 @@ export default function AdminLayout({ children }) {
       <aside className="admin-sidebar">
         <div>
           <div className="admin-brand">
-            <span className="admin-brand-logo">Sumclotico</span>
-            <span className="admin-badge">Admin</span>
+            <span className="admin-brand-logo">सम CLOTHICO</span>
+            <span className="admin-badge">Atelier</span>
           </div>
 
           <ul className="admin-nav-list">
@@ -63,7 +63,7 @@ export default function AdminLayout({ children }) {
                     {item.badge && (
                       <span
                         style={{
-                          background: "#f35c27",
+                          background: "#881A1C",
                           color: "#ffffff",
                           fontSize: 10,
                           fontWeight: 800,
@@ -82,11 +82,11 @@ export default function AdminLayout({ children }) {
         </div>
 
         <div>
-          <div style={{ padding: "12px 14px", background: "#1f242d", borderRadius: 8, marginBottom: 12 }}>
-            <div style={{ fontSize: 13, fontWeight: 700, color: "#fff" }}>
+          <div style={{ padding: "14px 16px", background: "rgba(212, 196, 168, 0.06)", border: "1px solid rgba(212, 196, 168, 0.12)", borderRadius: 12, marginBottom: 14 }}>
+            <div style={{ fontSize: 13, fontWeight: 700, color: "#FAF6F0" }}>
               {adminUser ? adminUser.name : "Super Admin"}
             </div>
-            <div style={{ fontSize: 11, color: "#9ca3af" }}>
+            <div style={{ fontSize: 11, color: "#A39688", marginTop: 2 }}>
               {adminUser ? adminUser.email : "admin@sumclotico.com"}
             </div>
           </div>
@@ -134,7 +134,7 @@ export default function AdminLayout({ children }) {
                 <FiBell size={15} />
                 <span>Alerts</span>
                 {adminNotifications.length > 0 && (
-                  <span style={{ background: "#f35c27", color: "#fff", padding: "2px 6px", borderRadius: 99, fontSize: 11, marginLeft: 2, fontWeight: 700 }}>
+                  <span style={{ background: "#881A1C", color: "#fff", padding: "2px 6px", borderRadius: 99, fontSize: 11, marginLeft: 2, fontWeight: 700 }}>
                     {adminNotifications.length}
                   </span>
                 )}

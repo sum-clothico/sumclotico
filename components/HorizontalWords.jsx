@@ -9,8 +9,6 @@ import { FiArrowRight, FiMapPin } from "react-icons/fi";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const TOTAL_PIN_DISTANCE = 950;
-
 export default function HorizontalWords() {
   const sectionRef = useRef(null);
   const contentRef = useRef(null);
@@ -20,109 +18,61 @@ export default function HorizontalWords() {
       const container = sectionRef.current;
       const content = contentRef.current;
 
-      const isDesktop = typeof window !== "undefined" && window.innerWidth > 768;
-
-      // Pin the section while the story reveals on desktop
-      if (isDesktop) {
-        ScrollTrigger.create({
+      // Corner botanical wipe-up reveal on scroll
+      gsap.to(".horizontal-words__corner-left", {
+        clipPath: "inset(0% 0% 0% 0%)",
+        opacity: 0.65,
+        duration: 1.2,
+        ease: "power2.out",
+        scrollTrigger: {
           trigger: container,
-          start: "top top",
-          end: () => `+=${TOTAL_PIN_DISTANCE}`,
-          pin: true,
-          pinSpacing: true,
-          anticipatePin: 1,
-          preventOverlaps: true,
-          invalidateOnRefresh: true,
-          refreshPriority: 2,
-        });
+          start: "top 75%",
+        },
+      });
 
-        // Fade out editorial content & frame cleanly before unpinning to avoid collision with next section
-        if (content) {
-          gsap.to(content, {
-            opacity: 0,
-            y: -25,
-            ease: "power2.inOut",
-            scrollTrigger: {
-              trigger: container,
-              start: () => `top+=${TOTAL_PIN_DISTANCE - 180} top`,
-              end: () => `top+=${TOTAL_PIN_DISTANCE} top`,
-              scrub: 0.8,
-            },
-          });
-        }
-      }
+      // Subtle parallax on watermark character
+      gsap.to(".horizontal-words__corner-right", {
+        y: 50,
+        opacity: 0.35,
+        ease: "none",
+        scrollTrigger: {
+          trigger: container,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1,
+        },
+      });
 
-      const hFrameSvg = container.querySelector(".horizontal-words__frame");
-      if (hFrameSvg) {
-        gsap.to(hFrameSvg, {
-          opacity: 0,
-          ease: "power2.inOut",
-          scrollTrigger: {
-            trigger: container,
-            start: () => `top+=${TOTAL_PIN_DISTANCE - 180} top`,
-            end: () => `top+=${TOTAL_PIN_DISTANCE} top`,
-            scrub: 0.8,
-          },
-        });
-      }
-
-      // Frame stroke animation
+      // Frame stroke animation on enter
       const hFrame = container.querySelector(".section-frame-path");
       if (hFrame) {
         const len = hFrame.getTotalLength ? hFrame.getTotalLength() : 1100;
         gsap.set(hFrame, { strokeDasharray: len, strokeDashoffset: len });
         gsap.to(hFrame, {
           strokeDashoffset: 0,
-          ease: "power2.inOut",
+          duration: 1.4,
+          ease: "power2.out",
           scrollTrigger: {
             trigger: container,
-            start: "top top",
-            end: `+=${TOTAL_PIN_DISTANCE}`,
-            scrub: 1,
+            start: "top 65%",
           },
         });
       }
 
-      // Corner botanical wipe-up reveal
-      gsap.to(".horizontal-words__corner-left", {
-        clipPath: "inset(0% 0% 0% 0%)",
-        opacity: 0.65,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: container,
-          start: "top 30%",
-          end: "top top",
-          scrub: 1,
-        },
-      });
-
-      // Subtle parallax on watermark character
-      gsap.to(".horizontal-words__corner-right", {
-        y: 60,
-        opacity: 0.35,
-        ease: "none",
-        scrollTrigger: {
-          trigger: container,
-          start: "top bottom",
-          end: `+=${TOTAL_PIN_DISTANCE}`,
-          scrub: 1,
-        },
-      });
-
       // Content elements smooth stagger entrance
       if (content) {
         gsap.fromTo(
-          content.querySelectorAll(".hw-editorial-item"),
-          { opacity: 0, y: 30 },
+          content.querySelectorAll(".hw-editorial-item, .hw-portrait-card"),
+          { opacity: 0, y: 35 },
           {
             opacity: 1,
             y: 0,
-            duration: 1,
+            duration: 1.1,
             stagger: 0.15,
             ease: "power3.out",
             scrollTrigger: {
               trigger: container,
-              start: "top 60%",
+              start: "top 65%",
             },
           },
         );
@@ -142,21 +92,6 @@ export default function HorizontalWords() {
         <img src="/assets/Asset 1.svg" alt="Botanical Line Art" />
       </div>
       <div className="horizontal-words__corner-right">स</div>
-
-      {/* ─── Preserved SVG Frame for Traveling Image ─── */}
-      <svg className="horizontal-words__frame" viewBox="0 0 240 330">
-        <rect
-          className="section-frame-path"
-          x="5"
-          y="5"
-          width="230"
-          height="320"
-          rx="8"
-          fill="none"
-          stroke="#3d2b1f"
-          strokeWidth="1.5"
-        />
-      </svg>
 
       {/* ─── Elegant Editorial Content ─── */}
       <div
@@ -244,10 +179,22 @@ export default function HorizontalWords() {
             </p>
           </div>
 
-          {/* Center Column Slot (Frame is at 50% center on desktop) */}
-          <div className="hw-center-slot" aria-hidden="true">
-            {/* Center Static Portrait Card (MOBILE ONLY) */}
+          {/* Center Column Slot with Integrated Frame & Image */}
+          <div className="hw-center-slot">
             <div className="hw-portrait-card">
+              <svg className="hw-portrait-frame" viewBox="0 0 240 330" aria-hidden="true">
+                <rect
+                  className="section-frame-path"
+                  x="5"
+                  y="5"
+                  width="230"
+                  height="320"
+                  rx="8"
+                  fill="none"
+                  stroke="#3d2b1f"
+                  strokeWidth="1.5"
+                />
+              </svg>
               <img
                 src="/assets/homepage/14887305-5caf-4e77-b3fa-c79443ced34b.png"
                 alt="Artisan Handspinning Pure Khadi"

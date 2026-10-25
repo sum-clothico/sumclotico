@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -11,6 +11,8 @@ import {
   FiMapPin,
   FiShoppingBag,
   FiBookOpen,
+  FiChevronDown,
+  FiChevronUp,
 } from "react-icons/fi";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -40,6 +42,34 @@ function AnimatedWords({ text, className = "fab-anim-word" }) {
 
 export default function FabricClient() {
   const containerRef = useRef(null);
+  const [openCollapse, setOpenCollapse] = useState(0);
+
+  const fabricAttributes = [
+    {
+      title: "Breathability & Temperature Regulation",
+      short: "Airy micro-pockets that adapt to your body.",
+      content:
+        "Handspun cotton retains organic twist variations that allow continual airflow. In high summer heat, it draws perspiration away and stays breezy. In brisk air, the woven texture provides light, comforting insulation.",
+    },
+    {
+      title: "Tactile Slubs & Living Texture",
+      short: "Character you can feel — no two meters alike.",
+      content:
+        "Unlike industrial power looms that produce flat, synthetic uniformity, handloom weaving captures the subtle rhythm and touch of the weaver. These natural slubs are marks of slow human craft.",
+    },
+    {
+      title: "Softens & Matures With Wear",
+      short: "Gets softer and richer with every gentle wash.",
+      content:
+        "Fast-fashion fabrics degrade and pill. Pure khadi behaves like fine linen — it releases tension with every wash, becoming supple, drape-friendly, and more personal to your everyday movement.",
+    },
+    {
+      title: "Conscious & Zero-Carbon Craft",
+      short: "Zero electricity required to spin or weave.",
+      content:
+        "From the charkha wheel turned by hand to wooden pit looms operated by foot pedaling, khadi has virtually zero carbon footprint and provides sustainable livelihood directly to village weaver clusters.",
+    },
+  ];
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -2185,6 +2215,131 @@ export default function FabricClient() {
               </p>
             </div>
           </div>
+
+          {/* Collapsible Fabric Characteristics Accordion (PDF page 27-36) */}
+          <div
+            style={{
+              marginTop: 48,
+              background: "#FAF6F0",
+              borderRadius: 20,
+              padding: "clamp(24px, 4vw, 36px)",
+              border: "1.5px solid rgba(102, 6, 8, 0.2)",
+              boxShadow: "0 14px 36px -12px rgba(44, 32, 22, 0.08)",
+            }}
+          >
+            <div style={{ textAlign: "center", marginBottom: 24 }}>
+              <span
+                style={{
+                  fontSize: "0.74rem",
+                  fontWeight: 800,
+                  letterSpacing: "0.15em",
+                  textTransform: "uppercase",
+                  color: "#660608",
+                  display: "block",
+                  marginBottom: 6,
+                }}
+              >
+                At A Glance
+              </span>
+              <h4
+                style={{
+                  fontFamily: "serif",
+                  fontSize: "1.45rem",
+                  color: "#1a140e",
+                  margin: 0,
+                  fontWeight: 700,
+                }}
+              >
+                Khadi Characteristics Compared
+              </h4>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              {fabricAttributes.map((attr, idx) => {
+                const isOpen = openCollapse === idx;
+                return (
+                  <div
+                    key={idx}
+                    style={{
+                      background: isOpen ? "#FAF6F0" : "rgba(237, 232, 220, 0.5)",
+                      border: isOpen
+                        ? "1.5px solid #660608"
+                        : "1px solid rgba(44, 32, 22, 0.14)",
+                      borderRadius: 14,
+                      overflow: "hidden",
+                      transition: "all 0.25s ease",
+                    }}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => setOpenCollapse(isOpen ? null : idx)}
+                      style={{
+                        width: "100%",
+                        padding: "16px 20px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        background: "none",
+                        border: "none",
+                        textAlign: "left",
+                        cursor: "pointer",
+                        gap: 16,
+                      }}
+                      aria-expanded={isOpen}
+                    >
+                      <div>
+                        <div
+                          style={{
+                            fontFamily: "serif",
+                            fontSize: "1.08rem",
+                            fontWeight: 700,
+                            color: isOpen ? "#660608" : "#1a140e",
+                            marginBottom: 2,
+                          }}
+                        >
+                          {attr.title}
+                        </div>
+                        <div style={{ fontSize: "0.86rem", color: "#6e5d4e" }}>
+                          {attr.short}
+                        </div>
+                      </div>
+                      <div
+                        style={{
+                          width: 32,
+                          height: 32,
+                          borderRadius: "50%",
+                          background: isOpen ? "#660608" : "rgba(44, 32, 22, 0.08)",
+                          color: isOpen ? "#ffffff" : "#1a140e",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexShrink: 0,
+                          transition: "all 0.2s ease",
+                        }}
+                      >
+                        {isOpen ? <FiChevronUp size={16} /> : <FiChevronDown size={16} />}
+                      </div>
+                    </button>
+                    {isOpen && (
+                      <div
+                        style={{
+                          padding: "0 20px 18px",
+                          fontSize: "0.98rem",
+                          lineHeight: 1.75,
+                          color: "#3f3329",
+                          borderTop: "1px dashed rgba(102, 6, 8, 0.2)",
+                          marginTop: 4,
+                          paddingTop: 14,
+                        }}
+                      >
+                        {attr.content}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </section>
 
         {/* ─── AUTHENTICITY (SLIDE 3) ─── */}
@@ -2448,19 +2603,20 @@ export default function FabricClient() {
                     display: "inline-flex",
                     alignItems: "center",
                     gap: 8,
-                    padding: "14px 28px",
+                    padding: "15px 32px",
                     borderRadius: 99,
                     background: "#660608",
                     color: "#FAF6F0",
                     fontWeight: 800,
-                    fontSize: "0.82rem",
+                    fontSize: "0.85rem",
                     letterSpacing: "0.12em",
                     textTransform: "uppercase",
                     textDecoration: "none",
+                    boxShadow: "0 6px 20px rgba(102, 6, 8, 0.25)",
                   }}
                 >
                   <FiShoppingBag size={16} />
-                  <span>Shop</span>
+                  <span>Shop Khadi</span>
                 </Link>
               </div>
               <div className="fab-pill-anim">
@@ -2470,43 +2626,20 @@ export default function FabricClient() {
                     display: "inline-flex",
                     alignItems: "center",
                     gap: 8,
-                    padding: "14px 28px",
+                    padding: "15px 32px",
                     borderRadius: 99,
                     background: "transparent",
                     color: "#1a140e",
                     border: "1.5px solid #1a140e",
                     fontWeight: 800,
-                    fontSize: "0.82rem",
+                    fontSize: "0.85rem",
                     letterSpacing: "0.12em",
                     textTransform: "uppercase",
                     textDecoration: "none",
                   }}
                 >
                   <FiBookOpen size={16} />
-                  <span>Journal</span>
-                </Link>
-              </div>
-              <div className="fab-pill-anim">
-                <Link
-                  href="/our-story"
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 8,
-                    padding: "14px 28px",
-                    borderRadius: 99,
-                    background: "transparent",
-                    color: "#660608",
-                    border: "1.5px solid #660608",
-                    fontWeight: 800,
-                    fontSize: "0.82rem",
-                    letterSpacing: "0.12em",
-                    textTransform: "uppercase",
-                    textDecoration: "none",
-                  }}
-                >
-                  <span>Follow</span>
-                  <FiArrowRight size={15} />
+                  <span>Read the Journal</span>
                 </Link>
               </div>
             </div>
