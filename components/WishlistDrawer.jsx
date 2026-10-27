@@ -64,7 +64,7 @@ export default function WishlistDrawer() {
             <FiHeart size={18} color="#660608" />
             <h3
               style={{
-                fontFamily: "serif",
+                fontFamily: "Epilogue, sans-serif",
                 fontSize: "1.25rem",
                 fontWeight: 600,
                 color: "#1a140e",

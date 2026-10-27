@@ -170,7 +170,7 @@ export default function JournalPreviewSection() {
               letterSpacing: "-0.03em",
               lineHeight: 1.15,
               margin: "0 0 16px",
-              fontFamily: "var(--font-serif, inherit)",
+              fontFamily: "var(--font-epilogue, 'Epilogue', sans-serif)",
               display: "flex",
               flexWrap: "wrap",
               justifyContent: "center",

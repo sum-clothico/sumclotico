@@ -179,7 +179,7 @@ export default function WelcomePromoModal() {
           {/* Heading */}
           <h2
             style={{
-              fontFamily: "serif",
+              fontFamily: "Epilogue, sans-serif",
               fontSize: "clamp(1.75rem, 4vw, 2.2rem)",
               fontWeight: 600,
               color: "#1a140e",
@@ -192,7 +192,7 @@ export default function WelcomePromoModal() {
 
           <p
             style={{
-              fontFamily: "serif",
+              fontFamily: "Epilogue, sans-serif",
               fontStyle: "italic",
               fontSize: "1.05rem",
               color: "#660608",
@@ -235,7 +235,7 @@ export default function WelcomePromoModal() {
             <FiTag color="#660608" size={18} />
             <span
               style={{
-                fontFamily: "serif",
+                fontFamily: "Epilogue, sans-serif",
                 fontSize: "1.25rem",
                 fontWeight: 700,
                 letterSpacing: "0.12em",

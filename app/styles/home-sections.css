@@ -40,7 +40,7 @@
 }
 
 .hs-headline {
-  font-family: serif;
+  font-family: "Epilogue", sans-serif;
   font-size: clamp(2rem, 3.8vw, 3.2rem);
   line-height: 1.18;
   font-weight: 500;
@@ -127,7 +127,7 @@
 }
 
 .hs-feeling__stanza {
-  font-family: serif;
+  font-family: "Epilogue", sans-serif;
   font-size: 1.35rem;
   line-height: 1.8;
   color: #2a1f14;
@@ -192,7 +192,7 @@
 }
 
 .hs-rooted__loc {
-  font-family: serif;
+  font-family: "Epilogue", sans-serif;
   font-size: 1.25rem;
   color: #2a1f14;
   margin: 0;
@@ -274,7 +274,7 @@
 }
 
 .hs-product-card__title {
-  font-family: serif;
+  font-family: "Epilogue", sans-serif;
   font-size: 1.15rem;
   color: #2a1f14;
   margin: 0 0 6px 0;
@@ -336,7 +336,7 @@
 }
 
 .hs-principle-card__title {
-  font-family: serif;
+  font-family: "Epilogue", sans-serif;
   font-size: 1.35rem;
   color: #2a1f14;
   margin: 0 0 10px 0;
@@ -446,7 +446,7 @@
 }
 
 .hs-journal-card__title {
-  font-family: serif;
+  font-family: "Epilogue", sans-serif;
   font-size: 1.22rem;
   color: #2a1f14;
   margin: 0 0 8px 0;

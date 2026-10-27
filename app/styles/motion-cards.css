@@ -420,7 +420,7 @@
 
 .mc-journey__caption p {
   margin: 0;
-  font-family: serif;
+  font-family: "Epilogue", sans-serif;
   font-style: italic;
   font-size: clamp(1rem, 1.6vw, 1.3rem);
   line-height: 1.4;
@@ -442,7 +442,7 @@
 }
 
 .mc-journey__flashing-word {
-  font-family: serif;
+  font-family: "Epilogue", sans-serif;
   font-size: clamp(1.8rem, 3.5vw, 2.8rem);
   font-weight: 700;
   letter-spacing: 0.18em;

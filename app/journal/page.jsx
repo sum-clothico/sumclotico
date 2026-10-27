@@ -455,7 +455,7 @@ export default function JournalPage() {
             <h1
               className="journal-anim-title"
               style={{
-                fontFamily: "serif",
+                fontFamily: "Epilogue, sans-serif",
                 fontSize: "clamp(2.4rem, 4.8vw, 4.2rem)",
                 fontWeight: 600,
                 lineHeight: 1.15,
@@ -511,7 +511,7 @@ export default function JournalPage() {
                 <p style={{ fontSize: "1.06rem", lineHeight: 1.75, color: "#4A3B30", margin: "0 0 6px" }}>
                   From textiles and places to everyday clothing stories, the Sum Journal is where we share what we discover and hear from you.
                 </p>
-                <p style={{ margin: 0, fontWeight: 700, color: "#660608", fontStyle: "italic", fontFamily: "serif", fontSize: "1.12rem" }}>
+                <p style={{ margin: 0, fontWeight: 700, color: "#660608", fontStyle: "italic", fontFamily: "Epilogue, sans-serif", fontSize: "1.12rem" }}>
                   Things worth talking about.
                 </p>
               </div>
@@ -818,10 +818,10 @@ export default function JournalPage() {
                   letterSpacing: "-0.02em",
                 }}
               >
-                Share your thoughts, discoveries, or memories.
+                Have something to share?
               </h4>
               <p style={{ fontSize: 14, color: "#6B5A4E", margin: 0, lineHeight: 1.55 }}>
-                Maybe you know a weaver we should meet, or a textile from your hometown. We welcome words, photographs, and field notes from our community.
+                A clothing memory, a fabric you love, a place we should explore or simply a suggestion — we&apos;d love to hear from you.
               </p>
             </div>
 
@@ -871,7 +871,7 @@ export default function JournalPage() {
                   cursor: "pointer",
                 }}
               >
-                <span>Share Something with Us</span>
+                <span>Share Your Story</span>
               </button>
             </div>
           </div>
@@ -921,7 +921,7 @@ export default function JournalPage() {
                 <IndianArchBadge style={{ marginBottom: "12px" }}>
                   Submission
                 </IndianArchBadge>
-                <h2 style={{ fontFamily: "serif", fontSize: "clamp(2rem, 3.2vw, 2.6rem)", color: "#1a140e", margin: "0 0 12px" }}>
+                <h2 style={{ fontFamily: "Epilogue, sans-serif", fontSize: "clamp(2rem, 3.2vw, 2.6rem)", color: "#1a140e", margin: "0 0 12px" }}>
                   Have something to share?
                 </h2>
                 <p style={{ fontSize: "1rem", lineHeight: 1.65, color: "#55483d", margin: 0 }}>
@@ -934,7 +934,7 @@ export default function JournalPage() {
                   <div style={{ width: 52, height: 52, borderRadius: "50%", background: "#660608", color: "#ffffff", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
                     <FiCheck size={26} />
                   </div>
-                  <h3 style={{ fontFamily: "serif", fontSize: "1.6rem", color: "#1a140e", margin: "0 0 10px" }}>
+                  <h3 style={{ fontFamily: "Epilogue, sans-serif", fontSize: "1.6rem", color: "#1a140e", margin: "0 0 10px" }}>
                     Thank you for sharing with Sum, {formData.name}
                   </h3>
                   <p style={{ color: "#55483d", fontSize: "0.96rem", lineHeight: 1.65, maxWidth: 500, margin: "0 auto 20px" }}>
@@ -1164,7 +1164,7 @@ export default function JournalPage() {
             <IndianArchBadge style={{ marginBottom: "14px" }}>
               Community
             </IndianArchBadge>
-            <h2 style={{ fontFamily: "serif", fontSize: "clamp(2rem, 3.5vw, 2.7rem)", fontWeight: 600, color: "#1a140e", margin: "0 0 20px" }}>
+            <h2 style={{ fontFamily: "Epilogue, sans-serif", fontSize: "clamp(2rem, 3.5vw, 2.7rem)", fontWeight: 600, color: "#1a140e", margin: "0 0 20px" }}>
               Keep the conversation going.
             </h2>
             <a
@@ -1219,7 +1219,7 @@ export default function JournalPage() {
               {activeStory.category}
             </span>
 
-            <h1 style={{ fontFamily: "serif", fontSize: "clamp(1.8rem, 3.2vw, 2.5rem)", color: "#1a140e", margin: "0 0 10px", lineHeight: 1.25 }}>
+            <h1 style={{ fontFamily: "Epilogue, sans-serif", fontSize: "clamp(1.8rem, 3.2vw, 2.5rem)", color: "#1a140e", margin: "0 0 10px", lineHeight: 1.25 }}>
               {activeStory.title}
             </h1>
 
@@ -1260,7 +1260,7 @@ export default function JournalPage() {
             {/* Article End Action */}
             <div style={{ borderTop: "1.5px solid #660608", paddingTop: 20, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 16 }}>
               <div>
-                <strong style={{ display: "block", color: "#1a140e", fontSize: "1.05rem", fontFamily: "serif" }}>
+                <strong style={{ display: "block", color: "#1a140e", fontSize: "1.05rem", fontFamily: "Epilogue, sans-serif" }}>
                   Have something to add?
                 </strong>
                 <span style={{ fontSize: 13, color: "#7a6c5f" }}>

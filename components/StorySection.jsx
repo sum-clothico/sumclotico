@@ -5,8 +5,6 @@ import "../app/styles/story-section.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const PIN_DURATION = 1000;
-
 const phases = [
   {
     text: "A thread spun by hand. A loom moving at its own rhythm.",
@@ -29,11 +27,6 @@ const StorySection = () => {
   useEffect(() => {
     const ctx = gsap.context(() => {
       const section = sectionRef.current;
-      const textEls = section.querySelectorAll(".story-phase-text");
-
-      const isDesktop =
-        typeof window !== "undefined" && window.innerWidth > 900;
-      const PIN = isDesktop ? PIN_DURATION : 800;
 
       // Heading Word-by-Word Kinetic Reveal
       const headingWords = section.querySelectorAll(".story-heading-word");
@@ -56,112 +49,80 @@ const StorySection = () => {
         );
       }
 
-      // Single Unified Master Timeline: Pins section & drives all synchronized animations
-      const masterTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: () => `+=${PIN}`,
-          pin: true,
-          pinSpacing: true,
-          scrub: 0.8,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        },
-      });
-
-      // Frame stroke-draw in early stage of pin
+      // Frame stroke-draw on enter
       const framePath = frameRef.current;
       if (framePath) {
         const len = framePath.getTotalLength ? framePath.getTotalLength() : 1100;
         gsap.set(framePath, { strokeDasharray: len, strokeDashoffset: len });
-        masterTl.to(
-          framePath,
-          {
-            strokeDashoffset: 0,
-            duration: 0.15,
-            ease: "power2.inOut",
+        gsap.to(framePath, {
+          strokeDashoffset: 0,
+          duration: 1.4,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 70%",
           },
-          0,
-        );
+        });
       }
 
-      // Side cloth animation on scroll (moves smoothly while background stays locked)
+      // Side cloth animation on enter
       const clothEl = section.querySelector(".story-section__cloth");
       if (clothEl) {
-        masterTl.to(
+        gsap.fromTo(
           clothEl,
+          { opacity: 0, x: -50 },
           {
-            xPercent: -70,
-            duration: 1,
-            ease: "none",
+            opacity: 1,
+            x: 0,
+            duration: 1.2,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: section,
+              start: "top 75%",
+            },
           },
-          0,
         );
       }
 
-      // Static Center Portrait Card fades in at start and out near end
+      // Static Center Portrait Card entrance
       const portraitEl = section.querySelector(".story-section__portrait");
       if (portraitEl) {
-        masterTl.fromTo(
+        gsap.fromTo(
           portraitEl,
-          { opacity: 0, scale: 0.94 },
-          { opacity: 1, scale: 1, duration: 0.15, ease: "power2.out" },
-          0,
+          { opacity: 0, scale: 0.94, y: 35 },
+          {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            duration: 1.1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: section,
+              start: "top 70%",
+            },
+          },
         );
-        masterTl.to(
-          portraitEl,
-          { opacity: 0, scale: 0.96, duration: 0.12, ease: "power2.in" },
-          0.88,
-        );
-
-        // Cross-fade the 3 images synchronized with the 3 story phases
-        const img0 = section.querySelector(".story-img--0");
-        const img1 = section.querySelector(".story-img--1");
-        const img2 = section.querySelector(".story-img--2");
-
-        if (img0 && img1 && img2) {
-          gsap.set(img0, { opacity: 1 });
-          gsap.set([img1, img2], { opacity: 0 });
-
-          // Phase 0 -> Phase 1 cross-fade
-          masterTl.to(img0, { opacity: 0, duration: 0.08, ease: "power2.inOut" }, 0.28);
-          masterTl.to(img1, { opacity: 1, duration: 0.08, ease: "power2.inOut" }, 0.31);
-
-          // Phase 1 -> Phase 2 cross-fade
-          masterTl.to(img1, { opacity: 0, duration: 0.08, ease: "power2.inOut" }, 0.61);
-          masterTl.to(img2, { opacity: 1, duration: 0.08, ease: "power2.inOut" }, 0.64);
-        }
       }
 
-      // 3 Text Phases timed evenly across the pin duration
-      textEls.forEach((el, idx) => {
-        const startPoint = idx * 0.33;
-        masterTl
-          .fromTo(
-            el,
-            { opacity: 0, y: 35, scale: 0.96 },
-            {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              duration: 0.1,
-              ease: "power3.out",
+      // Phase story texts reveal
+      const phaseEls = section.querySelectorAll(".story-phase-text");
+      if (phaseEls.length > 0) {
+        gsap.fromTo(
+          phaseEls,
+          { opacity: 0, y: 25 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.9,
+            stagger: 0.18,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: section,
+              start: "top 65%",
             },
-            startPoint,
-          )
-          .to(
-            el,
-            {
-              opacity: 0,
-              y: -25,
-              scale: 0.98,
-              duration: 0.08,
-              ease: "power2.in",
-            },
-            startPoint + 0.23,
-          );
-      });
+          },
+        );
+      }
     }, sectionRef);
 
     return () => ctx.revert();

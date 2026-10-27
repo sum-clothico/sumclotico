@@ -65,7 +65,7 @@ export default function PeopleHomeSection() {
             <h2
               style={{
                 fontSize: "clamp(30px, 4.4vw, 48px)",
-                fontFamily: "var(--font-serif, 'Playfair Display', Georgia, serif)",
+                fontFamily: "var(--font-serif, 'Epilogue', sans-serif)",
                 fontWeight: 700,
                 color: "#2C2016",
                 lineHeight: 1.2,
@@ -77,27 +77,14 @@ export default function PeopleHomeSection() {
             </h2>
             <p
               style={{
-                fontSize: "clamp(15px, 1.8vw, 17px)",
+                fontSize: "clamp(14px, 1.6vw, 16px)",
                 color: "#5C4A3E",
                 lineHeight: 1.7,
-                margin: "0 0 24px",
+                margin: "0 0 28px",
               }}
             >
-              Before a garment reaches your closet, it passes through dozens of skilled pairs of hands — from the farmers
-              growing the raw cotton, to the women spinning yarn on the charkha, to weavers working wooden pit looms in
-              village clusters, and tailors perfecting every seam.
-            </p>
-            <p
-              style={{
-                fontSize: "15px",
-                color: "#6B5A4E",
-                lineHeight: 1.7,
-                margin: "0 0 32px",
-                fontStyle: "italic",
-              }}
-            >
-              We honor their time, their trade, and their multigenerational heritage. Every Sum tag carries the spirit of
-              the community that shaped it.
+              Behind every Sum piece are the hands, skills and decisions that bring it to life.
+              From sourcing to stitching, every step is part of the story.
             </p>
 
             <Link

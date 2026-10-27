@@ -11,6 +11,7 @@ import WhatsAppWidget from "@/components/WhatsAppWidget";
 import WelcomePromoModal from "@/components/WelcomePromoModal";
 import CampaignTracker from "@/components/CampaignTracker";
 import UserSyncManager from "@/components/UserSyncManager";
+import SafeBoundary from "@/components/SafeBoundary";
 
 export const metadata = {
   metadataBase: new URL("https://sumclotico.com"),
@@ -50,6 +51,8 @@ if (process.env.NODE_ENV === "production" && !CLERK_PUBLISHABLE_KEY) {
 
 import GlobalFooter from "@/components/GlobalFooter";
 
+import NavigationCleanup from "@/components/NavigationCleanup";
+
 export default function RootLayout({ children }) {
   return (
     <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY || undefined}>
@@ -80,19 +83,22 @@ export default function RootLayout({ children }) {
           )}
         </head>
         <body suppressHydrationWarning>
-          <StoreProvider>
-            {children}
-            <GlobalFooter />
-            <CartDrawer />
-            <AuthModal />
-            <ProductQuickView />
-            <SearchModal />
-            <SizeGuideModal />
-            <WhatsAppWidget />
-            <WelcomePromoModal />
-            <CampaignTracker />
-            <UserSyncManager />
-          </StoreProvider>
+          <SafeBoundary>
+            <StoreProvider>
+              <NavigationCleanup />
+              {children}
+              <GlobalFooter />
+              <CartDrawer />
+              <AuthModal />
+              <ProductQuickView />
+              <SearchModal />
+              <SizeGuideModal />
+              <WhatsAppWidget />
+              <WelcomePromoModal />
+              <CampaignTracker />
+              <UserSyncManager />
+            </StoreProvider>
+          </SafeBoundary>
         </body>
       </html>
     </ClerkProvider>

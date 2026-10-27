@@ -20,7 +20,7 @@
 }
 
 .contact-hero__headline {
-  font-family: serif;
+  font-family: "Epilogue", sans-serif;
   font-size: clamp(2.4rem, 4.5vw, 3.8rem);
   font-weight: 500;
   line-height: 1.15;
@@ -72,7 +72,7 @@
 }
 
 .contact-card__head {
-  font-family: serif;
+  font-family: "Epilogue", sans-serif;
   font-size: 1.25rem;
   color: #1a140e;
   margin: 0 0 10px 0;
@@ -152,7 +152,7 @@
 }
 
 .contact-form-box__title {
-  font-family: serif;
+  font-family: "Epilogue", sans-serif;
   font-size: 1.6rem;
   color: #1a140e;
   margin: 0 0 24px 0;
@@ -330,7 +330,7 @@
 }
 
 .contact-closing__text {
-  font-family: serif;
+  font-family: "Epilogue", sans-serif;
   font-size: clamp(1.4rem, 2.8vw, 2.1rem);
   font-style: italic;
   color: #3d3126;

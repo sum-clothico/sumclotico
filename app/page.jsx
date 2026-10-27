@@ -6,11 +6,9 @@ import SvgSymbols from "@/components/SvgSymbols";
 import Navbar from "@/components/Navbar";
 import ArchedHero from "@/components/ArchedHero";
 import FeaturedProductsSection from "@/components/FeaturedProductsSection";
-import HorizontalWords from "@/components/HorizontalWords";
-import StorySection from "@/components/StorySection";
-import SplitSection from "@/components/SplitSection";
-import MotionCards from "@/components/MotionCards";
-import AboutSection from "@/components/AboutSection";
+import WhySumHomeSection from "@/components/WhySumHomeSection";
+import FabricHomeSection from "@/components/FabricHomeSection";
+import PeopleHomeSection from "@/components/PeopleHomeSection";
 import JournalPreviewSection from "@/components/JournalPreviewSection";
 import SmoothScroll from "@/components/SmoothScroll";
 
@@ -33,33 +31,12 @@ export default function Home() {
         <Navbar />
         <ArchedHero />
       </header>
-      <FeaturedProductsSection />
-      <HorizontalWords />
-      <StorySection />
-      <SplitSection />
-
-      {/* Traditional Indian Border Pattern Divider */}
-      <div
-        className="section-pattern-divider"
-        style={{
-          width: "100%",
-          height: "28px",
-          backgroundColor: "var(--bg-color, #EDE8DC)",
-          backgroundImage: 'url("/assets/footerpattern-accent.png")',
-          backgroundRepeat: "repeat-x",
-          backgroundPosition: "center",
-          backgroundSize: "auto 26px",
-          opacity: 0.85,
-          position: "relative",
-          zIndex: 10,
-        }}
-        aria-hidden="true"
-      />
+      {/* PDF flow: Hero → Collection → Why Sum (+IG) → Fabric → People → Journal → Footer */}
       <main>
-        <div className="motion-cards-wrapper">
-          <MotionCards />
-        </div>
-        <AboutSection />
+        <FeaturedProductsSection />
+        <WhySumHomeSection />
+        <FabricHomeSection />
+        <PeopleHomeSection />
         <JournalPreviewSection />
       </main>
     </>

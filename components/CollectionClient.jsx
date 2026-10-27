@@ -168,7 +168,7 @@ export default function CollectionClient() {
         <div style={{ display: "flex", justifyContent: "center", marginBottom: "16px" }}>
           <IndianArchBadge>Handcrafted Everyday Wear</IndianArchBadge>
         </div>
-        <h1 className="prod-fade" style={{ fontFamily: "serif", fontSize: "clamp(2.2rem, 4vw, 3.2rem)", fontWeight: 600, color: "#2C2016", marginBottom: 16 }}>
+        <h1 className="prod-fade" style={{ fontFamily: "Epilogue, sans-serif", fontSize: "clamp(2.2rem, 4vw, 3.2rem)", fontWeight: 600, color: "#2C2016", marginBottom: 16 }}>
           Clothes you&apos;ll want to wear again.
         </h1>
         <p className="prod-fade" style={{ fontSize: "1.1rem", lineHeight: 1.75, color: "#5C4A3E", maxWidth: 600, margin: "0 auto" }}>

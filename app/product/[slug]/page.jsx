@@ -78,7 +78,7 @@ export default function ProductPage() {
       <>
         <Navbar />
         <div style={{ minHeight: "70vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 16, padding: 40, background: "#FAF6F0" }}>
-          <h1 style={{ fontFamily: "serif", fontSize: 28, fontWeight: 600, color: "#1a140e" }}>Piece Not Found</h1>
+          <h1 style={{ fontFamily: "Epilogue, sans-serif", fontSize: 28, fontWeight: 600, color: "#1a140e" }}>Piece Not Found</h1>
           <p style={{ color: "#6b5d52" }}>The garment you are looking for is currently unavailable or has been archived.</p>
           <Link href="/shop" style={{ display: "inline-flex", alignItems: "center", gap: 6, color: "#1a140e", fontWeight: 700, textDecoration: "underline" }}>
             Return to Shop All Pieces <FiArrowRight size={14} />
@@ -93,7 +93,7 @@ export default function ProductPage() {
       <>
         <Navbar />
         <div style={{ minHeight: "70vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#FAF6F0" }}>
-          <p style={{ color: "#8a7a6c", fontStyle: "italic", fontFamily: "serif", fontSize: "1.2rem" }}>Unfolding piece details...</p>
+          <p style={{ color: "#8a7a6c", fontStyle: "italic", fontFamily: "Epilogue, sans-serif", fontSize: "1.2rem" }}>Unfolding piece details...</p>
         </div>
       </>
     );
@@ -439,7 +439,7 @@ export default function ProductPage() {
                 <span style={{ fontSize: "0.78rem", fontWeight: 800, letterSpacing: "0.15em", textTransform: "uppercase", color: "#b36338", display: "block", marginBottom: 8 }}>
                   Khadi Handwoven Textiles
                 </span>
-                <h1 style={{ fontFamily: "serif", fontSize: "clamp(2rem, 3.5vw, 2.7rem)", fontWeight: 600, color: "#1a140e", margin: "0 0 6px", lineHeight: 1.15 }}>
+                <h1 style={{ fontFamily: "Epilogue, sans-serif", fontSize: "clamp(2rem, 3.5vw, 2.7rem)", fontWeight: 600, color: "#1a140e", margin: "0 0 6px", lineHeight: 1.15 }}>
                   {product.name.toUpperCase()}
                 </h1>
                 {product.subtitle && (
@@ -457,7 +457,7 @@ export default function ProductPage() {
               {/* Price */}
               <div style={{ borderTop: "1px solid rgba(42,31,20,0.1)", borderBottom: "1px solid rgba(42,31,20,0.1)", padding: "16px 0" }}>
                 <div style={{ display: "flex", alignItems: "baseline", gap: 12 }}>
-                  <span style={{ fontSize: "1.85rem", fontWeight: 800, color: "#1a140e", fontFamily: "serif" }}>
+                  <span style={{ fontSize: "1.85rem", fontWeight: 800, color: "#1a140e", fontFamily: "Epilogue, sans-serif" }}>
                     Rs {effectivePrice}
                   </span>
                   <span style={{ fontSize: 13, color: "#7a6c5f" }}>
@@ -656,11 +656,11 @@ export default function ProductPage() {
               <IndianArchBadge style={{ marginBottom: "16px" }}>
                 Khadi Handloom Craft
               </IndianArchBadge>
-              <h2 style={{ fontFamily: "serif", fontSize: "clamp(2rem, 3.5vw, 2.8rem)", fontWeight: 600, color: "#2C2016", margin: "0 0 14px" }}>
+              <h2 style={{ fontFamily: "Epilogue, sans-serif", fontSize: "clamp(2rem, 3.5vw, 2.8rem)", fontWeight: 600, color: "#2C2016", margin: "0 0 14px" }}>
                 The Details & Specifications
               </h2>
               {product.howItFeels && (
-                <p style={{ fontFamily: "serif", fontSize: "1.15rem", fontStyle: "italic", color: "#5C4A3E", margin: 0, lineHeight: 1.6 }}>
+                <p style={{ fontFamily: "Epilogue, sans-serif", fontSize: "1.15rem", fontStyle: "italic", color: "#5C4A3E", margin: 0, lineHeight: 1.6 }}>
                   &ldquo;{product.howItFeels}&rdquo;
                 </p>
               )}
@@ -729,7 +729,7 @@ export default function ProductPage() {
               <span style={{ fontSize: "0.76rem", fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: "#660608", display: "block", textAlign: "center", marginBottom: 8 }}>
                 Wardrobe Fit
               </span>
-              <h3 style={{ fontFamily: "serif", fontSize: "clamp(1.5rem, 2.4vw, 2rem)", color: "#1a140e", textAlign: "center", margin: "0 0 20px" }}>
+              <h3 style={{ fontFamily: "Epilogue, sans-serif", fontSize: "clamp(1.5rem, 2.4vw, 2rem)", color: "#1a140e", textAlign: "center", margin: "0 0 20px" }}>
                 Made for you if...
               </h3>
               <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
@@ -751,7 +751,7 @@ export default function ProductPage() {
               <span style={{ fontSize: "0.78rem", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "#660608", display: "block", marginBottom: 10 }}>
                 Origin & Intention
               </span>
-              <h3 style={{ fontFamily: "serif", fontSize: "clamp(1.6rem, 2.5vw, 2.2rem)", color: "#1a140e", margin: "0 0 16px" }}>
+              <h3 style={{ fontFamily: "Epilogue, sans-serif", fontSize: "clamp(1.6rem, 2.5vw, 2.2rem)", color: "#1a140e", margin: "0 0 16px" }}>
                 Why we made it.
               </h3>
               <p style={{ fontSize: "1.06rem", lineHeight: 1.85, color: "#4A3B30", margin: "0 auto" }}>
@@ -765,7 +765,7 @@ export default function ProductPage() {
             <span style={{ fontSize: "0.76rem", fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: "#660608", display: "block", textAlign: "center", marginBottom: 8 }}>
               Styling Possibilities
             </span>
-            <h3 style={{ fontFamily: "serif", fontSize: "clamp(1.5rem, 2.4vw, 2rem)", color: "#1a140e", textAlign: "center", margin: "0 0 24px" }}>
+            <h3 style={{ fontFamily: "Epilogue, sans-serif", fontSize: "clamp(1.5rem, 2.4vw, 2rem)", color: "#1a140e", textAlign: "center", margin: "0 0 24px" }}>
               One piece. Your way.
             </h3>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 20 }}>
@@ -774,7 +774,7 @@ export default function ProductPage() {
                   <span style={{ fontSize: "0.72rem", fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "#660608", display: "block", marginBottom: 6 }}>
                     {style.occasion}
                   </span>
-                  <p style={{ fontFamily: "serif", fontSize: "1.02rem", lineHeight: 1.6, color: "#1a140e", margin: 0 }}>
+                  <p style={{ fontFamily: "Epilogue, sans-serif", fontSize: "1.02rem", lineHeight: 1.6, color: "#1a140e", margin: 0 }}>
                     {style.styling}
                   </p>
                 </div>

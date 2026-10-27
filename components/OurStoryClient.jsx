@@ -33,134 +33,83 @@ function AnimatedWords({ text, className = "os-anim-word" }) {
   );
 }
 
+const PEOPLE_IMAGES = [
+  { src: "/assets/chakra.jpg", label: "Spinners" },
+  { src: "/assets/wev.jpg", label: "Weavers" },
+  { src: "/assets/han.jpg", label: "Designers" },
+  { src: "/assets/clt.jpg", label: "Tailors" },
+];
+
 export default function OurStoryClient() {
   const containerRef = useRef(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // Hero
       const heroTl = gsap.timeline({ defaults: { ease: "power4.out" } });
-
       heroTl.fromTo(
         ".os-hero-badge",
-        { opacity: 0, scale: 0.8, y: -20 },
-        { opacity: 1, scale: 1, y: 0, duration: 0.7, ease: "back.out(1.8)" },
+        { opacity: 0, scale: 0.85, y: -16 },
+        { opacity: 1, scale: 1, y: 0, duration: 0.6, ease: "back.out(1.6)" },
       );
-
       heroTl.fromTo(
         ".os-hero-title .os-anim-word",
-        { y: "135%", rotate: 4, opacity: 0 },
-        { y: "0%", rotate: 0, opacity: 1, duration: 1.1, stagger: 0.05 },
+        { y: "130%", rotate: 3, opacity: 0 },
+        { y: "0%", rotate: 0, opacity: 1, duration: 0.95, stagger: 0.05 },
+        "-=0.3",
+      );
+      heroTl.fromTo(
+        ".os-hero-sub",
+        { y: 24, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8 },
         "-=0.4",
       );
-
-      heroTl.fromTo(
-        ".os-hero-para",
-        { opacity: 0, y: 28, filter: "blur(4px)" },
-        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.9, stagger: 0.12 },
-        "-=0.5",
-      );
-
       heroTl.fromTo(
         ".os-hero-cta",
-        { opacity: 0, y: 20, scale: 0.94 },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.8,
-          stagger: 0.1,
-          ease: "back.out(1.4)",
-        },
-        "-=0.5",
+        { y: 16, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.7, stagger: 0.08 },
+        "-=0.3",
       );
 
-      heroTl.fromTo(
-        ".os-hero-visual",
-        { opacity: 0, scale: 0.9, y: 45, rotateY: 5 },
-        {
-          opacity: 1,
-          scale: 1,
-          y: 0,
-          rotateY: 0,
-          duration: 1.3,
-          ease: "power3.out",
-        },
-        "-=1.0",
-      );
-
+      // Scroll-triggered blocks
       const blocks = containerRef.current?.querySelectorAll(".os-anim-block");
       blocks?.forEach((block) => {
         const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: block,
-            start: "top 83%",
-          },
+          scrollTrigger: { trigger: block, start: "top 83%" },
         });
-
         const badge = block.querySelector(".os-block-badge");
         if (badge) {
           tl.fromTo(
             badge,
-            { opacity: 0, y: -16, scale: 0.85 },
-            {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              duration: 0.6,
-              ease: "back.out(1.6)",
-            },
+            { opacity: 0, y: -14, scale: 0.88 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.55, ease: "back.out(1.5)" },
           );
         }
-
-        const titleWords = block.querySelectorAll(
-          ".os-block-title .os-anim-word",
-        );
+        const titleWords = block.querySelectorAll(".os-block-title .os-anim-word");
         if (titleWords.length > 0) {
           tl.fromTo(
             titleWords,
-            { y: "130%", rotate: 3, opacity: 0 },
-            {
-              y: "0%",
-              rotate: 0,
-              opacity: 1,
-              duration: 0.95,
-              stagger: 0.04,
-              ease: "power4.out",
-            },
-            "-=0.4",
+            { y: "120%", rotate: 2, opacity: 0 },
+            { y: "0%", rotate: 0, opacity: 1, duration: 0.85, stagger: 0.04, ease: "power4.out" },
+            "-=0.3",
           );
         }
-
         const items = block.querySelectorAll(".os-text-item");
         if (items.length > 0) {
           tl.fromTo(
             items,
-            { opacity: 0, y: 24 },
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.8,
-              stagger: 0.1,
-              ease: "power3.out",
-            },
-            "-=0.6",
+            { opacity: 0, y: 22 },
+            { opacity: 1, y: 0, duration: 0.75, stagger: 0.09, ease: "power3.out" },
+            "-=0.5",
           );
         }
-
         const images = block.querySelectorAll(".os-image-box");
         if (images.length > 0) {
           tl.fromTo(
             images,
-            { opacity: 0, scale: 0.94, y: 30 },
-            {
-              opacity: 1,
-              scale: 1,
-              y: 0,
-              duration: 0.9,
-              stagger: 0.12,
-              ease: "power3.out",
-            },
-            "-=0.7",
+            { opacity: 0, scale: 0.95, y: 28 },
+            { opacity: 1, scale: 1, y: 0, duration: 0.85, stagger: 0.1, ease: "power3.out" },
+            "-=0.6",
           );
         }
       });
@@ -176,12 +125,13 @@ export default function OurStoryClient() {
       style={{
         background: "var(--bg-color, #EDE8DC)",
         minHeight: "100vh",
-        padding: "130px 24px 80px",
+        padding: "120px 20px 70px",
         position: "relative",
         overflow: "hidden",
+        fontFamily: "'Epilogue', sans-serif",
       }}
     >
-      {/* Repeating side border pattern */}
+      {/* Side decor */}
       <div
         className="side-pattern-decor"
         style={{
@@ -220,187 +170,65 @@ export default function OurStoryClient() {
         aria-hidden="true"
       />
 
-      {/* ─── 1. OPENING / HERO SECTION ─── */}
+      {/* ─── 1. OPENING ─── */}
       <section
         style={{
-          maxWidth: 1040,
-          margin: "0 auto 100px",
-          padding: "0 clamp(16px, 4vw, 36px)",
+          maxWidth: 980,
+          margin: "0 auto 90px",
+          padding: "0 clamp(16px, 4vw, 32px)",
           position: "relative",
           zIndex: 2,
+          textAlign: "center",
         }}
       >
-        <div style={{ textAlign: "center", maxWidth: 840, margin: "0 auto 48px" }}>
-          <div className="os-hero-badge" style={{ display: "inline-block", marginBottom: "18px" }}>
-            <IndianArchBadge>Why Sum</IndianArchBadge>
-          </div>
-
-          <h1
-            className="os-hero-title"
-            style={{
-              fontSize: "clamp(2.2rem, 4.2vw, 3.4rem)",
-              lineHeight: 1.22,
-              fontWeight: 600,
-              fontFamily: "serif",
-              color: "#1a140e",
-              margin: "0 auto 16px",
-              maxWidth: 780,
-            }}
-          >
-            <AnimatedWords text="Sum is a sum of people, ideas, skills, places, techniques." />
-          </h1>
-
-          <p
-            className="os-hero-para"
-            style={{
-              margin: "0 auto 28px",
-              fontWeight: 700,
-              fontFamily: "serif",
-              color: "#660608",
-              fontSize: "clamp(1.25rem, 2.2vw, 1.65rem)",
-            }}
-          >
-            And eventually, you.
-          </p>
-
-          <div style={{ display: "flex", gap: "16px", justifyContent: "center", flexWrap: "wrap" }}>
-            <a
-              href="#why-sum-exists"
-              className="os-hero-cta"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 8,
-                background: "#660608",
-                color: "#FAF6F0",
-                padding: "14px 28px",
-                borderRadius: 99,
-                fontWeight: 800,
-                fontSize: "0.8rem",
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-                textDecoration: "none",
-                boxShadow: "0 4px 16px rgba(102, 6, 8, 0.25)",
-              }}
-            >
-              Discover Our Story <FiArrowRight />
-            </a>
-            <Link
-              href="/fabric"
-              className="os-hero-cta"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 8,
-                background: "transparent",
-                color: "#1a140e",
-                border: "1.5px solid rgba(26, 20, 14, 0.35)",
-                padding: "14px 28px",
-                borderRadius: 99,
-                fontWeight: 800,
-                fontSize: "0.8rem",
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-                textDecoration: "none",
-              }}
-            >
-              The Fabric
-            </Link>
-          </div>
+        <div className="os-hero-badge" style={{ display: "inline-block", marginBottom: 18 }}>
+          <IndianArchBadge>Our Story</IndianArchBadge>
         </div>
-
-        <div className="os-hero-visual" style={{ position: "relative", maxWidth: 640, margin: "0 auto" }}>
-          <div
-            style={{
-              position: "relative",
-              maxWidth: 440,
-              margin: "0 auto",
-              borderRadius: 20,
-              padding: "12px",
-              background: "rgba(255, 255, 255, 0.45)",
-              border: "1px solid rgba(102, 6, 8, 0.15)",
-              boxShadow: "0 22px 48px -18px rgba(44, 32, 22, 0.16)",
-            }}
-          >
-            <div
-              style={{
-                position: "relative",
-                width: "100%",
-                aspectRatio: "4/5",
-                borderRadius: 16,
-                overflow: "hidden",
-              }}
-            >
-              <img
-                src="/assets/homepage/WhatsApp Image 2026-10-05 at 2.13.53 PM.jpeg"
-                alt="Sum Clothico Handwoven Textile"
-                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-              />
-              <div
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  background:
-                    "linear-gradient(to top, rgba(26, 20, 14, 0.72) 0%, rgba(26, 20, 14, 0.1) 45%, transparent 100%)",
-                }}
-              />
-              <div style={{ position: "absolute", bottom: 22, left: 22, right: 22, color: "#FAF6F0" }}>
-                <span
-                  style={{
-                    fontSize: "0.72rem",
-                    fontWeight: 800,
-                    letterSpacing: "0.16em",
-                    textTransform: "uppercase",
-                    color: "#D4C4A8",
-                    display: "block",
-                    marginBottom: 4,
-                  }}
-                >
-                  Handcrafted in India
-                </span>
-                <p style={{ fontFamily: "serif", fontSize: "1.12rem", fontStyle: "italic", margin: 0, lineHeight: 1.35 }}>
-                  Where every thread carries human patience and purpose.
-                </p>
-              </div>
-            </div>
-
-            <div
-              style={{
-                position: "absolute",
-                bottom: -16,
-                right: -10,
-                background: "#FAF6F0",
-                border: "1.5px solid rgba(102, 6, 8, 0.28)",
-                borderRadius: 12,
-                padding: "10px 18px",
-                boxShadow: "0 10px 24px rgba(44, 32, 22, 0.14)",
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-              }}
-            >
-              <span
-                style={{
-                  width: 8,
-                  height: 8,
-                  borderRadius: "50%",
-                  background: "#660608",
-                  display: "inline-block",
-                }}
-              />
-              <span
-                style={{
-                  fontFamily: "serif",
-                  fontSize: "0.86rem",
-                  fontWeight: 600,
-                  color: "#1a140e",
-                }}
-              >
-                100% Handspun Khadi
-              </span>
-            </div>
-          </div>
-        </div>
+        <h1
+          className="os-hero-title"
+          style={{
+            fontSize: "clamp(2rem, 3.8vw, 3rem)",
+            lineHeight: 1.22,
+            fontWeight: 600,
+            color: "#1a140e",
+            margin: "0 auto 18px",
+            maxWidth: 820,
+          }}
+        >
+          <AnimatedWords text="Sum is a sum of people, ideas, skills, places and techniques." />
+        </h1>
+        <p
+          className="os-hero-sub"
+          style={{
+            margin: "0 auto 30px",
+            fontWeight: 700,
+            color: "#660608",
+            fontSize: "clamp(1.1rem, 1.8vw, 1.4rem)",
+          }}
+        >
+          And eventually, you.
+        </p>
+        <Link
+          href="#why-sum-exists"
+          className="os-hero-cta"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 8,
+            background: "#660608",
+            color: "#EDE8DC",
+            padding: "13px 26px",
+            borderRadius: 99,
+            fontWeight: 700,
+            fontSize: "0.78rem",
+            letterSpacing: "0.1em",
+            textTransform: "uppercase",
+            textDecoration: "none",
+            boxShadow: "0 4px 14px rgba(102, 6, 8, 0.22)",
+          }}
+        >
+          Discover Our Story <FiArrowRight />
+        </Link>
       </section>
 
       {/* ─── 2. WHY SUM EXISTS ─── */}
@@ -408,135 +236,82 @@ export default function OurStoryClient() {
         id="why-sum-exists"
         className="os-anim-block"
         style={{
-          maxWidth: 980,
-          margin: "0 auto 100px",
-          padding: "0 clamp(24px, 4vw, 48px)",
+          maxWidth: 880,
+          margin: "0 auto 90px",
+          padding: "0 clamp(16px, 4vw, 32px)",
           position: "relative",
           zIndex: 2,
+          borderTop: "1px solid rgba(44, 32, 22, 0.14)",
+          paddingTop: 48,
         }}
       >
-        <div className="os-block-badge">
-          <IndianArchBadge style={{ marginBottom: "16px" }}>Why Sum Exists</IndianArchBadge>
+        <div className="os-block-badge" style={{ marginBottom: 14 }}>
+          <IndianArchBadge>Why Sum Exists</IndianArchBadge>
         </div>
         <h2
           className="os-block-title"
           style={{
-            fontFamily: "serif",
-            fontSize: "clamp(2rem, 3.2vw, 2.7rem)",
+            fontSize: "clamp(1.7rem, 2.8vw, 2.3rem)",
             fontWeight: 600,
             color: "#1a140e",
-            margin: "0 0 24px",
-            lineHeight: 1.22,
+            margin: "0 0 20px",
+            lineHeight: 1.25,
           }}
         >
           <AnimatedWords text="We wanted more room in our clothes." />
         </h2>
-        <div style={{ fontSize: "1.08rem", lineHeight: 1.85, color: "#3f3329" }}>
-          <div
-            className="os-text-item"
-            style={{
-              borderLeft: "2.5px solid #660608",
-              paddingLeft: 20,
-              margin: "0 0 24px",
-              color: "#2a1f14",
-              fontWeight: 500,
-            }}
-          >
-            <p style={{ margin: "4px 0" }}>Room for bodies to change.</p>
-            <p style={{ margin: "4px 0" }}>Room for personalities to show.</p>
-            <p style={{ margin: "4px 0" }}>Room for work, travel, errands and whatever came after.</p>
-          </div>
-          <p className="os-text-item" style={{ margin: "0 0 18px" }}>
-            So instead of making clothes for one kind of woman or one kind of day, we started making pieces that could
-            move between them.
+        <div style={{ fontSize: "1rem", lineHeight: 1.75, color: "#3f3329" }}>
+          <p className="os-text-item" style={{ margin: "0 0 16px" }}>
+            Room for changing bodies, different personalities and days that don&apos;t always go as planned.
+          </p>
+          <p className="os-text-item" style={{ margin: "0 0 16px" }}>
+            So we started creating easy, functional clothing that moves between work, weekends and everything in between.
           </p>
           <p
             className="os-text-item"
-            style={{
-              margin: 0,
-              fontWeight: 700,
-              color: "#1a140e",
-              fontSize: "1.15rem",
-              fontFamily: "serif",
-            }}
+            style={{ margin: 0, fontWeight: 700, color: "#1a140e", fontSize: "1.1rem" }}
           >
             Simple. Easy. Made for real days.
           </p>
         </div>
       </section>
 
-      {/* ─── 3. THE PEOPLE (SPINNERS, WEAVERS, MAKERS) ─── */}
+      {/* ─── 3. THE PEOPLE ─── */}
       <section
-        id="people"
         className="os-anim-block"
         style={{
-          maxWidth: 1140,
-          margin: "0 auto 100px",
-          padding: "0 clamp(24px, 4vw, 48px)",
+          maxWidth: 1080,
+          margin: "0 auto 90px",
+          padding: "0 clamp(16px, 4vw, 32px)",
           position: "relative",
           zIndex: 2,
+          borderTop: "1px solid rgba(44, 32, 22, 0.14)",
+          paddingTop: 48,
         }}
       >
-        <div
-          style={{
-            position: "relative",
-            maxWidth: 880,
-            margin: "0 auto 36px",
-            padding: "44px clamp(20px, 4vw, 40px)",
-            borderRadius: 24,
-            border: "1.5px solid rgba(102, 6, 8, 0.22)",
-            backgroundColor: "#FAF6F0",
-            backgroundImage: 'url("/assets/751.jpg")',
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            boxShadow: "0 18px 45px -12px rgba(44, 32, 22, 0.12)",
-            overflow: "hidden",
-            textAlign: "center",
-          }}
-        >
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              backgroundColor: "rgba(250, 246, 240, 0.92)",
-              pointerEvents: "none",
-            }}
-          />
-          <div style={{ position: "relative", zIndex: 1 }}>
-            <div className="os-block-badge">
-              <IndianArchBadge style={{ marginBottom: "14px" }}>The People of Sum</IndianArchBadge>
-            </div>
-            <h2
-              className="os-block-title"
-              style={{
-                fontFamily: "serif",
-                fontSize: "clamp(1.9rem, 3.2vw, 2.6rem)",
-                color: "#1a140e",
-                margin: "0 0 20px",
-                lineHeight: 1.25,
-              }}
-            >
-              <AnimatedWords text="Before there is a garment, there are people." />
-            </h2>
-            <p className="os-text-item" style={{ fontSize: "1.06rem", lineHeight: 1.85, color: "#3f3329", margin: "0 0 20px" }}>
-              A Sum piece passes through human hands at almost every possible stage.
-            </p>
-            <div
-              className="os-text-item"
-              style={{
-                fontSize: "1.05rem",
-                lineHeight: 1.9,
-                color: "#660608",
-                fontFamily: "serif",
-                fontStyle: "italic",
-              }}
-            >
-              <p style={{ margin: "4px 0" }}>From fibre to fabric.</p>
-              <p style={{ margin: "4px 0" }}>From an idea to a pattern.</p>
-              <p style={{ margin: "4px 0" }}>From cutting to stitching.</p>
-              <p style={{ margin: "4px 0" }}>From us to you.</p>
-            </div>
+        <div style={{ textAlign: "center", maxWidth: 780, margin: "0 auto 32px" }}>
+          <div className="os-block-badge" style={{ display: "inline-block", marginBottom: 14 }}>
+            <IndianArchBadge>The People</IndianArchBadge>
           </div>
+          <h2
+            className="os-block-title"
+            style={{
+              fontSize: "clamp(1.7rem, 2.8vw, 2.3rem)",
+              fontWeight: 600,
+              color: "#1a140e",
+              margin: "0 0 16px",
+              lineHeight: 1.25,
+            }}
+          >
+            <AnimatedWords text="Before there's a garment, there are people." />
+          </h2>
+          <p
+            className="os-text-item"
+            style={{ fontSize: "1rem", lineHeight: 1.75, color: "#3f3329", margin: 0 }}
+          >
+            Spinners, weavers, designers and tailors — different hands and skills come together
+            to create every Sum piece.
+          </p>
         </div>
 
         <div
@@ -545,29 +320,12 @@ export default function OurStoryClient() {
             display: "grid",
             gridTemplateColumns: "repeat(4, 1fr)",
             gap: 12,
-            marginTop: 36,
+            marginTop: 24,
           }}
         >
-          {[
-            {
-              src: "/assets/homepage/14887305-5caf-4e77-b3fa-c79443ced34b.png",
-              tag: "Spinner",
-            },
-            {
-              src: "/assets/homepage/IMG_3720.JPG",
-              tag: "Weaver",
-            },
-            {
-              src: "/assets/homepage/c6aa1e50-2390-4fe4-b79e-fcf044fe17ca.jpg",
-              tag: "Tailor",
-            },
-            {
-              src: "/assets/homepage/WhatsApp Image 2026-10-05 at 2.13.58 PM (1).jpeg",
-              tag: "Wearer",
-            },
-          ].map((img) => (
+          {PEOPLE_IMAGES.map((img) => (
             <div
-              key={img.tag}
+              key={img.label}
               className="os-image-box"
               style={{
                 position: "relative",
@@ -579,13 +337,8 @@ export default function OurStoryClient() {
             >
               <img
                 src={img.src}
-                alt={img.tag}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  display: "block",
-                }}
+                alt={img.label}
+                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
               />
               <div
                 style={{
@@ -593,33 +346,33 @@ export default function OurStoryClient() {
                   left: 0,
                   right: 0,
                   bottom: 0,
-                  padding: "20px 12px 10px",
-                  background: "linear-gradient(to top, rgba(26,20,14,0.72), transparent)",
-                  color: "#FAF6F0",
-                  fontSize: "0.72rem",
+                  padding: "18px 10px 8px",
+                  background: "linear-gradient(to top, rgba(26,20,14,0.75), transparent)",
+                  color: "#EDE8DC",
+                  fontSize: "0.7rem",
                   fontWeight: 800,
                   letterSpacing: "0.14em",
                   textTransform: "uppercase",
                 }}
               >
-                {img.tag}
+                {img.label}
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* ─── 4. THE FOUNDER & THE MAKERS (ADITI SINGH & WOMEN TAILORS) ─── */}
+      {/* ─── 4. THE FOUNDER & THE MAKERS ─── */}
       <section
         className="os-anim-block"
         style={{
-          maxWidth: 1140,
-          margin: "0 auto 100px",
-          padding: "0 clamp(24px, 4vw, 48px)",
+          maxWidth: 1080,
+          margin: "0 auto 90px",
+          padding: "0 clamp(16px, 4vw, 32px)",
           position: "relative",
           zIndex: 2,
           borderTop: "1px solid rgba(44, 32, 22, 0.14)",
-          paddingTop: 56,
+          paddingTop: 48,
         }}
       >
         <div
@@ -627,167 +380,111 @@ export default function OurStoryClient() {
           style={{
             display: "grid",
             gridTemplateColumns: "0.85fr 1.15fr",
-            gap: "clamp(32px, 5vw, 56px)",
+            gap: "clamp(28px, 4vw, 48px)",
             alignItems: "center",
           }}
         >
-          <div className="os-founder-visual" style={{ position: "relative" }}>
+          <div
+            className="os-image-box"
+            style={{
+              position: "relative",
+              borderRadius: 18,
+              overflow: "hidden",
+              border: "1px solid rgba(44, 32, 22, 0.16)",
+              boxShadow: "0 18px 40px -16px rgba(44, 32, 22, 0.2)",
+              aspectRatio: "4/5",
+            }}
+          >
+            <img
+              src="/assets/751.jpg"
+              alt="Aditi Singh — founder, Sum Clothico"
+              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+            />
             <div
-              className="os-image-box"
               style={{
-                position: "relative",
-                borderRadius: 18,
-                overflow: "hidden",
-                border: "1px solid rgba(44, 32, 22, 0.16)",
-                boxShadow: "0 22px 48px -18px rgba(44, 32, 22, 0.22)",
-                aspectRatio: "4/5",
+                position: "absolute",
+                inset: 0,
+                background: "linear-gradient(to top, rgba(26,20,14,0.55), transparent 50%)",
+              }}
+            />
+            <div
+              style={{
+                position: "absolute",
+                left: 16,
+                bottom: 14,
+                color: "#EDE8DC",
               }}
             >
-              <img
-                src="/assets/homepage/WhatsApp Image 2026-03-16 at 2.54.57 PM.jpeg"
-                alt="Aditi Singh — founder, Sum Clothico"
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  display: "block",
-                }}
-              />
               <div
                 style={{
-                  position: "absolute",
-                  inset: 0,
-                  background: "linear-gradient(to top, rgba(26,20,14,0.55) 0%, transparent 50%)",
-                }}
-              />
-              <div
-                style={{
-                  position: "absolute",
-                  left: 18,
-                  bottom: 16,
-                  color: "#FAF6F0",
-                  fontFamily: "serif",
+                  fontSize: "0.64rem",
+                  letterSpacing: "0.2em",
+                  textTransform: "uppercase",
+                  fontWeight: 800,
+                  color: "#D4C4A8",
+                  marginBottom: 3,
                 }}
               >
-                <div
-                  style={{
-                    fontSize: "0.68rem",
-                    letterSpacing: "0.22em",
-                    textTransform: "uppercase",
-                    fontWeight: 800,
-                    color: "#D4C4A8",
-                    marginBottom: 4,
-                  }}
-                >
-                  Rewa, Madhya Pradesh
-                </div>
-                <div style={{ fontSize: "1rem", fontWeight: 700 }}>Aditi Singh</div>
+                Rewa, Madhya Pradesh
               </div>
+              <div style={{ fontSize: "0.95rem", fontWeight: 700 }}>Aditi Singh — Founder</div>
             </div>
           </div>
+
           <div>
-            <div className="os-block-badge">
-              <IndianArchBadge style={{ marginBottom: "14px" }}>The Founder</IndianArchBadge>
-            </div>
-            <div
-              className="os-text-item"
-              style={{
-                fontFamily: "serif",
-                fontSize: "1.2rem",
-                fontWeight: 700,
-                color: "#1a140e",
-                margin: "0 0 4px",
-              }}
-            >
-              Aditi Singh
-            </div>
-            <div
-              className="os-text-item"
-              style={{
-                fontSize: "0.95rem",
-                color: "#660608",
-                letterSpacing: "0.08em",
-                textTransform: "uppercase",
-                fontWeight: 700,
-                margin: "0 0 24px",
-              }}
-            >
-              Founder, Sum Clothico
+            <div className="os-block-badge" style={{ marginBottom: 14 }}>
+              <IndianArchBadge>The Founder & The Makers</IndianArchBadge>
             </div>
             <h2
               className="os-block-title"
               style={{
-                fontFamily: "serif",
-                fontSize: "clamp(1.8rem, 3vw, 2.4rem)",
+                fontSize: "clamp(1.6rem, 2.6vw, 2.1rem)",
+                fontWeight: 600,
                 color: "#1a140e",
-                margin: "0 0 22px",
+                margin: "0 0 20px",
                 lineHeight: 1.25,
               }}
             >
               <AnimatedWords text="An idea, brought to life by many hands." />
             </h2>
-            <div style={{ fontSize: "1.06rem", lineHeight: 1.85, color: "#3f3329" }}>
-              <p className="os-text-item" style={{ margin: "0 0 14px" }}>
-                Years spent in marketing, brand building and understanding how people choose eventually turned into building
-                a brand of her own.
-              </p>
-              <p className="os-text-item" style={{ margin: "0 0 18px" }}>
-                Started in Rewa, Sum grew from a very personal question:
+            <div style={{ fontSize: "1rem", lineHeight: 1.75, color: "#3f3329" }}>
+              <p className="os-text-item" style={{ margin: "0 0 16px" }}>
+                What started in Rewa with a simple question — could everyday clothing feel more
+                like the women wearing it? — grew into Sum Clothico.
               </p>
               <p
                 className="os-text-item"
-                style={{
-                  margin: "0 0 18px",
-                  fontWeight: 700,
-                  color: "#1a140e",
-                  fontFamily: "serif",
-                  fontSize: "1.15rem",
-                }}
+                style={{ margin: 0, fontWeight: 600, color: "#1a140e", fontSize: "1.02rem" }}
               >
-                Could everyday clothing feel more like the women actually wearing it?
+                Today, our women tailors bring these ideas to life, one thoughtfully made piece at a time.
               </p>
-              <blockquote
-                className="os-text-item"
-                style={{
-                  borderLeft: "3px solid #660608",
-                  paddingLeft: 20,
-                  margin: "0 0 20px",
-                  fontStyle: "italic",
-                  fontFamily: "serif",
-                  fontSize: "1.2rem",
-                  color: "#660608",
-                  lineHeight: 1.5,
-                }}
-              >
-                “I didn&apos;t want to make more clothes. I wanted to make clothes we&apos;d actually want to live in.”
-              </blockquote>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ─── 5. CLOSING (LIVED IN BY YOU & DUAL CTAS) ─── */}
+      {/* ─── 5. CLOSING ─── */}
       <section
         className="os-anim-block"
         style={{
-          maxWidth: 880,
-          margin: "0 auto 80px",
-          padding: "0 clamp(24px, 4vw, 48px)",
-          textAlign: "center",
+          maxWidth: 820,
+          margin: "0 auto 60px",
+          padding: "0 clamp(16px, 4vw, 32px)",
           position: "relative",
           zIndex: 2,
           borderTop: "1px solid rgba(44, 32, 22, 0.14)",
-          paddingTop: 56,
+          paddingTop: 48,
+          textAlign: "center",
         }}
       >
-        <div className="os-block-badge">
-          <IndianArchBadge style={{ marginBottom: "14px" }}>The Sum Circle</IndianArchBadge>
+        <div className="os-block-badge" style={{ display: "inline-block", marginBottom: 14 }}>
+          <IndianArchBadge>Closing</IndianArchBadge>
         </div>
         <h2
           className="os-block-title"
           style={{
-            fontFamily: "serif",
-            fontSize: "clamp(2.1rem, 3.8vw, 3.1rem)",
+            fontSize: "clamp(1.8rem, 3vw, 2.4rem)",
+            fontWeight: 600,
             color: "#1a140e",
             margin: "0 0 20px",
             lineHeight: 1.25,
@@ -795,37 +492,23 @@ export default function OurStoryClient() {
         >
           <AnimatedWords text="Thought by us. Shaped by many hands. Lived in by you." />
         </h2>
-        <div
+        <p
+          className="os-text-item"
           style={{
-            fontSize: "1.12rem",
-            lineHeight: 1.8,
-            color: "#4a3c30",
-            maxWidth: 680,
-            margin: "0 auto 36px",
+            fontSize: "1rem",
+            lineHeight: 1.75,
+            color: "#3f3329",
+            margin: "0 auto 28px",
+            maxWidth: 640,
           }}
         >
-          <p className="os-text-item" style={{ marginBottom: 18 }}>
-            We&apos;re building a space where textiles, people and everyday clothing come together beyond trends.
-          </p>
-          <p
-            className="os-text-item"
-            style={{
-              margin: "24px 0 0",
-              fontFamily: "serif",
-              fontStyle: "italic",
-              fontSize: "1.35rem",
-              color: "#660608",
-              fontWeight: 600,
-            }}
-          >
-            Thoughtful. Human. Sum.
-          </p>
-        </div>
-
+          Khadi is where we began. As we explore more Indian textiles and techniques, the idea
+          stays the same — clothes that become part of your everyday life.
+        </p>
         <div
           style={{
             display: "flex",
-            gap: 16,
+            gap: 14,
             justifyContent: "center",
             flexWrap: "wrap",
           }}
@@ -834,17 +517,16 @@ export default function OurStoryClient() {
             href="/fabric"
             className="os-text-item"
             style={{
-              padding: "15px 32px",
+              padding: "13px 26px",
               borderRadius: 99,
               background: "transparent",
               color: "#1a140e",
               border: "1.5px solid #1a140e",
               fontWeight: 800,
-              fontSize: "0.85rem",
-              letterSpacing: "0.12em",
+              fontSize: "0.76rem",
+              letterSpacing: "0.1em",
               textTransform: "uppercase",
               textDecoration: "none",
-              transition: "all 0.25s ease",
             }}
           >
             Explore the Fabric
@@ -853,17 +535,16 @@ export default function OurStoryClient() {
             href="/shop"
             className="os-text-item"
             style={{
-              padding: "15px 32px",
+              padding: "13px 26px",
               borderRadius: 99,
               background: "#660608",
-              color: "#FAF6F0",
+              color: "#EDE8DC",
               fontWeight: 800,
-              fontSize: "0.85rem",
-              letterSpacing: "0.12em",
+              fontSize: "0.76rem",
+              letterSpacing: "0.1em",
               textTransform: "uppercase",
               textDecoration: "none",
-              boxShadow: "0 4px 18px rgba(102, 6, 8, 0.25)",
-              transition: "all 0.25s ease",
+              boxShadow: "0 4px 14px rgba(102, 6, 8, 0.22)",
             }}
           >
             Shop the Collection

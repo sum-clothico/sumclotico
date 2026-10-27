@@ -196,7 +196,7 @@ export default function ContactPage() {
           margin: 0 auto 40px;
         }
         .contact-hero__headline {
-          font-family: serif;
+          font-family: 'Epilogue', sans-serif;
           font-size: clamp(2.4rem, 4.5vw, 3.8rem);
           font-weight: 500;
           line-height: 1.15;
@@ -380,7 +380,7 @@ export default function ContactPage() {
           margin-bottom: 2px;
         }
         .contact-channel__val {
-          font-family: serif;
+          font-family: 'Epilogue', sans-serif;
           font-size: 1.15rem;
           font-weight: 600;
           color: #1a140e;
@@ -591,7 +591,7 @@ export default function ContactPage() {
                   <span style={{ position: "relative", zIndex: 1, fontSize: "0.72rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.12em", color: "#660608" }}>
                     {item.label}
                   </span>
-                  <span style={{ position: "relative", zIndex: 1, fontFamily: "serif", fontSize: "1.02rem", fontWeight: 700, color: "#1a140e" }}>
+                  <span style={{ position: "relative", zIndex: 1, fontFamily: "Epilogue, sans-serif", fontSize: "1.02rem", fontWeight: 700, color: "#1a140e" }}>
                     {item.value}
                   </span>
                   <span style={{ position: "relative", zIndex: 1, fontSize: "0.76rem", color: "#6e5d4e" }}>
@@ -788,7 +788,7 @@ export default function ContactPage() {
               </svg>
               <div style={{ position: "relative", zIndex: 1 }}>
                 <span className="contact-col__title">04 • Just Want to Talk?</span>
-                <h3 style={{ fontFamily: "serif", fontSize: "1.15rem", color: "#1a140e", margin: "0 0 6px 0" }}>
+                <h3 style={{ fontFamily: "Epilogue, sans-serif", fontSize: "1.15rem", color: "#1a140e", margin: "0 0 6px 0" }}>
                   We&apos;re open to ideas.
                 </h3>
                 <p style={{ fontSize: "0.92rem", color: "#55483d", lineHeight: 1.6, margin: "0 0 16px 0" }}>
@@ -852,7 +852,7 @@ export default function ContactPage() {
                 <IndianArchBadge style={{ marginBottom: "14px" }}>
                   Send A Message
                 </IndianArchBadge>
-                <h2 style={{ fontFamily: "serif", fontSize: "clamp(1.8rem, 3vw, 2.5rem)", color: "#1a140e", margin: "0 0 24px" }}>
+                <h2 style={{ fontFamily: "Epilogue, sans-serif", fontSize: "clamp(1.8rem, 3vw, 2.5rem)", color: "#1a140e", margin: "0 0 24px" }}>
                   Tell us what you have in mind.
                 </h2>
                 
@@ -873,7 +873,7 @@ export default function ContactPage() {
                     >
                       <FiCheckCircle size={26} />
                     </div>
-                    <h3 style={{ fontFamily: "serif", fontSize: "1.4rem", margin: "0 0 10px" }}>
+                    <h3 style={{ fontFamily: "Epilogue, sans-serif", fontSize: "1.4rem", margin: "0 0 10px" }}>
                       Message Received
                     </h3>
                     <p style={{ color: "#55483d", fontSize: "0.95rem", lineHeight: 1.6, marginBottom: 24 }}>
@@ -972,7 +972,7 @@ export default function ContactPage() {
                 <IndianArchBadge style={{ marginBottom: "14px" }}>
                   Direct Reach
                 </IndianArchBadge>
-                <h2 style={{ fontFamily: "serif", fontSize: "clamp(1.6rem, 2.5vw, 2.2rem)", color: "#1a140e", margin: "0 0 24px" }}>
+                <h2 style={{ fontFamily: "Epilogue, sans-serif", fontSize: "clamp(1.6rem, 2.5vw, 2.2rem)", color: "#1a140e", margin: "0 0 24px" }}>
                   Direct channels.
                 </h2>
 
@@ -1078,7 +1078,7 @@ export default function ContactPage() {
 
           {/* ─── Closing Line ─── */}
           <div style={{ textAlign: "center", borderTop: "1px solid rgba(44, 32, 22, 0.12)", paddingTop: 30, marginBottom: 40 }}>
-            <p style={{ fontFamily: "serif", fontSize: "1.25rem", fontStyle: "italic", color: "#660608", margin: 0 }}>
+            <p style={{ fontFamily: "Epilogue, sans-serif", fontSize: "1.25rem", fontStyle: "italic", color: "#660608", margin: 0 }}>
               Some of the best things start with a conversation.
             </p>
           </div>

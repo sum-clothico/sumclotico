@@ -75,28 +75,27 @@ export default function WhySumHomeSection() {
           <IndianArchBadge style={{ marginBottom: "16px" }}>The Sum Philosophy</IndianArchBadge>
           <h2
             style={{
-              fontSize: "clamp(30px, 4.4vw, 48px)",
-              fontFamily: "var(--font-serif, 'Playfair Display', Georgia, serif)",
+              fontSize: "clamp(26px, 3.8vw, 40px)",
+              fontFamily: "'Epilogue', sans-serif",
               fontWeight: 700,
               color: "#2C2016",
-              lineHeight: 1.2,
-              letterSpacing: "-0.5px",
-              margin: "0 0 20px",
+              lineHeight: 1.22,
+              letterSpacing: "-0.4px",
+              margin: "0 0 18px",
             }}
           >
             A little more room to be you.
           </h2>
           <p
             style={{
-              fontSize: "clamp(15px, 1.8vw, 17px)",
+              fontSize: "clamp(14px, 1.6vw, 16px)",
               color: "#5C4A3E",
               lineHeight: 1.7,
-              margin: "0 auto 28px",
+              margin: "0 auto 26px",
             }}
           >
-            Clothes shouldn&apos;t feel like an outfit you have to put on; they should feel like an extension of how you
-            live. We make thoughtfully designed everyday wear cut from handspun, handwoven khadi — garments that breathe,
-            soften with time, and give you room to move, think, and be.
+            We believe everyday clothing should make life easier, not ask you to adjust to it.
+            That&apos;s why we focus on breathable fabrics, practical details and silhouettes that move with you.
           </p>
           <Link
             href="/our-story"

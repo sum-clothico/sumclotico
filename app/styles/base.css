@@ -124,3 +124,58 @@ html::-webkit-scrollbar,
 body::-webkit-scrollbar {
   display: none;
 }
+
+/* ─── Typography enforcement (2-font system) ────────────────────────────────── */
+/* Keep only Epilogue (headings) + Poppins (body). Any inline/serif rule overridden. */
+:root {
+  --font-epilogue: "Epilogue", sans-serif;
+  --font-poppins: "Poppins", sans-serif;
+  --font-serif: "Epilogue", sans-serif; /* legacy alias — forces Epilogue */
+}
+
+html, body {
+  font-family: "Poppins", sans-serif;
+  font-size: 15px; /* was ~16px — slightly smaller baseline */
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Epilogue", sans-serif !important;
+  letter-spacing: -0.015em;
+}
+
+/* Shrink any inline serif usage left behind */
+[style*="font-family: serif"],
+[style*="fontFamily: serif"],
+[style*="font-family:serif"] {
+  font-family: "Epilogue", sans-serif !important;
+}
+
+/* Global heading size shrink (one notch down site-wide) */
+h1 { font-size: clamp(1.8rem, 3.6vw, 2.8rem); }
+h2 { font-size: clamp(1.5rem, 2.8vw, 2.2rem); }
+h3 { font-size: clamp(1.2rem, 2vw, 1.6rem); }
+h4 { font-size: clamp(1rem, 1.6vw, 1.25rem); }
+
+/* ─── Mobile responsive polish (post-redesign) ─── */
+@media (max-width: 820px) {
+  /* Our story grids stack */
+  .our-story-page .os-editorial-grid { grid-template-columns: 1fr !important; }
+  .our-story-page .os-people-strip { grid-template-columns: 1fr 1fr !important; }
+  /* Fabric page */
+  .fabric-page .fab-hero-grid,
+  .fabric-page .fab-why-we-chose-grid { grid-template-columns: 1fr !important; }
+  .fabric-page .fab-process-flow { grid-template-columns: 1fr 1fr !important; }
+}
+
+@media (max-width: 520px) {
+  .our-story-page .os-people-strip { grid-template-columns: 1fr !important; }
+  .fabric-page .fab-process-flow { grid-template-columns: 1fr !important; }
+  .fabric-page .fab-hero-visual { grid-template-columns: 1fr !important; }
+}
+
+/* Shrink hero headlines on narrow */
+@media (max-width: 600px) {
+  h1 { font-size: clamp(1.5rem, 7vw, 2rem) !important; }
+  h2 { font-size: clamp(1.25rem, 6vw, 1.6rem) !important; }
+  html, body { font-size: 14px; }
+}

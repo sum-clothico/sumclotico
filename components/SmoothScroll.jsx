@@ -17,7 +17,8 @@ export default function SmoothScroll() {
         });
 
         lenis.on('scroll', ScrollTrigger.update);
-        gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+        const tickerFn = (time) => { lenis.raf(time * 1000); };
+        gsap.ticker.add(tickerFn);
         gsap.ticker.lagSmoothing(0);
 
         // Dynamic Tab Title Change
@@ -31,6 +32,7 @@ export default function SmoothScroll() {
         window.__lenis = lenis;
 
         return () => {
+            gsap.ticker.remove(tickerFn);
             lenis.destroy();
             document.removeEventListener('visibilitychange', handleVisibility);
             delete window.__lenis;
