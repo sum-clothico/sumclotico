@@ -484,15 +484,15 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 30px;
+    gap: 18px;
 }
 
 .nav-mobile-menu-inner a {
     font-family: 'Epilogue', sans-serif;
-    font-size: 2rem;
-    font-weight: 700;
+    font-size: 1.15rem;
+    font-weight: 600;
     color: var(--color-dark, #2C2016);
     text-decoration: none;
-    letter-spacing: -0.5px;
+    letter-spacing: 0.02em;
     text-transform: uppercase;
 }
