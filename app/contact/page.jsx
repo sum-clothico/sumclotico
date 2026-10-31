@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import Navbar from "@/components/Navbar";
+import PageHeaderHero from "@/components/PageHeaderHero";
 import IndianArchBadge from "@/components/IndianArchBadge";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -173,12 +174,18 @@ export default function ContactPage() {
   return (
     <div ref={containerRef} style={{ position: "relative", minHeight: "100vh", backgroundColor: "#EDE8DC" }}>
       <Navbar />
+      <PageHeaderHero
+        badgeText="CONCIERGE & CARE"
+        title="Come Say Hello"
+        subtitle="Whether you need help finding your size, want to collaborate, or share a story — we read every message."
+        breadcrumb="Home / Contact"
+      />
 
       <style>{`
         .contact-page {
           background-color: #EDE8DC;
           min-height: 100vh;
-          padding: 130px 24px 80px;
+          padding: 48px 24px 80px;
           color: #1a140e;
           position: relative;
           overflow: hidden;
@@ -494,27 +501,16 @@ export default function ContactPage() {
 
         <div className="contact-container">
 
-          {/* ─── Hero: Centered Editorial Masthead ─── */}
+          {/* ─── Direct Support Highlights ─── */}
           <div
             style={{
               textAlign: "center",
               maxWidth: 840,
-              margin: "0 auto 48px",
-              paddingBottom: "36px",
+              margin: "0 auto 40px",
+              paddingBottom: "28px",
               borderBottom: "1px solid rgba(44,32,22,0.12)",
             }}
           >
-            <div className="contact-hero-badge" style={{ display: "inline-block", marginBottom: "18px" }}>
-              <IndianArchBadge>
-                Get In Touch
-              </IndianArchBadge>
-            </div>
-            <h1 className="contact-hero__headline" style={{ marginBottom: 16 }}>
-              <AnimatedWords text="Come say hello." />
-            </h1>
-            <p className="contact-hero__copy" style={{ maxWidth: 620, margin: "0 auto 24px" }}>
-              Whether you need help finding your size, want to collaborate, or just want to share something — we read every message.
-            </p>
             <div
               style={{
                 display: "flex",
@@ -600,210 +596,6 @@ export default function ContactPage() {
                 </div>
               ))}
             </div>
-          </div>
-
-          {/* ─── Contact Options (ASTAKA Scalloped Corner Cards) ─── */}
-          <div className="contact-options-grid">
-            
-            {/* 1: Order & Product Help */}
-            <div className="contact-col-card">
-              <svg
-                viewBox="0 0 280 290"
-                preserveAspectRatio="none"
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  width: "100%",
-                  height: "100%",
-                  pointerEvents: "none",
-                  zIndex: 0,
-                }}
-                aria-hidden="true"
-              >
-                <path
-                  d="M 24,0 L 256,0 L 256,4 A 20 20 0 0 0 276 24 L 280 24 L 280 274 A 16 16 0 0 1 264 290 L 16 290 A 16 16 0 0 1 0 274 L 0 24 L 4 24 A 20 20 0 0 0 24 4 L 24 0 Z"
-                  fill="#EDE8DC"
-                  stroke="rgba(44, 32, 22, 0.18)"
-                  strokeWidth="1.5"
-                />
-                <path
-                  d="M 28,8 L 252,8 L 252,10 A 16 16 0 0 0 268 26 L 272 26 L 272 270 A 12 12 0 0 1 260 282 L 20 282 A 12 12 0 0 1 8 270 L 8 26 L 12 26 A 16 16 0 0 0 28 10 L 28 8 Z"
-                  fill="none"
-                  stroke="#660608"
-                  strokeWidth="1"
-                  strokeOpacity="0.32"
-                />
-              </svg>
-              <div style={{ position: "relative", zIndex: 1 }}>
-                <span className="contact-col__title">01 • Order & Product Help</span>
-                <p style={{ fontSize: "0.85rem", color: "#8a7a6c", margin: "0 0 10px 0" }}>
-                  Questions about:
-                </p>
-                <ul className="contact-col__list">
-                  <li>✦ Your order status</li>
-                  <li>✦ Size and fit guidance</li>
-                  <li>✦ Product availability</li>
-                  <li>✦ Fabric care instructions</li>
-                  <li>✦ Shipping & delivery</li>
-                </ul>
-                <button
-                  type="button"
-                  onClick={() => selectCategoryAndScroll("Order / Product")}
-                  className="contact-col__btn"
-                >
-                  Get Order Help <FiArrowRight />
-                </button>
-              </div>
-            </div>
-
-            {/* 2: Collaborate With Us */}
-            <div className="contact-col-card">
-              <svg
-                viewBox="0 0 280 290"
-                preserveAspectRatio="none"
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  width: "100%",
-                  height: "100%",
-                  pointerEvents: "none",
-                  zIndex: 0,
-                }}
-                aria-hidden="true"
-              >
-                <path
-                  d="M 24,0 L 256,0 L 256,4 A 20 20 0 0 0 276 24 L 280 24 L 280 274 A 16 16 0 0 1 264 290 L 16 290 A 16 16 0 0 1 0 274 L 0 24 L 4 24 A 20 20 0 0 0 24 4 L 24 0 Z"
-                  fill="#EDE8DC"
-                  stroke="rgba(44, 32, 22, 0.18)"
-                  strokeWidth="1.5"
-                />
-                <path
-                  d="M 28,8 L 252,8 L 252,10 A 16 16 0 0 0 268 26 L 272 26 L 272 270 A 12 12 0 0 1 260 282 L 20 282 A 12 12 0 0 1 8 270 L 8 26 L 12 26 A 16 16 0 0 0 28 10 L 28 8 Z"
-                  fill="none"
-                  stroke="#660608"
-                  strokeWidth="1"
-                  strokeOpacity="0.32"
-                />
-              </svg>
-              <div style={{ position: "relative", zIndex: 1 }}>
-                <span className="contact-col__title">02 • Collaborate With Us</span>
-                <p style={{ fontSize: "0.85rem", color: "#8a7a6c", margin: "0 0 10px 0" }}>
-                  For:
-                </p>
-                <ul className="contact-col__list">
-                  <li>✦ Creator collaborations</li>
-                  <li>✦ Brand collaborations</li>
-                  <li>✦ Creative partnerships</li>
-                  <li>✦ Community events</li>
-                  <li>✦ Editorial features</li>
-                </ul>
-                <button
-                  type="button"
-                  onClick={() => selectCategoryAndScroll("Collaboration")}
-                  className="contact-col__btn"
-                >
-                  Start a Conversation <FiArrowRight />
-                </button>
-              </div>
-            </div>
-
-            {/* 3: Wholesale / B2B */}
-            <div className="contact-col-card">
-              <svg
-                viewBox="0 0 280 290"
-                preserveAspectRatio="none"
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  width: "100%",
-                  height: "100%",
-                  pointerEvents: "none",
-                  zIndex: 0,
-                }}
-                aria-hidden="true"
-              >
-                <path
-                  d="M 24,0 L 256,0 L 256,4 A 20 20 0 0 0 276 24 L 280 24 L 280 274 A 16 16 0 0 1 264 290 L 16 290 A 16 16 0 0 1 0 274 L 0 24 L 4 24 A 20 20 0 0 0 24 4 L 24 0 Z"
-                  fill="#EDE8DC"
-                  stroke="rgba(44, 32, 22, 0.18)"
-                  strokeWidth="1.5"
-                />
-                <path
-                  d="M 28,8 L 252,8 L 252,10 A 16 16 0 0 0 268 26 L 272 26 L 272 270 A 12 12 0 0 1 260 282 L 20 282 A 12 12 0 0 1 8 270 L 8 26 L 12 26 A 16 16 0 0 0 28 10 L 28 8 Z"
-                  fill="none"
-                  stroke="#660608"
-                  strokeWidth="1"
-                  strokeOpacity="0.32"
-                />
-              </svg>
-              <div style={{ position: "relative", zIndex: 1 }}>
-                <span className="contact-col__title">03 • Wholesale / B2B</span>
-                <p style={{ fontSize: "0.85rem", color: "#8a7a6c", margin: "0 0 10px 0" }}>
-                  Interested in:
-                </p>
-                <ul className="contact-col__list">
-                  <li>✦ Stocking Sum Clothico</li>
-                  <li>✦ Corporate gifting</li>
-                  <li>✦ Bulk artisan orders</li>
-                  <li>✦ Craft partnerships</li>
-                </ul>
-                <button
-                  type="button"
-                  onClick={() => selectCategoryAndScroll("Wholesale / B2B")}
-                  className="contact-col__btn"
-                >
-                  Business Enquiry <FiArrowRight />
-                </button>
-              </div>
-            </div>
-
-            {/* 4: Just Want to Talk? */}
-            <div className="contact-col-card">
-              <svg
-                viewBox="0 0 280 290"
-                preserveAspectRatio="none"
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  width: "100%",
-                  height: "100%",
-                  pointerEvents: "none",
-                  zIndex: 0,
-                }}
-                aria-hidden="true"
-              >
-                <path
-                  d="M 24,0 L 256,0 L 256,4 A 20 20 0 0 0 276 24 L 280 24 L 280 274 A 16 16 0 0 1 264 290 L 16 290 A 16 16 0 0 1 0 274 L 0 24 L 4 24 A 20 20 0 0 0 24 4 L 24 0 Z"
-                  fill="#EDE8DC"
-                  stroke="rgba(44, 32, 22, 0.18)"
-                  strokeWidth="1.5"
-                />
-                <path
-                  d="M 28,8 L 252,8 L 252,10 A 16 16 0 0 0 268 26 L 272 26 L 272 270 A 12 12 0 0 1 260 282 L 20 282 A 12 12 0 0 1 8 270 L 8 26 L 12 26 A 16 16 0 0 0 28 10 L 28 8 Z"
-                  fill="none"
-                  stroke="#660608"
-                  strokeWidth="1"
-                  strokeOpacity="0.32"
-                />
-              </svg>
-              <div style={{ position: "relative", zIndex: 1 }}>
-                <span className="contact-col__title">04 • Just Want to Talk?</span>
-                <h3 style={{ fontFamily: "Epilogue, sans-serif", fontSize: "1.15rem", color: "#1a140e", margin: "0 0 6px 0" }}>
-                  We&apos;re open to ideas.
-                </h3>
-                <p style={{ fontSize: "0.92rem", color: "#55483d", lineHeight: 1.6, margin: "0 0 16px 0" }}>
-                  If there&apos;s something we haven&apos;t covered, send us a message.
-                </p>
-                <button
-                  type="button"
-                  onClick={() => selectCategoryAndScroll("General")}
-                  className="contact-col__btn"
-                >
-                  Send Us a Message <FiArrowRight />
-                </button>
-              </div>
-            </div>
-
           </div>
 
           {/* ─── Contact Form & Direct Contact (ASTAKA Framed Section) ─── */}
@@ -1074,6 +866,221 @@ export default function ContactPage() {
               </div>
 
             </div>
+          </div>
+
+          {/* ─── Bottom Inquiry Topics Section (4 ASTAKA Scalloped Corner Cards) ─── */}
+          <div style={{ textAlign: 'center', margin: '20px 0 32px' }}>
+            <IndianArchBadge style={{ marginBottom: '12px' }}>Direct Inquiry Portals</IndianArchBadge>
+            <h3 style={{ fontFamily: 'Epilogue, sans-serif', fontSize: 'clamp(1.5rem, 2.4vw, 2rem)', color: '#1a140e', margin: '0 0 10px' }}>
+              Prefer to jump straight to a specific topic?
+            </h3>
+            <p style={{ fontSize: '0.94rem', color: '#6e5d4e', maxWidth: 580, margin: '0 auto', lineHeight: 1.6 }}>
+              Choose a topic below to auto-preset your message subject and jump straight into our inquiry desk above.
+            </p>
+          </div>
+
+          {/* ─── Contact Options (ASTAKA Scalloped Corner Cards) ─── */}
+          <div className="contact-options-grid">
+            
+            {/* 1: Order & Product Help */}
+            <div className="contact-col-card">
+              <svg
+                viewBox="0 0 280 290"
+                preserveAspectRatio="none"
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  width: "100%",
+                  height: "100%",
+                  pointerEvents: "none",
+                  zIndex: 0,
+                }}
+                aria-hidden="true"
+              >
+                <path
+                  d="M 24,0 L 256,0 L 256,4 A 20 20 0 0 0 276 24 L 280 24 L 280 274 A 16 16 0 0 1 264 290 L 16 290 A 16 16 0 0 1 0 274 L 0 24 L 4 24 A 20 20 0 0 0 24 4 L 24 0 Z"
+                  fill="#EDE8DC"
+                  stroke="rgba(44, 32, 22, 0.18)"
+                  strokeWidth="1.5"
+                />
+                <path
+                  d="M 28,8 L 252,8 L 252,10 A 16 16 0 0 0 268 26 L 272 26 L 272 270 A 12 12 0 0 1 260 282 L 20 282 A 12 12 0 0 1 8 270 L 8 26 L 12 26 A 16 16 0 0 0 28 10 L 28 8 Z"
+                  fill="none"
+                  stroke="#660608"
+                  strokeWidth="1"
+                  strokeOpacity="0.32"
+                />
+              </svg>
+              <div style={{ position: "relative", zIndex: 1 }}>
+                <span className="contact-col__title">01 • Order & Product Help</span>
+                <p style={{ fontSize: "0.85rem", color: "#8a7a6c", margin: "0 0 10px 0" }}>
+                  Questions about:
+                </p>
+                <ul className="contact-col__list">
+                  <li>✦ Your order status</li>
+                  <li>✦ Size and fit guidance</li>
+                  <li>✦ Product availability</li>
+                  <li>✦ Fabric care instructions</li>
+                  <li>✦ Shipping & delivery</li>
+                </ul>
+                <button
+                  type="button"
+                  onClick={() => selectCategoryAndScroll("Order / Product")}
+                  className="contact-col__btn"
+                >
+                  Get Order Help <FiArrowRight />
+                </button>
+              </div>
+            </div>
+
+            {/* 2: Collaborate With Us */}
+            <div className="contact-col-card">
+              <svg
+                viewBox="0 0 280 290"
+                preserveAspectRatio="none"
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  width: "100%",
+                  height: "100%",
+                  pointerEvents: "none",
+                  zIndex: 0,
+                }}
+                aria-hidden="true"
+              >
+                <path
+                  d="M 24,0 L 256,0 L 256,4 A 20 20 0 0 0 276 24 L 280 24 L 280 274 A 16 16 0 0 1 264 290 L 16 290 A 16 16 0 0 1 0 274 L 0 24 L 4 24 A 20 20 0 0 0 24 4 L 24 0 Z"
+                  fill="#EDE8DC"
+                  stroke="rgba(44, 32, 22, 0.18)"
+                  strokeWidth="1.5"
+                />
+                <path
+                  d="M 28,8 L 252,8 L 252,10 A 16 16 0 0 0 268 26 L 272 26 L 272 270 A 12 12 0 0 1 260 282 L 20 282 A 12 12 0 0 1 8 270 L 8 26 L 12 26 A 16 16 0 0 0 28 10 L 28 8 Z"
+                  fill="none"
+                  stroke="#660608"
+                  strokeWidth="1"
+                  strokeOpacity="0.32"
+                />
+              </svg>
+              <div style={{ position: "relative", zIndex: 1 }}>
+                <span className="contact-col__title">02 • Collaborate With Us</span>
+                <p style={{ fontSize: "0.85rem", color: "#8a7a6c", margin: "0 0 10px 0" }}>
+                  For:
+                </p>
+                <ul className="contact-col__list">
+                  <li>✦ Creator collaborations</li>
+                  <li>✦ Brand collaborations</li>
+                  <li>✦ Creative partnerships</li>
+                  <li>✦ Community events</li>
+                  <li>✦ Editorial features</li>
+                </ul>
+                <button
+                  type="button"
+                  onClick={() => selectCategoryAndScroll("Collaboration")}
+                  className="contact-col__btn"
+                >
+                  Start a Conversation <FiArrowRight />
+                </button>
+              </div>
+            </div>
+
+            {/* 3: Wholesale / B2B */}
+            <div className="contact-col-card">
+              <svg
+                viewBox="0 0 280 290"
+                preserveAspectRatio="none"
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  width: "100%",
+                  height: "100%",
+                  pointerEvents: "none",
+                  zIndex: 0,
+                }}
+                aria-hidden="true"
+              >
+                <path
+                  d="M 24,0 L 256,0 L 256,4 A 20 20 0 0 0 276 24 L 280 24 L 280 274 A 16 16 0 0 1 264 290 L 16 290 A 16 16 0 0 1 0 274 L 0 24 L 4 24 A 20 20 0 0 0 24 4 L 24 0 Z"
+                  fill="#EDE8DC"
+                  stroke="rgba(44, 32, 22, 0.18)"
+                  strokeWidth="1.5"
+                />
+                <path
+                  d="M 28,8 L 252,8 L 252,10 A 16 16 0 0 0 268 26 L 272 26 L 272 270 A 12 12 0 0 1 260 282 L 20 282 A 12 12 0 0 1 8 270 L 8 26 L 12 26 A 16 16 0 0 0 28 10 L 28 8 Z"
+                  fill="none"
+                  stroke="#660608"
+                  strokeWidth="1"
+                  strokeOpacity="0.32"
+                />
+              </svg>
+              <div style={{ position: "relative", zIndex: 1 }}>
+                <span className="contact-col__title">03 • Wholesale / B2B</span>
+                <p style={{ fontSize: "0.85rem", color: "#8a7a6c", margin: "0 0 10px 0" }}>
+                  Interested in:
+                </p>
+                <ul className="contact-col__list">
+                  <li>✦ Stocking Sum Clothico</li>
+                  <li>✦ Corporate gifting</li>
+                  <li>✦ Bulk artisan orders</li>
+                  <li>✦ Craft partnerships</li>
+                </ul>
+                <button
+                  type="button"
+                  onClick={() => selectCategoryAndScroll("Wholesale / B2B")}
+                  className="contact-col__btn"
+                >
+                  Business Enquiry <FiArrowRight />
+                </button>
+              </div>
+            </div>
+
+            {/* 4: Just Want to Talk? */}
+            <div className="contact-col-card">
+              <svg
+                viewBox="0 0 280 290"
+                preserveAspectRatio="none"
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  width: "100%",
+                  height: "100%",
+                  pointerEvents: "none",
+                  zIndex: 0,
+                }}
+                aria-hidden="true"
+              >
+                <path
+                  d="M 24,0 L 256,0 L 256,4 A 20 20 0 0 0 276 24 L 280 24 L 280 274 A 16 16 0 0 1 264 290 L 16 290 A 16 16 0 0 1 0 274 L 0 24 L 4 24 A 20 20 0 0 0 24 4 L 24 0 Z"
+                  fill="#EDE8DC"
+                  stroke="rgba(44, 32, 22, 0.18)"
+                  strokeWidth="1.5"
+                />
+                <path
+                  d="M 28,8 L 252,8 L 252,10 A 16 16 0 0 0 268 26 L 272 26 L 272 270 A 12 12 0 0 1 260 282 L 20 282 A 12 12 0 0 1 8 270 L 8 26 L 12 26 A 16 16 0 0 0 28 10 L 28 8 Z"
+                  fill="none"
+                  stroke="#660608"
+                  strokeWidth="1"
+                  strokeOpacity="0.32"
+                />
+              </svg>
+              <div style={{ position: "relative", zIndex: 1 }}>
+                <span className="contact-col__title">04 • Just Want to Talk?</span>
+                <h3 style={{ fontFamily: "Epilogue, sans-serif", fontSize: "1.15rem", color: "#1a140e", margin: "0 0 6px 0" }}>
+                  We&apos;re open to ideas.
+                </h3>
+                <p style={{ fontSize: "0.92rem", color: "#55483d", lineHeight: 1.6, margin: "0 0 16px 0" }}>
+                  If there&apos;s something we haven&apos;t covered, send us a message.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => selectCategoryAndScroll("General")}
+                  className="contact-col__btn"
+                >
+                  Send Us a Message <FiArrowRight />
+                </button>
+              </div>
+            </div>
+
           </div>
 
           {/* ─── Closing Line ─── */}

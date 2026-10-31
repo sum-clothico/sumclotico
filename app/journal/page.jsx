@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Navbar from "@/components/Navbar";
+import PageHeaderHero from "@/components/PageHeaderHero";
 import Link from "next/link";
 import IndianArchBadge from "@/components/IndianArchBadge";
 import gsap from "gsap";
@@ -311,13 +312,19 @@ export default function JournalPage() {
   return (
     <div ref={containerRef} style={{ position: "relative", minHeight: "100vh", backgroundColor: "#EDE8DC" }}>
       <Navbar />
+      <PageHeaderHero
+        badgeText="CHRONICLES & DIARIES"
+        title="Things Worth Talking About"
+        subtitle="Clothes are rarely just clothes. They carry memories, places, and people."
+        breadcrumb="Home / Journal"
+      />
 
       <style>{`
         .journal-page {
           background-color: #EDE8DC;
           color: #1a140e;
           min-height: 100vh;
-          padding-top: 130px;
+          padding-top: 40px;
           padding-bottom: 90px;
           position: relative;
           overflow: hidden;
@@ -444,79 +451,6 @@ export default function JournalPage() {
         />
 
         <div className="journal-container">
-
-          {/* ─── HERO HEADLINE ─── */}
-          <section style={{ textAlign: "center", maxWidth: 840, margin: "0 auto 36px" }}>
-            <div className="journal-hero-badge">
-              <IndianArchBadge style={{ marginBottom: "16px" }}>
-                The Sum Journal
-              </IndianArchBadge>
-            </div>
-            <h1
-              className="journal-anim-title"
-              style={{
-                fontFamily: "Epilogue, sans-serif",
-                fontSize: "clamp(2.4rem, 4.8vw, 4.2rem)",
-                fontWeight: 600,
-                lineHeight: 1.15,
-                color: "#1a140e",
-                margin: "0 0 24px",
-                letterSpacing: "-0.01em",
-              }}
-            >
-              <AnimatedWords text="Things worth talking about." />
-            </h1>
-
-            {/* ─── CARD BELOW HEADING (ASTAKA SCALLOPED PLACARD FRAME) ─── */}
-            <div
-              className="journal-anim-placard"
-              style={{
-                position: "relative",
-                padding: "28px 36px",
-                margin: "0 auto 20px",
-                maxWidth: 780,
-                textAlign: "center",
-              }}
-            >
-              {/* SVG Placard Frame */}
-              <svg
-                viewBox="0 0 780 140"
-                preserveAspectRatio="none"
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  width: "100%",
-                  height: "100%",
-                  pointerEvents: "none",
-                  zIndex: 0,
-                }}
-                aria-hidden="true"
-              >
-                <path
-                  d="M 28,0 L 752,0 L 752,6 A 22 22 0 0 0 774 28 L 780 28 L 780 112 L 774 112 A 22 22 0 0 0 752 134 L 752 140 L 28 140 L 28 134 A 22 22 0 0 0 6 112 L 0 112 L 0 28 L 6 28 A 22 22 0 0 0 28 6 L 28 0 Z"
-                  fill="#FAF6F0"
-                  stroke="rgba(44, 32, 22, 0.2)"
-                  strokeWidth="1.5"
-                />
-                <path
-                  d="M 32,8 L 748,8 L 748,12 A 18 18 0 0 0 766 30 L 770 30 L 770 110 L 766 110 A 18 18 0 0 0 748 128 L 748 132 L 32 132 L 32 128 A 18 18 0 0 0 14 110 L 10 110 L 10 30 L 14 30 A 18 18 0 0 0 32 12 L 32 8 Z"
-                  fill="none"
-                  stroke="#660608"
-                  strokeWidth="1"
-                  strokeOpacity="0.32"
-                />
-              </svg>
-
-              <div style={{ position: "relative", zIndex: 1 }}>
-                <p style={{ fontSize: "1.06rem", lineHeight: 1.75, color: "#4A3B30", margin: "0 0 6px" }}>
-                  From textiles and places to everyday clothing stories, the Sum Journal is where we share what we discover and hear from you.
-                </p>
-                <p style={{ margin: 0, fontWeight: 700, color: "#660608", fontStyle: "italic", fontFamily: "Epilogue, sans-serif", fontSize: "1.12rem" }}>
-                  Things worth talking about.
-                </p>
-              </div>
-            </div>
-          </section>
 
           {/* Traditional Indian Border Pattern Divider */}
           <div

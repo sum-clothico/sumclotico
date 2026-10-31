@@ -5,6 +5,8 @@ import "../app/styles/story-section.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const PIN_DURATION = 1000;
+
 const phases = [
   {
     text: "A thread spun by hand. A loom moving at its own rhythm.",
@@ -27,6 +29,11 @@ const StorySection = () => {
   useEffect(() => {
     const ctx = gsap.context(() => {
       const section = sectionRef.current;
+      const textEls = section.querySelectorAll(".story-phase-text");
+
+      const isDesktop =
+        typeof window !== "undefined" && window.innerWidth > 900;
+      const PIN = isDesktop ? PIN_DURATION : 800;
 
       // Heading Word-by-Word Kinetic Reveal
       const headingWords = section.querySelectorAll(".story-heading-word");
@@ -49,80 +56,81 @@ const StorySection = () => {
         );
       }
 
-      // Frame stroke-draw on enter
+      // Single Unified Master Timeline: Pins section & drives all synchronized animations
+      const masterTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: "top top",
+          end: () => `+=${PIN}`,
+          pin: true,
+          pinSpacing: true,
+          scrub: 0.4,
+          anticipatePin: 0,
+          fastScrollEnd: true,
+          preventOverlaps: true,
+          refreshPriority: 1,
+          invalidateOnRefresh: true,
+        },
+      });
+
+      // Frame stroke-draw in early stage of pin
       const framePath = frameRef.current;
       if (framePath) {
         const len = framePath.getTotalLength ? framePath.getTotalLength() : 1100;
         gsap.set(framePath, { strokeDasharray: len, strokeDashoffset: len });
-        gsap.to(framePath, {
-          strokeDashoffset: 0,
-          duration: 1.4,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: section,
-            start: "top 70%",
+        masterTl.to(
+          framePath,
+          {
+            strokeDashoffset: 0,
+            duration: 0.15,
+            ease: "power2.inOut",
           },
-        });
+          0,
+        );
       }
 
-      // Side cloth animation on enter
+      // Side cloth animation on scroll (moves smoothly while background stays locked)
       const clothEl = section.querySelector(".story-section__cloth");
       if (clothEl) {
-        gsap.fromTo(
+        masterTl.to(
           clothEl,
-          { opacity: 0, x: -50 },
           {
-            opacity: 1,
-            x: 0,
-            duration: 1.2,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: section,
-              start: "top 75%",
-            },
+            xPercent: -70,
+            duration: 1,
+            ease: "none",
           },
+          0,
         );
       }
 
-      // Static Center Portrait Card entrance
-      const portraitEl = section.querySelector(".story-section__portrait");
-      if (portraitEl) {
-        gsap.fromTo(
-          portraitEl,
-          { opacity: 0, scale: 0.94, y: 35 },
-          {
-            opacity: 1,
-            scale: 1,
-            y: 0,
-            duration: 1.1,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: section,
-              start: "top 70%",
+      // 3 Text Phases timed evenly across the pin duration
+      textEls.forEach((el, idx) => {
+        const startPoint = idx * 0.33;
+        masterTl
+          .fromTo(
+            el,
+            { opacity: 0, y: 35, scale: 0.96 },
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              duration: 0.1,
+              ease: "power3.out",
             },
-          },
-        );
-      }
-
-      // Phase story texts reveal
-      const phaseEls = section.querySelectorAll(".story-phase-text");
-      if (phaseEls.length > 0) {
-        gsap.fromTo(
-          phaseEls,
-          { opacity: 0, y: 25 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.9,
-            stagger: 0.18,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: section,
-              start: "top 65%",
+            startPoint,
+          )
+          .to(
+            el,
+            {
+              opacity: 0,
+              y: -25,
+              scale: 0.98,
+              duration: 0.08,
+              ease: "power2.in",
             },
-          },
-        );
-      }
+            startPoint + 0.23,
+          );
+      });
     }, sectionRef);
 
     return () => ctx.revert();
@@ -170,39 +178,28 @@ const StorySection = () => {
         <p className="story-section__subline">{storySubline}</p>
       </div>
 
-      {/* Static Center Portrait Card with Integrated Frame & 3 Cross-Fading Images */}
+      {/* SVG Frame */}
+      <svg className="story-section__frame" viewBox="0 0 240 330">
+        <rect
+          ref={frameRef}
+          className="section-frame-path"
+          x="5"
+          y="5"
+          width="230"
+          height="320"
+          rx="8"
+          fill="none"
+          stroke="#3d2b1f"
+          strokeWidth="1.5"
+        />
+      </svg>
+
+      {/* Static Center Portrait Card */}
       <div className="story-section__portrait">
-        <svg className="story-portrait-frame" viewBox="0 0 240 330" aria-hidden="true">
-          <rect
-            ref={frameRef}
-            className="section-frame-path"
-            x="5"
-            y="5"
-            width="230"
-            height="320"
-            rx="8"
-            fill="none"
-            stroke="#3d2b1f"
-            strokeWidth="1.5"
-          />
-        </svg>
-        <div className="story-images-stack">
-          <img
-            className="story-img story-img--0"
-            src="/assets/homepage/IMG_1048.JPG"
-            alt="Handcrafted Thread Spun by Hand"
-          />
-          <img
-            className="story-img story-img--1"
-            src="/assets/homepage/14887305-5caf-4e77-b3fa-c79443ced34b.png"
-            alt="Handcrafted Garment Cut and Stitched"
-          />
-          <img
-            className="story-img story-img--2"
-            src="/assets/homepage/IMG_0110.jpg"
-            alt="Finished Natural Khadi Clothing"
-          />
-        </div>
+        <img
+          src="/assets/homepage/IMG_1048.JPG"
+          alt="Handcrafted Khadi Garment"
+        />
       </div>
 
       {/* Phase texts */}

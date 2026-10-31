@@ -206,7 +206,7 @@ export default function FabricClient() {
         <section
           className="fab-hero"
           style={{
-            padding: "120px 20px 60px",
+            padding: "clamp(40px, 6vh, 60px) 20px 60px",
             maxWidth: 1120,
             margin: "0 auto",
             position: "relative",

@@ -38,7 +38,9 @@ const TravelingImage = () => {
         xPercent: -50,
         yPercent: -50,
         left: "50%",
-        top: "72%",
+        top: "50%",
+        y: 0,
+        autoAlpha: 1,
       });
       el.classList.add("ti-ready");
 
@@ -48,7 +50,7 @@ const TravelingImage = () => {
         trigger: hWords,
         start: "top top",
         end: `+=${TOTAL_PIN_DISTANCE}`,
-        scrub: 0.8,
+        scrub: 0.4,
       },
     });
     triggers.push(fadeInTl.scrollTrigger);
@@ -57,7 +59,7 @@ const TravelingImage = () => {
       opacity: 1,
       scale: 1,
       left: "50%",
-      top: "72%",
+      top: "50%",
       duration: TOTAL_PIN_DISTANCE - 150,
       ease: "power2.out",
     });
@@ -71,8 +73,12 @@ const TravelingImage = () => {
           opacity: 0,
           scale: 1,
           left: "50%",
-          top: "72%",
+          top: "50%",
+          y: 0,
+          autoAlpha: 1,
         });
+        const landedCard = document.querySelector(".last-split-portrait");
+        if (landedCard) gsap.set(landedCard, { autoAlpha: 0 });
       },
     });
     triggers.push(resetTrigger);
@@ -99,13 +105,13 @@ const TravelingImage = () => {
         trigger: storySection,
         start: "top bottom",
         end: "top top",
-        scrub: 0.8,
+        scrub: 0.4,
       },
     });
     triggers.push(travelToStoryTl.scrollTrigger);
     travelToStoryTl.to(el, {
       left: "50%",
-      top: "72%",
+      top: "50%",
       scale: 1,
       duration: 1,
       ease: "none",
@@ -121,7 +127,7 @@ const TravelingImage = () => {
         trigger: storySection,
         start: "top top",
         end: `+=${STORY_PIN}`,
-        scrub: 0.8,
+        scrub: 0.4,
       },
     });
     triggers.push(splitTl.scrollTrigger);
@@ -167,16 +173,16 @@ const TravelingImage = () => {
           : splitSections[i - 1].classList.contains("split-section--reversed")
             ? "82%"
             : "18%";
-      const prevTop = i === 0 ? "72%" : "32%";
+      const prevTop = i === 0 ? "50%" : "32%";
       const prevScale = 1;
 
       // Moves promptly as section enters viewport so it arrives right into frame
       const travelTl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
-          start: "top 90%",
-          end: "top 15%",
-          scrub: 0.8,
+          start: "top 85%",
+          end: "top top",
+          scrub: 0.4,
         },
       });
       triggers.push(travelTl.scrollTrigger);
@@ -231,10 +237,26 @@ const TravelingImage = () => {
       triggers.push(imgSt);
     });
 
-    // Phase 4 (DOM reparent lock) removed — caused "removeChild NotFoundError"
-    // on route unmount because React fiber tracked el at originalParent while
-    // GSAP had moved it into lastSplit / document.body. Element now stays in
-    // its React-owned parent at all times.
+    // ═══ PHASE 4 — Permanently park into last split section (never releases) ═══
+    const lastSplit = splitSections[splitSections.length - 1];
+    const landedCard = lastSplit?.querySelector(".last-split-portrait");
+
+    if (lastSplit) {
+      const lockST = ScrollTrigger.create({
+        trigger: lastSplit,
+        start: "top top",
+        onEnter: () => {
+          gsap.set(el, { autoAlpha: 0 });
+          if (landedCard) gsap.set(landedCard, { autoAlpha: 1 });
+        },
+        onLeaveBack: () => {
+          gsap.set(el, { autoAlpha: 1 });
+          if (landedCard) gsap.set(landedCard, { autoAlpha: 0 });
+        },
+      });
+      triggers.push(lockST);
+    }
+
     ScrollTrigger.refresh();
 
       return () => {

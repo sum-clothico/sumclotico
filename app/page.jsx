@@ -5,10 +5,13 @@ import Loader from "@/components/Loader";
 import SvgSymbols from "@/components/SvgSymbols";
 import Navbar from "@/components/Navbar";
 import ArchedHero from "@/components/ArchedHero";
+import HorizontalWords from "@/components/HorizontalWords";
 import FeaturedProductsSection from "@/components/FeaturedProductsSection";
-import WhySumHomeSection from "@/components/WhySumHomeSection";
-import FabricHomeSection from "@/components/FabricHomeSection";
-import PeopleHomeSection from "@/components/PeopleHomeSection";
+import StorySection from "@/components/StorySection";
+import SplitSection from "@/components/SplitSection";
+import TravelingImage from "@/components/TravelingImage";
+import AboutSection from "@/components/AboutSection";
+import MotionCards from "@/components/MotionCards";
 import JournalPreviewSection from "@/components/JournalPreviewSection";
 import SmoothScroll from "@/components/SmoothScroll";
 
@@ -31,12 +34,33 @@ export default function Home() {
         <Navbar />
         <ArchedHero />
       </header>
-      {/* PDF flow: Hero → Collection → Why Sum (+IG) → Fabric → People → Journal → Footer */}
+      <FeaturedProductsSection />
+      <HorizontalWords />
+      <StorySection />
+      <SplitSection />
+      <TravelingImage />
+      {/* Traditional Indian Border Pattern Divider */}
+      <div
+        className="section-pattern-divider"
+        style={{
+          width: "100%",
+          height: "28px",
+          backgroundColor: "var(--bg-color, #EDE8DC)",
+          backgroundImage: 'url("/assets/footerpattern-accent.png")',
+          backgroundRepeat: "repeat-x",
+          backgroundPosition: "center",
+          backgroundSize: "auto 26px",
+          opacity: 0.85,
+          position: "relative",
+          zIndex: 10,
+        }}
+        aria-hidden="true"
+      />
       <main>
-        <FeaturedProductsSection />
-        <WhySumHomeSection />
-        <FabricHomeSection />
-        <PeopleHomeSection />
+        <div className="motion-cards-wrapper">
+          <MotionCards />
+        </div>
+        <AboutSection />
         <JournalPreviewSection />
       </main>
     </>

@@ -202,7 +202,10 @@ export default function Navbar() {
                   )}
                 </>
               ) : (
-                <span>FREE EXPRESS SHIPPING ON ORDERS ABOVE ₹1,999 • CODE: <strong style={{ color: "#E07A5F" }}>KHADI10</strong></span>
+                <>
+                  <span className="desktop-only">FREE EXPRESS SHIPPING ON ORDERS ABOVE ₹1,999 • CODE: <strong style={{ color: "#E07A5F" }}>KHADI10</strong></span>
+                  <span className="mobile-only">FREE SHIPPING &gt; ₹1,999 • CODE: <strong style={{ color: "#E07A5F" }}>KHADI10</strong></span>
+                </>
               )}
             </span>
           </div>
@@ -238,10 +241,6 @@ export default function Navbar() {
         className={`navbar ${isScrolled ? "on-light" : "on-light"}`}
         style={{
           position: "relative",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          padding: isScrolled ? "12px 40px" : "18px 40px",
           background: isScrolled ? "rgba(255, 255, 255, 0.96)" : "rgba(255, 255, 255, 0.85)",
           backdropFilter: "blur(12px)",
           borderBottom: isScrolled ? "1px solid rgba(0,0,0,0.06)" : "1px solid transparent",
@@ -250,7 +249,7 @@ export default function Navbar() {
         }}
       >
         <div className="nav-left">
-          <div className="nav-main-links desktop-only" style={{ display: "flex", gap: "22px", alignItems: "center" }}>
+          <div className="nav-main-links desktop-only" style={{ display: "flex", gap: "clamp(10px, 1.3vw, 20px)", alignItems: "center" }}>
             {[
               {
                 label: "Shop",
@@ -350,6 +349,7 @@ export default function Navbar() {
           {/* Wishlist Trigger */}
           <button
             onClick={() => setIsWishlistOpen(true)}
+            className="desktop-only"
             style={{
               background: "none",
               border: "1px solid #e5e7eb",

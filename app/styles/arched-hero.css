@@ -3,7 +3,8 @@
 .arched-hero {
   position: relative;
   width: 100%;
-  min-height: calc(100vh - 80px);
+  min-height: 100vh;
+  min-height: 100dvh;
   padding: 110px 24px 60px;
   background-color: var(--bg-warm, #e8dfd0);
   display: flex;
@@ -105,11 +106,19 @@
   pointer-events: none;
 }
 
-/* ─── Sound Toggle Button ─── */
-.hero-video-sound-btn {
+/* ─── Video Controls Overlay (Sound + Enlarge) ─── */
+.hero-video-controls-row {
   position: absolute;
   bottom: 16px;
   right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 5;
+}
+
+.hero-video-sound-btn,
+.hero-video-enlarge-btn {
   background: rgba(26, 20, 14, 0.72);
   backdrop-filter: blur(8px);
   color: #faf6f0;
@@ -124,13 +133,86 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  z-index: 5;
   transition: all 0.2s ease;
 }
 
-.hero-video-sound-btn:hover {
+.hero-video-sound-btn:hover,
+.hero-video-enlarge-btn:hover {
   background: rgba(102, 6, 8, 0.88);
   border-color: #660608;
+  transform: translateY(-1px);
+}
+
+/* ─── Video Enlarge Modal ─── */
+.hero-video-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  background: rgba(10, 8, 6, 0.92);
+  backdrop-filter: blur(14px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 4vw, 40px);
+  cursor: pointer;
+  animation: heroFadeIn 0.25s ease-out;
+}
+
+@keyframes heroFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.hero-video-modal-close {
+  position: absolute;
+  top: 24px;
+  right: 28px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(250, 246, 240, 0.12);
+  border: 1px solid rgba(250, 246, 240, 0.25);
+  color: #faf6f0;
+  padding: 8px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.hero-video-modal-close:hover {
+  background: #660608;
+  border-color: #660608;
+  color: #faf6f0;
+  transform: scale(1.05);
+}
+
+.hero-video-modal-content {
+  position: relative;
+  max-width: 92vw;
+  max-height: 86vh;
+  width: 1100px;
+  aspect-ratio: 16 / 9;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.15);
+  background: #000;
+  cursor: default;
+}
+
+.hero-video-modal-player {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 /* ─── Hero Narrative ─── */
@@ -201,50 +283,258 @@
   transform: translateY(-1px);
 }
 
-/* ─── Mobile Adjustments ─── */
+/* ─── Mobile Adjustments: Full-Height Section Card Layout ─── */
 @media (max-width: 768px) {
   .arched-hero {
-    padding: 85px 14px 36px;
-    min-height: auto;
+    position: relative !important;
+    width: 100% !important;
+    min-height: 100vh !important;
+    min-height: 100dvh !important;
+    padding: calc(76px + env(safe-area-inset-top, 0px)) 16px calc(24px + env(safe-area-inset-bottom, 0px)) !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    background-color: var(--bg-warm, #e8dfd0) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Textures and watermarks remain subtle on mobile */
+  .arched-hero::before {
+    display: block !important;
+    opacity: 0.14 !important;
+  }
+
+  .arched-hero__noise {
+    display: block !important;
+    opacity: 0.06 !important;
+  }
+
+  .arched-hero__bg-right {
+    display: none !important;
   }
 
   .arched-hero__inner {
-    gap: 14px;
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    max-width: 420px !important;
+    height: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: clamp(14px, 2.4vh, 22px) !important;
+    padding: 0 !important;
+    margin: auto 0 !important;
+    z-index: 10 !important;
+    pointer-events: auto !important;
   }
 
+  /* Video Portal: Contained Framed Card */
+  .arched-hero__portal,
+  .arched-hero__portal--vertical,
+  .arched-hero__portal--landscape {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    max-width: min(370px, 88vw) !important;
+    aspect-ratio: 4 / 5 !important;
+    max-height: min(440px, 52vh) !important;
+    border-radius: 18px !important;
+    border: 1px solid rgba(44, 32, 22, 0.15) !important;
+    box-shadow: 0 14px 34px rgba(44, 32, 22, 0.15) !important;
+    background-color: #2a1f14 !important;
+    overflow: hidden !important;
+    margin: 0 auto !important;
+    z-index: 1 !important;
+    flex-shrink: 1 !important;
+  }
+
+  .arched-hero__mask {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .arched-hero__video {
+    position: static !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center 30% !important;
+    display: block !important;
+  }
+
+  .arched-hero__vignette {
+    position: absolute !important;
+    inset: 0 !important;
+    background: radial-gradient(ellipse at center, transparent 65%, rgba(26, 20, 14, 0.35) 100%) !important;
+    pointer-events: none !important;
+    z-index: 2 !important;
+  }
+
+  /* Controls Overlay inside the video card */
+  .hero-video-controls-row {
+    position: absolute !important;
+    bottom: 12px !important;
+    right: 12px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    z-index: 10 !important;
+    pointer-events: auto !important;
+  }
+
+  .hero-video-sound-btn,
+  .hero-video-enlarge-btn {
+    height: 34px !important;
+    padding: 0 12px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    border-radius: 999px !important;
+    background: rgba(26, 20, 14, 0.78) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    color: #FAF6F0 !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.05em !important;
+    text-transform: uppercase !important;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3) !important;
+    cursor: pointer !important;
+  }
+
+  .hero-video-sound-btn:hover,
+  .hero-video-enlarge-btn:hover {
+    background: #660608 !important;
+    border-color: #660608 !important;
+  }
+
+  .hero-video-btn-text {
+    display: inline !important;
+  }
+
+  /* Narrative & Tagline */
   .arched-hero__narrative {
-    gap: 10px;
-  }
-
-  .arched-hero__portal {
-    border-radius: 14px;
-    aspect-ratio: 16 / 10;
+    width: 100% !important;
+    max-width: 360px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 14px !important;
+    margin: 0 auto !important;
+    pointer-events: auto !important;
+    flex-shrink: 0 !important;
   }
 
   .arched-hero__trio-tagline {
-    font-size: 0.88rem !important;
-    letter-spacing: 0.22em;
-    white-space: nowrap;
-    margin: 0;
+    font-family: var(--font-epilogue, 'Epilogue', serif) !important;
+    font-size: clamp(1.15rem, 4.6vw, 1.4rem) !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.2em !important;
+    color: #1a140e !important;
+    text-shadow: none !important;
+    margin: 0 !important;
+    white-space: nowrap !important;
+    text-align: center !important;
   }
 
+  /* CTAs: Matched luxury buttons */
   .arched-hero__cta-row {
-    width: 100%;
-    gap: 10px;
-    margin-top: 4px;
+    width: 100% !important;
+    max-width: 320px !important;
+    gap: 10px !important;
+    display: flex !important;
+    justify-content: center !important;
+    margin: 0 auto !important;
   }
 
   .arched-hero__cta {
-    flex: 1;
-    min-width: 140px;
-    padding: 10px 18px;
-    font-size: 0.72rem;
+    flex: 1 !important;
+    height: 44px !important;
+    padding: 0 16px !important;
+    font-size: 0.78rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.1em !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 999px !important;
+    text-decoration: none !important;
+    box-sizing: border-box !important;
+    text-transform: uppercase !important;
+    transition: all 0.25s ease !important;
+  }
+
+  .arched-hero__cta--primary {
+    background-color: #660608 !important;
+    color: #FAF6F0 !important;
+    border: 1.5px solid #660608 !important;
+    box-shadow: 0 4px 14px rgba(102, 6, 8, 0.28) !important;
+  }
+
+  .arched-hero__cta--secondary {
+    background-color: rgba(250, 246, 240, 0.75) !important;
+    color: #2a1f14 !important;
+    border: 1.5px solid rgba(42, 31, 20, 0.35) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+  }
+
+  /* Responsive Modal for vertical video on mobile */
+  .hero-video-modal-content--vertical {
+    aspect-ratio: 9 / 16 !important;
+    max-width: 86vw !important;
+    max-height: 82vh !important;
+    width: auto !important;
   }
 }
 
 @media (max-width: 400px) {
+  .arched-hero {
+    padding: calc(72px + env(safe-area-inset-top, 0px)) 12px calc(20px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  .arched-hero__portal,
+  .arched-hero__portal--vertical,
+  .arched-hero__portal--landscape {
+    max-width: 320px !important;
+    max-height: min(380px, 48vh) !important;
+  }
+
   .arched-hero__trio-tagline {
-    font-size: 0.8rem !important;
-    letter-spacing: 0.18em;
+    font-size: 1.05rem !important;
+    letter-spacing: 0.16em !important;
+  }
+
+  .arched-hero__cta-row {
+    gap: 8px !important;
+    max-width: 290px !important;
+  }
+
+  .arched-hero__cta {
+    height: 42px !important;
+    padding: 0 12px !important;
+    font-size: 0.74rem !important;
+  }
+
+  .hero-video-btn-text {
+    display: none !important;
+  }
+
+  .hero-video-sound-btn,
+  .hero-video-enlarge-btn {
+    width: 34px !important;
+    height: 34px !important;
+    padding: 0 !important;
   }
 }

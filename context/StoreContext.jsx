@@ -9,6 +9,7 @@ import React, {
 } from "react";
 import { AVAILABLE_COUPONS, validateAndApplyCoupon } from "@/lib/coupons";
 import { trackEvent } from "@/lib/analytics";
+import { SEED_PRODUCTS_FALLBACK } from "@/lib/catalogFallback";
 
 const StoreContext = createContext();
 
@@ -256,7 +257,7 @@ export function StoreProvider({ children }) {
   const [abandonedCarts, setAbandonedCarts] = useState([]);
 
   // Product Catalog (loaded from MongoDB) & Live Orders
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState(SEED_PRODUCTS_FALLBACK);
   const [orders, setOrders] = useState([]);
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
 
@@ -306,7 +307,7 @@ export function StoreProvider({ children }) {
             "background: #16a34a; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
           );
         } else {
-          setProducts([]);
+          setProducts(SEED_PRODUCTS_FALLBACK);
         }
       } catch (err) {
         console.warn(
@@ -314,7 +315,7 @@ export function StoreProvider({ children }) {
           "background: #d97706; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
           err.message,
         );
-        setProducts([]);
+        setProducts(SEED_PRODUCTS_FALLBACK);
       } finally {
         setIsLoadingProducts(false);
       }

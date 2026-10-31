@@ -18,6 +18,7 @@ import {
 import { trackEvent } from "@/lib/analytics";
 
 import IndianArchBadge from "@/components/IndianArchBadge";
+import { SEED_PRODUCTS_FALLBACK } from "@/lib/catalogFallback";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -82,9 +83,13 @@ export default function FeaturedProductsSection() {
   }, []);
 
   // Filter products chosen to be featured by the admin (min 2, max 8)
-  const adminFeatured = products.filter((p) => p.isFeatured);
+  const adminFeatured = (products && products.length > 0 ? products : SEED_PRODUCTS_FALLBACK).filter((p) => p.isFeatured);
   const featured =
-    adminFeatured.length > 0 ? adminFeatured : products.slice(0, 6);
+    adminFeatured.length > 0
+      ? adminFeatured
+      : products && products.length > 0
+        ? products.slice(0, 6)
+        : SEED_PRODUCTS_FALLBACK;
 
   const [canScroll, setCanScroll] = useState(false);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -164,7 +169,7 @@ export default function FeaturedProductsSection() {
       id="featured-collection"
       style={{
         background: "var(--bg-color, #EDE8DC)",
-        padding: "90px 24px 105px",
+        padding: "clamp(48px, 7vw, 90px) clamp(16px, 4vw, 24px) clamp(56px, 8vw, 105px)",
         position: "relative",
         overflow: "hidden",
         borderTop: "1px solid rgba(44, 32, 22, 0.08)",
@@ -781,12 +786,15 @@ export default function FeaturedProductsSection() {
         {/* Dual Bottom CTA Buttons per PDF Page 13 */}
         <div
           style={{
-            marginTop: 48,
+            marginTop: 40,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            gap: 16,
+            gap: 14,
             flexWrap: "wrap",
+            paddingBottom: "32px",
+            position: "relative",
+            zIndex: 5,
           }}
         >
           <Link

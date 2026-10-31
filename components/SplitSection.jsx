@@ -14,8 +14,6 @@ const PANELS = [
     label: ["PRINCIPLE", "EASY"],
     model: "/assets/model.png",
     mobileModel: "/assets/img/15.png",
-    frameImgPC: "/assets/img/12.png",
-    frameImgMobile: "/assets/img/15.png",
   },
   {
     reversed: true,
@@ -25,8 +23,6 @@ const PANELS = [
     label: ["PRINCIPLE", "THOUGHTFUL"],
     model: "/assets/m2.png",
     mobileModel: "/assets/img/14.png",
-    frameImgPC: "/assets/img/19.png",
-    frameImgMobile: "/assets/img/14.png",
   },
   {
     reversed: false,
@@ -36,8 +32,6 @@ const PANELS = [
     label: ["PRINCIPLE", "ROOTED"],
     model: "/assets/m3.png",
     mobileModel: "/assets/img/24.png",
-    frameImgPC: "/assets/img/18.png",
-    frameImgMobile: "/assets/img/24.png",
   },
   {
     reversed: true,
@@ -47,22 +41,10 @@ const PANELS = [
     label: ["PRINCIPLE", "LONG-WEARING"],
     model: "/assets/m1.png",
     mobileModel: "/assets/img/26.png",
-    frameImgPC: "/assets/img/17.png",
-    frameImgMobile: "/assets/img/26.png",
   },
 ];
 
-const SplitPanel = ({
-  reversed,
-  title,
-  why,
-  how,
-  label,
-  model,
-  mobileModel,
-  frameImgPC,
-  frameImgMobile,
-}) => {
+const SplitPanel = ({ reversed, title, why, how, label, model, mobileModel, isLast }) => {
   const sectionRef = useRef(null);
   const modelRef = useRef(null);
 
@@ -72,6 +54,21 @@ const SplitPanel = ({
 
     const ctx = gsap.context(() => {
       const isDesktop = typeof window !== "undefined" && window.innerWidth > 900;
+
+      // Pin the final split section so the traveling image stays firmly parked inside the frame
+      if (isLast && isDesktop) {
+        ScrollTrigger.create({
+          trigger: section,
+          start: "top top",
+          end: "+=800",
+          pin: true,
+          pinSpacing: true,
+          anticipatePin: 0,
+          fastScrollEnd: true,
+          preventOverlaps: true,
+          refreshPriority: 1,
+        });
+      }
 
       gsap.fromTo(
         modelRef.current,
@@ -88,41 +85,6 @@ const SplitPanel = ({
           },
         },
       );
-
-      // Framed Portrait Card smooth entrance & frame draw
-      const framedPortrait = section.querySelector(".split-framed-portrait");
-      if (framedPortrait) {
-        gsap.fromTo(
-          framedPortrait,
-          { opacity: 0, y: isDesktop ? 40 : 20, scale: 0.96 },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 1.1,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: section,
-              start: "top 75%",
-            },
-          },
-        );
-
-        const framePath = framedPortrait.querySelector(".section-frame-path");
-        if (framePath) {
-          const len = framePath.getTotalLength ? framePath.getTotalLength() : 1100;
-          gsap.set(framePath, { strokeDasharray: len, strokeDashoffset: len });
-          gsap.to(framePath, {
-            strokeDashoffset: 0,
-            duration: 1.4,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: section,
-              start: "top 75%",
-            },
-          });
-        }
-      }
 
       // Only scrub horizontal translation on desktop
       if (isDesktop) {
@@ -192,26 +154,29 @@ const SplitPanel = ({
       ref={sectionRef}
       className={`split-section${reversed ? " split-section--reversed" : ""}`}
     >
-      {/* Framed Portrait Card with Integrated Frame & Image */}
-      <div className="split-framed-portrait">
-        <svg className="split-framed-svg" viewBox="0 0 240 330" aria-hidden="true">
-          <rect
-            className="section-frame-path"
-            x="5"
-            y="5"
-            width="230"
-            height="320"
-            rx="8"
-            fill="none"
-            stroke="#3d2b1f"
-            strokeWidth="1.5"
+      <svg className="split-section__frame" viewBox="0 0 240 330">
+        <rect
+          className="section-frame-path"
+          x="5"
+          y="5"
+          width="230"
+          height="320"
+          rx="8"
+          fill="none"
+          stroke="#3d2b1f"
+          strokeWidth="1.5"
+        />
+      </svg>
+
+      {/* Permanently parked card in final split panel so it never releases */}
+      {isLast && (
+        <div className="last-split-portrait" aria-hidden="true">
+          <img
+            src="/assets/img/17.png"
+            alt="Long-Wearing Red Linen Shirt"
           />
-        </svg>
-        <picture className="split-framed-picture">
-          <source media="(max-width: 900px)" srcSet={frameImgMobile} />
-          <img src={frameImgPC} alt={title.join(" ")} />
-        </picture>
-      </div>
+        </div>
+      )}
 
       <div className="split-section__left">
         <div className="split-section__content">
@@ -273,7 +238,7 @@ const SplitPanel = ({
 const SplitSection = () => (
   <>
     {PANELS.map((p, i) => (
-      <SplitPanel key={i} {...p} />
+      <SplitPanel key={i} isLast={i === PANELS.length - 1} {...p} />
     ))}
   </>
 );

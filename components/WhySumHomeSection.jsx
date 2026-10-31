@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -39,24 +39,39 @@ export default function WhySumHomeSection() {
     return () => ctx.revert();
   }, []);
 
-  const instagramPosts = [
+  const [instagramPosts, setInstagramPosts] = useState([
     {
-      img: "/assets/img/15.png",
-      caption: "Mornings in handspun khadi — easy, weightless, grounded.",
+      media_url: "/assets/img/15.png",
+      permalink: "https://www.instagram.com/sumclothico/",
+      caption: "Mornings in handspun Khadi — easy, weightless, grounded.",
     },
     {
-      img: "/assets/img/14.png",
+      media_url: "/assets/img/14.png",
+      permalink: "https://www.instagram.com/sumclothico/",
       caption: "Natural texture that softens with every gentle wash.",
     },
     {
-      img: "/assets/img/24.png",
+      media_url: "/assets/img/24.png",
+      permalink: "https://www.instagram.com/sumclothico/",
       caption: "From work hours to slow coffee afternoons.",
     },
     {
-      img: "/assets/img/26.png",
+      media_url: "/assets/img/26.png",
+      permalink: "https://www.instagram.com/sumclothico/",
       caption: "Room to move, breathe, and simply be.",
     },
-  ];
+  ]);
+
+  useEffect(() => {
+    fetch("/api/instagram")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.posts && data.posts.length > 0) {
+          setInstagramPosts(data.posts);
+        }
+      })
+      .catch((err) => console.log("Instagram fetch fallback:", err));
+  }, []);
 
   return (
     <section
@@ -203,7 +218,7 @@ export default function WhySumHomeSection() {
             </a>
           </div>
 
-          {/* Grid of Community Photos */}
+          {/* Grid of Community Photos (Clickable live Instagram links) */}
           <div
             style={{
               display: "grid",
@@ -212,8 +227,11 @@ export default function WhySumHomeSection() {
             }}
           >
             {instagramPosts.map((post, idx) => (
-              <div
-                key={idx}
+              <a
+                key={post.id || idx}
+                href={post.permalink || "https://www.instagram.com/sumclothico/"}
+                target="_blank"
+                rel="noopener noreferrer"
                 style={{
                   position: "relative",
                   borderRadius: 16,
@@ -222,11 +240,13 @@ export default function WhySumHomeSection() {
                   background: "#EBE5D9",
                   boxShadow: "0 4px 14px rgba(44, 32, 22, 0.06)",
                   cursor: "pointer",
+                  display: "block",
+                  textDecoration: "none",
                 }}
               >
                 <img
-                  src={post.img}
-                  alt={post.caption}
+                  src={post.media_url || post.img}
+                  alt={post.caption || "Sum Clothico Instagram Post"}
                   style={{
                     width: "100%",
                     height: "100%",
@@ -240,18 +260,18 @@ export default function WhySumHomeSection() {
                   style={{
                     position: "absolute",
                     inset: 0,
-                    background: "linear-gradient(to top, rgba(44,32,22,0.7) 0%, transparent 60%)",
+                    background: "linear-gradient(to top, rgba(44,32,22,0.78) 0%, transparent 60%)",
                     display: "flex",
                     alignItems: "flex-end",
                     padding: 16,
-                    opacity: 0.9,
+                    opacity: 0.95,
                   }}
                 >
                   <p style={{ color: "#FAF6F0", fontSize: 12, margin: 0, lineHeight: 1.4 }}>
                     {post.caption}
                   </p>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         </div>
