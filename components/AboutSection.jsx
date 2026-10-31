@@ -23,85 +23,62 @@ export default function AboutSection() {
       const subLabel = section.querySelector(".about-section__sub");
       const card = section.querySelector(".about-section__card");
       const cta = section.querySelector(".about-cta");
-      const ctaWords = section.querySelectorAll(".about-cta-word");
-      const ctaDesc = section.querySelector(".about-cta__desc");
-      const ctaBtns = section.querySelectorAll(".about-cta__btn");
+      const isDesktop = typeof window !== "undefined" && window.innerWidth > 900;
 
-      // Card entrance on scroll
-      if (card) {
-        gsap.fromTo(
-          card,
-          { opacity: 0, y: 35, scale: 0.96 },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 1.1,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: section,
-              start: "top 75%",
-            },
+      if (isDesktop && card && cta) {
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: "+=1100",
+            pin: true,
+            scrub: 0.5,
+            anticipatePin: 1,
           },
-        );
-      }
+        });
 
-      // ─── Step 1: Reveal card manifesto lines ───
-      lines.forEach((line, idx) => {
-        gsap.fromTo(
-          line,
-          { opacity: 0, y: 20 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.7,
-            delay: 0.2 + idx * 0.1,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: section,
-              start: "top 75%",
-            },
-          },
-        );
-      });
+        // Step 1: Card entrance & lines reveal
+        tl.fromTo(card, { opacity: 0, y: 35, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: "power3.out" });
+        lines.forEach((line) => {
+          tl.fromTo(line, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" });
+        });
+        if (subLabel) {
+          tl.fromTo(subLabel, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.2, ease: "power3.out" });
+        }
 
-      if (subLabel) {
-        gsap.fromTo(
-          subLabel,
-          { opacity: 0, y: 16 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.6,
-            delay: 0.6,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: section,
-              start: "top 75%",
-            },
-          },
-        );
-      }
+        // Reading hold
+        tl.to({}, { duration: 0.35 });
 
-      // Closing CTA reveal
-      if (cta) {
-        cta.classList.add("is-active");
-        gsap.fromTo(
+        // Step 2: Smooth dissolve of card and reveal of centered brand ethos CTA
+        tl.to(card, { opacity: 0, scale: 0.96, y: -20, duration: 0.35, ease: "power2.inOut" });
+        tl.fromTo(
           cta,
-          { opacity: 0, y: 30 },
+          { opacity: 0, scale: 0.96, y: 20 },
           {
             opacity: 1,
+            scale: 1,
             y: 0,
-            duration: 1,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: cta,
-              start: "top 85%",
-            },
+            duration: 0.35,
+            ease: "power2.out",
+            onStart: () => cta.classList.add("is-active"),
+            onReverseComplete: () => cta.classList.remove("is-active"),
           },
+          "<+=0.1"
         );
+        tl.to({}, { duration: 0.25 });
+      } else {
+        // Mobile simple animations: card enters, lines fade in, cta active in stacked layout
+        if (card) {
+          gsap.fromTo(card, { opacity: 0, y: 25 }, { opacity: 1, y: 0, duration: 0.8, scrollTrigger: { trigger: card, start: "top 80%" } });
+        }
+        lines.forEach((line, idx) => {
+          gsap.fromTo(line, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, delay: idx * 0.08, scrollTrigger: { trigger: card, start: "top 80%" } });
+        });
+        if (cta) {
+          cta.classList.add("is-active");
+          gsap.fromTo(cta, { opacity: 0, y: 25 }, { opacity: 1, y: 0, duration: 0.8, scrollTrigger: { trigger: cta, start: "top 85%" } });
+        }
       }
-
     }, sectionRef);
 
     return () => ctx.revert();

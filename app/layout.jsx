@@ -18,7 +18,8 @@ export const metadata = {
   title: "SUM CLOTHICO — Handcrafted Khadi Textiles & Sustainable Luxury",
   description:
     "SUM CLOTHICO is a textile brand rooted in the tradition of pure Indian khadi, offering handcrafted silhouettes, effortless tops, and sustainable fashion for mindful living.",
-  keywords: "Khadi, Indian Textiles, Handloom Tops, Organic Cotton, Sustainable Fashion, Sum Clothico",
+  keywords:
+    "Khadi, Indian Textiles, Handloom Tops, Organic Cotton, Sustainable Fashion, Sum Clothico",
   icons: {
     icon: "/favicon.ico",
   },
@@ -40,7 +41,8 @@ export const metadata = {
   },
 };
 
-const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "G-4PDRN1Q81Y";
+const GA_MEASUREMENT_ID =
+  process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "G-4PDRN1Q81Y";
 
 const CLERK_PUBLISHABLE_KEY = process.env.CLERK_PUBLISHABLE_KEY || "";
 
@@ -93,7 +95,6 @@ export default function RootLayout({ children }) {
               <ProductQuickView />
               <SearchModal />
               <SizeGuideModal />
-              <WhatsAppWidget />
               <WelcomePromoModal />
               <CampaignTracker />
               <UserSyncManager />
@@ -104,4 +105,3 @@ export default function RootLayout({ children }) {
     </ClerkProvider>
   );
 }
-

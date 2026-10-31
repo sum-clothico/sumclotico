@@ -148,8 +148,8 @@ export default function JournalPreviewSection() {
         background: "var(--bg-color, #EDE8DC)",
         padding: "clamp(60px, 8vw, 100px) clamp(16px, 4vw, 24px) clamp(70px, 9vw, 110px)",
         position: "relative",
-        borderTop: "1px solid rgba(44, 32, 22, 0.08)",
-        borderBottom: "1px solid rgba(44, 32, 22, 0.08)",
+        // seamless transition
+        // seamless transition
         overflow: "hidden",
       }}
     >

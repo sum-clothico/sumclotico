@@ -50,7 +50,7 @@ const SplitPanel = ({ reversed, title, why, how, label, model, mobileModel, isLa
 
   useEffect(() => {
     const section = sectionRef.current;
-    const xTarget = section.classList.contains("split-section--reversed") ? -150 : 150;
+    const xTarget = 0;
 
     const ctx = gsap.context(() => {
       const isDesktop = typeof window !== "undefined" && window.innerWidth > 900;
@@ -154,19 +154,7 @@ const SplitPanel = ({ reversed, title, why, how, label, model, mobileModel, isLa
       ref={sectionRef}
       className={`split-section${reversed ? " split-section--reversed" : ""}`}
     >
-      <svg className="split-section__frame" viewBox="0 0 240 330">
-        <rect
-          className="section-frame-path"
-          x="5"
-          y="5"
-          width="230"
-          height="320"
-          rx="8"
-          fill="none"
-          stroke="#3d2b1f"
-          strokeWidth="1.5"
-        />
-      </svg>
+{/* Wireframe line removed per client request */}
 
       {/* Permanently parked card in final split panel so it never releases */}
       {isLast && (

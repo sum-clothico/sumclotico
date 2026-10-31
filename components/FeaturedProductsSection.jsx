@@ -172,7 +172,7 @@ export default function FeaturedProductsSection() {
         padding: "clamp(48px, 7vw, 90px) clamp(16px, 4vw, 24px) clamp(56px, 8vw, 105px)",
         position: "relative",
         overflow: "hidden",
-        borderTop: "1px solid rgba(44, 32, 22, 0.08)",
+        // seamless top transition
       }}
     >
       <div

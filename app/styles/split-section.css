@@ -10,33 +10,27 @@
 
 /* ─── SVG Frame ─────────────────────────────────────────── */
 .split-section__frame {
-  position: absolute;
-  top: 32%;
-  left: 18%;
-  transform: translate(-50%, -50%);
-  width: 240px;
-  height: 330px;
-  z-index: 6;
-  pointer-events: none;
+  display: none !important;
 }
 
 /* ─── Layout ────────────────────────────────────────────── */
 .split-section__left {
   position: relative;
-  width: 70%;
+  width: 60%;
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end; /* Align to bottom */
-  padding: 60px 10% 80px; /* Space at bottom */
+  justify-content: flex-end; /* Anchored to bottom */
+  padding: 40px 8% 50px;
   z-index: 2;
+  box-sizing: border-box;
 }
 
 .split-section__right {
   position: relative;
-  width: 30%;
+  width: 40%;
   height: 100%;
-  background: linear-gradient(135deg, #D4B896 0%, #C8A87A 100%);
+  background: linear-gradient(135deg, #d4b896 0%, #c8a87a 100%);
   z-index: 1;
 }
 
@@ -55,20 +49,23 @@
 
 .split-section__content {
   margin-top: 0;
-  margin-bottom: 60px; /* Space above the label */
+  margin-bottom: 20px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  text-align: left;
+  max-width: 420px;
 }
 
 .split-section__title {
   font-family: inherit;
-  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  font-size: clamp(1.4rem, 2.5vw, 2.2rem);
   font-weight: 600;
-  line-height: 0.9;
+  line-height: 1.1;
   letter-spacing: -0.02em;
   color: var(--color-dark);
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
+  text-align: left;
 }
 
 .split-section__title span {
@@ -87,12 +84,13 @@
 .split-section__why,
 .split-section__how {
   font-family: "Poppins", sans-serif;
-  font-size: 1rem;
+  font-size: 0.98rem;
   line-height: 1.6;
   color: var(--color-dark);
   opacity: 0.85;
-  max-width: 380px;
+  max-width: 400px;
   margin-bottom: 0.75rem;
+  text-align: left;
 }
 
 .split-section__qa-label {
@@ -109,13 +107,13 @@
 
 /* WHY label — earthy terracotta */
 .split-section__why .split-section__qa-label {
-  background-color: var(--color-earth, #8B6F47);
+  background-color: var(--color-earth, #8b6f47);
   color: #fff;
 }
 
 /* HOW label — dark brown */
 .split-section__how .split-section__qa-label {
-  background-color: var(--color-dark, #2C2016);
+  background-color: var(--color-dark, #2c2016);
   color: #f5ede3;
 }
 
@@ -133,26 +131,34 @@
 .split-section__model {
   position: absolute;
   bottom: 0;
-  left: 55%;
-  transform: translateX(-45%);
-  height: 100%;
+  right: -2%;
+  left: auto;
+  height: 85vh;
+  max-height: 88vh;
   width: auto;
   z-index: 5;
   display: flex;
   align-items: flex-end;
+  justify-content: flex-end;
+  pointer-events: none;
 }
 
 .split-section__model picture {
   height: 100%;
+  width: auto;
   display: flex;
   align-items: flex-end;
+  justify-content: flex-end;
 }
 
 .split-section__model img {
-  height: 90%;
+  height: 85vh;
+  max-height: 88vh;
   width: auto;
+  max-width: 60vw;
   object-fit: contain;
-  filter: drop-shadow(30px 20px 60px rgba(0, 0, 0, 0.15));
+  object-position: bottom right;
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.16));
 }
 
 /* ─── Reversed (text right, color left) ────────────────── */
@@ -167,13 +173,14 @@
 }
 
 .split-section--reversed .split-section__model {
-  left: auto;
-  right: 55%;
-  transform: translateX(45%);
+  left: -2%;
+  right: auto;
+  justify-content: flex-start;
 }
 
 .split-section--reversed .split-section__left {
   align-items: flex-end;
+  text-align: right;
 }
 
 .split-section--reversed .split-section__content {
@@ -181,9 +188,15 @@
   text-align: right;
 }
 
-.split-section--reversed .split-section__model img {
-  transform: scaleX(-1);
+.split-section--reversed .split-section__title,
+.split-section--reversed .split-section__why,
+.split-section--reversed .split-section__how,
+.split-section--reversed .split-section__why span,
+.split-section--reversed .split-section__how span {
+  text-align: right !important;
 }
+
+/* mirror transform removed */
 
 /* ─── Responsive ────────────────────────────────────────── */
 @media (max-width: 900px) {
@@ -306,7 +319,11 @@
   left: 0;
   width: 100%;
   height: 120px;
-  background: linear-gradient(to bottom, rgba(237, 232, 220, 0) 0%, var(--bg-color, #EDE8DC) 100%);
+  background: linear-gradient(
+    to bottom,
+    rgba(237, 232, 220, 0) 0%,
+    var(--bg-color, #ede8dc) 100%
+  );
   pointer-events: none;
   z-index: 6;
 }
@@ -314,8 +331,8 @@
 /* ─── Permanently Parked Portrait Card in Final Split Section ─── */
 .last-split-portrait {
   position: absolute;
-  top: 32%;
-  left: 82%;
+  top: 25%;
+  left: 74%;
   transform: translate(-50%, -50%);
   width: 230px;
   height: 320px;

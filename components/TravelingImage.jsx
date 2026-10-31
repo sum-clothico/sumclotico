@@ -29,7 +29,7 @@ const TravelingImage = () => {
 
     const mm = gsap.matchMedia();
 
-    mm.add("(min-width: 769px)", () => {
+    mm.add("(min-width: 901px)", () => {
       const triggers = [];
 
       gsap.set(el, {
@@ -165,15 +165,14 @@ const TravelingImage = () => {
 
     splitSections.forEach((section, i) => {
       const isReversed = section.classList.contains("split-section--reversed");
-      const targetLeft = isReversed ? "82%" : "18%";
+      const targetLeft = isReversed ? "74%" : "26%";
 
       const prevLeft =
         i === 0
           ? "50%"
           : splitSections[i - 1].classList.contains("split-section--reversed")
-            ? "82%"
-            : "18%";
-      const prevTop = i === 0 ? "50%" : "32%";
+            ? "74%" : "26%";
+      const prevTop = i === 0 ? "50%" : "25%";
       const prevScale = 1;
 
       // Moves promptly as section enters viewport so it arrives right into frame
@@ -191,7 +190,7 @@ const TravelingImage = () => {
         { left: prevLeft, top: prevTop, scale: prevScale, immediateRender: false },
         {
           left: targetLeft,
-          top: "32%",
+          top: "25%",
           scale: 1,
           duration: 1,
           ease: "power2.inOut",
