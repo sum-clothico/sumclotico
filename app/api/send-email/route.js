@@ -318,12 +318,18 @@ export async function POST(request) {
         customerDispatch = await sendResend(targetCustomer, customerSubject, customerHtml);
       }
 
-      // 2. Dispatch Admin Email (always to support@sumclothico.com)
+      // 2. Dispatch Admin Email (to support@sumclothico.com + backup sumclothico@gmail.com)
       let adminDispatch = null;
       if (adminHtml && adminSubject) {
         adminDispatch = await sendResend(adminEmail, adminSubject, adminHtml);
+        if (adminEmail !== "sumclothico@gmail.com") {
+          sendResend("sumclothico@gmail.com", adminSubject, adminHtml).catch(() => {});
+        }
       } else if (!customerHtml && adminSubject) {
         adminDispatch = await sendResend(adminEmail, adminSubject, adminHtml);
+        if (adminEmail !== "sumclothico@gmail.com") {
+          sendResend("sumclothico@gmail.com", adminSubject, adminHtml).catch(() => {});
+        }
       }
 
       return NextResponse.json({

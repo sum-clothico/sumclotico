@@ -1113,7 +1113,7 @@ export function StoreProvider({ children }) {
     const lowStockNotifs = lowStockAlerts.map((lp) => ({
       id: `notif-low-${Date.now()}-${lp.id}`,
       title: `LOW-STOCK AUTO ALERT: ${lp.name} (${lp.sku || "SC-PRD"})`,
-      message: `Remaining stock for "${lp.name}" dropped to ${lp.remainingStock} units. Auto-alert email dispatched to admin@sumclotico.com for immediate replenishment.`,
+      message: `Remaining stock for "${lp.name}" dropped to ${lp.remainingStock} units. Auto-alert email dispatched to support@sumclothico.com for immediate replenishment.`,
       createdAt: new Date().toISOString(),
       isRead: false,
       isLowStock: true,

@@ -86,7 +86,7 @@ export default function AdminDashboardPage() {
               <span style={{ color: "#E8A87C" }}>✦ LOW-STOCK INVENTORY ALERT:</span> {lowStockProducts.length} {lowStockProducts.length === 1 ? "garment requires" : "garments require"} replenishment
             </div>
             <div style={{ color: "#A39688", fontSize: 12.5, marginTop: 4 }}>
-              Auto-notification logged for <strong>admin@sumclotico.com</strong>. Items: {lowStockProducts.map((p) => `${p.name} (${p.stock} left)`).join(", ")}.
+              Auto-notification logged for <strong>support@sumclothico.com</strong>. Items: {lowStockProducts.map((p) => `${p.name} (${p.stock} left)`).join(", ")}.
             </div>
           </div>
           <div style={{ display: "flex", gap: 8 }}>
