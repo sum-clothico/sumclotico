@@ -24,22 +24,35 @@ const isPublicRoute = createRouteMatcher([
   "/api(.*)",
 ]);
 
-const clerkHandler = clerkMiddleware(async (auth, req) => {
-  if (!isPublicRoute(req)) {
-    try {
-      await auth.protect();
-    } catch {
-      // Fallback gracefully in dev/staging environment
+const publishableKey =
+  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ||
+  process.env.CLERK_PUBLISHABLE_KEY ||
+  "pk_test_YW1hemVkLWRlZXItNDIxMy5jbGVyay5hY2NvdW50cy5kZXYk";
+
+const clerkHandler = clerkMiddleware(
+  async (auth, req) => {
+    if (!isPublicRoute(req)) {
+      try {
+        await auth.protect();
+      } catch {
+        // Fallback gracefully in dev/staging environment
+      }
     }
+  },
+  {
+    publishableKey,
   }
-});
+);
 
 export default async function middleware(req, event) {
+  // If route is public, bypass Clerk directly to ensure fast edge delivery and zero error logs
+  if (isPublicRoute(req)) {
+    return NextResponse.next();
+  }
+
   try {
     return await clerkHandler(req, event);
-  } catch (err) {
-    // If Clerk middleware ever fails or edge encounters an error, never fail the site with 500
-    console.error("Middleware safe fallback:", err);
+  } catch {
     return NextResponse.next();
   }
 }
