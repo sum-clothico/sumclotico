@@ -19,7 +19,7 @@ export default function UserSyncManager() {
 
     // Avoid duplicated sync calls within the same browser session
     const sessionKey = `sum_synced_${clerkId}`;
-    if (lastSyncedId.current === clerkId && typeof window !== "undefined" && window.sessionStorage?.getItem(sessionKey)) {
+    if (typeof window !== "undefined" && window.sessionStorage?.getItem(sessionKey)) {
       return;
     }
 

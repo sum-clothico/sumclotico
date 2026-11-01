@@ -1273,11 +1273,15 @@ export function StoreProvider({ children }) {
       } catch {}
     }
 
-    try {
-      await apiFetch(`/checkout/orders/${orderId}/status`, {
-        method: "PUT",
-        body: JSON.stringify({ paymentStatus: newPaymentStatus }),
-      });
+        try {
+      const targetOrder = orders.find((o) => o.id === orderId || o.orderNumber === orderId);
+      const queryId = targetOrder?._mongoId || targetOrder?.orderNumber || (orderId && !orderId.startsWith("ord-") ? orderId : null);
+      if (queryId) {
+        await apiFetch(`/checkout/orders/${queryId}/status`, {
+          method: "PUT",
+          body: JSON.stringify({ paymentStatus: newPaymentStatus }),
+        });
+      }
       console.log(
         `%c[Backend: ✓ Payment status updated in MongoDB for ${orderId}]`,
         "background: #16a34a; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",

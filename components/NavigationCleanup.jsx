@@ -51,13 +51,7 @@ if (typeof window !== "undefined") {
       return originalInsertBefore.apply(this, arguments);
     };
 
-    // Auto-reload on stale ChunkLoadError from Next.js HMR or fresh deployments
-    window.addEventListener("error", (e) => {
-      if (e?.message && (e.message.includes("Loading chunk") || e.message.includes("ChunkLoadError"))) {
-        console.warn("[Chunk Guard] Stale chunk detected, refreshing page...", e.message);
-        window.location.reload();
-      }
-    });
+    // ChunkLoadError auto-reload removed to prevent infinite reload loops during active deployments
   }
 }
 
