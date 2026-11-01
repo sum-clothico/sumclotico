@@ -7,49 +7,31 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const FALLBACK_POSTS = [
-  {
-    id: "sum-ig-1",
-    media_url: "/assets/img/15.png",
-    permalink: "https://www.instagram.com/sumclothico/",
-    caption: "Mornings in handspun Khadi — easy, weightless, grounded.",
-  },
-  {
-    id: "sum-ig-2",
-    media_url: "/assets/img/14.png",
-    permalink: "https://www.instagram.com/sumclothico/",
-    caption: "Pure Khadi texture that softens and relaxes with every gentle wash.",
-  },
-  {
-    id: "sum-ig-3",
-    media_url: "/assets/img/24.png",
-    permalink: "https://www.instagram.com/sumclothico/",
-    caption: "From busy desk hours to slow coffee afternoons. Made for real days.",
-  },
-  {
-    id: "sum-ig-4",
-    media_url: "/assets/img/26.png",
-    permalink: "https://www.instagram.com/sumclothico/",
-    caption: "Room to move, breathe, and simply be yourself in handwoven silhouettes.",
-  },
-];
-
 export default function InstagramSection() {
-  const [posts, setPosts] = useState(FALLBACK_POSTS);
+  const [posts, setPosts] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
   const sectionRef = useRef(null);
 
   useEffect(() => {
     fetch("/api/instagram")
       .then((res) => res.json())
       .then((data) => {
-        if (data?.posts && Array.isArray(data.posts) && data.posts.length > 0) {
+        if (data?.isLive && data?.posts && Array.isArray(data.posts) && data.posts.length > 0) {
           setPosts(data.posts.slice(0, 4));
+        } else {
+          setPosts([]);
         }
+        setIsLoaded(true);
       })
-      .catch((_) => {});
+      .catch((_) => {
+        setPosts([]);
+        setIsLoaded(true);
+      });
   }, []);
 
   useEffect(() => {
+    if (!posts || posts.length === 0) return;
+
     const ctx = gsap.context(() => {
       const section = sectionRef.current;
       if (!section) return;
@@ -95,6 +77,11 @@ export default function InstagramSection() {
 
     return () => ctx.revert();
   }, [posts]);
+
+  // If not loaded yet or no real posts from the live API, show blank (nothing rendered)
+  if (!isLoaded || posts.length === 0) {
+    return null;
+  }
 
   return (
     <section
@@ -289,4 +276,3 @@ export default function InstagramSection() {
     </section>
   );
 }
-

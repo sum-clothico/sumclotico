@@ -1,81 +1,79 @@
 import { NextResponse } from "next/server";
 
-// Fallback high-resolution authentic Sum Clothico Khadi community posts
-const FALLBACK_INSTAGRAM_POSTS = [
-  {
-    id: "sum-ig-1",
-    media_url: "/assets/img/15.png",
-    permalink: "https://www.instagram.com/sumclothico/",
-    caption: "Mornings in handspun Khadi — easy, weightless, grounded. #SumClothico #SlowFashion",
-    timestamp: "2026-10-28T09:00:00Z",
-  },
-  {
-    id: "sum-ig-2",
-    media_url: "/assets/img/14.png",
-    permalink: "https://www.instagram.com/sumclothico/",
-    caption: "Natural Khadi texture that softens and relaxes with every gentle wash. #HandspunCotton",
-    timestamp: "2026-10-25T11:30:00Z",
-  },
-  {
-    id: "sum-ig-3",
-    media_url: "/assets/img/24.png",
-    permalink: "https://www.instagram.com/sumclothico/",
-    caption: "From busy desk hours to slow coffee afternoons. Made for real days. #EverydayKhadi",
-    timestamp: "2026-10-22T14:15:00Z",
-  },
-  {
-    id: "sum-ig-4",
-    media_url: "/assets/img/26.png",
-    permalink: "https://www.instagram.com/sumclothico/",
-    caption: "Room to move, breathe, and simply be yourself in quiet handwoven silhouettes.",
-    timestamp: "2026-10-19T16:45:00Z",
-  },
-];
-
 export async function GET() {
   const token = process.env.INSTAGRAM_ACCESS_TOKEN;
 
   if (!token) {
     return NextResponse.json({
       isLive: false,
-      message: "Configure INSTAGRAM_ACCESS_TOKEN in .env.local to sync live Instagram Graph API feed.",
-      posts: FALLBACK_INSTAGRAM_POSTS,
+      message: "INSTAGRAM_ACCESS_TOKEN not set.",
+      posts: [],
     });
   }
 
   try {
-    const url = `https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,permalink,thumbnail_url,timestamp&access_token=${token}&limit=6`;
-    const res = await fetch(url, {
-      next: { revalidate: 3600 }, // Cache for 1 hour to respect Meta API rate limits
-    });
+    let posts = [];
 
-    if (!res.ok) {
-      console.warn("Instagram API responded with status:", res.status);
+    // 1. Meta / Facebook Graph API Token (starts with EAA...)
+    if (token.startsWith("EAA")) {
+      const pageRes = await fetch(
+        `https://graph.facebook.com/v21.0/me/accounts?fields=name,instagram_business_account{id,username,media{id,caption,media_type,media_url,permalink,thumbnail_url,timestamp}}&access_token=${token}`,
+        { next: { revalidate: 3600 } }
+      );
+
+      if (pageRes.ok) {
+        const pageData = await pageRes.json();
+        const pages = pageData.data || [];
+        for (const p of pages) {
+          const ig = p.instagram_business_account;
+          if (ig && ig.media && Array.isArray(ig.media.data) && ig.media.data.length > 0) {
+            posts = ig.media.data.map((item) => ({
+              id: item.id,
+              media_url: item.media_type === "VIDEO" ? item.thumbnail_url || item.media_url : item.media_url,
+              permalink: item.permalink || "https://www.instagram.com/sumclothico/",
+              caption: item.caption || "@sumclothico",
+              timestamp: item.timestamp,
+            }));
+            break;
+          }
+        }
+      }
+    } else {
+      // 2. Instagram Basic Display Token (starts with IGQ...)
+      const url = `https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,permalink,thumbnail_url,timestamp&access_token=${token}&limit=6`;
+      const res = await fetch(url, {
+        next: { revalidate: 3600 },
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        posts = (data.data || []).map((item) => ({
+          id: item.id,
+          media_url: item.media_type === "VIDEO" ? item.thumbnail_url || item.media_url : item.media_url,
+          permalink: item.permalink || "https://www.instagram.com/sumclothico/",
+          caption: item.caption || "@sumclothico",
+          timestamp: item.timestamp,
+        }));
+      }
+    }
+
+    if (posts.length > 0) {
       return NextResponse.json({
-        isLive: false,
-        posts: FALLBACK_INSTAGRAM_POSTS,
+        isLive: true,
+        posts,
       });
     }
 
-    const data = await res.json();
-    const posts = (data.data || []).map((item) => ({
-      id: item.id,
-      media_url: item.media_type === "VIDEO" ? item.thumbnail_url || item.media_url : item.media_url,
-      permalink: item.permalink || "https://www.instagram.com/sumclothico/",
-      caption: item.caption || "@sumclothico handwoven beginnings.",
-      timestamp: item.timestamp,
-    }));
-
+    // No real posts available - return empty array (no dummy data)
     return NextResponse.json({
-      isLive: true,
-      posts: posts.length > 0 ? posts : FALLBACK_INSTAGRAM_POSTS,
+      isLive: false,
+      posts: [],
     });
   } catch (error) {
     console.error("Failed to fetch live Instagram feed:", error);
     return NextResponse.json({
       isLive: false,
-      posts: FALLBACK_INSTAGRAM_POSTS,
+      posts: [],
     });
   }
 }
-
