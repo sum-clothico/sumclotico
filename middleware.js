@@ -24,28 +24,15 @@ const isPublicRoute = createRouteMatcher([
   "/api(.*)",
 ]);
 
-const publishableKey =
-  process.env.CLERK_PUBLISHABLE_KEY ||
-  "pk_test_YW1hemVkLWRlZXItNDIxMy5jbGVyay5hY2NvdW50cy5kZXYk";
-const secretKey =
-  process.env.CLERK_SECRET_KEY ||
-  "sk_test_oBy4k3rWFg7vQDnJ1wNF82ReemHBMOsGBEJjbViV8K";
-
-const clerkHandler = clerkMiddleware(
-  async (auth, req) => {
-    if (!isPublicRoute(req)) {
-      try {
-        await auth.protect();
-      } catch {
-        // Fallback gracefully in dev/staging environment
-      }
+const clerkHandler = clerkMiddleware(async (auth, req) => {
+  if (!isPublicRoute(req)) {
+    try {
+      await auth.protect();
+    } catch {
+      // Fallback gracefully in dev/staging environment
     }
-  },
-  {
-    publishableKey,
-    secretKey,
   }
-);
+});
 
 export default async function middleware(req, event) {
   try {
@@ -65,4 +52,3 @@ export const config = {
     "/(api|trpc)(.*)",
   ],
 };
-

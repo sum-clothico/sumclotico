@@ -44,7 +44,7 @@ export const metadata = {
 const GA_MEASUREMENT_ID =
   process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "G-4PDRN1Q81Y";
 
-const CLERK_PUBLISHABLE_KEY = process.env.CLERK_PUBLISHABLE_KEY || "";
+const CLERK_PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || process.env.CLERK_PUBLISHABLE_KEY || "pk_test_YW1hemVkLWRlZXItNDIxMy5jbGVyay5hY2NvdW50cy5kZXYk";
 
 if (process.env.NODE_ENV === "production" && !CLERK_PUBLISHABLE_KEY) {
   // Fail loud in prod so bad-env Clerk SDK doesn't poison React portal (causes removeChild NotFoundError on /sign-in)
