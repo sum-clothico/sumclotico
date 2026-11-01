@@ -311,7 +311,7 @@ export async function POST(request) {
             },
             body: JSON.stringify({
               from: fromEmail,
-              to: [targetTo],
+              to: Array.isArray(targetTo) ? targetTo : [targetTo],
               subject: subjectLine,
               html: htmlBody,
             }),
@@ -353,24 +353,21 @@ export async function POST(request) {
         console.log(`📨 [CLIENT EMAIL DISPATCHED] Type: ${type} → ${targetCustomer} | Subject: "${customerSubject}" | ID: ${customerDispatch?.id || "ok"}`);
       }
 
-      // 2. Dispatch Admin Email (to support@sumclothico.com + backup sumclothico@gmail.com)
+      // 2. Dispatch Admin Email (simultaneously to support@sumclothico.com AND sumclothico@gmail.com)
       let adminDispatch = null;
+      const adminRecipients = Array.from(new Set([
+        adminEmail,
+        "support@sumclothico.com",
+        "sumclothico@gmail.com",
+        process.env.ADMIN_EMAIL,
+      ].filter(Boolean)));
+
       if (adminHtml && adminSubject) {
-        adminDispatch = await sendResend(adminEmail, adminSubject, adminHtml);
-        console.log(`🚨 [ADMIN EMAIL DISPATCHED] Type: ${type} → ${adminEmail} | Subject: "${adminSubject}" | ID: ${adminDispatch?.id || "ok"}`);
-        if (adminEmail !== "sumclothico@gmail.com") {
-          sendResend("sumclothico@gmail.com", adminSubject, adminHtml)
-            .then((res) => console.log(`🚨 [ADMIN BACKUP DISPATCHED] Type: ${type} → sumclothico@gmail.com | ID: ${res?.id || "ok"}`))
-            .catch(() => {});
-        }
+        adminDispatch = await sendResend(adminRecipients, adminSubject, adminHtml);
+        console.log(`🚨 [ADMIN EMAIL DISPATCHED] Type: ${type} → Recipients: ${adminRecipients.join(", ")} | Subject: "${adminSubject}" | ID: ${adminDispatch?.id || "ok"}`);
       } else if (!customerHtml && adminSubject) {
-        adminDispatch = await sendResend(adminEmail, adminSubject, adminHtml);
-        console.log(`🚨 [ADMIN EMAIL DISPATCHED] Type: ${type} → ${adminEmail} | Subject: "${adminSubject}" | ID: ${adminDispatch?.id || "ok"}`);
-        if (adminEmail !== "sumclothico@gmail.com") {
-          sendResend("sumclothico@gmail.com", adminSubject, adminHtml)
-            .then((res) => console.log(`🚨 [ADMIN BACKUP DISPATCHED] Type: ${type} → sumclothico@gmail.com | ID: ${res?.id || "ok"}`))
-            .catch(() => {});
-        }
+        adminDispatch = await sendResend(adminRecipients, adminSubject, adminHtml);
+        console.log(`🚨 [ADMIN EMAIL DISPATCHED] Type: ${type} → Recipients: ${adminRecipients.join(", ")} | Subject: "${adminSubject}" | ID: ${adminDispatch?.id || "ok"}`);
       }
 
       return NextResponse.json({
