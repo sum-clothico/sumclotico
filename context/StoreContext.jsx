@@ -1089,7 +1089,7 @@ export function StoreProvider({ children }) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             type: "LOW_STOCK_ALERT",
-            to: "admin@sumclotico.com",
+            to: "sumclothico@gmail.com",
             data: {
               productName: lp.name,
               remainingStock: lp.remainingStock,
@@ -1188,6 +1188,22 @@ export function StoreProvider({ children }) {
   };
 
   const updateOrderStatus = async (orderId, newStatus, carrierInfo = {}) => {
+    const targetOrder = orders.find((o) => o.id === orderId || o.orderNumber === orderId);
+    if ((newStatus === "Shipped" || newStatus === "Dispatched") && targetOrder?.customer?.email) {
+      fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "ORDER_SHIPPED",
+          to: targetOrder.customer.email,
+          data: {
+            orderNumber: targetOrder.orderNumber,
+            carrier: carrierInfo.carrier || targetOrder.carrier || "BlueDart Express",
+            trackingNumber: carrierInfo.trackingNumber || targetOrder.trackingNumber || ("TRK" + Date.now().toString().slice(-8)),
+          },
+        }),
+      }).catch((e) => console.warn("Order shipped email error:", e));
+    }
     setOrders((prev) =>
       prev.map((o) =>
         o.id === orderId || o.orderNumber === orderId
