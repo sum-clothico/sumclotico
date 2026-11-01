@@ -191,7 +191,7 @@ export default function AdminLayout({ children }) {
               {adminUser?.name || "Super Admin"}
             </div>
             <div style={{ fontSize: 11, color: "#A39688", marginTop: 2 }}>
-              {adminUser?.email || "sumclothico@gmail.com"}
+              {adminUser?.email || "admin@sumclothico.com"}
             </div>
             <div style={{ fontSize: 10, color: "#10b981", marginTop: 6, display: "flex", alignItems: "center", gap: 4 }}>
               <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#10b981", display: "inline-block" }}></span>

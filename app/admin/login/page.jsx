@@ -12,7 +12,7 @@ export default function AdminLoginPage() {
   const router = useRouter();
   const { setAdminUser } = useStore();
   const [step, setStep] = useState("creds"); // "creds" | "otp"
-  const [email, setEmail] = useState("sumclothico@gmail.com");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
@@ -24,12 +24,8 @@ export default function AdminLoginPage() {
     setError("");
     setInfo("");
     const cleanEmail = email.trim().toLowerCase();
-    const allowed = ["sumclothico@gmail.com", "support@sumclothico.com"];
-    if (!allowed.includes(cleanEmail)) {
-      setError("Unauthorized email: Only registered admin emails (sumclothico@gmail.com or support@sumclothico.com) can access this atelier.");
-      return;
-    }
-    if (!password) return;
+    if (!cleanEmail || !password) return;
+
     setSubmitting(true);
     try {
       const res = await fetch(`${API_BASE_URL}/auth/admin-login`, {
@@ -39,10 +35,10 @@ export default function AdminLoginPage() {
       });
       const data = await res.json();
       if (!res.ok || !data.success) {
-        throw new Error(data.message || "Invalid admin credentials");
+        throw new Error(data.message || "Invalid administrator credentials");
       }
       setStep("otp");
-      setInfo(data.message || `Verification OTP code sent to ${cleanEmail}`);
+      setInfo("A secure 6-digit OTP verification code has been dispatched to your inbox.");
     } catch (err) {
       setError(err.message || "Login failed");
     } finally {
@@ -217,7 +213,8 @@ export default function AdminLoginPage() {
                 className="admin-form-input"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="sumclothico@gmail.com"
+                placeholder="admin@sumclothico.com"
+                autoComplete="off"
                 style={{
                   width: "100%",
                   padding: "12px 14px",
@@ -230,7 +227,7 @@ export default function AdminLoginPage() {
                 required
               />
               <span style={{ fontSize: 11, color: "#9ca3af", display: "block", marginTop: 5 }}>
-                2FA Policy: A secure 6-digit OTP will be dispatched to this email.
+                2FA Policy: A secure 6-digit OTP will be dispatched to your authorized inbox.
               </span>
             </div>
 
@@ -278,7 +275,7 @@ export default function AdminLoginPage() {
                 opacity: submitting ? 0.6 : 1,
               }}
             >
-              <span>{submitting ? "Sending OTP Code…" : "Send Verification OTP"}</span>
+              <span>{submitting ? "Sending OTP Code…" : "Send Verification OTP →"}</span>
               <FiArrowRight size={16} />
             </button>
           </form>
@@ -288,7 +285,7 @@ export default function AdminLoginPage() {
           <form onSubmit={handleVerifyOtp}>
             <div className="admin-form-group" style={{ marginBottom: 20 }}>
               <label className="admin-form-label" style={{ color: "#d1d5db", fontSize: 13, marginBottom: 8, display: "block", textAlign: "center" }}>
-                Enter 6-Digit OTP sent to <strong>{email}</strong>
+                Enter 6-Digit Verification Code
               </label>
               <input
                 type="text"
