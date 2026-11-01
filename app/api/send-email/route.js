@@ -245,6 +245,17 @@ export async function POST(request) {
           </div>
         </div>
       `;
+
+      adminSubject = `📦 [DISPATCHED] Order #${data.orderNumber} shipped via ${data.carrier || "BlueDart Express"}`;
+      adminHtml = `
+        <div style="font-family: system-ui, sans-serif; padding: 20px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px;">
+          <h2 style="color: #166534; margin-top: 0;">Order Dispatched Notice</h2>
+          <p><strong>Order Ref:</strong> #${data.orderNumber}</p>
+          <p><strong>Carrier:</strong> ${data.carrier || "BlueDart Express"}</p>
+          <p><strong>AWB Code:</strong> ${data.trackingNumber || "Auto-assigned"}</p>
+          <p><a href="https://sumclotico.com/admin/orders" style="color: #166534; font-weight: 700;">View in Admin Orders CRM →</a></p>
+        </div>
+      `;
     }
 
     // ─────────────────────────────────────────────────────────────────────────────
@@ -266,6 +277,14 @@ export async function POST(request) {
     // SCENARIO 5: CONTACT INQUIRY & JOURNAL STORY
     // ─────────────────────────────────────────────────────────────────────────────
     else if (type === "CONTACT_INQUIRY" || type === "JOURNAL_SUBMISSION") {
+      customerSubject = `Namaste ${data.name || "Friend"} — We received your message`;
+      customerHtml = `
+        <div style="font-family: system-ui, sans-serif; max-width: 540px; margin: 0 auto; padding: 24px; background: #faf6f0; border-radius: 10px;">
+          <h2 style="color: #660608; margin-top: 0;">Thank you for contacting Sum Clothico</h2>
+          <p>We received your inquiry regarding <strong>${data.category || "Atelier Services"}</strong>. Our master stylists will reply directly to your email within 24 hours.</p>
+        </div>
+      `;
+
       adminSubject = `[Atelier ${type === "JOURNAL_SUBMISSION" ? "Journal" : "Inquiry"}] from ${data.name || "Visitor"}`;
       adminHtml = `
         <div style="font-family: system-ui, sans-serif; padding: 24px; background: #faf6f0; border-radius: 10px;">
