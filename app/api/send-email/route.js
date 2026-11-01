@@ -18,7 +18,7 @@ export async function POST(request) {
     let adminHtml = "";
 
     // ─────────────────────────────────────────────────────────────────────────────
-    // SCENARIO 1: ORDER CONFIRMED (PAID or Cash on Delivery)
+    // SCENARIO 1: ORDER CONFIRMED (PAID)
     // ─────────────────────────────────────────────────────────────────────────────
     if (type === "ORDER_CONFIRMATION") {
       customerSubject = `✓ Order Confirmed: #${data.orderNumber} — Sum Clothico`;
@@ -253,10 +253,7 @@ export async function POST(request) {
         <div style="font-family: system-ui, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; background: #fff; border: 1px solid #e5e7eb; border-radius: 10px;">
           <h2>Your Handcrafted Pieces Are Waiting</h2>
           <p>Our handloom fabrics are woven in mindful limited batches. We saved your items for you.</p>
-          <div style="background: #fef3c7; border: 2px dashed #f59e0b; padding: 18px; text-align: center; border-radius: 8px; margin: 20px 0;">
-            <span style="font-size: 12px; font-weight: 700; color: #b45309;">10% RECOVERY VOUCHER:</span>
-            <div style="font-size: 24px; font-weight: 900; color: #92400e;">COMEBACK10</div>
-          </div>
+
           <div style="text-align: center;">
             <a href="${data.recoveryUrl || "https://sumclotico.com/collection"}" style="background: #111; color: #fff; padding: 14px 32px; border-radius: 999px; text-decoration: none; font-weight: 700; display: inline-block;">
               Complete Your Order →

@@ -820,9 +820,9 @@ export function StoreProvider({ children }) {
       typeof window !== "undefined"
         ? window.location.origin
         : "https://sumclotico.com";
-    const checkoutLink = `${baseUrl}/collection?utm_source=whatsapp_recovery&cart_recover=${cartId}&coupon=COMEBACK10`;
+    const checkoutLink = `${baseUrl}/collection?utm_source=whatsapp_recovery&cart_recover=${cartId}`;
 
-    const message = `Namaste ${targetCart.customer.name},\n\nWe noticed you left some handcrafted Khadi pieces in your Sum Clothico bag:\n\n${itemsList}\n\nTotal: ₹${targetCart.subtotal.toLocaleString("en-IN")}\n\nTo help you complete your order, use exclusive promo code *COMEBACK10* for an extra 10% discount:\n${checkoutLink}\n\nIf you need sizing assistance, simply reply here!`;
+    const message = `Namaste ${targetCart.customer.name},\n\nWe noticed you left some handcrafted Khadi pieces in your Sum Clothico bag:\n\n${itemsList}\n\nTotal: ₹${targetCart.subtotal.toLocaleString("en-IN")}\n\nHere is your direct bag recovery link to complete your order:\n${checkoutLink}\n\nIf you need sizing assistance, simply reply here!`;
 
     const waUrl = `https://wa.me/${phoneDigits}?text=${encodeURIComponent(message)}`;
 
@@ -844,7 +844,7 @@ export function StoreProvider({ children }) {
       {
         id: `notif-wa-${Date.now()}`,
         title: `WhatsApp Cart Reminder Dispatched: ${targetCart.customer.name}`,
-        message: `Recovery link with promo COMEBACK10 sent to ${targetCart.customer.phone}.`,
+        message: `Recovery reminder link sent to ${targetCart.customer.phone}.`,
         createdAt: new Date().toISOString(),
         isRead: false,
       },
@@ -864,7 +864,7 @@ export function StoreProvider({ children }) {
         typeof window !== "undefined"
           ? window.location.origin
           : "https://sumclotico.com";
-      const recoveryUrl = `${baseUrl}/collection?utm_source=email_recovery&cart_recover=${cartId}&coupon=COMEBACK10`;
+      const recoveryUrl = `${baseUrl}/collection?utm_source=email_recovery&cart_recover=${cartId}`;
 
       fetch("/api/send-email", {
         method: "POST",
@@ -896,7 +896,7 @@ export function StoreProvider({ children }) {
       {
         id: `notif-email-${Date.now()}`,
         title: `Recovery Email Dispatched (Resend): ${targetCart.customer.name}`,
-        message: `Automated recovery email dispatched to ${targetCart.customer.email} with 10% recovery voucher (COMEBACK10).`,
+        message: `Automated recovery email dispatched to ${targetCart.customer.email} to complete their order.`,
         createdAt: new Date().toISOString(),
         isRead: false,
       },
@@ -1068,9 +1068,9 @@ export function StoreProvider({ children }) {
     // Persist to MongoDB backend (async, non-blocking — local state already updated above)
     persistOrderToBackend(newOrder, [...cart]);
 
-    // Send transactional order confirmation email via API (only when PAID or Cash on Delivery)
+    // Send transactional order confirmation email via API (only when verified PAID)
     try {
-      if (paymentStatus === "PAID" || paymentGateway === "Cash on Delivery") {
+      if (paymentStatus === "PAID") {
         fetch("/api/send-email", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -1752,7 +1752,7 @@ export function StoreProvider({ children }) {
       .reduce((acc, o) => acc + (o.totalAmount || 0), 0);
 
     const totalOrdersCount = orders.filter(
-      (o) => o.paymentStatus === "PAID" || o.paymentGateway === "Cash on Delivery"
+      (o) => o.paymentStatus === "PAID"
     ).length;
     const avgOrderValue =
       totalOrdersCount > 0 ? Math.round(totalRevenue / totalOrdersCount) : 0;

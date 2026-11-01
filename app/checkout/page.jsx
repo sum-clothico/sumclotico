@@ -205,30 +205,7 @@ export default function CheckoutPage() {
       }
     }
 
-    // ── Cash on Delivery Flow ──
-    if (selectedGateway === "cod") {
-      const order = createOrder({
-        customer: {
-          name: formData.name,
-          email: formData.email,
-          phone: cleanPhone,
-        },
-        shippingAddress: {
-          street: formData.street,
-          city: formData.city,
-          state: formData.state,
-          pincode: formData.pincode,
-          country: "India",
-        },
-        paymentGateway: "Cash on Delivery",
-        paymentMethod: "Cash on Delivery (Doorstep)",
-        paymentStatus: "PENDING",
-      });
 
-      setIsProcessingPayment(false);
-      router.push(`/checkout/success?orderNumber=${order.orderNumber}`);
-      return;
-    }
   };
 
   const handleApplyCouponCode = (e) => {
@@ -368,7 +345,7 @@ export default function CheckoutPage() {
                       3. Select Payment Gateway
                     </h3>
                     <span style={{ fontSize: 11, background: "#ecfdf5", color: "#065f46", padding: "3px 8px", borderRadius: 4, fontWeight: 700 }}>
-                      Cashfree PG Active
+                      Prepaid Cashfree PG Active
                     </span>
                   </div>
 
@@ -407,39 +384,7 @@ export default function CheckoutPage() {
                       </div>
                     </label>
 
-                    {/* Portal 2: Cash on Delivery */}
-                    <label
-                      style={{
-                        display: "flex",
-                        alignItems: "flex-start",
-                        gap: 14,
-                        padding: "16px",
-                        border: `2px solid ${selectedGateway === "cod" ? "#111111" : "#e5e7eb"}`,
-                        borderRadius: 12,
-                        cursor: "pointer",
-                        background: selectedGateway === "cod" ? "#fbfbfc" : "#ffffff",
-                        transition: "all 0.2s ease",
-                      }}
-                    >
-                      <input
-                        type="radio"
-                        name="payment_gateway"
-                        checked={selectedGateway === "cod"}
-                        onChange={() => setSelectedGateway("cod")}
-                        style={{ marginTop: 4 }}
-                      />
-                      <div style={{ flex: 1 }}>
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 2 }}>
-                          <span style={{ fontWeight: 800, fontSize: 15, color: "#111827" }}>Cash on Delivery (COD)</span>
-                          <span style={{ fontSize: 11, background: "#e5e7eb", color: "#374151", fontWeight: 700, padding: "2px 8px", borderRadius: 4 }}>
-                            DOORSTEP
-                          </span>
-                        </div>
-                        <div style={{ fontSize: 12, color: "#6b7280", lineHeight: 1.4 }}>
-                          Pay in cash upon doorstep delivery by our express courier partner.
-                        </div>
-                      </div>
-                    </label>
+
                   </div>
 
                   {/* Terms & Policy Agreement */}
@@ -471,9 +416,7 @@ export default function CheckoutPage() {
                   >
                     {isProcessingPayment
                       ? "Securing Payment & Placing Order..."
-                      : selectedGateway === "cashfree"
-                        ? `Pay ₹${cartGrandTotal.toLocaleString("en-IN")} with Cashfree →`
-                        : `Place Cash on Delivery Order (₹${cartGrandTotal.toLocaleString("en-IN")}) →`}
+                      : `Pay ₹${cartGrandTotal.toLocaleString("en-IN")} with Cashfree →`}
                   </button>
                 </div>
               </form>

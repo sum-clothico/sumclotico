@@ -84,7 +84,7 @@ export default function AdminOrdersPage() {
           >
             <option value="ALL">All Portals</option>
             <option value="Cashfree">Cashfree Portal</option>
-                        <option value="Cash on Delivery">Cash on Delivery</option>
+                        
           </select>
           <select
             className="admin-form-select"

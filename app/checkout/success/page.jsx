@@ -126,7 +126,7 @@ function SuccessContent() {
   }, [order?.orderNumber, verifiedStatus]);
 
   const isPaid = verifiedStatus === "PAID";
-  const isCod = order?.paymentGateway === "Cash on Delivery";
+  // COD removed
 
   if (verifying) {
     return (
@@ -173,7 +173,7 @@ function SuccessContent() {
     >
       {/* Status Header */}
       <div style={{ textAlign: "center", marginBottom: 24 }}>
-        {isPaid || isCod ? (
+        {isPaid ? (
           <>
             <div
               style={{
@@ -192,12 +192,10 @@ function SuccessContent() {
               ✓
             </div>
             <h1 style={{ fontSize: 26, fontWeight: 800, margin: "0 0 8px" }}>
-              {isCod ? "Order Placed (Cash on Delivery)" : "Order Confirmed!"}
+              "Order Confirmed!"
             </h1>
             <p style={{ color: "#666", fontSize: 14, margin: 0 }}>
-              {isCod
-                ? "Your order has been recorded. Payment will be collected upon delivery."
-                : "Thank you for supporting handcrafted Indian khadi. Your payment was verified."}
+              "Thank you for supporting handcrafted Indian khadi. Your payment has been verified."
             </p>
           </>
         ) : (
@@ -247,7 +245,7 @@ function SuccessContent() {
           <div
             style={{
               background: "#f8f9fa",
-              borderLeft: `4px solid ${isPaid ? "#2e7d32" : isCod ? "#374151" : "#f59e0b"}`,
+              borderLeft: `4px solid ${isPaid ? "#2e7d32" : "#f59e0b"}`,
               padding: "14px 18px",
               borderRadius: 4,
               marginBottom: 24,

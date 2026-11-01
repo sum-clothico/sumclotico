@@ -118,7 +118,7 @@ export default function AdminAbandonedCartsPage() {
           <div>
             <div className="admin-card-title">Abandoned Carts Stream & 1-Click Recovery</div>
             <div style={{ fontSize: 13, color: "#9ca3af", marginTop: 4 }}>
-              Push artisanal recovery reminders via WhatsApp and automated Resend emails with an exclusive 10% comeback voucher (<strong>COMEBACK10</strong>).
+              Push artisanal recovery reminders via WhatsApp and automated Resend emails with direct bag recovery links.
             </div>
           </div>
 
@@ -195,7 +195,7 @@ export default function AdminAbandonedCartsPage() {
                           ₹{cart.subtotal.toLocaleString("en-IN")}
                         </strong>
                         <div style={{ fontSize: 11, color: "#fbbf24", fontWeight: 600 }}>
-                          Promo: {cart.recoveryCoupon || "COMEBACK10"}
+                          Promo: None
                         </div>
                       </td>
 
