@@ -58,16 +58,43 @@ function SuccessContent() {
           if (order && updatePaymentStatus) {
             updatePaymentStatus(order.id, "PAID", cfOrderId);
           }
+          // Dispatch confirmation email to client and admin
+          fetch("/api/send-email", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              type: "ORDER_CONFIRMATION",
+              to: order?.customer?.email,
+              data: {
+                ...order,
+                paymentStatus: "PAID",
+                paymentMethod: "Cashfree PG",
+              },
+            }),
+          }).catch((e) => console.warn("Email dispatch error:", e));
         } else {
-          setVerifiedStatus("PENDING");
+          setVerifiedStatus("FAILED");
           setStatusMessage(
             cfStatus === "ACTIVE"
-              ? "Payment was not completed on Cashfree. No funds were debited."
-              : `Payment status: ${cfStatus || "INCOMPLETE"}. No funds were debited.`,
+              ? "Payment was not completed on Cashfree. No order has been placed."
+              : `Payment status: ${cfStatus || "FAILED"}. No order has been placed.`,
           );
           if (order && updatePaymentStatus) {
-            updatePaymentStatus(order.id, "PENDING");
+            updatePaymentStatus(order.id, "CANCELLED");
           }
+          // Dispatch Payment Failed alert to client and admin
+          fetch("/api/send-email", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              type: "ORDER_PAYMENT_FAILED",
+              to: order?.customer?.email,
+              data: {
+                ...order,
+                reason: cfStatus === "ACTIVE" ? "User cancelled or window closed" : `Gateway returned ${cfStatus}`,
+              },
+            }),
+          }).catch((e) => console.warn("Payment failed email error:", e));
         }
       } catch (err) {
         if (!isMounted) return;

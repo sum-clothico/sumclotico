@@ -1477,16 +1477,16 @@ export function StoreProvider({ children }) {
           realProduct.name,
         );
         return realProduct;
+      } else {
+        setProducts((prev) => prev.filter((p) => p.id !== tempId));
+        const errMsg = data?.error || data?.message || "Failed to save product in database";
+        throw new Error(errMsg);
       }
     } catch (err) {
-      console.warn(
-        "%c[Backend: ⚠ Product save failed (local only)]",
-        "background: #d97706; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
-        err.message,
-      );
+      setProducts((prev) => prev.filter((p) => p.id !== tempId));
+      console.error("[Backend: Product save failed]", err.message);
+      throw err;
     }
-
-    return optimisticProduct;
   };
 
   const updateProduct = async (prodId, updatedFields) => {

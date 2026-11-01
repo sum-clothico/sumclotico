@@ -4,14 +4,15 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useStore } from "@/context/StoreContext";
+import { FiShield, FiLock, FiMail, FiCheck, FiArrowRight } from "react-icons/fi";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV === "development" ? "http://localhost:5000/api" : "/api");
+const API_BASE_URL = "/api";
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const { loginAdmin } = useStore();
+  const { setAdminUser } = useStore();
   const [step, setStep] = useState("creds"); // "creds" | "otp"
-  const [email, setEmail] = useState("support@sumclothico.com");
+  const [email, setEmail] = useState("sumclothico@gmail.com");
   const [password, setPassword] = useState("");
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
@@ -23,8 +24,9 @@ export default function AdminLoginPage() {
     setError("");
     setInfo("");
     const cleanEmail = email.trim().toLowerCase();
-    if (cleanEmail !== "support@sumclothico.com") {
-      setError("Unauthorized email: Only the official admin email (support@sumclothico.com) is valid for OTP verification.");
+    const allowed = ["sumclothico@gmail.com", "support@sumclothico.com"];
+    if (!allowed.includes(cleanEmail)) {
+      setError("Unauthorized email: Only registered admin emails (sumclothico@gmail.com or support@sumclothico.com) can access this atelier.");
       return;
     }
     if (!password) return;
@@ -37,10 +39,10 @@ export default function AdminLoginPage() {
       });
       const data = await res.json();
       if (!res.ok || !data.success) {
-        throw new Error(data.message || "Invalid credentials");
+        throw new Error(data.message || "Invalid admin credentials");
       }
       setStep("otp");
-      setInfo(data.message || "Verification code sent to admin email.");
+      setInfo(data.message || `Verification OTP code sent to ${cleanEmail}`);
     } catch (err) {
       setError(err.message || "Login failed");
     } finally {
@@ -52,28 +54,47 @@ export default function AdminLoginPage() {
     e.preventDefault();
     setError("");
     if (!otp || otp.length < 4) {
-      setError("Enter the 6-digit code from email");
+      setError("Enter the 6-digit verification code");
       return;
     }
     setSubmitting(true);
     try {
+      const cleanEmail = email.trim().toLowerCase();
       const res = await fetch(`${API_BASE_URL}/auth/admin-verify`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, code: otp }),
+        body: JSON.stringify({ email: cleanEmail, code: otp.trim() }),
       });
       const data = await res.json();
       if (!res.ok || !data.success) {
         throw new Error(data.message || "Verification failed");
       }
-      if (data.data?.token) {
-        try {
-          localStorage.setItem("sum_token", data.data.token);
-          localStorage.setItem("sum_admin_token", data.data.token);
-        } catch {}
+
+      const token = data.data?.token || "sum_admin_jwt_" + Date.now();
+      const user = data.data?.user || { email: cleanEmail, name: "Super Admin", role: "admin" };
+
+      // ── Set 3-Hour Expiring Session in LocalStorage ──
+      const session = {
+        user,
+        token,
+        loginAt: Date.now(),
+        expiresAt: Date.now() + 3 * 60 * 60 * 1000, // Exactly 3 Hours
+      };
+
+      try {
+        localStorage.setItem("sum_admin_session", JSON.stringify(session));
+        localStorage.setItem("sum_admin_token", token);
+        localStorage.setItem("sum_token", token);
+      } catch (err) {
+        console.warn("Could not save to localStorage:", err);
       }
-      loginAdmin(data.data?.user || { email });
-      router.push("/admin");
+
+      if (setAdminUser) {
+        setAdminUser(user);
+      }
+
+      // Route directly to Admin Dashboard
+      router.replace("/admin");
     } catch (err) {
       setError(err.message || "Verification failed");
     } finally {
@@ -130,9 +151,22 @@ export default function AdminLoginPage() {
                 color: "#fff",
               }}
             >
-              Sumclotico
+              Sum Clothico
             </span>
-            <span className="admin-badge">Admin Suite</span>
+            <span
+              style={{
+                background: "#881A1C",
+                color: "#fff",
+                fontSize: 10,
+                fontWeight: 800,
+                padding: "3px 8px",
+                borderRadius: 999,
+                letterSpacing: 1,
+                textTransform: "uppercase",
+              }}
+            >
+              Atelier Guard
+            </span>
           </div>
           <p style={{ margin: 0, fontSize: 13, color: "#9ca3af" }}>
             Secure Enterprise Management & Executive Operations
@@ -173,28 +207,53 @@ export default function AdminLoginPage() {
 
         {step === "creds" && (
           <form onSubmit={handleInitialSubmit}>
-            <div className="admin-form-group">
-              <label className="admin-form-label">Authorized Admin Email</label>
+            <div className="admin-form-group" style={{ marginBottom: 16 }}>
+              <label className="admin-form-label" style={{ display: "flex", alignItems: "center", gap: 6, color: "#d1d5db", fontSize: 13, marginBottom: 6 }}>
+                <FiMail size={14} />
+                <span>Authorized Admin Email</span>
+              </label>
               <input
                 type="email"
                 className="admin-form-input"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="support@sumclothico.com"
+                placeholder="sumclothico@gmail.com"
+                style={{
+                  width: "100%",
+                  padding: "12px 14px",
+                  background: "#1f242d",
+                  border: "1px solid #374151",
+                  borderRadius: 8,
+                  color: "#fff",
+                  fontSize: 14,
+                }}
                 required
               />
               <span style={{ fontSize: 11, color: "#9ca3af", display: "block", marginTop: 5 }}>
-                Security Policy: Only <strong>support@sumclothico.com</strong> is valid to receive OTP verification codes.
+                2FA Policy: A secure 6-digit OTP will be dispatched to this email.
               </span>
             </div>
 
-            <div className="admin-form-group">
-              <label className="admin-form-label">Password</label>
+            <div className="admin-form-group" style={{ marginBottom: 20 }}>
+              <label className="admin-form-label" style={{ display: "flex", alignItems: "center", gap: 6, color: "#d1d5db", fontSize: 13, marginBottom: 6 }}>
+                <FiLock size={14} />
+                <span>Password</span>
+              </label>
               <input
                 type="password"
                 className="admin-form-input"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                style={{
+                  width: "100%",
+                  padding: "12px 14px",
+                  background: "#1f242d",
+                  border: "1px solid #374151",
+                  borderRadius: 8,
+                  color: "#fff",
+                  fontSize: 14,
+                }}
                 required
               />
             </div>
@@ -202,52 +261,83 @@ export default function AdminLoginPage() {
             <button
               type="submit"
               disabled={submitting}
-              className="admin-btn admin-btn-primary"
               style={{
                 width: "100%",
-                justifyContent: "center",
+                background: "#881A1C",
+                color: "#fff",
+                border: "none",
+                borderRadius: 8,
                 padding: 14,
                 fontSize: 14,
-                marginTop: 10,
+                fontWeight: 700,
+                cursor: submitting ? "not-allowed" : "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 8,
                 opacity: submitting ? 0.6 : 1,
               }}
             >
-              {submitting ? "Sending code…" : "Send Verification Code →"}
+              <span>{submitting ? "Sending OTP Code…" : "Send Verification OTP"}</span>
+              <FiArrowRight size={16} />
             </button>
           </form>
         )}
 
         {step === "otp" && (
           <form onSubmit={handleVerifyOtp}>
-            <div className="admin-form-group">
-              <label className="admin-form-label">6-Digit Code sent to support@sumclothico.com</label>
+            <div className="admin-form-group" style={{ marginBottom: 20 }}>
+              <label className="admin-form-label" style={{ color: "#d1d5db", fontSize: 13, marginBottom: 8, display: "block", textAlign: "center" }}>
+                Enter 6-Digit OTP sent to <strong>{email}</strong>
+              </label>
               <input
                 type="text"
                 inputMode="numeric"
                 maxLength={6}
-                className="admin-form-input"
                 value={otp}
                 onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
-                style={{ textAlign: "center", fontSize: 22, letterSpacing: 8 }}
+                style={{
+                  width: "100%",
+                  textAlign: "center",
+                  fontSize: 26,
+                  letterSpacing: 10,
+                  padding: "12px 14px",
+                  background: "#1f242d",
+                  border: "1px solid #4b5563",
+                  borderRadius: 8,
+                  color: "#fff",
+                  fontWeight: 700,
+                }}
                 autoFocus
                 required
               />
+              <span style={{ fontSize: 11, color: "#9ca3af", display: "block", textAlign: "center", marginTop: 8 }}>
+                Security: Logging in grants a 3-hour authenticated session.
+              </span>
             </div>
 
             <button
               type="submit"
               disabled={submitting}
-              className="admin-btn admin-btn-primary"
               style={{
                 width: "100%",
-                justifyContent: "center",
+                background: "#16a34a",
+                color: "#fff",
+                border: "none",
+                borderRadius: 8,
                 padding: 14,
                 fontSize: 14,
-                marginTop: 10,
+                fontWeight: 700,
+                cursor: submitting ? "not-allowed" : "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 8,
                 opacity: submitting ? 0.6 : 1,
               }}
             >
-              {submitting ? "Verifying…" : "Verify & Enter Dashboard"}
+              <span>{submitting ? "Verifying Session…" : "Verify & Enter Atelier Admin"}</span>
+              <FiCheck size={16} />
             </button>
 
             <button
@@ -258,7 +348,7 @@ export default function AdminLoginPage() {
                 border: "none",
                 color: "#9ca3af",
                 fontSize: 12,
-                marginTop: 12,
+                marginTop: 16,
                 cursor: "pointer",
                 textDecoration: "underline",
                 width: "100%",

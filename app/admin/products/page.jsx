@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useStore } from "@/context/StoreContext";
 import { fileToBase32, base32ToDataUrl } from "@/lib/base32";
 import { uploadApi } from "@/lib/api";
-import { FiEdit2, FiTrash2, FiPlus, FiCheck, FiFolderPlus, FiX, FiExternalLink } from "react-icons/fi";
+import { FiEdit2, FiTrash2, FiPlus, FiCheck, FiFolderPlus, FiX, FiExternalLink, FiAlertTriangle } from "react-icons/fi";
 
 const DEFAULT_SIZE_PRESETS = ["XS", "S", "M", "L", "XL", "XXL", "Free Size"];
 const PRODUCT_TYPES = ["Top", "Shirt", "Dress", "Coord Set", "Kurta", "Bottom", "Accessory", "Saree", "Other"];
@@ -436,7 +436,11 @@ export default function AdminProductsPage() {
     setTimeout(() => setFeedback(""), 4000);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!form.name) return;
+    setFeedback("");
+    try {
     e.preventDefault();
     if (!form.name) return;
 
@@ -457,7 +461,7 @@ export default function AdminProductsPage() {
     const fallbackPrice = validVariants[0]?.price ? Number(validVariants[0].price) : 1999;
     const effectivePrice = form.price ? Number(form.price) : fallbackPrice;
 
-    const newProd = addProduct({
+    const newProd = await addProduct({
       name: form.name,
       subtitle: form.subtitle || "Handcrafted Textile",
       sku: cleanSku,
@@ -504,6 +508,10 @@ export default function AdminProductsPage() {
     });
 
     setFeedback(`✓ Product "${newProd.name}" (SKU: ${cleanSku}) successfully published!`);
+    setTimeout(() => setFeedback(""), 5000);
+    } catch (err) {
+      setFeedback(`✕ Failed to publish product: ${err.message}`);
+    }
     setForm({
       name: "",
       subtitle: "",

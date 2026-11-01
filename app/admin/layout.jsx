@@ -1,26 +1,130 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useStore } from "@/context/StoreContext";
-import { FiBarChart2, FiBox, FiShoppingBag, FiUsers, FiExternalLink, FiLogOut, FiBell, FiPlus, FiClock, FiFileText } from "react-icons/fi";
+import {
+  FiBarChart2,
+  FiBox,
+  FiShoppingBag,
+  FiUsers,
+  FiExternalLink,
+  FiLogOut,
+  FiBell,
+  FiPlus,
+  FiClock,
+  FiFileText,
+  FiShield,
+} from "react-icons/fi";
+
+const THREE_HOURS_MS = 3 * 60 * 60 * 1000;
 
 export default function AdminLayout({ children }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { adminUser, logoutAdmin, adminNotifications = [], setAdminNotifications, abandonedCarts = [] } = useStore();
+  const { adminUser, setAdminUser, logoutAdmin, adminNotifications = [], setAdminNotifications, abandonedCarts = [] } = useStore();
+
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [checkingAuth, setCheckingAuth] = useState(true);
 
   const pendingAbandonedCount = (abandonedCarts || []).filter((c) => c.status === "PENDING").length;
 
-  // If viewing admin login page, render children directly
+  // ── Authentication Check & 3-Hour Expiration Guard ──
+  useEffect(() => {
+    // If already on login page, skip check
+    if (pathname === "/admin/login") {
+      setCheckingAuth(false);
+      return;
+    }
+
+    const checkSession = () => {
+      try {
+        const rawSession = localStorage.getItem("sum_admin_session");
+        if (!rawSession) {
+          handleUnauthenticated();
+          return;
+        }
+
+        const session = JSON.parse(rawSession);
+        const now = Date.now();
+
+        // Check if session has expired (3 hours)
+        if (!session.expiresAt || now > session.expiresAt || !session.token) {
+          console.warn("[AdminAuth] Session expired (> 3 hours). Logging out.");
+          handleUnauthenticated();
+          return;
+        }
+
+        // Session valid
+        setIsAuthenticated(true);
+        if (!adminUser && session.user) {
+          setAdminUser(session.user);
+        }
+        setCheckingAuth(false);
+      } catch (e) {
+        handleUnauthenticated();
+      }
+    };
+
+    const handleUnauthenticated = () => {
+      try {
+        localStorage.removeItem("sum_admin_session");
+        localStorage.removeItem("sum_admin_token");
+        localStorage.removeItem("sum_token");
+      } catch {}
+      logoutAdmin();
+      setIsAuthenticated(false);
+      setCheckingAuth(false);
+      router.replace("/admin/login");
+    };
+
+    checkSession();
+
+    // Periodic check every 1 minute for the 3-hour expiry
+    const interval = setInterval(checkSession, 60000);
+    return () => clearInterval(interval);
+  }, [pathname, router]);
+
+  // If viewing admin login page, render login directly
   if (pathname === "/admin/login") {
     return <>{children}</>;
   }
 
+  // While verifying session or redirecting, show secure loading screen
+  if (checkingAuth || !isAuthenticated) {
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+          background: "#0d0f12",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          color: "#e5e7eb",
+          gap: 16,
+        }}
+      >
+        <FiShield size={42} style={{ color: "#881A1C", animation: "pulse 1.5s infinite" }} />
+        <h3 style={{ margin: 0, fontSize: 18, fontWeight: 700, letterSpacing: 1 }}>
+          VERIFYING ATELIER ADMIN PRIVILEGES
+        </h3>
+        <p style={{ margin: 0, fontSize: 13, color: "#9ca3af" }}>
+          Checking 3-hour security session credentials...
+        </p>
+      </div>
+    );
+  }
+
   const handleLogout = () => {
+    try {
+      localStorage.removeItem("sum_admin_session");
+      localStorage.removeItem("sum_admin_token");
+      localStorage.removeItem("sum_token");
+    } catch {}
     logoutAdmin();
-    router.push("/admin/login");
+    router.replace("/admin/login");
   };
 
   const navItems = [
@@ -84,10 +188,14 @@ export default function AdminLayout({ children }) {
         <div>
           <div style={{ padding: "14px 16px", background: "rgba(212, 196, 168, 0.06)", border: "1px solid rgba(212, 196, 168, 0.12)", borderRadius: 12, marginBottom: 14 }}>
             <div style={{ fontSize: 13, fontWeight: 700, color: "#FAF6F0" }}>
-              {adminUser ? adminUser.name : "Super Admin"}
+              {adminUser?.name || "Super Admin"}
             </div>
             <div style={{ fontSize: 11, color: "#A39688", marginTop: 2 }}>
-              {adminUser ? adminUser.email : "admin@sumclotico.com"}
+              {adminUser?.email || "sumclothico@gmail.com"}
+            </div>
+            <div style={{ fontSize: 10, color: "#10b981", marginTop: 6, display: "flex", alignItems: "center", gap: 4 }}>
+              <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#10b981", display: "inline-block" }}></span>
+              <span>Session active (3h auto-logout)</span>
             </div>
           </div>
           <button
