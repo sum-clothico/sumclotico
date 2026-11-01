@@ -8,8 +8,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 /**
  * Universal DOM Safeguard
  * Prevents "Failed to execute 'removeChild' on 'Node': The node to be removed is not a child of this node."
- * This fatal React DOMException occurs when GSAP pin-spacers, Google Translate, or browser extensions
- * modify DOM node hierarchy outside React's Virtual DOM during route unmounting/reconciliation.
+ * This occurs when GSAP pin-spacers or extensions modify DOM hierarchy outside React's Virtual DOM.
+ * When React unmounts an element reparented by GSAP, this safely removes it from its actual parent,
+ * preventing zombie orphaned sections from lingering across route changes.
  */
 if (typeof window !== "undefined") {
   if (!window.__dom_remove_child_patched) {
@@ -17,10 +18,21 @@ if (typeof window !== "undefined") {
 
     const originalRemoveChild = Node.prototype.removeChild;
     Node.prototype.removeChild = function (child) {
-      if (!child || child.parentNode !== this) {
-        if (typeof console !== "undefined" && console.warn) {
-          console.warn("[DOM Guard] Prevented removeChild on non-child node", child, this);
-        }
+      if (!child) return child;
+      if (child.parentNode !== this) {
+        try {
+          if (child.parentNode) {
+            const parent = child.parentNode;
+            originalRemoveChild.call(parent, child);
+            if (
+              parent.classList &&
+              parent.classList.contains("pin-spacer") &&
+              parent.parentNode === this
+            ) {
+              originalRemoveChild.call(this, parent);
+            }
+          }
+        } catch (_) {}
         return child;
       }
       return originalRemoveChild.apply(this, arguments);
@@ -29,9 +41,11 @@ if (typeof window !== "undefined") {
     const originalInsertBefore = Node.prototype.insertBefore;
     Node.prototype.insertBefore = function (newNode, referenceNode) {
       if (referenceNode && referenceNode.parentNode !== this) {
-        if (typeof console !== "undefined" && console.warn) {
-          console.warn("[DOM Guard] Prevented insertBefore on mismatched parent", newNode, referenceNode, this);
-        }
+        try {
+          if (referenceNode.parentNode) {
+            return originalInsertBefore.call(referenceNode.parentNode, newNode, referenceNode);
+          }
+        } catch (_) {}
         return newNode;
       }
       return originalInsertBefore.apply(this, arguments);
@@ -49,8 +63,8 @@ if (typeof window !== "undefined") {
 
 /**
  * NavigationCleanup
- * Safely kills active ScrollTriggers on route transitions without violently mutating
- * DOM elements that React is already preparing to unmount.
+ * Safely reverts and kills active ScrollTriggers on route transitions so
+ * all pinned elements and spacers unwrap cleanly without lingering into other routes.
  */
 export default function NavigationCleanup() {
   const pathname = usePathname();
@@ -62,10 +76,17 @@ export default function NavigationCleanup() {
           gsap.registerPlugin(ScrollTrigger);
           const triggers = ScrollTrigger.getAll();
           triggers.forEach((trigger) => {
-            // Kill without forcing DOM reparenting to let React unmount cleanly
-            trigger.kill(false);
+            // Revert pins cleanly to restore original DOM tree before route leaves
+            trigger.kill(true);
           });
           ScrollTrigger.clearMatchMedia();
+
+          // Remove any lingering orphaned pin-spacers
+          document.querySelectorAll(".pin-spacer").forEach((spacer) => {
+            if (spacer.parentNode && spacer.children.length === 0) {
+              spacer.parentNode.removeChild(spacer);
+            }
+          });
         }
       } catch (err) {
         // Safe ignore

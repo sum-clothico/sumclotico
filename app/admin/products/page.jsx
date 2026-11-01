@@ -96,6 +96,29 @@ export default function AdminProductsPage() {
     setEditForm({ ...editForm, [name]: type === "checkbox" ? checked : value });
   };
 
+  // ── Color Variants Handlers ──
+  const handleColorVariantChange = (index, field, val, isEdit = false) => {
+    const setter = isEdit ? setEditColorVariants : setColorVariants;
+    setter((prev) => {
+      const copy = [...prev];
+      copy[index] = { ...copy[index], [field]: val };
+      return copy;
+    });
+  };
+
+  const handleAddColorVariant = (isEdit = false) => {
+    const setter = isEdit ? setEditColorVariants : setColorVariants;
+    setter((prev) => [
+      ...prev,
+      { color: "", stock: "10", hex: "#4b5563" },
+    ]);
+  };
+
+  const handleRemoveColorVariant = (index, isEdit = false) => {
+    const setter = isEdit ? setEditColorVariants : setColorVariants;
+    setter((prev) => prev.filter((_, i) => i !== index));
+  };
+
   // ── Size Variants Handlers for New Product ──
   const handleSizeVariantChange = (index, field, val) => {
     setSizeVariants((prev) => {

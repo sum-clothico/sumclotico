@@ -179,7 +179,7 @@ export default function PageHeaderHero({
               widthRatio={14}
               style={{
                 boxShadow: "0 3px 12px rgba(102, 6, 8, 0.4)",
-                border: "1px solid rgba(250, 246, 240, 0.25)",
+                
               }}
             >
               <span style={{ fontSize: "10px", letterSpacing: "2.4px", fontWeight: 800 }}>

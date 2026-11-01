@@ -34,9 +34,21 @@ function AnimatedWords({ text, className = "os-anim-word" }) {
 }
 
 const PEOPLE_IMAGES = [
-  { src: "/assets/bharatpur-spinners.jpg", label: "Village Spinners", location: "Bharatpur" },
-  { src: "/assets/bharatpur-weaver.png", label: "Master Weavers", location: "Madhya Pradesh" },
-  { src: "/assets/chakra.jpg", label: "Charkha Spinning", location: "Handcrafted" },
+  {
+    src: "/assets/bharatpur-spinners.jpg",
+    label: "Village Spinners",
+    location: "Bharatpur",
+  },
+  {
+    src: "/assets/bharatpur-weaver.png",
+    label: "Master Weavers",
+    location: "Madhya Pradesh",
+  },
+  {
+    src: "/assets/homepage/14887305-5caf-4e77-b3fa-c79443ced34b.png",
+    label: "Charkha Spinning",
+    location: "Handcrafted",
+  },
   { src: "/assets/wev.jpg", label: "Pit Loom Weaving", location: "Human Pace" },
 ];
 
@@ -56,15 +68,30 @@ export default function OurStoryClient() {
           tl.fromTo(
             badge,
             { opacity: 0, y: -14, scale: 0.88 },
-            { opacity: 1, y: 0, scale: 1, duration: 0.55, ease: "back.out(1.5)" },
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              duration: 0.55,
+              ease: "back.out(1.5)",
+            },
           );
         }
-        const titleWords = block.querySelectorAll(".os-block-title .os-anim-word");
+        const titleWords = block.querySelectorAll(
+          ".os-block-title .os-anim-word",
+        );
         if (titleWords.length > 0) {
           tl.fromTo(
             titleWords,
             { y: "120%", rotate: 2, opacity: 0 },
-            { y: "0%", rotate: 0, opacity: 1, duration: 0.85, stagger: 0.04, ease: "power4.out" },
+            {
+              y: "0%",
+              rotate: 0,
+              opacity: 1,
+              duration: 0.85,
+              stagger: 0.04,
+              ease: "power4.out",
+            },
             "-=0.3",
           );
         }
@@ -73,7 +100,13 @@ export default function OurStoryClient() {
           tl.fromTo(
             items,
             { opacity: 0, y: 22 },
-            { opacity: 1, y: 0, duration: 0.7, stagger: 0.08, ease: "power3.out" },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.7,
+              stagger: 0.08,
+              ease: "power3.out",
+            },
             "-=0.5",
           );
         }
@@ -82,7 +115,14 @@ export default function OurStoryClient() {
           tl.fromTo(
             images,
             { opacity: 0, scale: 0.95, y: 24 },
-            { opacity: 1, scale: 1, y: 0, duration: 0.85, stagger: 0.1, ease: "power3.out" },
+            {
+              opacity: 1,
+              scale: 1,
+              y: 0,
+              duration: 0.85,
+              stagger: 0.1,
+              ease: "power3.out",
+            },
             "-=0.6",
           );
         }
@@ -116,7 +156,7 @@ export default function OurStoryClient() {
           backgroundRepeat: "repeat-y",
           backgroundPosition: "left top",
           backgroundSize: "32px auto",
-          opacity: 0.22,
+          opacity: 0.06,
           pointerEvents: "none",
           zIndex: 1,
         }}
@@ -134,7 +174,7 @@ export default function OurStoryClient() {
           backgroundPosition: "left top",
           backgroundSize: "32px auto",
           transform: "scaleX(-1)",
-          opacity: 0.22,
+          opacity: 0.06,
           pointerEvents: "none",
           zIndex: 1,
         }}
@@ -152,8 +192,13 @@ export default function OurStoryClient() {
           zIndex: 2,
         }}
       >
-        <div style={{ textAlign: "center", maxWidth: 840, margin: "0 auto 40px" }}>
-          <div className="os-block-badge" style={{ display: "inline-block", marginBottom: 16 }}>
+        <div
+          style={{ textAlign: "center", maxWidth: 840, margin: "0 auto 40px" }}
+        >
+          <div
+            className="os-block-badge"
+            style={{ display: "inline-block", marginBottom: 16 }}
+          >
             <IndianArchBadge>The Beginning</IndianArchBadge>
           </div>
           <h1
@@ -226,20 +271,43 @@ export default function OurStoryClient() {
             <img
               src="/assets/bharatpur-spinners.jpg"
               alt="Artisan women hand-spinning cotton on charkhas"
-              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                display: "block",
+              }}
             />
             <div
               style={{
                 position: "absolute",
                 inset: 0,
-                background: "linear-gradient(to top, rgba(26,20,14,0.7) 0%, transparent 55%)",
+                background:
+                  "linear-gradient(to top, rgba(26,20,14,0.7) 0%, transparent 55%)",
               }}
             />
-            <div style={{ position: "absolute", left: 20, bottom: 16, color: "#EDE8DC" }}>
-              <span style={{ fontSize: "0.7rem", letterSpacing: "2px", textTransform: "uppercase", color: "#D4C4A8", fontWeight: 800 }}>
+            <div
+              style={{
+                position: "absolute",
+                left: 20,
+                bottom: 16,
+                color: "#EDE8DC",
+              }}
+            >
+              <span
+                style={{
+                  fontSize: "0.7rem",
+                  letterSpacing: "2px",
+                  textTransform: "uppercase",
+                  color: "#D4C4A8",
+                  fontWeight: 800,
+                }}
+              >
                 Bharatpur Craft Cluster
               </span>
-              <h4 style={{ margin: "4px 0 0", fontSize: "1rem", fontWeight: 700 }}>
+              <h4
+                style={{ margin: "4px 0 0", fontSize: "1rem", fontWeight: 700 }}
+              >
                 Women Spinners of Madhya Pradesh
               </h4>
             </div>
@@ -259,20 +327,43 @@ export default function OurStoryClient() {
             <img
               src="/assets/bharatpur-weaver.png"
               alt="Traditional pit loom weaving"
-              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                display: "block",
+              }}
             />
             <div
               style={{
                 position: "absolute",
                 inset: 0,
-                background: "linear-gradient(to top, rgba(26,20,14,0.7) 0%, transparent 55%)",
+                background:
+                  "linear-gradient(to top, rgba(26,20,14,0.7) 0%, transparent 55%)",
               }}
             />
-            <div style={{ position: "absolute", left: 20, bottom: 16, color: "#EDE8DC" }}>
-              <span style={{ fontSize: "0.7rem", letterSpacing: "2px", textTransform: "uppercase", color: "#D4C4A8", fontWeight: 800 }}>
+            <div
+              style={{
+                position: "absolute",
+                left: 20,
+                bottom: 16,
+                color: "#EDE8DC",
+              }}
+            >
+              <span
+                style={{
+                  fontSize: "0.7rem",
+                  letterSpacing: "2px",
+                  textTransform: "uppercase",
+                  color: "#D4C4A8",
+                  fontWeight: 800,
+                }}
+              >
                 Handloom Precision
               </span>
-              <h4 style={{ margin: "4px 0 0", fontSize: "1rem", fontWeight: 700 }}>
+              <h4
+                style={{ margin: "4px 0 0", fontSize: "1rem", fontWeight: 700 }}
+              >
                 Wooden Frame Loom Mastery
               </h4>
             </div>
@@ -294,14 +385,7 @@ export default function OurStoryClient() {
           paddingTop: 60,
         }}
       >
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1.1fr 0.9fr",
-            gap: "clamp(32px, 5vw, 64px)",
-            alignItems: "center",
-          }}
-        >
+        <div className="os-why-sum-grid os-editorial-grid">
           {/* Left: Text Ethos */}
           <div>
             <div className="os-block-badge" style={{ marginBottom: 14 }}>
@@ -319,12 +403,20 @@ export default function OurStoryClient() {
             >
               <AnimatedWords text="We wanted more room in our clothes." />
             </h2>
-            <div style={{ fontSize: "1.02rem", lineHeight: 1.75, color: "#3f3329" }}>
+            <div
+              style={{
+                fontSize: "1.02rem",
+                lineHeight: 1.75,
+                color: "#3f3329",
+              }}
+            >
               <p className="os-text-item" style={{ margin: "0 0 16px" }}>
-                Room for changing bodies, different personalities, and days that don&apos;t always go as planned.
+                Room for changing bodies, different personalities, and days that
+                don&apos;t always go as planned.
               </p>
               <p className="os-text-item" style={{ margin: "0 0 20px" }}>
-                So we started creating easy, functional clothing that moves between work, weekends, and everything in between.
+                So we started creating easy, functional clothing that moves
+                between work, weekends, and everything in between.
               </p>
               <div
                 className="os-text-item"
@@ -336,26 +428,32 @@ export default function OurStoryClient() {
                   marginBottom: 20,
                 }}
               >
-                <p style={{ margin: 0, fontWeight: 700, color: "#660608", fontSize: "1.08rem" }}>
+                <p
+                  style={{
+                    margin: 0,
+                    fontWeight: 700,
+                    color: "#660608",
+                    fontSize: "1.08rem",
+                  }}
+                >
                   Simple. Easy. Made for real days.
                 </p>
-                <p style={{ margin: "4px 0 0", fontSize: "0.92rem", color: "#55483d" }}>
-                  No synthetic stiffness. Pure cotton that relaxes and softens with every wash.
+                <p
+                  style={{
+                    margin: "4px 0 0",
+                    fontSize: "0.92rem",
+                    color: "#55483d",
+                  }}
+                >
+                  No synthetic stiffness. Pure cotton that relaxes and softens
+                  with every wash.
                 </p>
               </div>
             </div>
           </div>
 
           {/* Right: Rich Garment & Fabric Visual Duo */}
-          <div
-            className="os-image-box"
-            style={{
-              position: "relative",
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: 16,
-            }}
-          >
+          <div className="os-image-box os-why-sum-images">
             <div
               style={{
                 borderRadius: 16,
@@ -369,7 +467,12 @@ export default function OurStoryClient() {
               <img
                 src="/assets/img/14.png"
                 alt="Sum Clothico handcrafted silhouette"
-                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  display: "block",
+                }}
               />
             </div>
             <div
@@ -383,9 +486,14 @@ export default function OurStoryClient() {
               }}
             >
               <img
-                src="/assets/cloth.png"
+                src="/assets/img/2.png"
                 alt="Sum handcrafted Khadi textile weave"
-                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  display: "block",
+                }}
               />
             </div>
           </div>
@@ -405,8 +513,13 @@ export default function OurStoryClient() {
           paddingTop: 60,
         }}
       >
-        <div style={{ textAlign: "center", maxWidth: 780, margin: "0 auto 36px" }}>
-          <div className="os-block-badge" style={{ display: "inline-block", marginBottom: 14 }}>
+        <div
+          style={{ textAlign: "center", maxWidth: 780, margin: "0 auto 36px" }}
+        >
+          <div
+            className="os-block-badge"
+            style={{ display: "inline-block", marginBottom: 14 }}
+          >
             <IndianArchBadge>The People</IndianArchBadge>
           </div>
           <h2
@@ -423,10 +536,15 @@ export default function OurStoryClient() {
           </h2>
           <p
             className="os-text-item"
-            style={{ fontSize: "1.02rem", lineHeight: 1.75, color: "#3f3329", margin: 0 }}
+            style={{
+              fontSize: "1.02rem",
+              lineHeight: 1.75,
+              color: "#3f3329",
+              margin: 0,
+            }}
           >
-            Spinners, weavers, designers and tailors — different hands and skills come together
-            to create every Sum piece.
+            Spinners, weavers, designers and tailors — different hands and
+            skills come together to create every Sum piece.
           </p>
         </div>
 
@@ -455,7 +573,12 @@ export default function OurStoryClient() {
               <img
                 src={img.src}
                 alt={img.label}
-                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  display: "block",
+                }}
               />
               <div
                 style={{
@@ -464,7 +587,8 @@ export default function OurStoryClient() {
                   right: 0,
                   bottom: 0,
                   padding: "24px 14px 12px",
-                  background: "linear-gradient(to top, rgba(26,20,14,0.85) 0%, transparent 100%)",
+                  background:
+                    "linear-gradient(to top, rgba(26,20,14,0.85) 0%, transparent 100%)",
                   color: "#EDE8DC",
                 }}
               >
@@ -527,15 +651,21 @@ export default function OurStoryClient() {
             }}
           >
             <img
-              src="/assets/751.jpg"
+              src="/assets/homepage/IMG_3734 (1).JPG"
               alt="Aditi Singh — founder, Sum Clothico"
-              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                display: "block",
+              }}
             />
             <div
               style={{
                 position: "absolute",
                 inset: 0,
-                background: "linear-gradient(to top, rgba(26,20,14,0.65) 0%, transparent 50%)",
+                background:
+                  "linear-gradient(to top, rgba(26,20,14,0.65) 0%, transparent 50%)",
               }}
             />
             <div
@@ -558,7 +688,9 @@ export default function OurStoryClient() {
               >
                 Rewa, Madhya Pradesh
               </div>
-              <div style={{ fontSize: "1.05rem", fontWeight: 700 }}>Aditi Singh — Founder</div>
+              <div style={{ fontSize: "1.05rem", fontWeight: 700 }}>
+                Aditi Singh — Founder
+              </div>
             </div>
           </div>
 
@@ -578,19 +710,34 @@ export default function OurStoryClient() {
             >
               <AnimatedWords text="An idea, brought to life by many hands." />
             </h2>
-            <div style={{ fontSize: "1.02rem", lineHeight: 1.75, color: "#3f3329" }}>
+            <div
+              style={{
+                fontSize: "1.02rem",
+                lineHeight: 1.75,
+                color: "#3f3329",
+              }}
+            >
               <p className="os-text-item" style={{ margin: "0 0 16px" }}>
-                What started in Rewa with a simple question — could everyday clothing feel more
-                like the women wearing it? — grew into Sum Clothico.
+                What started in Rewa with a simple question — could everyday
+                clothing feel more like the women wearing it? — grew into Sum
+                Clothico.
               </p>
               <p className="os-text-item" style={{ margin: "0 0 16px" }}>
-                We partnered directly with artisan spinners and handloom weavers across Bharatpur and surrounding Madhya Pradesh clusters, bypassing industrial intermediaries.
+                We partnered directly with artisan spinners and handloom weavers
+                across Bharatpur and surrounding Madhya Pradesh clusters,
+                bypassing industrial intermediaries.
               </p>
               <p
                 className="os-text-item"
-                style={{ margin: 0, fontWeight: 600, color: "#1a140e", fontSize: "1.05rem" }}
+                style={{
+                  margin: 0,
+                  fontWeight: 600,
+                  color: "#1a140e",
+                  fontSize: "1.05rem",
+                }}
               >
-                Today, our women tailors bring these ideas to life, one thoughtfully made piece at a time.
+                Today, our women tailors bring these ideas to life, one
+                thoughtfully made piece at a time.
               </p>
             </div>
           </div>
@@ -611,7 +758,10 @@ export default function OurStoryClient() {
           textAlign: "center",
         }}
       >
-        <div className="os-block-badge" style={{ display: "inline-block", marginBottom: 14 }}>
+        <div
+          className="os-block-badge"
+          style={{ display: "inline-block", marginBottom: 14 }}
+        >
           <IndianArchBadge>Closing</IndianArchBadge>
         </div>
         <h2
@@ -636,8 +786,9 @@ export default function OurStoryClient() {
             maxWidth: 680,
           }}
         >
-          Khadi is where we began. As we explore more Indian textiles and techniques, the idea
-          stays the same — clothes that become part of your everyday life.
+          Khadi is where we began. As we explore more Indian textiles and
+          techniques, the idea stays the same — clothes that become part of your
+          everyday life.
         </p>
 
         {/* Action CTAs */}

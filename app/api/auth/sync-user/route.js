@@ -3,12 +3,17 @@
  * @description Proxy route to sync Clerk user into MongoDB backend.
  */
 
-const BACKEND = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:5000/api";
+import { getBackendUrl, missingBackendResponse } from "@/lib/backendUrl";
 
 export async function POST(request) {
   try {
+    const backend = getBackendUrl();
+    if (!backend) {
+      return missingBackendResponse();
+    }
+
     const body = await request.json();
-    const res = await fetch(`${BACKEND}/auth/sync-user`, {
+    const res = await fetch(`${backend}/auth/sync-user`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),

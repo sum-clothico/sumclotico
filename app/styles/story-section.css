@@ -33,6 +33,28 @@
 /* ─── Static Center Portrait (MOBILE ONLY: hidden on PC desktop) ─── */
 .story-section__portrait {
   display: none;
+  position: relative;
+}
+
+.story-portrait-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.story-img-0 {
+  z-index: 3;
+}
+
+.story-img-1 {
+  z-index: 2;
+}
+
+.story-img-2 {
+  z-index: 1;
 }
 
 /* ─── Centered Header Container (Heading + Subline in unified flow) ─── */
@@ -109,15 +131,17 @@
 }
 
 .story-phase-text--right {
+  left: calc(50% + 150px);
   right: 6%;
-  left: auto;
-  text-align: right;
+  max-width: 340px;
+  text-align: left;
 }
 
 .story-phase-text--left {
+  right: calc(50% + 150px);
   left: 6%;
-  right: auto;
-  text-align: left;
+  max-width: 340px;
+  text-align: right;
 }
 
 /* ─── Cloth Image ───────────────────────────────────────── */
@@ -211,45 +235,49 @@
 @media (max-width: 900px) {
   .story-section {
     height: 100svh;
-    min-height: 560px;
+    min-height: 580px;
     padding: 0;
   }
 
   .story-section__header {
-    top: 36px !important;
+    top: 56px !important;
     width: 92% !important;
     gap: 8px !important;
   }
 
   .story-section__heading {
-    font-size: clamp(1.4rem, 5.2vw, 1.9rem) !important;
+    font-size: clamp(1.3rem, 5vw, 1.75rem) !important;
     padding: 0 10px !important;
     line-height: 1.25 !important;
     color: #1a1714 !important;
+    text-align: center !important;
   }
 
   .story-section__subline {
     font-size: 0.85rem !important;
-    line-height: 1.5 !important;
+    line-height: 1.45 !important;
     color: #4a3c30 !important;
     padding: 0 10px !important;
   }
 
   /* Static Center Portrait on Mobile */
   .story-section__portrait {
+    display: block !important;
     position: absolute !important;
     top: 48% !important;
     left: 50% !important;
     transform: translate(-50%, -50%) !important;
-    width: 200px !important;
-    height: 270px !important;
-    border-radius: 12px !important;
+    width: 210px !important;
+    height: 280px !important;
+    border-radius: 14px !important;
     overflow: hidden !important;
     z-index: 6 !important;
-    box-shadow: 0 14px 40px rgba(44, 32, 22, 0.22) !important;
+    box-shadow: 0 16px 40px rgba(44, 32, 22, 0.22) !important;
   }
 
   .story-section__portrait img {
+    position: absolute !important;
+    inset: 0 !important;
     width: 100% !important;
     height: 100% !important;
     object-fit: cover !important;
@@ -258,7 +286,7 @@
 
   .story-phase-text {
     position: absolute;
-    bottom: 58px !important;
+    bottom: 50px !important;
     top: auto !important;
     left: 50% !important;
     right: auto !important;
@@ -267,12 +295,12 @@
     max-width: 90% !important;
     width: 90% !important;
     padding: 12px 16px !important;
-    background: rgba(250, 246, 240, 0.94) !important;
+    background: rgba(250, 246, 240, 0.96) !important;
     backdrop-filter: blur(12px) !important;
     -webkit-backdrop-filter: blur(12px) !important;
     border-radius: 12px !important;
     border: 1.5px solid rgba(61, 43, 31, 0.16) !important;
-    box-shadow: 0 8px 30px rgba(44, 32, 22, 0.1) !important;
+    box-shadow: 0 8px 30px rgba(44, 32, 22, 0.12) !important;
     z-index: 10 !important;
   }
 
@@ -280,7 +308,8 @@
     font-size: 0.92rem !important;
     font-weight: 600 !important;
     color: #1a1714 !important;
-    line-height: 1.5 !important;
+    line-height: 1.45 !important;
+    margin: 0 !important;
   }
 
   .story-section__frame {
@@ -307,24 +336,24 @@
   }
 
   .story-section__link {
-    bottom: 24px !important;
+    bottom: 20px !important;
     right: 50% !important;
     transform: translateX(50%) !important;
     white-space: nowrap !important;
-    font-size: 0.9rem !important;
+    font-size: 0.88rem !important;
     font-weight: 700 !important;
   }
 }
 
 @media (max-width: 600px) {
   .story-section__heading {
-    font-size: clamp(1.35rem, 6vw, 1.75rem) !important;
+    font-size: clamp(1.25rem, 5.5vw, 1.65rem) !important;
     gap: 0.15em !important;
   }
   .story-phase-text {
-    padding: 16px 18px !important;
+    padding: 12px 14px !important;
   }
   .story-phase-text p {
-    font-size: 0.95rem !important;
+    font-size: 0.88rem !important;
   }
 }

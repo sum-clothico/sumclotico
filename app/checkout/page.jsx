@@ -79,7 +79,7 @@ export default function CheckoutPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleProceedToPayment = (e) => {
+  const handleProceedToPayment = async (e) => {
     e.preventDefault();
     if (!agreedToTerms) {
       alert("Please agree to the terms and shipping policy before placing your order.");
@@ -102,19 +102,94 @@ export default function CheckoutPage() {
       coupon: appliedCoupon?.code || undefined,
     });
 
-    // Make payment go through seamlessly — API keys will be configured later
     setIsProcessingPayment(true);
 
+    // ── Live Cashfree Production Integration ──
+    if (selectedGateway === "cashfree") {
+      try {
+        const order = createOrder({
+          customer: {
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+          },
+          shippingAddress: {
+            street: formData.street,
+            city: formData.city,
+            state: formData.state,
+            pincode: formData.pincode,
+            country: "India",
+          },
+          paymentGateway: "Cashfree",
+          paymentMethod: "Cashfree PG (Instant UPI / Cards)",
+          paymentStatus: "PENDING",
+        });
+
+        const res = await fetch("/api/payments/cashfree", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            orderNumber: order.orderNumber,
+            totalAmount: cartGrandTotal,
+            discount: discountAmount,
+            items: cart.map((item) => ({
+              productId: item._mongoId || item.id,
+              id: item.id,
+              slug: item.slug,
+              title: item.name || item.title,
+              price: item.price,
+              quantity: item.quantity,
+              selectedSize: item.selectedSize,
+              selectedColor: item.selectedColor,
+            })),
+            customer: {
+              name: formData.name,
+              email: formData.email,
+              phone: formData.phone,
+            },
+            returnUrl: `${window.location.origin}/checkout/success?orderNumber=${order.orderNumber}&cf_order_id={order_id}`
+          }),
+        });
+
+        const data = await res.json();
+        if (data.success && data.paymentSessionId) {
+          const loadCashfreeSdk = () =>
+            new Promise((resolve) => {
+              if (typeof window !== "undefined" && window.Cashfree) {
+                return resolve(window.Cashfree);
+              }
+              const s = document.createElement("script");
+              s.src = "https://sdk.cashfree.com/js/v3/cashfree.js";
+              s.async = true;
+              s.onload = () => resolve(window.Cashfree);
+              s.onerror = () => resolve(null);
+              document.body.appendChild(s);
+            });
+
+          const CashfreeSDK = await loadCashfreeSdk();
+          if (CashfreeSDK) {
+            const cashfree = CashfreeSDK({ mode: "production" });
+            cashfree.checkout({
+              paymentSessionId: data.paymentSessionId,
+              redirectTarget: "_self"
+            });
+            return;
+          }
+        }
+        setIsProcessingPayment(false);
+        router.push(`/checkout/success?orderNumber=${order.orderNumber}`);
+        return;
+      } catch (cfErr) {
+        console.error("Cashfree Checkout error:", cfErr);
+      }
+    }
+
     const isCod = selectedGateway === "cod";
-    const gatewayName = selectedGateway === "cashfree"
-      ? "Cashfree"
-      : selectedGateway === "razorpay"
+    const gatewayName = selectedGateway === "razorpay"
       ? "Razorpay"
       : "Cash on Delivery";
 
-    const methodDesc = selectedGateway === "cashfree"
-      ? "Cashfree Instant UPI / Card"
-      : selectedGateway === "razorpay"
+    const methodDesc = selectedGateway === "razorpay"
       ? "Razorpay Instant UPI / NetBanking"
       : "Cash on Delivery (Doorstep)";
 

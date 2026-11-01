@@ -538,7 +538,7 @@ export default function HomeSections() {
             {(activeJournalTab === "all" || activeJournalTab === "museum") && (
               <Link href="/journal" className="hs-journal-card">
                 <img
-                  src="/assets/chakra.jpg"
+                  src="/assets/homepage/14887305-5caf-4e77-b3fa-c79443ced34b.png"
                   alt="Khadi Museum Archives"
                   className="hs-journal-card__img"
                 />

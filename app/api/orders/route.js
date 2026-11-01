@@ -3,15 +3,20 @@
  * @description Next.js proxy - GET all orders from Express backend (admin CRM).
  */
 
-const BACKEND = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+import { getBackendUrl, missingBackendResponse } from "@/lib/backendUrl";
 
 export async function GET(request) {
   try {
+    const backend = getBackendUrl();
+    if (!backend) {
+      return missingBackendResponse();
+    }
+
     const { searchParams } = new URL(request.url);
     const qs = searchParams.toString();
     const auth = request.headers.get("Authorization") || "";
 
-    const res = await fetch(`${BACKEND}/crm/orders${qs ? `?${qs}` : ""}`, {
+    const res = await fetch(`${backend}/crm/orders${qs ? `?${qs}` : ""}`, {
       cache: "no-store",
       headers: { ...(auth ? { Authorization: auth } : {}) },
     });

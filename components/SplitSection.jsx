@@ -22,7 +22,7 @@ const PANELS = [
     how: "Thoughtful silhouettes, functional deep pockets, and cuts designed for real days and spontaneous plans.",
     label: ["PRINCIPLE", "THOUGHTFUL"],
     model: "/assets/m2.png",
-    mobileModel: "/assets/img/14.png",
+    mobileModel: "/assets/img/13.png",
   },
   {
     reversed: false,
@@ -55,20 +55,6 @@ const SplitPanel = ({ reversed, title, why, how, label, model, mobileModel, isLa
     const ctx = gsap.context(() => {
       const isDesktop = typeof window !== "undefined" && window.innerWidth > 900;
 
-      // Pin the final split section so the traveling image stays firmly parked inside the frame
-      if (isLast && isDesktop) {
-        ScrollTrigger.create({
-          trigger: section,
-          start: "top top",
-          end: "+=800",
-          pin: true,
-          pinSpacing: true,
-          anticipatePin: 0,
-          fastScrollEnd: true,
-          preventOverlaps: true,
-          refreshPriority: 1,
-        });
-      }
 
       gsap.fromTo(
         modelRef.current,
@@ -232,3 +218,4 @@ const SplitSection = () => (
 );
 
 export default SplitSection;
+

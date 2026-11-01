@@ -203,7 +203,7 @@
 }
 
 /* ─── Mobile Responsiveness ─── */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .horizontal-words__h2 {
     font-size: 14vw;
   }
@@ -301,3 +301,4 @@
     box-sizing: border-box !important;
   }
 }
+

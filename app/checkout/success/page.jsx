@@ -9,10 +9,19 @@ import { trackEvent } from "@/lib/analytics";
 
 function SuccessContent() {
   const searchParams = useSearchParams();
-  const orderNumber = searchParams.get("orderNumber");
-  const { orders } = useStore();
+  const rawOrderParam = searchParams.get("orderNumber") || searchParams.get("order_id") || searchParams.get("cf_order_id");
+  const cleanOrderNumber = rawOrderParam ? rawOrderParam.replace(/^CF_/, "") : "";
+  const { orders, updatePaymentStatus } = useStore();
 
-  const order = orders.find((o) => o.orderNumber === orderNumber) || orders[0];
+  const order = orders.find((o) => o.orderNumber === cleanOrderNumber || o.orderNumber === rawOrderParam || o.cashfreeOrderId === rawOrderParam) || orders[0];
+
+  useEffect(() => {
+    if (order && order.paymentStatus === "PENDING" && (searchParams.get("order_id") || searchParams.get("cf_order_id"))) {
+      if (updatePaymentStatus) {
+        updatePaymentStatus(order.id, "PAID");
+      }
+    }
+  }, [order?.id, searchParams]);
 
   useEffect(() => {
     if (order) {

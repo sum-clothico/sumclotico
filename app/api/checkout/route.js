@@ -4,10 +4,15 @@
  * Uses /checkout/direct endpoint which accepts pre-validated frontend order data.
  */
 
-const BACKEND = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+import { getBackendUrl, missingBackendResponse } from "@/lib/backendUrl";
 
 export async function POST(request) {
   try {
+    const backend = getBackendUrl();
+    if (!backend) {
+      return missingBackendResponse();
+    }
+
     const body = await request.json();
     const auth = request.headers.get("Authorization") || "";
 
@@ -18,7 +23,7 @@ export async function POST(request) {
       orderNumber: body.orderNumber,
     });
 
-    const res = await fetch(`${BACKEND}/checkout/direct`, {
+    const res = await fetch(`${backend}/checkout/direct`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -20,7 +20,7 @@ export default function HorizontalWords() {
       const container = sectionRef.current;
       const content = contentRef.current;
 
-      const isDesktop = typeof window !== "undefined" && window.innerWidth > 768;
+      const isDesktop = typeof window !== "undefined" && window.innerWidth > 900;
 
       // Pin the section while the story reveals on desktop
       if (isDesktop) {
@@ -113,7 +113,7 @@ export default function HorizontalWords() {
       // Content elements smooth stagger entrance
       if (content) {
         gsap.fromTo(
-          content.querySelectorAll(".hw-editorial-item"),
+          content.querySelectorAll(".hw-editorial-item, .hw-portrait-card"),
           { opacity: 0, y: 30 },
           {
             opacity: 1,
@@ -316,3 +316,4 @@ export default function HorizontalWords() {
     </section>
   );
 }
+

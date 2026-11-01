@@ -34,7 +34,9 @@ export async function POST(request) {
     );
 
     try {
-      const origin = request.headers.get("origin") || `http://localhost:${process.env.PORT || 3000}`;
+      const host = request.headers.get("host");
+      const defaultHost = host ? `https://${host}` : "https://sumclothico.com";
+      const origin = request.headers.get("origin") || (process.env.NODE_ENV === "development" ? `http://localhost:${process.env.PORT || 3000}` : defaultHost);
       await fetch(`${origin}/api/send-email`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

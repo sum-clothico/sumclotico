@@ -12,7 +12,7 @@ export default function AdminCustomersPage() {
   React.useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch("http://127.0.0.1:5000/api/auth/users");
+        const res = await fetch("/api/auth/users");
         const data = await res.json();
         if (data.success && Array.isArray(data.users)) {
           setDbUsers(data.users);

@@ -103,6 +103,34 @@ const StorySection = () => {
         );
       }
 
+            // Multi-layer curtain transitions for mobile portrait
+      const portrait0 = section.querySelector(".story-img-0");
+      const portrait1 = section.querySelector(".story-img-1");
+
+      if (portrait0 && !isDesktop) {
+        masterTl.to(
+          portrait0,
+          {
+            clipPath: "inset(100% 0% 0% 0%)",
+            duration: 0.1,
+            ease: "power2.inOut",
+          },
+          0.33
+        );
+      }
+
+      if (portrait1 && !isDesktop) {
+        masterTl.to(
+          portrait1,
+          {
+            clipPath: "inset(100% 0% 0% 0%)",
+            duration: 0.1,
+            ease: "power2.inOut",
+          },
+          0.66
+        );
+      }
+
       // 3 Text Phases timed evenly across the pin duration
       textEls.forEach((el, idx) => {
         const startPoint = idx * 0.33;
@@ -197,8 +225,19 @@ const StorySection = () => {
       {/* Static Center Portrait Card */}
       <div className="story-section__portrait">
         <img
+          className="story-portrait-img story-img-2"
+          src="/assets/homepage/IMG_0110.jpg"
+          alt="Handcrafted Khadi Texture"
+        />
+        <img
+          className="story-portrait-img story-img-1"
+          src="/assets/homepage/14887305-5caf-4e77-b3fa-c79443ced34b.png"
+          alt="Weaving Process"
+        />
+        <img
+          className="story-portrait-img story-img-0"
           src="/assets/homepage/IMG_1048.JPG"
-          alt="Handcrafted Khadi Garment"
+          alt="Khadi Artisan Craft"
         />
       </div>
 

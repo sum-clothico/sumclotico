@@ -5,13 +5,13 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useStore } from "@/context/StoreContext";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV === "development" ? "http://localhost:5000/api" : "/api");
 
 export default function AdminLoginPage() {
   const router = useRouter();
   const { loginAdmin } = useStore();
   const [step, setStep] = useState("creds"); // "creds" | "otp"
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("support@sumclothico.com");
   const [password, setPassword] = useState("");
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
@@ -22,13 +22,18 @@ export default function AdminLoginPage() {
     e.preventDefault();
     setError("");
     setInfo("");
-    if (!email || !password) return;
+    const cleanEmail = email.trim().toLowerCase();
+    if (cleanEmail !== "support@sumclothico.com") {
+      setError("Unauthorized email: Only the official admin email (support@sumclothico.com) is valid for OTP verification.");
+      return;
+    }
+    if (!password) return;
     setSubmitting(true);
     try {
       const res = await fetch(`${API_BASE_URL}/auth/admin-login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email: cleanEmail, password }),
       });
       const data = await res.json();
       if (!res.ok || !data.success) {
@@ -169,14 +174,18 @@ export default function AdminLoginPage() {
         {step === "creds" && (
           <form onSubmit={handleInitialSubmit}>
             <div className="admin-form-group">
-              <label className="admin-form-label">Admin Work Email</label>
+              <label className="admin-form-label">Authorized Admin Email</label>
               <input
                 type="email"
                 className="admin-form-input"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                placeholder="support@sumclothico.com"
                 required
               />
+              <span style={{ fontSize: 11, color: "#9ca3af", display: "block", marginTop: 5 }}>
+                Security Policy: Only <strong>support@sumclothico.com</strong> is valid to receive OTP verification codes.
+              </span>
             </div>
 
             <div className="admin-form-group">
@@ -211,7 +220,7 @@ export default function AdminLoginPage() {
         {step === "otp" && (
           <form onSubmit={handleVerifyOtp}>
             <div className="admin-form-group">
-              <label className="admin-form-label">6-Digit Code from Email</label>
+              <label className="admin-form-label">6-Digit Code sent to support@sumclothico.com</label>
               <input
                 type="text"
                 inputMode="numeric"

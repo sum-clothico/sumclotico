@@ -27,7 +27,7 @@ const FEATURED_STORIES = [
     title: "Inside The Khadi Museum: Living Archives of Slow Time",
     excerpt:
       "From charkha revolutions to contemporary wardrobes — why the simplest textile in human history remains our most radical act of living.",
-    image: "/assets/chakra.jpg",
+    image: "/assets/homepage/14887305-5caf-4e77-b3fa-c79443ced34b.png",
     readTime: "5 min read",
     author: "Textile Archives",
     tagColor: "#6A6E4F", // Olive / Sage from client swatch

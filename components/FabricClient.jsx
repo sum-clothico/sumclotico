@@ -40,7 +40,7 @@ function AnimatedWords({ text, className = "fab-anim-word" }) {
 
 const PROCESS_STEPS = [
   { label: "Cotton", img: "/assets/ctn.jpg" },
-  { label: "Spinning", img: "/assets/chakra.jpg" },
+  { label: "Spinning", img: "/assets/homepage/14887305-5caf-4e77-b3fa-c79443ced34b.png" },
   { label: "Weaving", img: "/assets/wev.jpg" },
   { label: "Fabric", img: "/assets/khadi.jpg" },
 ];
@@ -270,7 +270,7 @@ export default function FabricClient() {
                 }}
               >
                 <img
-                  src="/assets/chakra.jpg"
+                  src="/assets/homepage/14887305-5caf-4e77-b3fa-c79443ced34b.png"
                   alt="Spinner at charkha"
                   style={{
                     width: "100%",

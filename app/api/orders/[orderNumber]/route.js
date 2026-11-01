@@ -3,12 +3,17 @@
  * @description Next.js proxy - GET single order by order number.
  */
 
-const BACKEND = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+import { getBackendUrl, missingBackendResponse } from "@/lib/backendUrl";
 
 export async function GET(request, { params }) {
   try {
+    const backend = getBackendUrl();
+    if (!backend) {
+      return missingBackendResponse();
+    }
+
     const { orderNumber } = await params;
-    const res = await fetch(`${BACKEND}/checkout/order/${orderNumber}`, { cache: "no-store" });
+    const res = await fetch(`${backend}/checkout/order/${orderNumber}`, { cache: "no-store" });
     const data = await res.json();
     return Response.json(data, { status: res.status });
   } catch (err) {

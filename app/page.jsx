@@ -13,6 +13,7 @@ import TravelingImage from "@/components/TravelingImage";
 import AboutSection from "@/components/AboutSection";
 import MotionCards from "@/components/MotionCards";
 import JournalPreviewSection from "@/components/JournalPreviewSection";
+import InstagramSection from "@/components/InstagramSection";
 import SmoothScroll from "@/components/SmoothScroll";
 
 export default function Home() {
@@ -62,6 +63,7 @@ export default function Home() {
         </div>
         <AboutSection />
         <JournalPreviewSection />
+        <InstagramSection />
       </main>
     </>
   );

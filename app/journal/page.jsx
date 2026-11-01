@@ -110,8 +110,8 @@ const JOURNAL_STORIES = [
     author: "Textile Archives",
     date: "Late Summer 2026",
     readTime: "5 min read",
-    image: "/assets/chakra.jpg",
-    gallery: ["/assets/chakra.jpg", "/assets/fabric.jpg", "/assets/ctn.jpg"],
+    image: "/assets/homepage/14887305-5caf-4e77-b3fa-c79443ced34b.png",
+    gallery: ["/assets/homepage/14887305-5caf-4e77-b3fa-c79443ced34b.png", "/assets/fabric.jpg", "/assets/ctn.jpg"],
     videoUrl: "/assets/videos/vid2.mp4",
     excerpt: "From charkha revolutions to contemporary wardrobes — why the simplest textile in human history remains our most radical act of living.",
     content: [

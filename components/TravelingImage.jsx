@@ -252,6 +252,12 @@ const TravelingImage = () => {
           gsap.set(el, { autoAlpha: 1 });
           if (landedCard) gsap.set(landedCard, { autoAlpha: 0 });
         },
+        onRefresh: (self) => {
+          if (self.progress > 0) {
+            gsap.set(el, { autoAlpha: 0 });
+            if (landedCard) gsap.set(landedCard, { autoAlpha: 1 });
+          }
+        },
       });
       triggers.push(lockST);
     }
@@ -304,3 +310,4 @@ const TravelingImage = () => {
 };
 
 export default TravelingImage;
+

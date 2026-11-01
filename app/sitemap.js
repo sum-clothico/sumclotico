@@ -1,6 +1,6 @@
 export default async function sitemap() {
   const baseUrl = "https://sumclotico.com";
-  const backendUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+  const backendUrl = process.env.NEXT_PUBLIC_API_URL || process.env.BACKEND_API_URL;
 
   const staticRoutes = [
     "",
@@ -26,19 +26,21 @@ export default async function sitemap() {
 
   // Dynamically include individual product pages
   let productRoutes = [];
-  try {
-    const res = await fetch(`${backendUrl}/products`, { next: { revalidate: 3600 } });
-    if (res.ok) {
-      const data = await res.json();
-      productRoutes = (data.products || []).map((p) => ({
-        url: `${baseUrl}/product/${p.slug}`,
-        lastModified: p.updatedAt || new Date().toISOString(),
-        changeFrequency: "weekly",
-        priority: 0.85,
-      }));
+  if (backendUrl) {
+    try {
+      const res = await fetch(`${backendUrl}/products`, { next: { revalidate: 3600 } });
+      if (res.ok) {
+        const data = await res.json();
+        productRoutes = (data.products || []).map((p) => ({
+          url: `${baseUrl}/product/${p.slug}`,
+          lastModified: p.updatedAt || new Date().toISOString(),
+          changeFrequency: "weekly",
+          priority: 0.85,
+        }));
+      }
+    } catch {
+      // Silently skip product routes if backend unreachable at build time
     }
-  } catch {
-    // Silently skip product routes if backend unreachable at build time
   }
 
   return [...staticRoutes, ...productRoutes];

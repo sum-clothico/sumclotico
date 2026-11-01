@@ -3,12 +3,17 @@
  * @description Next.js proxy - GET/PUT/DELETE single product via Express backend.
  */
 
-const BACKEND = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+import { getBackendUrl, missingBackendResponse } from "@/lib/backendUrl";
 
 export async function GET(request, { params }) {
   try {
+    const backend = getBackendUrl();
+    if (!backend) {
+      return missingBackendResponse();
+    }
+
     const { slug } = await params;
-    const res = await fetch(`${BACKEND}/products/${slug}`, { cache: "no-store" });
+    const res = await fetch(`${backend}/products/${slug}`, { cache: "no-store" });
     const data = await res.json();
     return Response.json(data, { status: res.status });
   } catch (err) {
@@ -18,10 +23,15 @@ export async function GET(request, { params }) {
 
 export async function PUT(request, { params }) {
   try {
+    const backend = getBackendUrl();
+    if (!backend) {
+      return missingBackendResponse();
+    }
+
     const { slug } = await params;
     const body = await request.json();
     const auth = request.headers.get("Authorization") || "";
-    const res = await fetch(`${BACKEND}/products/${slug}`, {
+    const res = await fetch(`${backend}/products/${slug}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json", ...(auth ? { Authorization: auth } : {}) },
       body: JSON.stringify(body),
@@ -35,9 +45,14 @@ export async function PUT(request, { params }) {
 
 export async function DELETE(request, { params }) {
   try {
+    const backend = getBackendUrl();
+    if (!backend) {
+      return missingBackendResponse();
+    }
+
     const { slug } = await params;
     const auth = request.headers.get("Authorization") || "";
-    const res = await fetch(`${BACKEND}/products/${slug}`, {
+    const res = await fetch(`${backend}/products/${slug}`, {
       method: "DELETE",
       headers: { ...(auth ? { Authorization: auth } : {}) },
     });

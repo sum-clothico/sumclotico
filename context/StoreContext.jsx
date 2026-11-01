@@ -14,7 +14,7 @@ import { SEED_PRODUCTS_FALLBACK } from "@/lib/catalogFallback";
 const StoreContext = createContext();
 
 // ─── Backend API helper ────────────────────────────────────────────────────────
-const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+const API = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV === "development" ? "http://localhost:5000/api" : "/api");
 
 async function apiFetch(path, options = {}) {
   const res = await fetch(`${API}${path}`, {
@@ -1311,6 +1311,8 @@ export function StoreProvider({ children }) {
       gstPercent: Number(prodData.gstPercent) || 5,
       lowStockThreshold: Number(prodData.lowStockThreshold) || 5,
       variants: prodData.variants || [],
+      colorVariants: prodData.colorVariants || [],
+      colorStock: prodData.colorStock || {},
       videoUrl: prodData.videoUrl || "",
       fabricComposition:
         prodData.fabricComposition || "100% Handspun Khadi Cotton",
@@ -1428,6 +1430,8 @@ export function StoreProvider({ children }) {
           returnEligible:
             data.product.returnEligible ?? prodData.returnEligible ?? true,
           variants: data.product.variants || prodData.variants || [],
+          colorVariants: data.product.colorVariants || prodData.colorVariants || [],
+          colorStock: data.product.colorStock || prodData.colorStock || {},
           isPublished: data.product.isPublished,
           createdAt: data.product.createdAt,
         };

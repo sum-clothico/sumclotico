@@ -115,3 +115,42 @@
     grid-template-columns: 1fr !important;
   }
 }
+
+/* ─── Why Sum Exists Responsive Layout ─── */
+.os-why-sum-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: clamp(32px, 5vw, 64px);
+  align-items: center;
+}
+
+.os-why-sum-images {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .os-why-sum-grid {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+
+  .os-why-sum-images {
+    width: 100% !important;
+    max-width: 480px !important;
+    margin: 16px auto 0 !important;
+    gap: 16px !important;
+  }
+
+  .os-why-sum-images > div {
+    transform: none !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .os-why-sum-images {
+    gap: 12px !important;
+  }
+}

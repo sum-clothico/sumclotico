@@ -1,15 +1,20 @@
-﻿/**
+/**
  * @file app/api/products/route.js
  * @description Next.js proxy — forwards GET/POST product requests to Express backend.
  */
 
-const BACKEND = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+import { getBackendUrl, missingBackendResponse } from "@/lib/backendUrl";
 
 export async function GET(request) {
   try {
+    const backend = getBackendUrl();
+    if (!backend) {
+      return missingBackendResponse();
+    }
+
     const { searchParams } = new URL(request.url);
     const qs = searchParams.toString();
-    const res = await fetch(`${BACKEND}/products${qs ? `?${qs}` : ""}`, { cache: "no-store" });
+    const res = await fetch(`${backend}/products${qs ? `?${qs}` : ""}`, { cache: "no-store" });
     const data = await res.json();
     return Response.json(data, { status: res.status });
   } catch (err) {
@@ -19,9 +24,14 @@ export async function GET(request) {
 
 export async function POST(request) {
   try {
+    const backend = getBackendUrl();
+    if (!backend) {
+      return missingBackendResponse();
+    }
+
     const body = await request.json();
     const auth = request.headers.get("Authorization") || "";
-    const res = await fetch(`${BACKEND}/products`, {
+    const res = await fetch(`${backend}/products`, {
       method: "POST",
       headers: { "Content-Type": "application/json", ...(auth ? { Authorization: auth } : {}) },
       body: JSON.stringify(body),

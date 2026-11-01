@@ -106,8 +106,11 @@ export default function ProductPage() {
   const activeVariant = product.variants?.find(
     (v) => v.size === selectedSize && (!selectedColor || v.color === selectedColor)
   );
-  const stockForVariant = activeVariant ? activeVariant.stock : (product.stock || 20);
-  const isOutOfStock = stockForVariant === 0;
+  const colorStock = product.colorStock?.[selectedColor] !== undefined
+    ? Number(product.colorStock[selectedColor])
+    : (product.colorVariants?.find((cv) => cv.color === selectedColor)?.stock ?? activeVariant?.stock ?? (product.stock || 20));
+  const stockForVariant = activeVariant?.stock !== undefined ? activeVariant.stock : colorStock;
+  const isOutOfStock = stockForVariant <= 0;
 
   const handleAddToCart = () => {
     if (!selectedSize) {
@@ -476,8 +479,15 @@ export default function ProductPage() {
               {/* Color Selection (if multiple colors) — Visual Swatches */}
               {product.colors?.length > 1 && (
                 <div>
-                  <span style={{ fontSize: 12, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "#6b5d52", display: "block", marginBottom: 10 }}>
+                  <span style={{ fontSize: 12, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "#6b5d52", display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
                     Color: <strong style={{ color: "#1a140e" }}>{selectedColor}</strong>
+                    {colorStock <= 0 ? (
+                      <span style={{ fontSize: 10, fontWeight: 700, color: "#dc2626", background: "#fee2e2", padding: "2px 8px", borderRadius: 4 }}>Out of Stock</span>
+                    ) : colorStock <= (product.lowStockThreshold || 5) ? (
+                      <span style={{ fontSize: 10, fontWeight: 700, color: "#d97706", background: "#fef3c7", padding: "2px 8px", borderRadius: 4 }}>Only {colorStock} left!</span>
+                    ) : (
+                      <span style={{ fontSize: 10, fontWeight: 600, color: "#16a34a", background: "#dcfce7", padding: "2px 8px", borderRadius: 4 }}>In Stock ({colorStock})</span>
+                    )}
                   </span>
                   <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
                     {product.colors.map((color) => {
