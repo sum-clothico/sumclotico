@@ -155,7 +155,7 @@ export default function AdminLayout({ children }) {
       <aside className="admin-sidebar">
         <div>
           <div className="admin-brand">
-            <span className="admin-brand-logo">सम CLOTHICO</span>
+            <span className="admin-brand-logo">सम् CLOTHICO</span>
             <span className="admin-badge">Atelier</span>
           </div>
 
@@ -196,7 +196,7 @@ export default function AdminLayout({ children }) {
               {adminUser?.name || "Super Admin"}
             </div>
             <div style={{ fontSize: 11, color: "#A39688", marginTop: 2 }}>
-              {adminUser?.email || "admin@sumclothico.com"}
+              {adminUser?.email || "support@sumclothico.com"}
             </div>
             <div style={{ fontSize: 10, color: "#10b981", marginTop: 6, display: "flex", alignItems: "center", gap: 4 }}>
               <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#10b981", display: "inline-block" }}></span>
@@ -258,6 +258,40 @@ export default function AdminLayout({ children }) {
               <FiPlus size={16} />
               <span>New Product</span>
             </Link>
+
+            {/* Topbar Sign Out Button */}
+            <button
+              onClick={handleLogout}
+              className="admin-btn"
+              title="Sign Out of Atelier Admin"
+              style={{
+                padding: "8px 14px",
+                display: "flex",
+                alignItems: "center",
+                gap: 6,
+                background: "rgba(136, 26, 28, 0.2)",
+                border: "1px solid rgba(136, 26, 28, 0.6)",
+                color: "#f87171",
+                borderRadius: 8,
+                cursor: "pointer",
+                fontWeight: 600,
+                fontSize: 13,
+                transition: "all 0.2s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "#881A1C";
+                e.currentTarget.style.color = "#ffffff";
+                e.currentTarget.style.borderColor = "#881A1C";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "rgba(136, 26, 28, 0.2)";
+                e.currentTarget.style.color = "#f87171";
+                e.currentTarget.style.borderColor = "rgba(136, 26, 28, 0.6)";
+              }}
+            >
+              <FiLogOut size={14} />
+              <span>Sign Out</span>
+            </button>
           </div>
         </header>
 

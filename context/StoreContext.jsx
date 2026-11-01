@@ -276,9 +276,9 @@ export function StoreProvider({ children }) {
   const [adminNotifications, setAdminNotifications] = useState([
     {
       id: "notif-1",
-      title: "Welcome to Sumclotico Admin Suite",
+      title: "Welcome to Sum Clothico Admin Suite",
       message:
-        "Direct database persistence, low-stock auto-alerts, and abandoned cart recovery are active.",
+        "Direct database persistence, low-stock auto-alerts, and abandoned cart recovery are active for Sum Clothico.",
       createdAt: new Date().toISOString(),
       isRead: false,
     },
@@ -1339,10 +1339,14 @@ export function StoreProvider({ children }) {
 
   // ─── ADMIN PRODUCT MANAGEMENT (Backend-integrated) ─────────────────────────
 
-  const addProduct = async (prodData) => {
-    const slug = (prodData.slug || prodData.name)
+    const addProduct = async (prodData) => {
+    const rawBase = (prodData.slug || prodData.name || "garment")
       .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-");
+      .trim()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+    const randSuffix = Math.random().toString(36).substring(2, 6);
+    const slug = `${rawBase || "garment"}-${randSuffix}`;
     const sku =
       prodData.sku ||
       `SC-${(prodData.category || "PRD").slice(0, 3).toUpperCase()}-${Math.floor(100 + Math.random() * 900)}`;
