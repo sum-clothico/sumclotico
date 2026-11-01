@@ -66,6 +66,20 @@ export default function AdminProductsPage() {
     { size: "XL", price: "1699" },
   ]);
 
+  // Color Variants with Color Wheel Hex & Stock
+  const [colorVariants, setColorVariants] = useState([
+    { color: "Indigo Blue", hex: "#1b2a4a", stock: "15" },
+    { color: "Natural Beige", hex: "#d4c5b9", stock: "10" },
+  ]);
+  const [editColorVariants, setEditColorVariants] = useState([]);
+  const [newColorHex, setNewColorHex] = useState("#2c3e50");
+  const [newColorName, setNewColorName] = useState("");
+  const [newColorStock, setNewColorStock] = useState("10");
+
+  const [editNewColorHex, setEditNewColorHex] = useState("#2c3e50");
+  const [editNewColorName, setEditNewColorName] = useState("");
+  const [editNewColorStock, setEditNewColorStock] = useState("10");
+
   // Per-Variant SKU & Stock Matrix
   const [variants, setVariants] = useState([]);
   const [editVariants, setEditVariants] = useState([]);
@@ -319,6 +333,12 @@ export default function AdminProductsPage() {
 
     setEditSizeVariants(reconstructed);
     setEditVariants(p.variants && p.variants.length > 0 ? p.variants : []);
+    const reconstructedColors = (p.colorVariants && p.colorVariants.length > 0)
+      ? p.colorVariants.map((cv) => ({ color: cv.color, hex: cv.hex || "#d4c5b9", stock: String(cv.stock ?? (p.colorStock?.[cv.color] ?? 10)) }))
+      : (p.colors && p.colors.length > 0)
+        ? p.colors.map((c) => ({ color: c, hex: "#d4c5b9", stock: String(p.colorStock?.[c] ?? 10) }))
+        : [];
+    setEditColorVariants(reconstructedColors);
     setEditForm({
       name: p.name || "",
       subtitle: p.subtitle || "",
@@ -388,7 +408,9 @@ export default function AdminProductsPage() {
       stock: Number(editForm.stock),
       lowStockThreshold: Number(editForm.lowStockThreshold) || 5,
       sizes: compiledSizes.length > 0 ? compiledSizes : ["XS", "S", "M", "L", "XL"],
-      colors: editForm.colors.split(",").map((c) => c.trim()).filter(Boolean),
+      colors: editColorVariants.length > 0 ? editColorVariants.map((cv) => cv.color) : (editForm.colors || "").split(",").map((c) => c.trim()).filter(Boolean),
+      colorVariants: editColorVariants.map((cv) => ({ color: cv.color, hex: cv.hex, stock: Number(cv.stock) || 0 })),
+      colorStock: Object.fromEntries(editColorVariants.map((cv) => [cv.color, Number(cv.stock) || 0])),
       fabricComposition: editForm.fabricComposition,
       fit: editForm.fit,
       length: editForm.length,
@@ -456,7 +478,9 @@ export default function AdminProductsPage() {
       isBase32: Boolean(base32Image),
       mimeType: imageMime,
       sizes: compiledSizes.length > 0 ? compiledSizes : ["XS", "S", "M", "L", "XL"],
-      colors: form.colors.split(",").map((c) => c.trim()).filter(Boolean),
+      colors: colorVariants.length > 0 ? colorVariants.map((cv) => cv.color) : (form.colors || "").split(",").map((c) => c.trim()).filter(Boolean),
+      colorVariants: colorVariants.map((cv) => ({ color: cv.color, hex: cv.hex, stock: Number(cv.stock) || 0 })),
+      colorStock: Object.fromEntries(colorVariants.map((cv) => [cv.color, Number(cv.stock) || 0])),
       fabricComposition: form.fabricComposition || "100% Handspun Khadi Cotton",
       fit: form.fit || "Relaxed",
       length: form.length || "Regular",
@@ -863,16 +887,211 @@ export default function AdminProductsPage() {
               />
             </div>
 
-            <div className="admin-form-group full-width">
-              <label className="admin-form-label">Available Colors (comma separated)</label>
-              <input
-                type="text"
-                name="colors"
-                className="admin-form-input"
-                placeholder="e.g. Sunny Orange, Ivory Cream, Indigo Blue"
-                value={form.colors}
-                onChange={handleChange}
-              />
+            {/* Color Wheel & Swatch Stack Builder */}
+            <div
+              className="admin-form-group full-width"
+              style={{
+                background: "#1f242d",
+                padding: "20px",
+                borderRadius: 10,
+                border: "1px solid #374151",
+              }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
+                <div>
+                  <strong style={{ fontSize: 14, color: "#f35c27" }}>
+                    🎨 Color Palette & Color Wheel ({colorVariants.length})
+                  </strong>
+                  <p style={{ margin: "2px 0 0", fontSize: 12, color: "#9ca3af" }}>
+                    Use the color wheel to select exact HEX codes, specify the color name, and set dedicated stock per color.
+                  </p>
+                </div>
+              </div>
+
+              {/* Color Wheel Row */}
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "auto 110px 1.4fr 120px auto",
+                  gap: 12,
+                  alignItems: "center",
+                  background: "#161a22",
+                  padding: "14px",
+                  borderRadius: 8,
+                  border: "1px solid #2d3748",
+                  marginBottom: 16,
+                }}
+              >
+                <div>
+                  <label style={{ fontSize: 10, color: "#9ca3af", display: "block", textTransform: "uppercase", marginBottom: 4 }}>Color Wheel</label>
+                  <input
+                    type="color"
+                    value={newColorHex}
+                    onChange={(e) => setNewColorHex(e.target.value)}
+                    style={{
+                      width: 44,
+                      height: 38,
+                      padding: 2,
+                      background: "transparent",
+                      border: "2px solid #4b5563",
+                      borderRadius: 8,
+                      cursor: "pointer",
+                    }}
+                    title="Click to open Color Wheel"
+                  />
+                </div>
+
+                <div>
+                  <label style={{ fontSize: 10, color: "#9ca3af", display: "block", textTransform: "uppercase", marginBottom: 4 }}>Hex Code</label>
+                  <input
+                    type="text"
+                    className="admin-form-input"
+                    value={newColorHex}
+                    onChange={(e) => setNewColorHex(e.target.value)}
+                    placeholder="#1b2a4a"
+                    style={{ fontFamily: "monospace", fontSize: 12, padding: "6px 8px" }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ fontSize: 10, color: "#9ca3af", display: "block", textTransform: "uppercase", marginBottom: 4 }}>Color Name</label>
+                  <input
+                    type="text"
+                    className="admin-form-input"
+                    value={newColorName}
+                    onChange={(e) => setNewColorName(e.target.value)}
+                    placeholder="e.g. Indigo Blue, Mint Sage"
+                    style={{ fontSize: 13, padding: "6px 10px" }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ fontSize: 10, color: "#9ca3af", display: "block", textTransform: "uppercase", marginBottom: 4 }}>Stock (Units)</label>
+                  <input
+                    type="number"
+                    className="admin-form-input"
+                    value={newColorStock}
+                    onChange={(e) => setNewColorStock(e.target.value)}
+                    min="0"
+                    placeholder="10"
+                    style={{ fontSize: 13, padding: "6px 8px" }}
+                  />
+                </div>
+
+                <div style={{ alignSelf: "flex-end" }}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (!newColorName.trim()) {
+                        alert("Please enter a color name (e.g. Indigo Blue).");
+                        return;
+                      }
+                      setColorVariants((prev) => [
+                        ...prev,
+                        { color: newColorName.trim(), hex: newColorHex, stock: Number(newColorStock) || 0 }
+                      ]);
+                      setNewColorName("");
+                      setNewColorStock("10");
+                    }}
+                    className="admin-btn admin-btn-secondary"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 6,
+                      padding: "8px 14px",
+                      color: "#34d399",
+                      border: "1px solid rgba(52, 211, 153, 0.4)",
+                      fontWeight: 700,
+                      cursor: "pointer",
+                    }}
+                  >
+                    <FiPlus size={14} /> Add Color
+                  </button>
+                </div>
+              </div>
+
+              {/* Added Colors List */}
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {colorVariants.length === 0 ? (
+                  <div style={{ textAlign: "center", padding: "16px", color: "#6b7280", fontSize: 12 }}>
+                    No colors added yet. Pick a color from the wheel above and click "+ Add Color".
+                  </div>
+                ) : (
+                  colorVariants.map((cv, idx) => (
+                    <div
+                      key={idx}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        background: "#161a22",
+                        padding: "10px 14px",
+                        borderRadius: 8,
+                        border: "1px solid #374151",
+                      }}
+                    >
+                      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                        <div
+                          style={{
+                            width: 28,
+                            height: 28,
+                            borderRadius: "50%",
+                            backgroundColor: cv.hex,
+                            border: "2px solid #ffffff",
+                            boxShadow: "0 2px 6px rgba(0,0,0,0.3)",
+                            flexShrink: 0,
+                          }}
+                        />
+                        <div>
+                          <span style={{ fontWeight: 700, color: "#fff", fontSize: 14 }}>{cv.color}</span>
+                          <span style={{ marginLeft: 8, fontSize: 11, color: "#9ca3af", fontFamily: "monospace", background: "#222731", padding: "2px 6px", borderRadius: 4 }}>
+                            {cv.hex}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                          <span style={{ fontSize: 12, color: "#9ca3af" }}>Stock:</span>
+                          <input
+                            type="number"
+                            min="0"
+                            value={cv.stock}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              setColorVariants((prev) => {
+                                const next = [...prev];
+                                next[idx] = { ...next[idx], stock: val };
+                                return next;
+                              });
+                            }}
+                            className="admin-form-input"
+                            style={{ width: 70, padding: "4px 8px", fontSize: 12, textAlign: "center" }}
+                          />
+                          <span style={{ fontSize: 11, color: "#6b7280" }}>units</span>
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => setColorVariants((prev) => prev.filter((_, i) => i !== idx))}
+                          style={{
+                            background: "rgba(239, 68, 68, 0.15)",
+                            border: "1px solid rgba(239, 68, 68, 0.3)",
+                            color: "#f87171",
+                            borderRadius: 6,
+                            padding: "6px 10px",
+                            cursor: "pointer",
+                            fontSize: 12,
+                          }}
+                          title="Remove color"
+                        >
+                          <FiTrash2 size={13} />
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
             </div>
 
             {/* Size & Price Builder */}
@@ -1842,15 +2061,203 @@ export default function AdminProductsPage() {
                   />
                 </div>
 
-                <div className="auth-form-group" style={{ gridColumn: "1 / -1" }}>
-                  <label className="auth-label">Available Colors (comma separated)</label>
-                  <input
-                    type="text"
-                    name="colors"
-                    className="auth-input"
-                    value={editForm.colors}
-                    onChange={handleEditChange}
-                  />
+                {/* Color Wheel & Swatch Stack Builder for Edit Modal */}
+                <div
+                  className="auth-form-group"
+                  style={{
+                    gridColumn: "1 / -1",
+                    background: "#f8f9fa",
+                    padding: "18px",
+                    borderRadius: 10,
+                    border: "1px solid #e5e7eb",
+                  }}
+                >
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+                    <div>
+                      <strong style={{ fontSize: 14, color: "#111827" }}>
+                        🎨 Color Palette & Color Wheel ({editColorVariants.length})
+                      </strong>
+                      <p style={{ margin: "2px 0 0", fontSize: 12, color: "#6b7280" }}>
+                        Select exact shades with the color wheel, set color names, and update stock counts.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Color Picker Row */}
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "auto 100px 1.4fr 110px auto",
+                      gap: 10,
+                      alignItems: "center",
+                      background: "#ffffff",
+                      padding: "12px",
+                      borderRadius: 8,
+                      border: "1px solid #d1d5db",
+                      marginBottom: 14,
+                    }}
+                  >
+                    <div>
+                      <label style={{ fontSize: 10, color: "#6b7280", display: "block", textTransform: "uppercase", marginBottom: 3 }}>Wheel</label>
+                      <input
+                        type="color"
+                        value={editNewColorHex}
+                        onChange={(e) => setEditNewColorHex(e.target.value)}
+                        style={{
+                          width: 40,
+                          height: 36,
+                          padding: 1,
+                          background: "transparent",
+                          border: "1.5px solid #d1d5db",
+                          borderRadius: 6,
+                          cursor: "pointer",
+                        }}
+                      />
+                    </div>
+
+                    <div>
+                      <label style={{ fontSize: 10, color: "#6b7280", display: "block", textTransform: "uppercase", marginBottom: 3 }}>Hex</label>
+                      <input
+                        type="text"
+                        className="auth-input"
+                        value={editNewColorHex}
+                        onChange={(e) => setEditNewColorHex(e.target.value)}
+                        placeholder="#1b2a4a"
+                        style={{ fontFamily: "monospace", fontSize: 12, padding: "6px 8px" }}
+                      />
+                    </div>
+
+                    <div>
+                      <label style={{ fontSize: 10, color: "#6b7280", display: "block", textTransform: "uppercase", marginBottom: 3 }}>Color Name</label>
+                      <input
+                        type="text"
+                        className="auth-input"
+                        value={editNewColorName}
+                        onChange={(e) => setEditNewColorName(e.target.value)}
+                        placeholder="e.g. Indigo Blue"
+                        style={{ fontSize: 13, padding: "6px 8px" }}
+                      />
+                    </div>
+
+                    <div>
+                      <label style={{ fontSize: 10, color: "#6b7280", display: "block", textTransform: "uppercase", marginBottom: 3 }}>Stock</label>
+                      <input
+                        type="number"
+                        className="auth-input"
+                        value={editNewColorStock}
+                        onChange={(e) => setEditNewColorStock(e.target.value)}
+                        min="0"
+                        placeholder="10"
+                        style={{ fontSize: 13, padding: "6px 8px" }}
+                      />
+                    </div>
+
+                    <div style={{ alignSelf: "flex-end" }}>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (!editNewColorName.trim()) {
+                            alert("Please enter a color name.");
+                            return;
+                          }
+                          setEditColorVariants((prev) => [
+                            ...prev,
+                            { color: editNewColorName.trim(), hex: editNewColorHex, stock: Number(editNewColorStock) || 0 }
+                          ]);
+                          setEditNewColorName("");
+                          setEditNewColorStock("10");
+                        }}
+                        style={{
+                          background: "#111827",
+                          color: "#fff",
+                          border: "none",
+                          borderRadius: 6,
+                          padding: "8px 12px",
+                          fontSize: 12,
+                          fontWeight: 700,
+                          cursor: "pointer",
+                        }}
+                      >
+                        + Add Color
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Added Colors List */}
+                  <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                    {editColorVariants.length === 0 ? (
+                      <div style={{ textAlign: "center", padding: "12px", color: "#6b7280", fontSize: 12 }}>
+                        No colors configured. Add colors with the color wheel above.
+                      </div>
+                    ) : (
+                      editColorVariants.map((cv, idx) => (
+                        <div
+                          key={idx}
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            background: "#ffffff",
+                            padding: "8px 12px",
+                            borderRadius: 6,
+                            border: "1px solid #e5e7eb",
+                          }}
+                        >
+                          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                            <div
+                              style={{
+                                width: 24,
+                                height: 24,
+                                borderRadius: "50%",
+                                backgroundColor: cv.hex,
+                                border: "1.5px solid #d1d5db",
+                                flexShrink: 0,
+                              }}
+                            />
+                            <span style={{ fontWeight: 700, color: "#111827", fontSize: 13 }}>{cv.color}</span>
+                            <span style={{ fontSize: 11, color: "#6b7280", fontFamily: "monospace" }}>{cv.hex}</span>
+                          </div>
+
+                          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                              <span style={{ fontSize: 11, color: "#6b7280" }}>Stock:</span>
+                              <input
+                                type="number"
+                                min="0"
+                                value={cv.stock}
+                                onChange={(e) => {
+                                  const val = e.target.value;
+                                  setEditColorVariants((prev) => {
+                                    const next = [...prev];
+                                    next[idx] = { ...next[idx], stock: val };
+                                    return next;
+                                  });
+                                }}
+                                className="auth-input"
+                                style={{ width: 60, padding: "3px 6px", fontSize: 12, textAlign: "center" }}
+                              />
+                            </div>
+
+                            <button
+                              type="button"
+                              onClick={() => setEditColorVariants((prev) => prev.filter((_, i) => i !== idx))}
+                              style={{
+                                background: "#fee2e2",
+                                border: "1px solid #fca5a5",
+                                color: "#b91c1c",
+                                borderRadius: 4,
+                                padding: "4px 8px",
+                                cursor: "pointer",
+                                fontSize: 11,
+                              }}
+                            >
+                              ✕
+                            </button>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
                 </div>
 
                 {/* Dynamic Size & Price List in Edit Modal */}

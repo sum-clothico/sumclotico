@@ -476,11 +476,20 @@ export default function ProductPage() {
                 </p>
               </div>
 
-              {/* Color Selection (if multiple colors) — Visual Swatches */}
-              {product.colors?.length > 1 && (
+              {/* Color Selection (if colors exist) — Live Color Wheel Swatches */}
+              {product.colors?.length > 0 && (
                 <div>
                   <span style={{ fontSize: 12, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "#6b5d52", display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
                     Color: <strong style={{ color: "#1a140e" }}>{selectedColor}</strong>
+                    {/* Live Hex badge from color wheel */}
+                    {(() => {
+                      const cv = product.colorVariants?.find((v) => v.color?.toLowerCase().trim() === selectedColor?.toLowerCase().trim());
+                      return cv?.hex ? (
+                        <span style={{ fontSize: 11, color: "#8a7a6c", fontFamily: "monospace", background: "rgba(0,0,0,0.06)", padding: "1px 6px", borderRadius: 4 }}>
+                          {cv.hex}
+                        </span>
+                      ) : null;
+                    })()}
                     {colorStock <= 0 ? (
                       <span style={{ fontSize: 10, fontWeight: 700, color: "#dc2626", background: "#fee2e2", padding: "2px 8px", borderRadius: 4 }}>Out of Stock</span>
                     ) : colorStock <= (product.lowStockThreshold || 5) ? (
@@ -489,30 +498,54 @@ export default function ProductPage() {
                       <span style={{ fontSize: 10, fontWeight: 600, color: "#16a34a", background: "#dcfce7", padding: "2px 8px", borderRadius: 4 }}>In Stock ({colorStock})</span>
                     )}
                   </span>
-                  <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+                  <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
                     {product.colors.map((color) => {
                       const isSelected = selectedColor === color;
-                      const bg = getColorHex(color);
+                      const cv = product.colorVariants?.find(
+                        (v) => v.color?.toLowerCase().trim() === color?.toLowerCase().trim()
+                      );
+                      const bg = cv?.hex || (color.startsWith("#") ? color : getColorHex(color));
+                      const stackForColor = product.colorStock?.[color] ?? cv?.stock ?? 10;
+                      const outOfStock = Number(stackForColor) <= 0;
+
                       return (
                         <button
                           key={color}
                           type="button"
                           onClick={() => setSelectedColor(color)}
-                          title={color}
+                          title={`${color} (${stackForColor} in stock)`}
                           aria-label={`Select color ${color}`}
                           style={{
-                            width: 32,
-                            height: 32,
+                            position: "relative",
+                            width: 36,
+                            height: 36,
                             borderRadius: "50%",
                             backgroundColor: bg,
-                            border: isSelected ? "2.5px solid #660608" : "1.5px solid rgba(42,31,20,0.25)",
-                            boxShadow: isSelected ? "0 0 0 2px #EDE8DC, 0 4px 10px rgba(102,6,8,0.25)" : "0 2px 4px rgba(0,0,0,0.06)",
+                            border: isSelected ? "3px solid #660608" : "1.5px solid rgba(42,31,20,0.25)",
+                            boxShadow: isSelected
+                              ? "0 0 0 2px #EDE8DC, 0 4px 10px rgba(102,6,8,0.3)"
+                              : "0 2px 4px rgba(0,0,0,0.08)",
                             cursor: "pointer",
                             padding: 0,
                             transition: "all 0.2s ease",
-                            transform: isSelected ? "scale(1.12)" : "scale(1)",
+                            transform: isSelected ? "scale(1.15)" : "scale(1)",
                           }}
-                        />
+                        >
+                          {outOfStock && (
+                            <span
+                              style={{
+                                position: "absolute",
+                                top: "50%",
+                                left: 3,
+                                right: 3,
+                                height: 2,
+                                background: "#dc2626",
+                                transform: "rotate(-45deg)",
+                                borderRadius: 1,
+                              }}
+                            />
+                          )}
+                        </button>
                       );
                     })}
                   </div>

@@ -612,7 +612,8 @@ export default function ProductQuickView() {
                 <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
                   {quickViewProduct.colors.map((color) => {
                     const isSelected = (selectedColor || quickViewProduct.colors[0]) === color;
-                    const bg = getColorHex(color);
+                    const cv = quickViewProduct.colorVariants?.find((v) => v.color?.toLowerCase().trim() === color?.toLowerCase().trim());
+                    const bg = cv?.hex || (color.startsWith("#") ? color : getColorHex(color));
                     return (
                       <button
                         key={color}
