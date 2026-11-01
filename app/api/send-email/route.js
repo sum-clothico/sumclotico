@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const PRIMARY_ADMIN_EMAIL = "sumclothico@gmail.com";
+const PRIMARY_ADMIN_EMAIL = "support@sumclothico.com";
 const FALLBACK_ADMIN_EMAIL = "support@sumclothico.com";
 
 export async function POST(request) {
@@ -9,7 +9,7 @@ export async function POST(request) {
     const { type, to, data } = body;
 
     const apiKey = process.env.RESEND_API_KEY;
-    const fromEmail = process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev";
+    const fromEmail = process.env.RESEND_FROM_EMAIL || "Sum Clothico <support@sumclothico.com>";
     const adminEmail = PRIMARY_ADMIN_EMAIL;
 
     let customerSubject = "Sum Clothico Notification";
@@ -91,7 +91,7 @@ export async function POST(request) {
             </div>
 
             <div style="margin-top: 28px; padding: 16px; background: #f9fafb; border-radius: 8px; font-size: 12px; color: #6b7280; text-align: center;">
-              Questions? Message us on WhatsApp (+91 9329587707) or email <a href="mailto:sumclothico@gmail.com" style="color: #660608; font-weight: 700;">sumclothico@gmail.com</a>
+              Questions? Message us on WhatsApp (+91 9329587707) or email <a href="mailto:support@sumclothico.com" style="color: #660608; font-weight: 700;">support@sumclothico.com</a>
             </div>
           </div>
         </div>
@@ -164,7 +164,7 @@ export async function POST(request) {
               </a>
             </div>
             <p style="font-size: 12px; color: #6b7280; text-align: center;">
-              Need help? WhatsApp us at +91 9329587707 or reply to sumclothico@gmail.com
+              Need help? WhatsApp us at +91 9329587707 or reply to support@sumclothico.com
             </p>
           </div>
         </div>
@@ -318,7 +318,7 @@ export async function POST(request) {
         customerDispatch = await sendResend(targetCustomer, customerSubject, customerHtml);
       }
 
-      // 2. Dispatch Admin Email (always to sumclothico@gmail.com)
+      // 2. Dispatch Admin Email (always to support@sumclothico.com)
       let adminDispatch = null;
       if (adminHtml && adminSubject) {
         adminDispatch = await sendResend(adminEmail, adminSubject, adminHtml);

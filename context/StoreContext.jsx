@@ -1089,7 +1089,7 @@ export function StoreProvider({ children }) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             type: "LOW_STOCK_ALERT",
-            to: "sumclothico@gmail.com",
+            to: "support@sumclothico.com",
             data: {
               productName: lp.name,
               remainingStock: lp.remainingStock,
