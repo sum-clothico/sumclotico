@@ -63,7 +63,7 @@ export default function AdminOrdersPage() {
         <div>
           <div className="admin-card-title">Live Orders & Dispatch CRM ({filtered.length})</div>
           <div style={{ fontSize: 13, color: "#9ca3af", marginTop: 4 }}>
-            Manage Cashfree & Razorpay payments, assign AWB tracking numbers, and fulfill customer orders.
+            Manage Cashfree & COD orders, assign AWB tracking numbers, and fulfill customer orders.
           </div>
         </div>
 
@@ -84,8 +84,7 @@ export default function AdminOrdersPage() {
           >
             <option value="ALL">All Portals</option>
             <option value="Cashfree">Cashfree Portal</option>
-            <option value="Razorpay">Razorpay Portal</option>
-            <option value="Cash on Delivery">Cash on Delivery</option>
+                        <option value="Cash on Delivery">Cash on Delivery</option>
           </select>
           <select
             className="admin-form-select"
@@ -201,9 +200,9 @@ export default function AdminOrdersPage() {
                           fontWeight: 800,
                           padding: "2px 6px",
                           borderRadius: 4,
-                          background: (ord.paymentGateway || "").toLowerCase().includes("razorpay") ? "#0c2340" : (ord.paymentGateway || "").toLowerCase().includes("cashfree") ? "#f35c27" : "#374151",
+                          background: (ord.paymentGateway || "").toLowerCase().includes("cashfree") ? "#f35c27" : "#374151",
                           color: "#ffffff",
-                          border: (ord.paymentGateway || "").toLowerCase().includes("razorpay") ? "1px solid #0284c7" : "none",
+                          border: "none",
                         }}
                       >
                         {ord.paymentGateway || "Cashfree"}
@@ -223,7 +222,7 @@ export default function AdminOrdersPage() {
                     <select
                       className="admin-form-select"
                       style={{ padding: "2px 6px", fontSize: 11, width: "auto", marginTop: 4 }}
-                      value={ord.paymentStatus || "PAID"}
+                      value={ord.paymentStatus || "PENDING"}
                       onChange={(e) => updatePaymentStatus(ord.id, e.target.value)}
                     >
                       <option value="PAID">PAID</option>

@@ -252,8 +252,8 @@ export default function AdminDashboardPage() {
                 <th>Customer</th>
                 <th>Destination</th>
                 <th>Items</th>
-                <th>Total Paid</th>
-                <th>Payment</th>
+                <th>Order Total</th>
+                <th>Payment Status</th>
                 <th>Fulfillment Status</th>
                 <th>Action</th>
               </tr>
@@ -285,12 +285,24 @@ export default function AdminDashboardPage() {
                         </div>
                       ))}
                     </td>
-                    <td style={{ fontWeight: 700, color: "#34d399", whiteSpace: "nowrap" }}>
+                    <td style={{ fontWeight: 700, color: ord.paymentStatus === "PAID" ? "#34d399" : "#fbbf24", whiteSpace: "nowrap" }}>
                       ₹{(ord.totalAmount || 0).toLocaleString("en-IN")}
                     </td>
                     <td>
-                      <span className="admin-status-badge status-paid">
-                        {ord.paymentMethod || "Cashfree"}
+                      <span
+                        className="admin-status-badge"
+                        style={{
+                          background: ord.paymentStatus === "PAID" ? "rgba(52, 211, 153, 0.15)" : "rgba(251, 191, 36, 0.15)",
+                          color: ord.paymentStatus === "PAID" ? "#34d399" : "#fbbf24",
+                          border: '1px solid ' + (ord.paymentStatus === "PAID" ? "rgba(52, 211, 153, 0.3)" : "rgba(251, 191, 36, 0.3)"),
+                          fontWeight: 700,
+                          padding: "3px 8px",
+                          borderRadius: 4,
+                          fontSize: 11,
+                          display: "inline-block"
+                        }}
+                      >
+                        {ord.paymentStatus === "PAID" ? "PAID" : ("UNPAID (" + (ord.paymentStatus || "PENDING") + ")")}
                       </span>
                     </td>
                     <td>

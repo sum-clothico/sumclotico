@@ -402,18 +402,25 @@ export function StoreProvider({ children }) {
       const savedOrders = localStorage.getItem("sum_orders");
       if (savedOrders) {
         const parsed = JSON.parse(savedOrders);
-        const cleanOrders = (Array.isArray(parsed) ? parsed : []).filter(
-          (o) =>
-            o &&
-            ![
-              "SUM-98214",
-              "SUM-98215",
-              "SUM-98216",
-              "SUM-98217",
-              "ord-101",
-              "ord-102",
-            ].includes(o.id || o.orderNumber),
-        );
+        const cleanOrders = (Array.isArray(parsed) ? parsed : [])
+          .filter(
+            (o) =>
+              o &&
+              ![
+                "SUM-98214",
+                "SUM-98215",
+                "SUM-98216",
+                "SUM-98217",
+                "ord-101",
+                "ord-102",
+              ].includes(o.id || o.orderNumber),
+          )
+          .map((o) => {
+            if (o.orderNumber?.includes("63012") || (!o.cfPaymentVerified && o.paymentGateway === "Cashfree" && o.paymentStatus === "PAID")) {
+              return { ...o, paymentStatus: "PENDING", orderStatus: "PENDING_PAYMENT" };
+            }
+            return o;
+          });
         setOrders(cleanOrders);
         localStorage.setItem("sum_orders", JSON.stringify(cleanOrders));
       }
@@ -996,22 +1003,23 @@ export function StoreProvider({ children }) {
     customer,
     shippingAddress,
     paymentGateway = "Cashfree",
-    paymentMethod = "Cashfree UPI (Instant)",
-    paymentStatus = "PAID",
+    paymentMethod = "Cashfree PG (Instant UPI / Cards)",
+    paymentStatus = "PENDING",
     transactionId = null,
+    cashfreeOrderId = null,
+    orderNumber = null,
   }) => {
-    const orderNumber = `SUM-${Math.floor(10000 + Math.random() * 90000)}`;
+    const finalOrderNumber = orderNumber || `SUM-${Math.floor(10000 + Math.random() * 90000)}`;
     const actualTxnId =
       transactionId ||
-      (paymentGateway === "Razorpay"
-        ? `pay_${Math.random().toString(36).substring(2, 14)}`
-        : paymentGateway === "Cashfree"
-          ? `cf_pay_${Math.floor(10000000 + Math.random() * 90000000)}`
-          : `cod_${Math.floor(100000 + Math.random() * 900000)}`);
+      (paymentGateway === "Cash on Delivery"
+        ? `cod_${Math.floor(100000 + Math.random() * 900000)}`
+        : null);
 
     const newOrder = {
       id: `ord-${Date.now()}`,
-      orderNumber,
+      orderNumber: finalOrderNumber,
+      cashfreeOrderId,
       customer,
       shippingAddress,
       items: [...cart],
@@ -1060,17 +1068,19 @@ export function StoreProvider({ children }) {
     // Persist to MongoDB backend (async, non-blocking — local state already updated above)
     persistOrderToBackend(newOrder, [...cart]);
 
-    // Send transactional order confirmation email via API
+    // Send transactional order confirmation email via API (only when PAID or Cash on Delivery)
     try {
-      fetch("/api/send-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          type: "ORDER_CONFIRMATION",
-          to: customer.email,
-          data: newOrder,
-        }),
-      }).catch((e) => console.warn("Order email error:", e));
+      if (paymentStatus === "PAID" || paymentGateway === "Cash on Delivery") {
+        fetch("/api/send-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            type: "ORDER_CONFIRMATION",
+            to: customer.email,
+            data: newOrder,
+          }),
+        }).catch((e) => console.warn("Order email error:", e));
+      }
 
       // Send low-stock email alerts to admin
       lowStockAlerts.forEach((lp) => {
@@ -1215,14 +1225,37 @@ export function StoreProvider({ children }) {
     }
   };
 
-  const updatePaymentStatus = async (orderId, newPaymentStatus) => {
+  const updatePaymentStatus = async (orderId, newPaymentStatus, txnId = null) => {
+    let confirmedOrder = null;
     setOrders((prev) =>
-      prev.map((o) =>
-        o.id === orderId || o.orderNumber === orderId
-          ? { ...o, paymentStatus: newPaymentStatus }
-          : o,
-      ),
+      prev.map((o) => {
+        if (o.id === orderId || o.orderNumber === orderId) {
+          confirmedOrder = {
+            ...o,
+            paymentStatus: newPaymentStatus,
+            cfPaymentVerified: newPaymentStatus === "PAID",
+            orderStatus: newPaymentStatus === "PAID" ? "PLACED" : o.orderStatus,
+            ...(txnId ? { transactionId: txnId } : {}),
+          };
+          return confirmedOrder;
+        }
+        return o;
+      }),
     );
+
+    if (newPaymentStatus === "PAID" && confirmedOrder?.customer?.email) {
+      try {
+        fetch("/api/send-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            type: "ORDER_CONFIRMATION",
+            to: confirmedOrder.customer.email,
+            data: confirmedOrder,
+          }),
+        }).catch((e) => console.warn("Order email error:", e));
+      } catch {}
+    }
 
     try {
       await apiFetch(`/checkout/orders/${orderId}/status`, {
@@ -1718,7 +1751,9 @@ export function StoreProvider({ children }) {
       .filter((o) => o.paymentStatus === "PAID")
       .reduce((acc, o) => acc + (o.totalAmount || 0), 0);
 
-    const totalOrdersCount = orders.length;
+    const totalOrdersCount = orders.filter(
+      (o) => o.paymentStatus === "PAID" || o.paymentGateway === "Cash on Delivery"
+    ).length;
     const avgOrderValue =
       totalOrdersCount > 0 ? Math.round(totalRevenue / totalOrdersCount) : 0;
     const pendingOrdersCount = orders.filter(
