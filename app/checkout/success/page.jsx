@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useStore } from "@/context/StoreContext";
@@ -32,11 +32,32 @@ function SuccessContent() {
     order?.paymentStatus || "PENDING",
   );
   const [statusMessage, setStatusMessage] = useState("");
+  const hasVerifiedRef = useRef(false);
 
-  // Live Cashfree Order Status Verification
+  // Live Cashfree Order Status Verification (Idempotent: runs at most once per session)
   useEffect(() => {
     if (!cfOrderId) {
       setVerifying(false);
+      return;
+    }
+
+    // 1. In-memory ref guard against StrictMode / re-renders
+    if (hasVerifiedRef.current) {
+      return;
+    }
+    hasVerifiedRef.current = true;
+
+    // 2. SessionStorage guard against page refreshes / navigation loops
+    const cacheKey = `cf_status_${cfOrderId}`;
+    const cachedStatus = typeof window !== "undefined" ? sessionStorage.getItem(cacheKey) : null;
+    if (cachedStatus) {
+      setVerifying(false);
+      setVerifiedStatus(cachedStatus);
+      setStatusMessage(
+        cachedStatus === "PAID"
+          ? "Payment verified successfully via Cashfree."
+          : "Payment was not completed. No order has been placed."
+      );
       return;
     }
 
@@ -45,7 +66,7 @@ function SuccessContent() {
     async function checkCashfreeStatus() {
       try {
         const res = await fetch(
-          `/api/payments/cashfree?orderId=${encodeURIComponent(cfOrderId)}`,
+          `/api/payments/cashfree?orderId=${encodeURIComponent(cfOrderId)}`
         );
         const json = await res.json();
         const cfStatus = json?.data?.order_status;
@@ -54,47 +75,61 @@ function SuccessContent() {
 
         if (cfStatus === "PAID") {
           setVerifiedStatus("PAID");
+          try { sessionStorage.setItem(cacheKey, "PAID"); } catch {}
           setStatusMessage("Payment verified successfully via Cashfree.");
+
           if (order && updatePaymentStatus) {
             updatePaymentStatus(order.id, "PAID", cfOrderId);
           }
-          // Dispatch confirmation email to client and admin
-          fetch("/api/send-email", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              type: "ORDER_CONFIRMATION",
-              to: order?.customer?.email,
-              data: {
-                ...order,
-                paymentStatus: "PAID",
-                paymentMethod: "Cashfree PG",
-              },
-            }),
-          }).catch((e) => console.warn("Email dispatch error:", e));
+
+          // Idempotent email dispatch: strictly once per order ID
+          const emailSentKey = `email_dispatched_paid_${cfOrderId}`;
+          if (typeof window !== "undefined" && !sessionStorage.getItem(emailSentKey)) {
+            try { sessionStorage.setItem(emailSentKey, "1"); } catch {}
+            fetch("/api/send-email", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                type: "ORDER_CONFIRMATION",
+                to: order?.customer?.email,
+                data: {
+                  ...order,
+                  paymentStatus: "PAID",
+                  paymentMethod: "Cashfree PG",
+                },
+              }),
+            }).catch((e) => console.warn("Email dispatch error:", e));
+          }
         } else {
           setVerifiedStatus("FAILED");
+          try { sessionStorage.setItem(cacheKey, "FAILED"); } catch {}
           setStatusMessage(
             cfStatus === "ACTIVE"
               ? "Payment was not completed on Cashfree. No order has been placed."
-              : `Payment status: ${cfStatus || "FAILED"}. No order has been placed.`,
+              : `Payment status: ${cfStatus || "FAILED"}. No order has been placed.`
           );
+
           if (order && updatePaymentStatus) {
             updatePaymentStatus(order.id, "CANCELLED");
           }
-          // Dispatch Payment Failed alert to client and admin
-          fetch("/api/send-email", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              type: "ORDER_PAYMENT_FAILED",
-              to: order?.customer?.email,
-              data: {
-                ...order,
-                reason: cfStatus === "ACTIVE" ? "User cancelled or window closed" : `Gateway returned ${cfStatus}`,
-              },
-            }),
-          }).catch((e) => console.warn("Payment failed email error:", e));
+
+          // Idempotent failed email dispatch: strictly once per order ID
+          const emailSentKey = `email_dispatched_failed_${cfOrderId}`;
+          if (typeof window !== "undefined" && !sessionStorage.getItem(emailSentKey)) {
+            try { sessionStorage.setItem(emailSentKey, "1"); } catch {}
+            fetch("/api/send-email", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                type: "ORDER_PAYMENT_FAILED",
+                to: order?.customer?.email,
+                data: {
+                  ...order,
+                  reason: cfStatus === "ACTIVE" ? "User cancelled or window closed" : `Gateway returned ${cfStatus}`,
+                },
+              }),
+            }).catch((e) => console.warn("Payment failed email error:", e));
+          }
         }
       } catch (err) {
         if (!isMounted) return;
@@ -111,7 +146,7 @@ function SuccessContent() {
     return () => {
       isMounted = false;
     };
-  }, [cfOrderId, order?.id]);
+  }, [cfOrderId]);
 
   useEffect(() => {
     if (order && verifiedStatus === "PAID") {

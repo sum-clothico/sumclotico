@@ -3,10 +3,44 @@ import { NextResponse } from "next/server";
 const PRIMARY_ADMIN_EMAIL = "support@sumclothico.com";
 const FALLBACK_ADMIN_EMAIL = "support@sumclothico.com";
 
+// Server-side Idempotency Cache: prevents duplicate emails within 10 minutes
+const emailIdempotencyCache = new Map();
+const IDEMPOTENCY_WINDOW_MS = 10 * 60 * 1000; // 10 minutes
+
+function checkAndSetIdempotency(key) {
+  if (!key) return true;
+  const now = Date.now();
+  for (const [k, timestamp] of emailIdempotencyCache.entries()) {
+    if (now - timestamp > IDEMPOTENCY_WINDOW_MS) {
+      emailIdempotencyCache.delete(k);
+    }
+  }
+
+  if (emailIdempotencyCache.has(key)) {
+    return false; // Duplicate found!
+  }
+  emailIdempotencyCache.set(key, now);
+  return true;
+}
+
+
 export async function POST(request) {
   try {
     const body = await request.json();
     const { type, to, data } = body;
+
+    // Server-side Idempotency: block duplicate emails for the same order reference within 10 minutes
+    const orderRef = data?.orderNumber || data?.orderId || data?.id || data?.cfOrderId;
+    const idempotencyKey = orderRef ? `${type}_${orderRef}` : null;
+
+    if (idempotencyKey && !checkAndSetIdempotency(idempotencyKey)) {
+      console.warn(`[SendEmail Idempotency Guard] Blocked duplicate email dispatch for key: ${idempotencyKey}`);
+      return NextResponse.json({
+        success: true,
+        duplicate: true,
+        message: `Email dispatch suppressed by idempotency guard for ${idempotencyKey}`,
+      });
+    }
 
     const apiKey = process.env.RESEND_API_KEY;
     const fromEmail = process.env.RESEND_FROM_EMAIL || "Sum Clothico <support@sumclothico.com>";
@@ -311,24 +345,31 @@ export async function POST(request) {
         }
       };
 
-      // 1. Dispatch Customer Email (if customer content exists and target email specified)
+      // 1. Dispatch Customer Email
       let customerDispatch = null;
       const targetCustomer = to || data?.customer?.email;
       if (customerHtml && targetCustomer) {
         customerDispatch = await sendResend(targetCustomer, customerSubject, customerHtml);
+        console.log(`📨 [CLIENT EMAIL DISPATCHED] Type: ${type} → ${targetCustomer} | Subject: "${customerSubject}" | ID: ${customerDispatch?.id || "ok"}`);
       }
 
       // 2. Dispatch Admin Email (to support@sumclothico.com + backup sumclothico@gmail.com)
       let adminDispatch = null;
       if (adminHtml && adminSubject) {
         adminDispatch = await sendResend(adminEmail, adminSubject, adminHtml);
+        console.log(`🚨 [ADMIN EMAIL DISPATCHED] Type: ${type} → ${adminEmail} | Subject: "${adminSubject}" | ID: ${adminDispatch?.id || "ok"}`);
         if (adminEmail !== "sumclothico@gmail.com") {
-          sendResend("sumclothico@gmail.com", adminSubject, adminHtml).catch(() => {});
+          sendResend("sumclothico@gmail.com", adminSubject, adminHtml)
+            .then((res) => console.log(`🚨 [ADMIN BACKUP DISPATCHED] Type: ${type} → sumclothico@gmail.com | ID: ${res?.id || "ok"}`))
+            .catch(() => {});
         }
       } else if (!customerHtml && adminSubject) {
         adminDispatch = await sendResend(adminEmail, adminSubject, adminHtml);
+        console.log(`🚨 [ADMIN EMAIL DISPATCHED] Type: ${type} → ${adminEmail} | Subject: "${adminSubject}" | ID: ${adminDispatch?.id || "ok"}`);
         if (adminEmail !== "sumclothico@gmail.com") {
-          sendResend("sumclothico@gmail.com", adminSubject, adminHtml).catch(() => {});
+          sendResend("sumclothico@gmail.com", adminSubject, adminHtml)
+            .then((res) => console.log(`🚨 [ADMIN BACKUP DISPATCHED] Type: ${type} → sumclothico@gmail.com | ID: ${res?.id || "ok"}`))
+            .catch(() => {});
         }
       }
 
