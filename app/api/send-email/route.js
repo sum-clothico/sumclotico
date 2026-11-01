@@ -163,7 +163,7 @@ export async function POST(request) {
             </tbody>
           </table>
           <p style="margin-top: 20px;">
-            <a href="https://sumclotico.com/admin/orders" style="background: #111; color: #fff; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 700; display: inline-block;">
+            <a href="https://www.sumclothico.com/admin/orders" style="background: #111; color: #fff; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 700; display: inline-block;">
               View in Admin CRM →
             </a>
           </p>
@@ -193,7 +193,7 @@ export async function POST(request) {
               Hi ${data.customer?.name || "there"}, your transaction on Cashfree was cancelled or could not be completed. You can safely retry checkout below:
             </p>
             <div style="text-align: center; margin: 28px 0;">
-              <a href="https://sumclotico.com/checkout?retry=${data.orderNumber}" style="background: #881A1C; color: #ffffff; padding: 14px 32px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 14px; display: inline-block;">
+              <a href="https://www.sumclothico.com/checkout?retry=${data.orderNumber}" style="background: #881A1C; color: #ffffff; padding: 14px 32px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 14px; display: inline-block;">
                 Retry Payment Now →
               </a>
             </div>
@@ -238,7 +238,7 @@ export async function POST(request) {
               <p style="margin: 4px 0;"><strong>Expected Delivery:</strong> 2–4 Business Days</p>
             </div>
             <div style="text-align: center; margin-top: 24px;">
-              <a href="https://sumclotico.com/track-order?awb=${data.trackingNumber || ""}" style="background: #111; color: #fff; padding: 12px 28px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 14px; display: inline-block;">
+              <a href="https://www.sumclothico.com/track-order?awb=${data.trackingNumber || ""}" style="background: #111; color: #fff; padding: 12px 28px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 14px; display: inline-block;">
                 Track Live Shipment →
               </a>
             </div>
@@ -253,7 +253,7 @@ export async function POST(request) {
           <p><strong>Order Ref:</strong> #${data.orderNumber}</p>
           <p><strong>Carrier:</strong> ${data.carrier || "BlueDart Express"}</p>
           <p><strong>AWB Code:</strong> ${data.trackingNumber || "Auto-assigned"}</p>
-          <p><a href="https://sumclotico.com/admin/orders" style="color: #166534; font-weight: 700;">View in Admin Orders CRM →</a></p>
+          <p><a href="https://www.sumclothico.com/admin/orders" style="color: #166534; font-weight: 700;">View in Admin Orders CRM →</a></p>
         </div>
       `;
     }
@@ -268,7 +268,7 @@ export async function POST(request) {
           <h2 style="color: #dc2626; margin-top: 0;">Inventory Threshold Alert</h2>
           <p>Product: <strong>${data.productName}</strong> (SKU: <code>${data.sku || "N/A"}</code>)</p>
           <p>Remaining Stock: <strong style="font-size: 18px; color: #dc2626;">${data.remainingStock} Units</strong></p>
-          <p><a href="https://sumclotico.com/admin/products" style="color: #881A1C; font-weight: 700;">Restock in Admin Catalog →</a></p>
+          <p><a href="https://www.sumclothico.com/admin/products" style="color: #881A1C; font-weight: 700;">Restock in Admin Catalog →</a></p>
         </div>
       `;
     }
@@ -308,7 +308,7 @@ export async function POST(request) {
           <p>Our handloom fabrics are woven in mindful limited batches. We saved your items for you.</p>
 
           <div style="text-align: center;">
-            <a href="${data.recoveryUrl || "https://sumclotico.com/collection"}" style="background: #111; color: #fff; padding: 14px 32px; border-radius: 999px; text-decoration: none; font-weight: 700; display: inline-block;">
+            <a href="${data.recoveryUrl || "https://www.sumclothico.com/collection"}" style="background: #111; color: #fff; padding: 14px 32px; border-radius: 999px; text-decoration: none; font-weight: 700; display: inline-block;">
               Complete Your Order →
             </a>
           </div>

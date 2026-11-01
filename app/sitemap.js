@@ -1,5 +1,5 @@
 export default async function sitemap() {
-  const baseUrl = "https://sumclotico.com";
+  const baseUrl = "https://www.sumclothico.com";
   const backendUrl = process.env.NEXT_PUBLIC_API_URL || process.env.BACKEND_API_URL;
 
   const staticRoutes = [

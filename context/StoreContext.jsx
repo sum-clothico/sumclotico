@@ -58,7 +58,7 @@ const INITIAL_POLICIES = {
         id: "sec-1",
         title: "1. Acceptance of Terms",
         content:
-          "By accessing and purchasing from sumclotico.com, you agree to be bound by these terms, our shipping policy, and return policies.",
+          "By accessing and purchasing from sumclothico.com, you agree to be bound by these terms, our shipping policy, and return policies.",
       },
       {
         id: "sec-2",
@@ -781,7 +781,7 @@ export function StoreProvider({ children }) {
     const baseUrl =
       typeof window !== "undefined"
         ? window.location.origin
-        : "https://sumclotico.com";
+        : "https://www.sumclothico.com";
     const fullUrl = `${baseUrl}${targetPage}?utm_source=${encodeURIComponent(source || "custom")}&utm_campaign=${encodeURIComponent(campaignName || "promo")}&ref=${cleanSlug}`;
 
     const newLink = {
@@ -819,7 +819,7 @@ export function StoreProvider({ children }) {
     const baseUrl =
       typeof window !== "undefined"
         ? window.location.origin
-        : "https://sumclotico.com";
+        : "https://www.sumclothico.com";
     const checkoutLink = `${baseUrl}/collection?utm_source=whatsapp_recovery&cart_recover=${cartId}`;
 
     const message = `Namaste ${targetCart.customer.name},\n\nWe noticed you left some handcrafted Khadi pieces in your Sum Clothico bag:\n\n${itemsList}\n\nTotal: ₹${targetCart.subtotal.toLocaleString("en-IN")}\n\nHere is your direct bag recovery link to complete your order:\n${checkoutLink}\n\nIf you need sizing assistance, simply reply here!`;
@@ -863,7 +863,7 @@ export function StoreProvider({ children }) {
       const baseUrl =
         typeof window !== "undefined"
           ? window.location.origin
-          : "https://sumclotico.com";
+          : "https://www.sumclothico.com";
       const recoveryUrl = `${baseUrl}/collection?utm_source=email_recovery&cart_recover=${cartId}`;
 
       fetch("/api/send-email", {
@@ -1852,6 +1852,7 @@ export function StoreProvider({ children }) {
       value={{
         // Cart
         cart,
+        setCart,
         isCartOpen,
         setIsCartOpen,
         addToCart,

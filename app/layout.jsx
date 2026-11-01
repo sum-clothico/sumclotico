@@ -14,7 +14,7 @@ import UserSyncManager from "@/components/UserSyncManager";
 import SafeBoundary from "@/components/SafeBoundary";
 
 export const metadata = {
-  metadataBase: new URL("https://sumclotico.com"),
+  metadataBase: new URL("https://www.sumclothico.com"),
   title: "SUM CLOTHICO — Handcrafted Khadi Textiles & Sustainable Luxury",
   description:
     "SUM CLOTHICO is a textile brand rooted in the tradition of pure Indian khadi, offering handcrafted silhouettes, effortless tops, and sustainable fashion for mindful living.",
@@ -26,7 +26,7 @@ export const metadata = {
   openGraph: {
     title: "SUM CLOTHICO — Handcrafted Khadi Textiles",
     description: "Slowly made. Easy to wear. Hard to replace.",
-    url: "https://sumclotico.com",
+    url: "https://www.sumclothico.com",
     siteName: "Sum Clothico",
     images: [
       {

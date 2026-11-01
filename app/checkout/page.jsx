@@ -1,17 +1,22 @@
 "use client";
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState, useEffect, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useStore } from "@/context/StoreContext";
 import Navbar from "@/components/Navbar";
 import { FiShield, FiTag, FiCheck, FiTruck, FiLock, FiCreditCard, FiSmartphone } from "react-icons/fi";
 import { trackEvent } from "@/lib/analytics";
 
-export default function CheckoutPage() {
+function CheckoutContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const retryOrderNumber = searchParams?.get("retry") || searchParams?.get("orderNumber");
+
   const {
     cart = [],
+    setCart,
+    orders = [],
     cartSubtotal = 0,
     shippingFee = 0,
     discountAmount = 0,
@@ -40,6 +45,77 @@ export default function CheckoutPage() {
   const [agreedToTerms, setAgreedToTerms] = useState(true);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [checkoutError, setCheckoutError] = useState("");
+  const [isRestoringRetry, setIsRestoringRetry] = useState(Boolean(retryOrderNumber && cart.length === 0));
+  const [restoredBanner, setRestoredBanner] = useState("");
+
+  // Restore order from retry parameter if customer reopens checkout from email or failure screen
+  useEffect(() => {
+    if (!retryOrderNumber) {
+      setIsRestoringRetry(false);
+      return;
+    }
+
+    let isMounted = true;
+
+    async function loadRetryOrder() {
+      try {
+        let order = (orders || []).find(
+          (o) => o.orderNumber === retryOrderNumber || o.id === retryOrderNumber
+        );
+
+        if (!order) {
+          const res = await fetch(`/api/orders/${encodeURIComponent(retryOrderNumber)}`);
+          if (res.ok) {
+            const json = await res.json();
+            if (json.success && json.order) {
+              order = json.order;
+            }
+          }
+        }
+
+        if (order && isMounted) {
+          setFormData((prev) => ({
+            name: prev.name || order.customer?.name || "",
+            email: prev.email || order.customer?.email || "",
+            phone: prev.phone || order.customer?.phone || "",
+            street: prev.street || order.shippingAddress?.street || "",
+            city: prev.city || order.shippingAddress?.city || "",
+            state: prev.state || order.shippingAddress?.state || "",
+            pincode: prev.pincode || order.shippingAddress?.pincode || "",
+          }));
+
+          if (cart.length === 0 && Array.isArray(order.items) && order.items.length > 0 && setCart) {
+            const restoredItems = order.items.map((item, idx) => ({
+              id: item.productId?._id || item.productId || item.id || `retry_${idx}`,
+              _mongoId: item.productId?._id || item.productId,
+              name: item.title || item.name || "Handcrafted Piece",
+              title: item.title || item.name || "Handcrafted Piece",
+              price: Number(item.price) || 0,
+              quantity: Number(item.quantity) || 1,
+              selectedSize: item.selectedSize || "Standard",
+              selectedColor: item.selectedColor || "Natural",
+              image: item.image || item.productId?.images?.[0]?.url || "/assets/img/14.png",
+            }));
+            setCart(restoredItems);
+          }
+
+          setRestoredBanner(
+            `Reopened Order #${retryOrderNumber}: Your handcrafted pieces and shipping details have been restored.`
+          );
+        }
+      } catch (err) {
+        console.warn("[Checkout Retry] Could not restore order:", err);
+      } finally {
+        if (isMounted) setIsRestoringRetry(false);
+      }
+    }
+
+    loadRetryOrder();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [retryOrderNumber, orders]);
 
   React.useEffect(() => {
     if (cart.length > 0) {
@@ -57,6 +133,19 @@ export default function CheckoutPage() {
       });
     }
   }, []);
+
+  if (isRestoringRetry) {
+    return (
+      <>
+        <Navbar />
+        <div style={{ minHeight: "70vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px 20px" }}>
+          <div style={{ width: 44, height: 44, border: "3px solid #f3f3f3", borderTop: "3px solid #881A1C", borderRadius: "50%", animation: "spin 1s linear infinite", marginBottom: 16 }} />
+          <h2 style={{ fontSize: 20, marginBottom: 8, fontWeight: 700 }}>Restoring Order #{retryOrderNumber}...</h2>
+          <p style={{ color: "#666", fontSize: 14 }}>Retrieving your saved handcrafted pieces and details.</p>
+        </div>
+      </>
+    );
+  }
 
   if (cart.length === 0) {
     return (
@@ -231,6 +320,13 @@ export default function CheckoutPage() {
               Fast, encrypted checkout via Cashfree Payments with automated order confirmation dispatched to your email.
             </p>
           </div>
+
+          {restoredBanner && (
+            <div style={{ background: "#fffbeb", border: "1px solid #fcd34d", color: "#92400e", padding: "14px 18px", borderRadius: 10, marginBottom: 20, fontSize: 14, fontWeight: 600, display: "flex", alignItems: "center", gap: 10 }}>
+              <FiShield size={20} color="#d97706" />
+              <span>{restoredBanner}</span>
+            </div>
+          )}
 
           {checkoutError && (
             <div style={{ background: "#fef2f2", border: "1px solid #f87171", color: "#991b1b", padding: "14px 18px", borderRadius: 10, marginBottom: 24, fontSize: 14, fontWeight: 600 }}>
@@ -541,5 +637,18 @@ export default function CheckoutPage() {
         </div>
       </div>
     </>
+  );
+}
+
+
+export default function CheckoutPage() {
+  return (
+    <Suspense fallback={
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <p style={{ color: "#666" }}>Loading checkout...</p>
+      </div>
+    }>
+      <CheckoutContent />
+    </Suspense>
   );
 }

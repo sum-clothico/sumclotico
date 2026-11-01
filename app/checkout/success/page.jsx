@@ -306,11 +306,11 @@ function SuccessContent() {
                     fontWeight: 700,
                     padding: "4px 10px",
                     borderRadius: 4,
-                    background: isPaid ? "#2e7d32" : isCod ? "#374151" : "#d97706",
+                    background: isPaid ? "#2e7d32" : "#d97706",
                     color: "#ffffff",
                   }}
                 >
-                  {isPaid ? "PAID" : isCod ? "COD" : "PAYMENT PENDING"}
+                  {isPaid ? "PAID" : "PAYMENT PENDING"}
                 </span>
                 {order.transactionId && (
                   <div
@@ -388,10 +388,10 @@ function SuccessContent() {
               <span
                 style={{
                   fontWeight: 700,
-                  color: isPaid ? "#2e7d32" : isCod ? "#374151" : "#d97706",
+                  color: isPaid ? "#2e7d32" : "#d97706",
                 }}
               >
-                {isPaid ? "PAID" : isCod ? "PENDING (Pay on Delivery)" : "PENDING (Unpaid)"}
+                {isPaid ? "PAID" : "PENDING (Unpaid)"}
               </span>
             </div>
             <div className="cart-summary-row">
@@ -440,9 +440,9 @@ function SuccessContent() {
 
       {/* Action Buttons */}
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        {!isPaid && !isCod && (
+        {!isPaid && (
           <Link
-            href="/checkout"
+            href={order?.orderNumber ? `/checkout?retry=${order.orderNumber}` : cleanOrderNumber ? `/checkout?retry=${cleanOrderNumber}` : "/checkout"}
             className="cart-checkout-btn"
             style={{
               width: "100%",
@@ -462,9 +462,9 @@ function SuccessContent() {
             width: "100%",
             margin: 0,
             textDecoration: "none",
-            background: isPaid || isCod ? "#111" : "#ffffff",
-            color: isPaid || isCod ? "#ffffff" : "#111111",
-            border: isPaid || isCod ? "none" : "1px solid #d1d5db",
+            background: isPaid ? "#111" : "#ffffff",
+            color: isPaid ? "#ffffff" : "#111111",
+            border: isPaid ? "none" : "1px solid #d1d5db",
             textAlign: "center",
           }}
         >
