@@ -23,7 +23,7 @@ const THREE_HOURS_MS = 3 * 60 * 60 * 1000;
 export default function AdminLayout({ children }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { adminUser, setAdminUser, logoutAdmin, adminNotifications = [], setAdminNotifications, abandonedCarts = [] } = useStore();
+  const { adminUser, setAdminUser, loginAdmin, logoutAdmin, adminNotifications = [], setAdminNotifications, abandonedCarts = [] } = useStore();
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [checkingAuth, setCheckingAuth] = useState(true);
@@ -59,10 +59,15 @@ export default function AdminLayout({ children }) {
         // Session valid
         setIsAuthenticated(true);
         if (!adminUser && session.user) {
-          setAdminUser(session.user);
+          if (typeof loginAdmin === "function") {
+            loginAdmin(session.user);
+          } else if (typeof setAdminUser === "function") {
+            setAdminUser(session.user);
+          }
         }
         setCheckingAuth(false);
       } catch (e) {
+        console.error("[AdminAuth] Session validation error:", e);
         handleUnauthenticated();
       }
     };

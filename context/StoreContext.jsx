@@ -1931,6 +1931,7 @@ export function StoreProvider({ children }) {
 
         // Admin
         adminUser,
+        setAdminUser,
         loginAdmin,
         logoutAdmin,
         adminNotifications,

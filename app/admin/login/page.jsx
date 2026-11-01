@@ -10,7 +10,7 @@ const API_BASE_URL = "/api";
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const { setAdminUser } = useStore();
+  const { setAdminUser, loginAdmin } = useStore();
   const [step, setStep] = useState("creds"); // "creds" | "otp"
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -81,16 +81,19 @@ export default function AdminLoginPage() {
         localStorage.setItem("sum_admin_session", JSON.stringify(session));
         localStorage.setItem("sum_admin_token", token);
         localStorage.setItem("sum_token", token);
+        localStorage.setItem("sum_admin", JSON.stringify(user));
       } catch (err) {
         console.warn("Could not save to localStorage:", err);
       }
 
-      if (setAdminUser) {
+      if (typeof loginAdmin === "function") {
+        loginAdmin(user);
+      } else if (typeof setAdminUser === "function") {
         setAdminUser(user);
       }
 
-      // Route directly to Admin Dashboard
-      router.replace("/admin");
+      // Route directly to Admin Dashboard with full window navigation to ensure clean state
+      window.location.href = "/admin";
     } catch (err) {
       setError(err.message || "Verification failed");
     } finally {
