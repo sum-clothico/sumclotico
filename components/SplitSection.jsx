@@ -186,7 +186,7 @@ const SplitPanel = ({ reversed, title, why, how, label, model, mobileModel, isLa
   );
 };
 
-/* ─── MOBILE STICKY SCROLL SECTION WITH ANIMATED SVG THREAD COILS & SEPARATE PREMIUM ANIMATIONS ─── */
+/* ─── MOBILE STICKY SCROLL SECTION WITH ANIMATED SVG THREAD COILS & CIRCULAR SLIDING IMAGE ANIMATION ─── */
 const MobileStickyPrinciplesSection = () => {
   const containerRef = useRef(null);
   const pathRef = useRef(null);
@@ -216,16 +216,17 @@ const MobileStickyPrinciplesSection = () => {
         });
       }
 
-      // Initialize slide states:
+      // Initialize slide states with circular arc positioning:
       slides.forEach((slide, i) => {
         if (i === 0) {
           gsap.set(slide, { opacity: 1, pointerEvents: "auto" });
           gsap.set(texts[i], { opacity: 1, y: 0, filter: "blur(0px)" });
-          gsap.set(imgs[i], { opacity: 1, scale: 1, y: 0 });
+          gsap.set(imgs[i], { opacity: 1, x: 0, y: 0, rotation: 0, scale: 1 });
         } else {
           gsap.set(slide, { opacity: 0, pointerEvents: "none" });
           gsap.set(texts[i], { opacity: 0, y: 26, filter: "blur(4px)" });
-          gsap.set(imgs[i], { opacity: 0, scale: 1.05, y: 16 });
+          // Incoming images start primed on the right arc
+          gsap.set(imgs[i], { opacity: 0, x: 130, y: 28, rotation: 12, scale: 0.92 });
         }
       });
 
@@ -258,7 +259,7 @@ const MobileStickyPrinciplesSection = () => {
         );
       }
 
-      // 2. Separate, staggered, high-end editorial transitions for Text and Image
+      // 2. Separate, staggered transitions with Circular Sliding for Images
       for (let i = 0; i < totalSteps; i++) {
         const curSlide = slides[i];
         const nextSlide = slides[i + 1];
@@ -269,7 +270,7 @@ const MobileStickyPrinciplesSection = () => {
         const stepTime = i;
 
         // --- Current Slide Exit ---
-        // Text exits with upward drift and gentle blur
+        // Text exits with upward drift and blur
         if (curText) {
           tl.to(
             curText,
@@ -284,43 +285,47 @@ const MobileStickyPrinciplesSection = () => {
           );
         }
 
-        // Image exits with subtle scale-down and soft fade (staggered slightly)
+        // Image exits along circular sliding curve to the left (x, y, rotation arc)
         if (curImg) {
           tl.to(
             curImg,
             {
               opacity: 0,
-              scale: 0.94,
-              y: -10,
-              duration: 0.42,
+              x: -130,
+              y: 28,
+              rotation: -12,
+              scale: 0.92,
+              duration: 0.46,
               ease: "power2.inOut",
             },
-            stepTime + 0.54
+            stepTime + 0.52
           );
         }
 
         // Container pointer events switch
         tl.set(curSlide, { pointerEvents: "none" }, stepTime + 0.88);
-        tl.set(nextSlide, { opacity: 1, pointerEvents: "auto" }, stepTime + 0.58);
+        tl.set(nextSlide, { opacity: 1, pointerEvents: "auto" }, stepTime + 0.56);
 
         // --- Next Slide Entrance ---
-        // Image enters first with elegant zoom-in reveal and rise
+        // Next image enters along circular sliding arc from the right into center
         if (nextImg) {
           tl.fromTo(
             nextImg,
-            { opacity: 0, scale: 1.05, y: 18 },
+            { opacity: 0, x: 130, y: 28, rotation: 12, scale: 0.92 },
             {
               opacity: 1,
-              scale: 1,
+              x: 0,
               y: 0,
-              duration: 0.46,
+              rotation: 0,
+              scale: 1,
+              duration: 0.48,
               ease: "power3.out",
             },
-            stepTime + 0.6
+            stepTime + 0.58
           );
         }
 
-        // Text enters with crisp unblur and gliding elevation
+        // Text enters with crisp elevation & unblur
         if (nextText) {
           tl.fromTo(
             nextText,
@@ -332,7 +337,7 @@ const MobileStickyPrinciplesSection = () => {
               duration: 0.44,
               ease: "power3.out",
             },
-            stepTime + 0.66
+            stepTime + 0.65
           );
         }
       }
@@ -391,7 +396,7 @@ const MobileStickyPrinciplesSection = () => {
           </svg>
         </div>
 
-        {/* ─── Stacked Principle Slides with Separate Text & Image Layers ─── */}
+        {/* ─── Stacked Principle Slides with Separate Text & Circular Sliding Image Layers ─── */}
         <div className="split-mobile-stage">
           {PANELS.map((p, idx) => (
             <div
@@ -427,7 +432,7 @@ const MobileStickyPrinciplesSection = () => {
                 </div>
               </div>
 
-              {/* Bottom Image Layer */}
+              {/* Bottom Circular Sliding Image Layer */}
               <div
                 ref={(el) => (imgRefs.current[idx] = el)}
                 className="split-mobile-image-layer"

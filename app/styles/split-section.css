@@ -496,7 +496,9 @@
   align-items: center;
   padding: 8px 16px 0;
   box-sizing: border-box;
+  overflow: hidden;
   will-change: transform, opacity;
+  transform-origin: 50% 120%;
 }
 
 .split-mobile-image-layer .split-section__model {
@@ -509,6 +511,8 @@
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
+  transform-origin: 50% 120%;
+  will-change: transform, opacity;
 }
 
 .split-mobile-image-layer picture {
