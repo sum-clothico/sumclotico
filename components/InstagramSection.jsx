@@ -10,10 +10,10 @@ export default function InstagramSection() {
       className="ig-section"
       style={{
         backgroundColor: "var(--bg-color, #EDE8DC)",
-        padding: "clamp(50px, 8vh, 85px) clamp(16px, 4vw, 40px) clamp(30px, 5vh, 50px)",
+        padding: "clamp(50px, 8vh, 85px) clamp(20px, 5vw, 60px) clamp(30px, 5vh, 50px)",
         position: "relative",
         zIndex: 5,
-        overflow: "hidden",
+        overflow: "visible",
       }}
     >
       <div style={{ maxWidth: 1280, margin: "0 auto" }}>
@@ -57,13 +57,13 @@ export default function InstagramSection() {
           </p>
         </div>
 
-        {/* Elfsight Instagram Feed with bottom watermark crop */}
+        {/* Elfsight Instagram Feed: Side padding & expanded horizontal clip to preserve slider arrows */}
         <div
           className="elfsight-crop-wrapper"
           style={{
             position: "relative",
-            overflow: "hidden",
-            clipPath: "inset(0 0 52px 0)",
+            padding: "0 28px",
+            clipPath: "inset(0px -60px 52px -60px)",
             marginBottom: "-48px",
           }}
         >
