@@ -541,6 +541,7 @@ export function StoreProvider({ children }) {
           quantity,
           image: itemImage,
           stock: product.stock || 20,
+          gstPercent: Number(product.gstPercent) || 5,
           sku:
             product.sku ||
             `SC-${(product.category || "PRD").toUpperCase().slice(0, 3)}-00${product.id}`,
@@ -661,6 +662,15 @@ export function StoreProvider({ children }) {
     0,
     cartSubtotal - discountAmount + shippingFee,
   );
+
+  // Embedded GST calculation (Prices are inclusive of GST, defaulting to 5%)
+  const cartGstPercent = cart.length > 0 ? (Number(cart[0]?.gstPercent) || 5) : 5;
+  const cartGstAmount = cart.reduce((acc, item) => {
+    const rate = Number(item.gstPercent) || 5;
+    const itemTotal = (Number(item.price) || 0) * (Number(item.quantity) || 1);
+    const taxable = itemTotal / (1 + rate / 100);
+    return acc + (itemTotal - taxable);
+  }, 0);
 
   // ─── COUPON ACTIONS ────────────────────────────────────────────────────────
 
@@ -1018,6 +1028,8 @@ export function StoreProvider({ children }) {
       discountAmount,
       couponCode: appliedCoupon ? appliedCoupon.code : null,
       shippingFee,
+      gstPercent: cartGstPercent,
+      taxAmount: Math.round(cartGstAmount),
       totalAmount: cartGrandTotal,
       paymentGateway,
       paymentMethod,
@@ -1857,6 +1869,8 @@ export function StoreProvider({ children }) {
         shippingThreshold,
         discountAmount,
         cartGrandTotal,
+        cartGstPercent,
+        cartGstAmount,
 
         // Quick View & Modals
         quickViewProduct,

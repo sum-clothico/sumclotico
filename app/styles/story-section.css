@@ -60,7 +60,7 @@
 /* ─── Centered Header Container (Heading + Subline in unified flow) ─── */
 .story-section__header {
   position: absolute;
-  top: clamp(100px, 13vh, 130px);
+  top: clamp(146px, 18.5vh, 195px);
   left: 50%;
   transform: translateX(-50%);
   width: 90%;
@@ -70,7 +70,7 @@
   align-items: center;
   text-align: center;
   z-index: 10;
-  gap: 12px;
+  gap: 20px;
 }
 
 .story-section__heading {
@@ -93,14 +93,14 @@
 .story-section__subline {
   position: static;
   transform: none;
-  max-width: 620px;
+  max-width: 640px;
   width: 100%;
   text-align: center;
   font-family: "Poppins", sans-serif;
   font-size: clamp(0.92rem, 1.2vw, 1.05rem);
   color: #4a3c30;
-  line-height: 1.55;
-  margin: 0;
+  line-height: 1.6;
+  margin: 6px 0 0;
 }
 
 /* ─── Phase Text ────────────────────────────────────────── */

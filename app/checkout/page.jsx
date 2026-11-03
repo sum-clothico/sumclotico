@@ -21,6 +21,8 @@ function CheckoutContent() {
     shippingFee = 0,
     discountAmount = 0,
     cartGrandTotal = 0,
+    cartGstPercent = 5,
+    cartGstAmount = 0,
     currentUser,
     createOrder,
     appliedCoupon,
@@ -668,9 +670,19 @@ function CheckoutContent() {
                     <span>{shippingFee === 0 ? <strong style={{ color: "#15803d" }}>FREE</strong> : `₹${shippingFee}`}</span>
                   </div>
 
+                  <div className="cart-summary-row" style={{ fontSize: 13, color: "#4b5563" }}>
+                    <span>Estimated GST ({cartGstPercent || 5}%)</span>
+                    <span>₹{Math.round(cartGstAmount || 0).toLocaleString("en-IN")} (Included in Subtotal)</span>
+                  </div>
+
                   <div className="cart-summary-row cart-summary-total" style={{ fontSize: 18 }}>
                     <span>Grand Total</span>
                     <span>₹{cartGrandTotal.toLocaleString("en-IN")}</span>
+                  </div>
+
+                  <div style={{ fontSize: 11, color: "#166534", marginTop: 6, display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 4 }}>
+                    <span style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: "#16a34a", display: "inline-block" }} />
+                    <span>Inclusive of {cartGstPercent || 5}% GST & all taxes</span>
                   </div>
                 </div>
 
