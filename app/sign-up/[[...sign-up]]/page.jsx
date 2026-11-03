@@ -20,12 +20,32 @@ export default function SignUpPage() {
           padding: "120px 20px 60px",
         }}
       >
-        <SignUp
-          routing="path"
-          path="/sign-up"
-          signInUrl="/sign-in"
-          fallbackRedirectUrl="/"
-        />
+        <div
+          className="clerk-crop-wrap"
+          style={{
+            position: "relative",
+            overflow: "hidden",
+            borderRadius: 16,
+            boxShadow: "0 10px 30px rgba(0,0,0,0.06)",
+          }}
+        >
+          <SignUp
+            routing="path"
+            path="/sign-up"
+            signInUrl="/sign-in"
+            fallbackRedirectUrl="/"
+            appearance={{
+              elements: {
+                footer: {
+                  "& + div": { display: "none !important" },
+                },
+                footerAction: {
+                  borderBottom: "none",
+                },
+              },
+            }}
+          />
+        </div>
 
         <div style={{ marginTop: "24px", textAlign: "center" }}>
           <Link href="/" style={{ fontSize: "13px", color: "#6b7280", textDecoration: "underline" }}>

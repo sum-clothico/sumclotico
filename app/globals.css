@@ -49,3 +49,32 @@
 /* Admin Portal & Analytics styles           */
 /* Elfsight Watermark Crop & Suppression */
 a[href*=elfsight.com], div[class*=Badge__Container], div[class*=WidgetBadge], div[class*=eapps-link], div[class*=Badge__BadgeComponent] { display: none !important; opacity: 0 !important; visibility: hidden !important; height: 0 !important; width: 0 !important; pointer-events: none !important; overflow: hidden !important; }
+
+
+/* ─── Hide Clerk Development Mode Badge & Watermark ─── */
+.cl-developmentBadge,
+.cl-development-badge,
+[data-clerk-badge],
+.cl-internal-b3fm6y,
+div[class*="developmentBadge"],
+div[class*="development-badge"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  pointer-events: none !important;
+}
+
+.cl-footerAction + div,
+.cl-footer + div,
+.cl-card > div:last-child:has(span) {
+  display: none !important;
+}
+
+.cl-card {
+  position: relative !important;
+  overflow: hidden !important;
+}

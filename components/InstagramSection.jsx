@@ -18,22 +18,6 @@ export default function InstagramSection() {
     >
       <div style={{ maxWidth: 1280, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: 36 }}>
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 8,
-              fontSize: 12,
-              fontWeight: 700,
-              textTransform: "uppercase",
-              letterSpacing: 2,
-              color: "#881A1C",
-              marginBottom: 10,
-            }}
-          >
-            <FiInstagram size={15} />
-            <span>@sumclothico · Follow on Instagram</span>
-          </div>
           <h2
             style={{
               fontFamily: "var(--font-serif, serif)",

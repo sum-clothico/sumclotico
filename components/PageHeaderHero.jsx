@@ -91,7 +91,7 @@ export default function PageHeaderHero({
         style={{
           position: "absolute",
           inset: 0,
-          backgroundImage: 'url("/assets/fabric.jpg")',
+          backgroundImage: 'url("/assets/1.jpg")',
           backgroundSize: "cover",
           backgroundPosition: "center 30%",
           filter: "grayscale(20%) contrast(110%) brightness(0.96)",

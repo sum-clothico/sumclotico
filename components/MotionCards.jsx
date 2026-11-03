@@ -207,7 +207,6 @@ export default function MotionCards() {
         <p className="mc-phase-text mc-phase-text--active">
           Human hands, at almost every step.
         </p>
-        <span className="mc-click-hint">tap to explore stories</span>
       </div>
 
       {/* ─── Interactive Journey (word pills + swapping image) ─── */}

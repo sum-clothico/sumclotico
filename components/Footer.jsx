@@ -27,21 +27,18 @@ export default function Footer() {
       {/* ─── Top Brand Wordmark & Tagline ─── */}
       <div style={{ textAlign: "center", marginBottom: "32px", width: "100%", maxWidth: "100%", overflow: "hidden" }}>
         <div style={{ display: "inline-block", marginBottom: "10px", maxWidth: "100%" }}>
-          <span
+          <img
+            src="/assets/logo1.svg"
+            alt="Sum Clothico"
             style={{
-              fontFamily: "var(--font-epilogue, 'Epilogue', serif)",
-              fontWeight: 800,
-              fontSize: "clamp(1.6rem, 7.5vw, 6.2rem)",
-              letterSpacing: "clamp(0.02em, 1.5vw, 0.08em)",
-              textTransform: "uppercase",
-              color: "#2C2016",
-              lineHeight: 1.1,
+              height: "clamp(32px, 5.5vw, 58px)",
+              width: "auto",
+              maxWidth: "88%",
               display: "block",
-              maxWidth: "100%",
+              margin: "0 auto",
+              objectFit: "contain",
             }}
-          >
-            सम् CLOTHICO
-          </span>
+          />
         </div>
         <p
           style={{

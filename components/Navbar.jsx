@@ -332,8 +332,18 @@ export default function Navbar() {
               whiteSpace: "nowrap",
               transition: "opacity 0.2s ease",
             }}
-          >
-            सम् CLOTHICO
+           aria-label="Sum Clothico">
+            <img
+              src="/assets/logo1.svg"
+              alt="Sum Clothico"
+              style={{
+                height: "22px",
+                width: "auto",
+                maxHeight: "25px",
+                display: "block",
+                objectFit: "contain",
+              }}
+            />
           </Link>
         </div>
 

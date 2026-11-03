@@ -72,21 +72,16 @@ function TextHighlighterCycler() {
 
   return (
     <span
-      className="os-highlight-pill"
+      className="os-highlight-text"
       style={{
         display: "inline-block",
-        position: "relative",
-        padding: "2px 14px 4px",
-        margin: "0 6px",
-        borderRadius: "8px",
-        backgroundColor: "rgba(224, 114, 61, 0.16)",
-        borderBottom: "3px solid #881A1C",
         color: "#881A1C",
         fontWeight: 700,
         fontStyle: "italic",
+        margin: "0 4px",
         transition: "opacity 0.26s ease, transform 0.26s cubic-bezier(0.16, 1, 0.3, 1)",
         opacity: fade ? 1 : 0,
-        transform: fade ? "translateY(0)" : "translateY(8px)",
+        transform: fade ? "translateY(0)" : "translateY(6px)",
       }}
     >
       {CYCLING_WORDS[index]}.
@@ -198,7 +193,7 @@ export default function OurStoryClient() {
           backgroundRepeat: "repeat-y",
           backgroundPosition: "left top",
           backgroundSize: "32px auto",
-          opacity: 0.06,
+          opacity: 0.025,
           pointerEvents: "none",
           zIndex: 1,
         }}
@@ -216,7 +211,7 @@ export default function OurStoryClient() {
           backgroundPosition: "left top",
           backgroundSize: "32px auto",
           transform: "scaleX(-1)",
-          opacity: 0.06,
+          opacity: 0.025,
           pointerEvents: "none",
           zIndex: 1,
         }}
