@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { FiX, FiTag, FiCheck, FiArrowRight } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa";
 import { useStore } from "@/context/StoreContext";
@@ -9,6 +10,9 @@ import { trackEvent } from "@/lib/analytics";
 import IndianArchBadge from "@/components/IndianArchBadge";
 
 export default function WelcomePromoModal() {
+  const pathname = usePathname();
+  const isAdminRoute = Boolean(pathname && pathname.startsWith("/admin"));
+  const isCheckoutRoute = Boolean(pathname && pathname.startsWith("/checkout"));
   const [isOpen, setIsOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const { coupons = [] } = useStore();
@@ -25,6 +29,10 @@ export default function WelcomePromoModal() {
     };
 
   useEffect(() => {
+    if (isAdminRoute || isCheckoutRoute) {
+      setIsOpen(false);
+      return;
+    }
     try {
       const isPermanentlyDismissed =
         localStorage.getItem("sum_welcome_dismissed_at") === "permanent";
@@ -40,7 +48,7 @@ export default function WelcomePromoModal() {
       }, 30000);
       return () => clearTimeout(timer);
     } catch {}
-  }, [activePromo.code]);
+  }, [isAdminRoute, isCheckoutRoute, activePromo.code]);
 
   const handleTemporaryClose = () => {
     setIsOpen(false);
@@ -65,7 +73,7 @@ export default function WelcomePromoModal() {
     }
   };
 
-  if (!isOpen) return null;
+  if (isAdminRoute || isCheckoutRoute || !isOpen) return null;
 
   const discountText =
     activePromo.type === "percentage"
