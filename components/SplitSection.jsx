@@ -13,7 +13,7 @@ const PANELS = [
     title: ["Easy", "Moves With You"],
     why: "Clothes that move with you wherever your day wanders.",
     how: "Comfort that doesn't ask you to compromise on looking good — easy shapes with effortless attitude.",
-    label: ["PRINCIPLE 01 / 04", "EASY"],
+    label: ["PRINCIPLE", "EASY"],
     model: "/assets/model.png",
     mobileModel: "/assets/img/15.png",
   },
@@ -22,7 +22,7 @@ const PANELS = [
     title: ["Thoughtful", "Every Detail"],
     why: "Every detail has a clear reason to be there.",
     how: "Thoughtful silhouettes, functional deep pockets, and cuts designed for real days and spontaneous plans.",
-    label: ["PRINCIPLE 02 / 04", "THOUGHTFUL"],
+    label: ["PRINCIPLE", "THOUGHTFUL"],
     model: "/assets/m2.png",
     mobileModel: "/assets/img/13.png",
   },
@@ -31,7 +31,7 @@ const PANELS = [
     title: ["Rooted", "In Place"],
     why: "Textiles with an authentic story, artisan hands, and a place.",
     how: "Starting with pure Khadi cotton sourced from Madhya Pradesh, woven at human pace on wooden looms.",
-    label: ["PRINCIPLE 03 / 04", "ROOTED"],
+    label: ["PRINCIPLE", "ROOTED"],
     model: "/assets/m3.png",
     mobileModel: "/assets/img/24.png",
   },
@@ -40,7 +40,7 @@ const PANELS = [
     title: ["Long-Wearing", "Beyond Seasons"],
     why: "Made to stay in your wardrobe beyond a single fleeting trend.",
     how: "Pieces you can wear more than one way, softening and relaxing naturally with every wash.",
-    label: ["PRINCIPLE 04 / 04", "LONG-WEARING"],
+    label: ["PRINCIPLE", "LONG-WEARING"],
     model: "/assets/m1.png",
     mobileModel: "/assets/img/26.png",
   },
@@ -191,7 +191,6 @@ const MobileStickyPrinciplesSection = () => {
   const containerRef = useRef(null);
   const pathRef = useRef(null);
   const slideRefs = useRef([]);
-  const dotRefs = useRef([]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -201,7 +200,6 @@ const MobileStickyPrinciplesSection = () => {
 
     mm.add("(max-width: 900px)", () => {
       const slides = slideRefs.current.filter(Boolean);
-      const dots = dotRefs.current.filter(Boolean);
       const path = pathRef.current;
 
       // Calculate path length for thread drawing
@@ -214,23 +212,18 @@ const MobileStickyPrinciplesSection = () => {
         });
       }
 
-      // Initialize slide states
+      // Initialize slide states: position and size stay exact, crossfade via opacity
       slides.forEach((slide, i) => {
         if (i === 0) {
-          gsap.set(slide, { opacity: 1, y: 0, scale: 1, pointerEvents: "auto" });
+          gsap.set(slide, { opacity: 1, pointerEvents: "auto" });
         } else {
-          gsap.set(slide, { opacity: 0, y: 36, scale: 0.94, pointerEvents: "none" });
+          gsap.set(slide, { opacity: 0, pointerEvents: "none" });
         }
       });
 
-      // Highlight first dot
-      if (dots[0]) {
-        gsap.set(dots[0], { width: 28, backgroundColor: "#881A1C" });
-      }
-
       // Master ScrollTrigger timeline pinned for 4 slides
       const totalSteps = slides.length - 1; // 3 transitions
-      const scrollDistance = totalSteps * 900; // 2700px smooth scrolling
+      const scrollDistance = totalSteps * 850; // smooth scroll distance
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -257,47 +250,35 @@ const MobileStickyPrinciplesSection = () => {
         );
       }
 
-      // 2. Cross-fade slides smoothly step-by-step
+      // 2. Cross-fade slides smoothly in place (position and size unchanged)
       for (let i = 0; i < totalSteps; i++) {
         const curSlide = slides[i];
         const nextSlide = slides[i + 1];
-        const curDot = dots[i];
-        const nextDot = dots[i + 1];
         const stepTime = i;
 
-        // Current slide fades out and rises
+        // Current slide fades out smoothly in place
         tl.to(
           curSlide,
           {
             opacity: 0,
-            y: -32,
-            scale: 0.95,
             pointerEvents: "none",
             duration: 0.45,
-            ease: "power2.inOut",
+            ease: "power1.inOut",
           },
           stepTime + 0.55
         );
 
-        // Next slide fades in from below
+        // Next slide fades in smoothly in place
         tl.to(
           nextSlide,
           {
             opacity: 1,
-            y: 0,
-            scale: 1,
             pointerEvents: "auto",
             duration: 0.45,
-            ease: "power2.out",
+            ease: "power1.inOut",
           },
           stepTime + 0.65
         );
-
-        // Dot transition
-        if (curDot && nextDot) {
-          tl.to(curDot, { width: 8, backgroundColor: "rgba(61, 43, 31, 0.22)", duration: 0.3 }, stepTime + 0.6);
-          tl.to(nextDot, { width: 28, backgroundColor: "#881A1C", duration: 0.3 }, stepTime + 0.6);
-        }
       }
     });
 
@@ -335,11 +316,11 @@ const MobileStickyPrinciplesSection = () => {
             fill="none"
             preserveAspectRatio="none"
           >
-            {/* Soft shadow background guide */}
+            {/* Soft guide */}
             <path
               d={coilPathD}
               stroke="rgba(136, 26, 28, 0.12)"
-              strokeWidth="5"
+              strokeWidth="4"
               strokeLinecap="round"
             />
             {/* Main animated thread line */}
@@ -348,64 +329,51 @@ const MobileStickyPrinciplesSection = () => {
               className="split-mobile-thread-path"
               d={coilPathD}
               stroke="#881A1C"
-              strokeWidth="2.5"
+              strokeWidth="2.2"
               strokeLinecap="round"
             />
           </svg>
         </div>
 
-        {/* ─── Stacked Principle Slides (Cross-faded by GSAP) ─── */}
-        <div className="split-mobile-slides-stage">
+        {/* ─── Stacked Principle Slides (Preserving Original Text & Image Size and Position) ─── */}
+        <div className="split-mobile-stage">
           {PANELS.map((p, idx) => (
             <div
               key={idx}
               ref={(el) => (slideRefs.current[idx] = el)}
-              className="split-mobile-slide"
+              className="split-mobile-panel"
             >
-              {/* Header Label */}
-              <div className="split-mobile-badge">
-                <span className="split-mobile-badge-dot" />
-                <span>{p.label[0]} · {p.label[1]}</span>
+              {/* Original Left Content: Title, Why, How */}
+              <div className="split-section__left">
+                <div className="split-section__content">
+                  <div className="split-section__title">
+                    {p.title.map((line, lIdx) => (
+                      <div key={lIdx}>{line}</div>
+                    ))}
+                  </div>
+                  <div className="split-section__why">
+                    <span style={{ fontWeight: 700, color: "#5C4033", display: "block", marginBottom: "4px" }}>
+                      WHY IT MATTERS
+                    </span>
+                    {p.why}
+                  </div>
+                  <div className="split-section__how">
+                    <span style={{ fontWeight: 700, color: "#5C4033", display: "block", marginBottom: "4px" }}>
+                      HOW IT FEELS
+                    </span>
+                    {p.how}
+                  </div>
+                </div>
               </div>
 
-              {/* Title */}
-              <h2 className="split-mobile-title">
-                {p.title[0]} {p.title[1]}
-              </h2>
-
-              {/* Editorial Explanations */}
-              <div className="split-mobile-details">
-                <div className="split-mobile-detail-item">
-                  <span className="split-mobile-detail-label">WHY IT MATTERS</span>
-                  <p className="split-mobile-detail-text">{p.why}</p>
-                </div>
-                <div className="split-mobile-detail-item">
-                  <span className="split-mobile-detail-label">HOW IT FEELS</span>
-                  <p className="split-mobile-detail-text">{p.how}</p>
-                </div>
-              </div>
-
-              {/* Framed Image Card */}
-              <div className="split-mobile-image-card">
-                <img
-                  src={p.mobileModel || p.model}
-                  alt={`${p.title[0]} ${p.title[1]}`}
-                  className="split-mobile-img"
-                  loading={idx === 0 ? "eager" : "lazy"}
-                />
+              {/* Original Model Image with preserved position and picture responsiveness */}
+              <div className="split-section__model">
+                <picture>
+                  {p.mobileModel && <source media="(max-width: 900px)" srcSet={p.mobileModel} />}
+                  <img src={p.model} alt="Khadi Model" />
+                </picture>
               </div>
             </div>
-          ))}
-        </div>
-
-        {/* ─── Bottom Navigation Progress Pills ─── */}
-        <div className="split-mobile-indicators" aria-label="Principles progress">
-          {PANELS.map((_, i) => (
-            <span
-              key={i}
-              ref={(el) => (dotRefs.current[i] = el)}
-              className="split-mobile-indicator-pill"
-            />
           ))}
         </div>
       </div>
