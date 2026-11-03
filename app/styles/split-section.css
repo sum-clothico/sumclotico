@@ -448,17 +448,85 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-between;
+  padding-top: 86px;
+  padding-bottom: 24px;
   box-sizing: border-box;
   will-change: opacity;
 }
 
-.split-mobile-panel .split-section__left {
-  padding-top: 52px !important;
-  padding-bottom: 8px !important;
+/* Premium Layered Text Block */
+.split-mobile-text-layer {
+  width: 100%;
+  padding: 0 20px;
+  box-sizing: border-box;
+  will-change: transform, opacity, filter;
 }
 
-.split-mobile-panel .split-section__model {
-  margin-top: 4px !important;
-  margin-bottom: 24px !important;
+.split-mobile-text-layer .split-section__left {
+  padding: 0 !important;
+  width: 100% !important;
+}
+
+.split-mobile-text-layer .split-section__title {
+  font-size: clamp(23px, 6vw, 30px) !important;
+  margin-bottom: 0.7rem !important;
+  line-height: 1.1 !important;
+}
+
+.split-mobile-text-layer .split-section__why {
+  font-size: 0.92rem !important;
+  line-height: 1.5 !important;
+  margin-bottom: 0.45rem !important;
+}
+
+.split-mobile-text-layer .split-section__how {
+  font-size: 0.92rem !important;
+  line-height: 1.5 !important;
+  margin-bottom: 0 !important;
+}
+
+/* Premium Layered Image Block: fills bottom space without large empty gaps */
+.split-mobile-image-layer {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 16px 0;
+  box-sizing: border-box;
+  will-change: transform, opacity;
+}
+
+.split-mobile-image-layer .split-section__model {
+  width: 100% !important;
+  max-width: 330px !important;
+  height: 100% !important;
+  max-height: 48vh !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.split-mobile-image-layer picture {
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 48vh !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.split-mobile-image-layer img {
+  width: auto !important;
+  max-width: 100% !important;
+  height: 100% !important;
+  max-height: 48vh !important;
+  object-fit: contain !important;
+  border-radius: 18px !important;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.14) !important;
+  display: block !important;
 }

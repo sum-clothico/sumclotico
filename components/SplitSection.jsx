@@ -186,11 +186,13 @@ const SplitPanel = ({ reversed, title, why, how, label, model, mobileModel, isLa
   );
 };
 
-/* ─── MOBILE STICKY SCROLL SECTION WITH ANIMATED SVG THREAD COILS ─── */
+/* ─── MOBILE STICKY SCROLL SECTION WITH ANIMATED SVG THREAD COILS & SEPARATE PREMIUM ANIMATIONS ─── */
 const MobileStickyPrinciplesSection = () => {
   const containerRef = useRef(null);
   const pathRef = useRef(null);
   const slideRefs = useRef([]);
+  const textRefs = useRef([]);
+  const imgRefs = useRef([]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -200,6 +202,8 @@ const MobileStickyPrinciplesSection = () => {
 
     mm.add("(max-width: 900px)", () => {
       const slides = slideRefs.current.filter(Boolean);
+      const texts = textRefs.current.filter(Boolean);
+      const imgs = imgRefs.current.filter(Boolean);
       const path = pathRef.current;
 
       // Calculate path length for thread drawing
@@ -212,18 +216,22 @@ const MobileStickyPrinciplesSection = () => {
         });
       }
 
-      // Initialize slide states: position and size stay exact, crossfade via opacity
+      // Initialize slide states:
       slides.forEach((slide, i) => {
         if (i === 0) {
           gsap.set(slide, { opacity: 1, pointerEvents: "auto" });
+          gsap.set(texts[i], { opacity: 1, y: 0, filter: "blur(0px)" });
+          gsap.set(imgs[i], { opacity: 1, scale: 1, y: 0 });
         } else {
           gsap.set(slide, { opacity: 0, pointerEvents: "none" });
+          gsap.set(texts[i], { opacity: 0, y: 26, filter: "blur(4px)" });
+          gsap.set(imgs[i], { opacity: 0, scale: 1.05, y: 16 });
         }
       });
 
       // Master ScrollTrigger timeline pinned for 4 slides
       const totalSteps = slides.length - 1; // 3 transitions
-      const scrollDistance = totalSteps * 850; // smooth scroll distance
+      const scrollDistance = totalSteps * 900; // smooth luxury scroll distance
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -232,7 +240,7 @@ const MobileStickyPrinciplesSection = () => {
           end: `+=${scrollDistance}`,
           pin: true,
           pinSpacing: true,
-          scrub: 0.6,
+          scrub: 0.65,
           anticipatePin: 1,
         },
       });
@@ -250,35 +258,83 @@ const MobileStickyPrinciplesSection = () => {
         );
       }
 
-      // 2. Cross-fade slides smoothly in place (position and size unchanged)
+      // 2. Separate, staggered, high-end editorial transitions for Text and Image
       for (let i = 0; i < totalSteps; i++) {
         const curSlide = slides[i];
         const nextSlide = slides[i + 1];
+        const curText = texts[i];
+        const nextText = texts[i + 1];
+        const curImg = imgs[i];
+        const nextImg = imgs[i + 1];
         const stepTime = i;
 
-        // Current slide fades out smoothly in place
-        tl.to(
-          curSlide,
-          {
-            opacity: 0,
-            pointerEvents: "none",
-            duration: 0.45,
-            ease: "power1.inOut",
-          },
-          stepTime + 0.55
-        );
+        // --- Current Slide Exit ---
+        // Text exits with upward drift and gentle blur
+        if (curText) {
+          tl.to(
+            curText,
+            {
+              opacity: 0,
+              y: -22,
+              filter: "blur(4px)",
+              duration: 0.38,
+              ease: "power2.in",
+            },
+            stepTime + 0.5
+          );
+        }
 
-        // Next slide fades in smoothly in place
-        tl.to(
-          nextSlide,
-          {
-            opacity: 1,
-            pointerEvents: "auto",
-            duration: 0.45,
-            ease: "power1.inOut",
-          },
-          stepTime + 0.65
-        );
+        // Image exits with subtle scale-down and soft fade (staggered slightly)
+        if (curImg) {
+          tl.to(
+            curImg,
+            {
+              opacity: 0,
+              scale: 0.94,
+              y: -10,
+              duration: 0.42,
+              ease: "power2.inOut",
+            },
+            stepTime + 0.54
+          );
+        }
+
+        // Container pointer events switch
+        tl.set(curSlide, { pointerEvents: "none" }, stepTime + 0.88);
+        tl.set(nextSlide, { opacity: 1, pointerEvents: "auto" }, stepTime + 0.58);
+
+        // --- Next Slide Entrance ---
+        // Image enters first with elegant zoom-in reveal and rise
+        if (nextImg) {
+          tl.fromTo(
+            nextImg,
+            { opacity: 0, scale: 1.05, y: 18 },
+            {
+              opacity: 1,
+              scale: 1,
+              y: 0,
+              duration: 0.46,
+              ease: "power3.out",
+            },
+            stepTime + 0.6
+          );
+        }
+
+        // Text enters with crisp unblur and gliding elevation
+        if (nextText) {
+          tl.fromTo(
+            nextText,
+            { opacity: 0, y: 26, filter: "blur(4px)" },
+            {
+              opacity: 1,
+              y: 0,
+              filter: "blur(0px)",
+              duration: 0.44,
+              ease: "power3.out",
+            },
+            stepTime + 0.66
+          );
+        }
       }
     });
 
@@ -335,7 +391,7 @@ const MobileStickyPrinciplesSection = () => {
           </svg>
         </div>
 
-        {/* ─── Stacked Principle Slides (Preserving Original Text & Image Size and Position) ─── */}
+        {/* ─── Stacked Principle Slides with Separate Text & Image Layers ─── */}
         <div className="split-mobile-stage">
           {PANELS.map((p, idx) => (
             <div
@@ -343,35 +399,45 @@ const MobileStickyPrinciplesSection = () => {
               ref={(el) => (slideRefs.current[idx] = el)}
               className="split-mobile-panel"
             >
-              {/* Original Left Content: Title, Why, How */}
-              <div className="split-section__left">
-                <div className="split-section__content">
-                  <div className="split-section__title">
-                    {p.title.map((line, lIdx) => (
-                      <div key={lIdx}>{line}</div>
-                    ))}
-                  </div>
-                  <div className="split-section__why">
-                    <span style={{ fontWeight: 700, color: "#5C4033", display: "block", marginBottom: "4px" }}>
-                      WHY IT MATTERS
-                    </span>
-                    {p.why}
-                  </div>
-                  <div className="split-section__how">
-                    <span style={{ fontWeight: 700, color: "#5C4033", display: "block", marginBottom: "4px" }}>
-                      HOW IT FEELS
-                    </span>
-                    {p.how}
+              {/* Top Text Layer */}
+              <div
+                ref={(el) => (textRefs.current[idx] = el)}
+                className="split-mobile-text-layer"
+              >
+                <div className="split-section__left">
+                  <div className="split-section__content">
+                    <div className="split-section__title">
+                      {p.title.map((line, lIdx) => (
+                        <div key={lIdx}>{line}</div>
+                      ))}
+                    </div>
+                    <div className="split-section__why">
+                      <span style={{ fontWeight: 700, color: "#5C4033", display: "block", marginBottom: "3px" }}>
+                        WHY IT MATTERS
+                      </span>
+                      {p.why}
+                    </div>
+                    <div className="split-section__how">
+                      <span style={{ fontWeight: 700, color: "#5C4033", display: "block", marginBottom: "3px" }}>
+                        HOW IT FEELS
+                      </span>
+                      {p.how}
+                    </div>
                   </div>
                 </div>
               </div>
 
-              {/* Original Model Image with preserved position and picture responsiveness */}
-              <div className="split-section__model">
-                <picture>
-                  {p.mobileModel && <source media="(max-width: 900px)" srcSet={p.mobileModel} />}
-                  <img src={p.model} alt="Khadi Model" />
-                </picture>
+              {/* Bottom Image Layer */}
+              <div
+                ref={(el) => (imgRefs.current[idx] = el)}
+                className="split-mobile-image-layer"
+              >
+                <div className="split-section__model">
+                  <picture>
+                    {p.mobileModel && <source media="(max-width: 900px)" srcSet={p.mobileModel} />}
+                    <img src={p.model} alt="Khadi Model" />
+                  </picture>
+                </div>
               </div>
             </div>
           ))}
