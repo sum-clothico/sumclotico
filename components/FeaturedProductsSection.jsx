@@ -169,7 +169,7 @@ export default function FeaturedProductsSection() {
       id="featured-collection"
       style={{
         background: "var(--bg-color, #EDE8DC)",
-        padding: "clamp(48px, 7vw, 90px) clamp(16px, 4vw, 24px) clamp(56px, 8vw, 105px)",
+        padding: "clamp(85px, 12vw, 140px) clamp(16px, 4vw, 24px) clamp(56px, 8vw, 105px)",
         position: "relative",
         overflow: "hidden",
         // seamless top transition

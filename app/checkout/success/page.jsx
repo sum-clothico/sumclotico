@@ -6,6 +6,8 @@ import { useSearchParams } from "next/navigation";
 import { useStore } from "@/context/StoreContext";
 import Navbar from "@/components/Navbar";
 import { trackEvent } from "@/lib/analytics";
+import GstInvoiceModal from "@/components/GstInvoiceModal";
+import { FiPrinter } from "react-icons/fi";
 
 function SuccessContent() {
   const searchParams = useSearchParams();
@@ -32,6 +34,7 @@ function SuccessContent() {
     order?.paymentStatus || "PENDING",
   );
   const [statusMessage, setStatusMessage] = useState("");
+  const [isInvoiceOpen, setIsInvoiceOpen] = useState(false);
   const hasVerifiedRef = useRef(false);
 
   // Live Cashfree Order Status Verification (Idempotent: runs at most once per session)
@@ -413,25 +416,28 @@ function SuccessContent() {
           {/* Shipping Details */}
           <div
             style={{
-              background: "#f8f9fa",
-              padding: 16,
-              borderRadius: 8,
+              background: "#f9fafb",
+              border: "1px solid #e5e7eb",
+              padding: 18,
+              borderRadius: 10,
               fontSize: 13,
-              color: "#555",
-              marginBottom: 30,
+              color: "#4b5563",
+              marginBottom: 24,
             }}
           >
-            <strong style={{ color: "#111", display: "block", marginBottom: 4 }}>
-              Delivery Destination:
+            <strong style={{ color: "#111827", display: "block", marginBottom: 6, fontSize: 13, textTransform: "uppercase", letterSpacing: 0.5 }}>
+              Delivery Destination
             </strong>
-            {order.customer?.name}
-            <br />
-            {order.shippingAddress?.street}
-            <br />
-            {order.shippingAddress?.city}, {order.shippingAddress?.state} -{" "}
-            {order.shippingAddress?.pincode}
-            <br />
-            Phone: {order.customer?.phone}
+            <div style={{ color: "#111827", fontWeight: 700, marginBottom: 2 }}>
+              {order.customer?.name || "Recipient"}
+            </div>
+            <div>{order.shippingAddress?.street}</div>
+            <div>
+              {order.shippingAddress?.city}, {order.shippingAddress?.state} — PIN {order.shippingAddress?.pincode}
+            </div>
+            <div style={{ marginTop: 4, color: "#1f2937", fontWeight: 500 }}>
+              Mobile: +91 {order.customer?.phone}
+            </div>
           </div>
         </div>
       ) : (
@@ -440,6 +446,29 @@ function SuccessContent() {
 
       {/* Action Buttons */}
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        {isPaid && (
+          <button
+            type="button"
+            onClick={() => setIsInvoiceOpen(true)}
+            className="cart-checkout-btn"
+            style={{
+              width: "100%",
+              margin: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 8,
+              background: "#166534",
+              color: "#ffffff",
+              border: "none",
+              cursor: "pointer",
+            }}
+          >
+            <FiPrinter size={16} />
+            <span>Download / Print GST Invoice</span>
+          </button>
+        )}
+
         {!isPaid && (
           <Link
             href={order?.orderNumber ? `/checkout?retry=${order.orderNumber}` : cleanOrderNumber ? `/checkout?retry=${cleanOrderNumber}` : "/checkout"}
@@ -471,6 +500,12 @@ function SuccessContent() {
           Explore More Pieces in Collection →
         </Link>
       </div>
+
+      <GstInvoiceModal
+        order={order}
+        isOpen={isInvoiceOpen}
+        onClose={() => setIsInvoiceOpen(false)}
+      />
     </div>
   );
 }

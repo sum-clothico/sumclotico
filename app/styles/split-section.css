@@ -372,3 +372,45 @@
     display: none !important;
   }
 }
+
+
+/* ─── Mobile Sticky Presentation & Responsive Controls ─── */
+@media (min-width: 901px) {
+  .split-mobile-sticky-wrapper {
+    display: none !important;
+  }
+  .split-desktop-wrapper {
+    display: block !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .split-mobile-sticky-wrapper {
+    display: block !important;
+  }
+  .split-desktop-wrapper {
+    display: none !important;
+  }
+}
+
+@keyframes splitFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes splitImageIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

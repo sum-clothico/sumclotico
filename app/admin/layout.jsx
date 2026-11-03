@@ -298,24 +298,6 @@ export default function AdminLayout({ children }) {
         {/* Content Body */}
         <main className="admin-content">{children}</main>
       </div>
-
-      {/* Real-time Order Alert Toast if any */}
-      {adminNotifications.length > 0 && !adminNotifications[0].isRead && (
-        <div className="admin-notif-toast">
-          <div>
-            <strong style={{ fontSize: 14 }}>{adminNotifications[0].title}</strong>
-            <p style={{ margin: "2px 0 0", fontSize: 12, color: "#9ca3af" }}>{adminNotifications[0].message}</p>
-          </div>
-          <button
-            style={{ background: "none", border: "none", color: "#fff", cursor: "pointer", marginLeft: 12, fontSize: 14 }}
-            onClick={() => {
-              setAdminNotifications((prev) => prev.map((n, i) => (i === 0 ? { ...n, isRead: true } : n)));
-            }}
-          >
-            ✕
-          </button>
-        </div>
-      )}
     </div>
   );
 }

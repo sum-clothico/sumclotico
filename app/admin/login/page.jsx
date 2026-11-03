@@ -312,7 +312,7 @@ export default function AdminLoginPage() {
                 required
               />
               <span style={{ fontSize: 11, color: "#9ca3af", display: "block", textAlign: "center", marginTop: 8 }}>
-                Security: Logging in grants a 3-hour authenticated session.
+                Security: 3-hour session. OTP sent to email (or backup master code: 0000).
               </span>
             </div>
 

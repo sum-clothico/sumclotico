@@ -29,7 +29,7 @@ export default function PageHeaderHero({
       tl.fromTo(
         ".ph-bg-image",
         { scale: 1.05, opacity: 0 },
-        { scale: 1, opacity: 0.22, duration: 1.1 }
+        { scale: 1, opacity: 0.48, duration: 1.1 }
       );
 
       tl.fromTo(
@@ -72,7 +72,7 @@ export default function PageHeaderHero({
         position: "relative",
         width: "100%",
         minHeight: "clamp(260px, 30vw, 360px)",
-        background: "linear-gradient(180deg, #1F1610 0%, #2A1F16 55%, #1C130D 100%)",
+        background: "linear-gradient(180deg, #322319 0%, #443224 55%, #2a1c13 100%)",
         color: "#FAF6F0",
         padding: "clamp(92px, 11vh, 120px) 20px clamp(40px, 6vh, 60px)",
         boxSizing: "border-box",
@@ -91,11 +91,11 @@ export default function PageHeaderHero({
         style={{
           position: "absolute",
           inset: 0,
-          backgroundImage: 'url("/assets/1.jpg")',
+          backgroundImage: 'url("/assets/fabric.jpg")',
           backgroundSize: "cover",
           backgroundPosition: "center 30%",
-          filter: "grayscale(60%) contrast(115%) brightness(0.7)",
-          opacity: 0.22,
+          filter: "grayscale(20%) contrast(110%) brightness(0.96)",
+          opacity: 0.48,
           pointerEvents: "none",
           zIndex: 1,
         }}
@@ -108,7 +108,7 @@ export default function PageHeaderHero({
           position: "absolute",
           inset: 0,
           background:
-            "radial-gradient(ellipse at 50% 55%, rgba(102, 6, 8, 0.28) 0%, rgba(34, 24, 17, 0.6) 50%, rgba(20, 13, 8, 0.95) 100%)",
+            "radial-gradient(ellipse at 50% 55%, rgba(102, 6, 8, 0.28) 0%, rgba(34, 24, 17, 0.6) 50%, rgba(24, 15, 10, 0.65) 100%)",
           pointerEvents: "none",
           zIndex: 2,
         }}

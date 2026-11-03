@@ -273,16 +273,7 @@ export function StoreProvider({ children }) {
 
   // Admin Authentication State
   const [adminUser, setAdminUser] = useState(null);
-  const [adminNotifications, setAdminNotifications] = useState([
-    {
-      id: "notif-1",
-      title: "Welcome to Sum Clothico Admin Suite",
-      message:
-        "Direct database persistence, low-stock auto-alerts, and abandoned cart recovery are active for Sum Clothico.",
-      createdAt: new Date().toISOString(),
-      isRead: false,
-    },
-  ]);
+  const [adminNotifications, setAdminNotifications] = useState([]);
 
   // ─── LOAD STATE ON MOUNT ──────────────────────────────────────────────────
 

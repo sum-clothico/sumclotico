@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
+import GstInvoiceModal from "@/components/GstInvoiceModal";
+import { FiPrinter } from "react-icons/fi";
 import { useStore } from "@/context/StoreContext";
 
 export default function AdminOrdersPage() {
@@ -11,6 +13,7 @@ export default function AdminOrdersPage() {
   const [editingAwbOrderId, setEditingAwbOrderId] = useState(null);
   const [awbInput, setAwbInput] = useState("");
   const [carrierInput, setCarrierInput] = useState("BlueDart Express");
+  const [selectedInvoiceOrder, setSelectedInvoiceOrder] = useState(null);
 
   const filtered = (orders || []).filter((o) => {
     if (!o) return false;
@@ -231,19 +234,43 @@ export default function AdminOrdersPage() {
                     </select>
                   </td>
                   <td>
-                    <select
-                      className="admin-form-select"
-                      style={{ padding: "6px 10px", fontSize: 12, width: "auto" }}
-                      value={ord.orderStatus || "CONFIRMED"}
-                      onChange={(e) => updateOrderStatus(ord.id, e.target.value)}
-                    >
-                      <option value="CONFIRMED">CONFIRMED</option>
-                      <option value="PROCESSING">PROCESSING</option>
-                      <option value="PACKED">PACKED</option>
-                      <option value="SHIPPED">SHIPPED</option>
-                      <option value="DELIVERED">DELIVERED</option>
-                      <option value="CANCELLED">CANCELLED</option>
-                    </select>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                      <select
+                        className="admin-form-select"
+                        style={{ padding: "6px 10px", fontSize: 12, width: "auto" }}
+                        value={ord.orderStatus || "CONFIRMED"}
+                        onChange={(e) => updateOrderStatus(ord.id, e.target.value)}
+                      >
+                        <option value="CONFIRMED">CONFIRMED</option>
+                        <option value="PROCESSING">PROCESSING</option>
+                        <option value="PACKED">PACKED</option>
+                        <option value="SHIPPED">SHIPPED</option>
+                        <option value="DELIVERED">DELIVERED</option>
+                        <option value="CANCELLED">CANCELLED</option>
+                      </select>
+
+                      <button
+                        type="button"
+                        onClick={() => setSelectedInvoiceOrder(ord)}
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: 4,
+                          padding: "4px 8px",
+                          fontSize: 11,
+                          fontWeight: 700,
+                          backgroundColor: "#1f2937",
+                          color: "#93c5fd",
+                          border: "1px solid #374151",
+                          borderRadius: 4,
+                          cursor: "pointer",
+                        }}
+                      >
+                        <FiPrinter size={12} />
+                        <span>GST Invoice</span>
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))
@@ -251,6 +278,12 @@ export default function AdminOrdersPage() {
           </tbody>
         </table>
       </div>
+
+      <GstInvoiceModal
+        order={selectedInvoiceOrder}
+        isOpen={Boolean(selectedInvoiceOrder)}
+        onClose={() => setSelectedInvoiceOrder(null)}
+      />
     </div>
   );
 }

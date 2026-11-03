@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -51,6 +51,48 @@ const PEOPLE_IMAGES = [
   },
   { src: "/assets/wev.jpg", label: "Pit Loom Weaving", location: "Human Pace" },
 ];
+
+
+const CYCLING_WORDS = ["people", "ideas", "skills", "places", "techniques"];
+
+function TextHighlighterCycler() {
+  const [index, setIndex] = useState(0);
+  const [fade, setFade] = useState(true);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFade(false);
+      setTimeout(() => {
+        setIndex((prev) => (prev + 1) % CYCLING_WORDS.length);
+        setFade(true);
+      }, 260);
+    }, 2400);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <span
+      className="os-highlight-pill"
+      style={{
+        display: "inline-block",
+        position: "relative",
+        padding: "2px 14px 4px",
+        margin: "0 6px",
+        borderRadius: "8px",
+        backgroundColor: "rgba(224, 114, 61, 0.16)",
+        borderBottom: "3px solid #881A1C",
+        color: "#881A1C",
+        fontWeight: 700,
+        fontStyle: "italic",
+        transition: "opacity 0.26s ease, transform 0.26s cubic-bezier(0.16, 1, 0.3, 1)",
+        opacity: fade ? 1 : 0,
+        transform: fade ? "translateY(0)" : "translateY(8px)",
+      }}
+    >
+      {CYCLING_WORDS[index]}.
+    </span>
+  );
+}
 
 export default function OurStoryClient() {
   const containerRef = useRef(null);
@@ -195,24 +237,19 @@ export default function OurStoryClient() {
         <div
           style={{ textAlign: "center", maxWidth: 840, margin: "0 auto 40px" }}
         >
-          <div
-            className="os-block-badge"
-            style={{ display: "inline-block", marginBottom: 16 }}
-          >
-            <IndianArchBadge>The Beginning</IndianArchBadge>
-          </div>
           <h1
             className="os-block-title"
             style={{
-              fontSize: "clamp(2rem, 3.8vw, 3.2rem)",
+              fontSize: "clamp(2.1rem, 4.2vw, 3.4rem)",
               fontWeight: 600,
               color: "#1a140e",
-              lineHeight: 1.2,
-              letterSpacing: "-0.01em",
-              margin: "0 0 16px",
+              lineHeight: 1.28,
+              letterSpacing: "-0.015em",
+              margin: "0 0 18px",
             }}
           >
-            <AnimatedWords text="Sum is a sum of people, ideas, skills, places and techniques." />
+            <span>Sum is a sum of </span>
+            <TextHighlighterCycler />
           </h1>
           <p
             className="os-text-item"

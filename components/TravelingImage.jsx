@@ -38,7 +38,7 @@ const TravelingImage = () => {
         xPercent: -50,
         yPercent: -50,
         left: "50%",
-        top: "50%",
+        top: "62%",
         y: 0,
         autoAlpha: 1,
       });
@@ -59,7 +59,7 @@ const TravelingImage = () => {
       opacity: 1,
       scale: 1,
       left: "50%",
-      top: "50%",
+      top: "62%",
       duration: TOTAL_PIN_DISTANCE - 150,
       ease: "power2.out",
     });
@@ -73,7 +73,7 @@ const TravelingImage = () => {
           opacity: 0,
           scale: 1,
           left: "50%",
-          top: "50%",
+          top: "62%",
           y: 0,
           autoAlpha: 1,
         });
@@ -111,7 +111,7 @@ const TravelingImage = () => {
     triggers.push(travelToStoryTl.scrollTrigger);
     travelToStoryTl.to(el, {
       left: "50%",
-      top: "50%",
+      top: "62%",
       scale: 1,
       duration: 1,
       ease: "none",

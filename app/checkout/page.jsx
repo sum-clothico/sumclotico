@@ -175,9 +175,35 @@ function CheckoutContent() {
       return;
     }
 
+    if (!formData.name || formData.name.trim().length < 2) {
+      setCheckoutError("Please enter your full name.");
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.email || !emailRegex.test(formData.email.trim())) {
+      setCheckoutError("Please enter a valid email address for your order confirmation and invoice.");
+      return;
+    }
     const cleanPhone = String(formData.phone || "").replace(/[^0-9]/g, "").slice(-10);
     if (!cleanPhone || cleanPhone.length !== 10) {
       setCheckoutError("Please enter a valid 10-digit Indian mobile number.");
+      return;
+    }
+    if (!formData.street || formData.street.trim().length < 5) {
+      setCheckoutError("Please enter your complete street address (House / Flat / Street).");
+      return;
+    }
+    if (!formData.city || formData.city.trim().length < 2) {
+      setCheckoutError("Please enter your city.");
+      return;
+    }
+    if (!formData.state || formData.state.trim().length < 2) {
+      setCheckoutError("Please enter your state.");
+      return;
+    }
+    const cleanPincode = String(formData.pincode || "").replace(/[^0-9]/g, "");
+    if (!cleanPincode || cleanPincode.length !== 6) {
+      setCheckoutError("Please enter a valid 6-digit Indian PIN code.");
       return;
     }
 
@@ -345,29 +371,37 @@ function CheckoutContent() {
                   </h3>
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
                     <div className="auth-form-group">
-                      <label className="auth-label">Full Name</label>
+                      <label className="auth-label">
+                        Full Name <span style={{ color: "#dc2626" }}>*</span>
+                      </label>
                       <input
                         type="text"
                         name="name"
                         className="auth-input"
                         value={formData.name}
                         onChange={handleInputChange}
+                        placeholder="e.g. Priya Sharma"
                         required
                       />
                     </div>
                     <div className="auth-form-group">
-                      <label className="auth-label">Email (for receipt & tracking)</label>
+                      <label className="auth-label">
+                        Email (for receipt & invoice) <span style={{ color: "#dc2626" }}>*</span>
+                      </label>
                       <input
                         type="email"
                         name="email"
                         className="auth-input"
                         value={formData.email}
                         onChange={handleInputChange}
+                        placeholder="e.g. priya@example.com"
                         required
                       />
                     </div>
                     <div className="auth-form-group" style={{ gridColumn: "1 / -1" }}>
-                      <label className="auth-label">Mobile Phone Number</label>
+                      <label className="auth-label">
+                        Mobile Phone Number <span style={{ color: "#dc2626" }}>*</span>
+                      </label>
                       <input
                         type="tel"
                         name="phone"
@@ -387,47 +421,60 @@ function CheckoutContent() {
                     2. Shipping Address (India)
                   </h3>
                   <div className="auth-form-group">
-                    <label className="auth-label">Street Address / House / Flat No.</label>
+                    <label className="auth-label">
+                      Street Address / House / Flat No. <span style={{ color: "#dc2626" }}>*</span>
+                    </label>
                     <input
                       type="text"
                       name="street"
                       className="auth-input"
                       value={formData.street}
                       onChange={handleInputChange}
+                      placeholder="Flat, house no., building, apartment, street"
                       required
                     />
                   </div>
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 14 }}>
                     <div className="auth-form-group">
-                      <label className="auth-label">City</label>
+                      <label className="auth-label">
+                        City <span style={{ color: "#dc2626" }}>*</span>
+                      </label>
                       <input
                         type="text"
                         name="city"
                         className="auth-input"
                         value={formData.city}
                         onChange={handleInputChange}
+                        placeholder="City / Town"
                         required
                       />
                     </div>
                     <div className="auth-form-group">
-                      <label className="auth-label">State</label>
+                      <label className="auth-label">
+                        State <span style={{ color: "#dc2626" }}>*</span>
+                      </label>
                       <input
                         type="text"
                         name="state"
                         className="auth-input"
                         value={formData.state}
                         onChange={handleInputChange}
+                        placeholder="State"
                         required
                       />
                     </div>
                     <div className="auth-form-group">
-                      <label className="auth-label">PIN Code</label>
+                      <label className="auth-label">
+                        PIN Code <span style={{ color: "#dc2626" }}>*</span>
+                      </label>
                       <input
                         type="text"
                         name="pincode"
+                        maxLength={6}
                         className="auth-input"
                         value={formData.pincode}
                         onChange={handleInputChange}
+                        placeholder="6-digit PIN"
                         required
                       />
                     </div>
@@ -636,6 +683,44 @@ function CheckoutContent() {
           </div>
         </div>
       </div>
+
+      {/* Fullscreen Secure Payment Loading Overlay */}
+      {isProcessingPayment && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            backgroundColor: "rgba(17, 24, 39, 0.8)",
+            backdropFilter: "blur(6px)",
+            zIndex: 999999,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 24,
+            textAlign: "center",
+            color: "#ffffff",
+          }}
+        >
+          <div
+            style={{
+              width: 54,
+              height: 54,
+              border: "4px solid rgba(255, 255, 255, 0.2)",
+              borderTop: "4px solid #f35c27",
+              borderRadius: "50%",
+              animation: "spin 0.8s linear infinite",
+              marginBottom: 20,
+            }}
+          />
+          <h3 style={{ fontSize: 22, fontWeight: 800, margin: "0 0 8px", color: "#ffffff" }}>
+            Connecting to Cashfree Secure Payments...
+          </h3>
+          <p style={{ color: "#d1d5db", fontSize: 14, margin: 0, maxWidth: 380, lineHeight: 1.5 }}>
+            Please wait while we initialize 256-bit encrypted checkout. Do not refresh or press back.
+          </p>
+        </div>
+      )}
     </>
   );
 }
