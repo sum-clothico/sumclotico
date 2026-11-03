@@ -290,3 +290,4 @@ export default function GstInvoiceModal({ order, isOpen, onClose }) {
     </div>
   );
 }
+

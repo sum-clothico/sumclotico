@@ -10,7 +10,7 @@ export default function InstagramSection() {
       className="ig-section"
       style={{
         backgroundColor: "var(--bg-color, #EDE8DC)",
-        padding: "clamp(50px, 8vh, 90px) clamp(16px, 4vw, 40px)",
+        padding: "clamp(50px, 8vh, 85px) clamp(16px, 4vw, 40px) clamp(30px, 5vh, 50px)",
         position: "relative",
         zIndex: 5,
         overflow: "hidden",
@@ -57,15 +57,25 @@ export default function InstagramSection() {
           </p>
         </div>
 
-        {/* Elfsight Instagram Feed */}
-        <Script
-          src="https://elfsightcdn.com/platform.js"
-          strategy="lazyOnload"
-        />
+        {/* Elfsight Instagram Feed with bottom watermark crop */}
         <div
-          className="elfsight-app-3d7c7d5d-a1ac-4c12-8000-957ef48b134b"
-          data-elfsight-app-lazy
-        />
+          className="elfsight-crop-wrapper"
+          style={{
+            position: "relative",
+            overflow: "hidden",
+            clipPath: "inset(0 0 52px 0)",
+            marginBottom: "-48px",
+          }}
+        >
+          <Script
+            src="https://elfsightcdn.com/platform.js"
+            strategy="lazyOnload"
+          />
+          <div
+            className="elfsight-app-3d7c7d5d-a1ac-4c12-8000-957ef48b134b"
+            data-elfsight-app-lazy
+          />
+        </div>
       </div>
     </section>
   );

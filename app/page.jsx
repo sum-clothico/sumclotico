@@ -62,8 +62,8 @@ export default function Home() {
           <MotionCards />
         </div>
         <AboutSection />
-        <JournalPreviewSection />
         <InstagramSection />
+        <JournalPreviewSection />
       </main>
     </>
   );
