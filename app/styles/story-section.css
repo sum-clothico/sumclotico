@@ -5,7 +5,7 @@
   left: 0;
   width: 100%;
   height: 80px;
-  background: linear-gradient(to bottom, var(--bg-color, #EDE8DC) 0%, transparent 100%);
+  background: linear-gradient(to bottom, #FAF8F5 0%, transparent 100%);
   pointer-events: none;
   z-index: 4;
 }
@@ -14,7 +14,7 @@
   width: 100%;
   height: 100vh;
   min-height: 700px;
-  background-color: var(--bg-color);
+  background-color: #FAF8F5;
   overflow: hidden;
 }
 
@@ -238,17 +238,19 @@
     min-height: 600px;
     padding: 0;
     box-sizing: border-box;
+    background-color: #FAF8F5 !important;
   }
 
+  /* Header brought towards center */
   .story-section__header {
-    top: 86px !important;
+    top: clamp(94px, 14.5vh, 120px) !important;
     width: 92% !important;
     max-width: 520px !important;
     gap: 8px !important;
   }
 
   .story-section__heading {
-    font-size: clamp(1.25rem, 5vw, 1.65rem) !important;
+    font-size: clamp(1.22rem, 5vw, 1.6rem) !important;
     padding: 0 8px !important;
     line-height: 1.25 !important;
     color: #1a1714 !important;
@@ -262,19 +264,19 @@
     padding: 0 8px !important;
   }
 
-  /* Static Center Portrait on Mobile positioned harmoniously below the header */
+  /* Static Center Portrait on Mobile positioned in the exact center */
   .story-section__portrait {
     display: block !important;
     position: absolute !important;
-    top: 53% !important;
+    top: 50% !important;
     left: 50% !important;
     transform: translate(-50%, -50%) !important;
-    width: 200px !important;
+    width: 205px !important;
     height: 265px !important;
     border-radius: 14px !important;
     overflow: hidden !important;
     z-index: 6 !important;
-    box-shadow: 0 16px 40px rgba(44, 32, 22, 0.22) !important;
+    box-shadow: 0 16px 40px rgba(44, 32, 22, 0.16) !important;
   }
 
   .story-section__portrait img {
@@ -286,31 +288,32 @@
     display: block !important;
   }
 
+  /* Narrative card brought up closer towards center portrait with clean linearity */
   .story-phase-text {
     position: absolute;
-    bottom: 54px !important;
+    bottom: 68px !important;
     top: auto !important;
     left: 50% !important;
     right: auto !important;
     transform: translateX(-50%) !important;
     text-align: center !important;
-    max-width: 90% !important;
-    width: 90% !important;
+    max-width: 88% !important;
+    width: 88% !important;
     padding: 10px 16px !important;
-    background: rgba(250, 246, 240, 0.96) !important;
+    background: rgba(255, 255, 255, 0.94) !important;
     backdrop-filter: blur(12px) !important;
     -webkit-backdrop-filter: blur(12px) !important;
     border-radius: 12px !important;
-    border: 1.5px solid rgba(61, 43, 31, 0.16) !important;
-    box-shadow: 0 8px 30px rgba(44, 32, 22, 0.12) !important;
+    border: 1px solid rgba(61, 43, 31, 0.12) !important;
+    box-shadow: 0 8px 24px rgba(44, 32, 22, 0.08) !important;
     z-index: 10 !important;
   }
 
   .story-phase-text p {
-    font-size: 0.88rem !important;
-    font-weight: 600 !important;
+    font-size: 0.86rem !important;
+    font-weight: 500 !important;
     color: #1a1714 !important;
-    line-height: 1.45 !important;
+    line-height: 1.5 !important;
     margin: 0 !important;
   }
 
@@ -318,12 +321,12 @@
     display: none !important;
   }
 
-  /* Full coverage background on mobile */
+  /* Whiter, cleaner background with minimal texture tint */
   .story-section__bg {
     inset: 0 !important;
     width: 100% !important;
     height: 100% !important;
-    opacity: 0.22 !important;
+    opacity: 0.06 !important;
   }
 
   .story-section__bg img {
@@ -334,28 +337,29 @@
   }
 
   .story-section__cloth {
-    opacity: 0.22 !important;
+    opacity: 0.08 !important;
   }
 
   .story-section__link {
-    bottom: 18px !important;
+    bottom: 22px !important;
     right: 50% !important;
     transform: translateX(50%) !important;
     white-space: nowrap !important;
-    font-size: 0.88rem !important;
+    font-size: 0.86rem !important;
     font-weight: 700 !important;
+    color: #881A1C !important;
   }
 }
 
 @media (max-width: 600px) {
   .story-section__heading {
-    font-size: clamp(1.22rem, 5.2vw, 1.55rem) !important;
+    font-size: clamp(1.2rem, 5.2vw, 1.55rem) !important;
     gap: 0.15em !important;
   }
   .story-phase-text {
     padding: 10px 14px !important;
   }
   .story-phase-text p {
-    font-size: 0.84rem !important;
+    font-size: 0.83rem !important;
   }
 }

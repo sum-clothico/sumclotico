@@ -24,17 +24,52 @@ export default function GstInvoiceModal({ order, isOpen, onClose }) {
     : new Date().toLocaleDateString("en-IN");
 
   const items = Array.isArray(order.items) ? order.items : [];
-  const subtotal = Number(order.subtotal || order.totalAmount || 0);
-  const discount = Number(order.discountAmount || 0);
+  const discount = Number(order.discountAmount || order.discount || 0);
   const shippingFee = Number(order.shippingFee || 0);
   const grandTotal = Number(order.totalAmount || 0);
 
-  // 5% GST is split into 2.5% CGST and 2.5% SGST for intrastate, or 5% IGST
-  // Prices are inclusive of GST: Taxable Value = Amount / 1.05
-  const taxableAmount = Math.round((grandTotal / 1.05) * 100) / 100;
-  const totalGst = Math.round((grandTotal - taxableAmount) * 100) / 100;
-  const cgst = Math.round((totalGst / 2) * 100) / 100;
-  const sgst = Math.round((totalGst / 2) * 100) / 100;
+  // Dynamic GST calculation based on each item's backend gstPercent setting (5%, 12%, 18%)
+  let totalTaxableValue = 0;
+  let totalGstAmount = 0;
+  const gstRatesUsed = new Set();
+
+  const itemizedList = items.map((it) => {
+    const qty = Math.max(1, Number(it.quantity || 1));
+    const price = Number(it.price || 0);
+    const itemTotal = price * qty;
+    // Backend slab: 5% (handloom khadi under ₹1000/₹2500), 12%, or 18%
+    const gstRate = Number(it.gstPercent || it.productId?.gstPercent || it.gstRate || order.gstPercent || 5);
+    gstRatesUsed.add(gstRate);
+
+    // Inclusive GST formula: Taxable = Total / (1 + Rate/100)
+    const taxableValue = Math.round((itemTotal / (1 + gstRate / 100)) * 100) / 100;
+    const gstAmt = Math.round((itemTotal - taxableValue) * 100) / 100;
+
+    totalTaxableValue += taxableValue;
+    totalGstAmount += gstAmt;
+
+    return {
+      ...it,
+      qty,
+      price,
+      itemTotal,
+      gstRate,
+      taxableValue,
+      gstAmt,
+    };
+  });
+
+  totalTaxableValue = Math.round(totalTaxableValue * 100) / 100;
+  totalGstAmount = Math.round(totalGstAmount * 100) / 100;
+
+  // Check intra-state (Madhya Pradesh - state code 23) vs inter-state
+  const customerState = String(order.shippingAddress?.state || "").trim().toLowerCase();
+  const isIntraState = customerState === "madhya pradesh" || customerState === "mp";
+
+  const cgst = isIntraState ? Math.round((totalGstAmount / 2) * 100) / 100 : 0;
+  const sgst = isIntraState ? Math.round((totalGstAmount / 2) * 100) / 100 : 0;
+  const igst = !isIntraState ? totalGstAmount : 0;
+  const gstRateSummary = Array.from(gstRatesUsed).join("%, ") + "%";
 
   return (
     <div
@@ -56,7 +91,7 @@ export default function GstInvoiceModal({ order, isOpen, onClose }) {
         style={{
           backgroundColor: "#ffffff",
           color: "#111827",
-          maxWidth: 780,
+          maxWidth: 820,
           width: "100%",
           borderRadius: 12,
           padding: "36px 40px",
@@ -90,63 +125,86 @@ export default function GstInvoiceModal({ order, isOpen, onClose }) {
                 color: "#065f46",
                 padding: "3px 8px",
                 borderRadius: 4,
-                textTransform: "uppercase",
+                letterSpacing: 0.5,
               }}
             >
-              GST Compliant Tax Invoice
+              GST COMPLIANT (SLAB: {gstRateSummary})
+            </span>
+            <span style={{ fontSize: 13, color: "#6b7280" }}>
+              Official Tax Invoice
             </span>
           </div>
-
           <div style={{ display: "flex", gap: 10 }}>
             <button
-              type="button"
               onClick={handlePrint}
               style={{
                 display: "inline-flex",
                 alignItems: "center",
                 gap: 6,
-                padding: "8px 16px",
                 backgroundColor: "#881A1C",
                 color: "#ffffff",
                 border: "none",
                 borderRadius: 6,
+                padding: "7px 14px",
                 fontSize: 13,
                 fontWeight: 700,
                 cursor: "pointer",
               }}
             >
               <FiPrinter size={15} />
-              <span>Print / Save PDF</span>
+              <span>Print / Download PDF</span>
             </button>
             <button
-              type="button"
               onClick={onClose}
               style={{
-                background: "none",
-                border: "1px solid #d1d5db",
+                backgroundColor: "#f3f4f6",
+                border: "none",
                 borderRadius: 6,
-                padding: "8px 12px",
+                padding: "7px 10px",
                 cursor: "pointer",
                 display: "flex",
                 alignItems: "center",
+                color: "#4b5563",
               }}
+              aria-label="Close invoice"
             >
-              <FiX size={16} />
+              <FiX size={18} />
             </button>
           </div>
         </div>
 
-        {/* Invoice Header */}
-        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 28, borderBottom: "2px solid #881A1C", paddingBottom: 20 }}>
+        {/* Company Header & Brand Identity */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+            borderBottom: "2px solid #111827",
+            paddingBottom: 18,
+            marginBottom: 22,
+          }}
+        >
           <div>
-            <h1 style={{ margin: 0, fontSize: 24, fontWeight: 900, letterSpacing: 2, color: "#881A1C" }}>
-              सम् CLOTHICO
+            <h1
+              style={{
+                fontSize: 24,
+                fontWeight: 900,
+                letterSpacing: "1.5px",
+                margin: 0,
+                color: "#111827",
+                fontFamily: "serif",
+              }}
+            >
+              सम CLOTHICO
             </h1>
             <p style={{ margin: "4px 0 0", fontSize: 12, color: "#4b5563" }}>
-              Handcrafted Khadi Textiles & Sustainable Luxury
+              M/s Sum Clothico Textiles Private Limited
             </p>
             <p style={{ margin: "2px 0 0", fontSize: 11, color: "#6b7280" }}>
-              GSTIN: 23AABCS1234F1Z5 · State: Madhya Pradesh (23)
+              Registered Weaving Cluster: Chanderi / Maheshwar, Madhya Pradesh, India
+            </p>
+            <p style={{ margin: "2px 0 0", fontSize: 11, color: "#111827", fontWeight: 700 }}>
+              GSTIN: 23AABCS1234F1Z5 · State Code: 23 (Madhya Pradesh)
             </p>
             <p style={{ margin: "2px 0 0", fontSize: 11, color: "#6b7280" }}>
               Email: support@sumclothico.com · Web: www.sumclothico.com
@@ -195,65 +253,85 @@ export default function GstInvoiceModal({ order, isOpen, onClose }) {
           </div>
         </div>
 
-        {/* Itemized Table */}
+        {/* Itemized Table with Backend GST Rates */}
         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12, marginBottom: 20 }}>
           <thead>
             <tr style={{ background: "#f3f4f6", borderBottom: "1px solid #d1d5db", textAlign: "left" }}>
               <th style={{ padding: "8px 10px" }}>#</th>
               <th style={{ padding: "8px 10px" }}>Item Description</th>
-              <th style={{ padding: "8px 10px" }}>HSN Code</th>
+              <th style={{ padding: "8px 10px" }}>HSN</th>
               <th style={{ padding: "8px 10px", textAlign: "center" }}>Qty</th>
-              <th style={{ padding: "8px 10px", textAlign: "right" }}>Unit Price</th>
+              <th style={{ padding: "8px 10px", textAlign: "right" }}>Rate</th>
+              <th style={{ padding: "8px 10px", textAlign: "center" }}>GST Slab</th>
+              <th style={{ padding: "8px 10px", textAlign: "right" }}>Taxable (₹)</th>
               <th style={{ padding: "8px 10px", textAlign: "right" }}>Total (₹)</th>
             </tr>
           </thead>
           <tbody>
-            {items.map((it, idx) => {
-              const itemTotal = Number(it.price || 0) * Number(it.quantity || 1);
-              return (
-                <tr key={idx} style={{ borderBottom: "1px solid #e5e7eb" }}>
-                  <td style={{ padding: "10px 10px", color: "#6b7280" }}>{idx + 1}</td>
-                  <td style={{ padding: "10px 10px" }}>
-                    <strong style={{ color: "#111827" }}>{it.title || it.name || "Handcrafted Textile Piece"}</strong>
-                    <div style={{ fontSize: 11, color: "#6b7280" }}>
-                      Size: {it.selectedSize || "M"} {it.selectedColor ? `· Color: ${it.selectedColor}` : ""}
-                    </div>
-                  </td>
-                  <td style={{ padding: "10px 10px", color: "#6b7280" }}>6204 (Apparel)</td>
-                  <td style={{ padding: "10px 10px", textAlign: "center" }}>{it.quantity || 1}</td>
-                  <td style={{ padding: "10px 10px", textAlign: "right" }}>₹{Number(it.price || 0).toLocaleString("en-IN")}</td>
-                  <td style={{ padding: "10px 10px", textAlign: "right", fontWeight: 700 }}>₹{itemTotal.toLocaleString("en-IN")}</td>
-                </tr>
-              );
-            })}
+            {itemizedList.map((it, idx) => (
+              <tr key={idx} style={{ borderBottom: "1px solid #e5e7eb" }}>
+                <td style={{ padding: "10px 10px", color: "#6b7280" }}>{idx + 1}</td>
+                <td style={{ padding: "10px 10px" }}>
+                  <strong style={{ color: "#111827" }}>{it.title || it.name || "Handcrafted Textile Piece"}</strong>
+                  <div style={{ fontSize: 11, color: "#6b7280" }}>
+                    Size: {it.selectedSize || "M"} {it.selectedColor ? `· Color: ${it.selectedColor}` : ""}
+                  </div>
+                </td>
+                <td style={{ padding: "10px 10px", color: "#6b7280" }}>6204</td>
+                <td style={{ padding: "10px 10px", textAlign: "center" }}>{it.qty}</td>
+                <td style={{ padding: "10px 10px", textAlign: "right" }}>₹{it.price.toLocaleString("en-IN")}</td>
+                <td style={{ padding: "10px 10px", textAlign: "center", color: "#881A1C", fontWeight: 700 }}>
+                  {it.gstRate}%
+                </td>
+                <td style={{ padding: "10px 10px", textAlign: "right", color: "#4b5563" }}>
+                  ₹{it.taxableValue.toLocaleString("en-IN")}
+                </td>
+                <td style={{ padding: "10px 10px", textAlign: "right", fontWeight: 700 }}>
+                  ₹{it.itemTotal.toLocaleString("en-IN")}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
 
         {/* GST Breakdown & Grand Total */}
         <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 28 }}>
-          <div style={{ width: 300, fontSize: 12 }}>
+          <div style={{ width: 330, fontSize: 12 }}>
             <div style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", color: "#4b5563" }}>
               <span>Taxable Value:</span>
-              <span>₹{taxableAmount.toLocaleString("en-IN")}</span>
+              <span>₹{totalTaxableValue.toLocaleString("en-IN")}</span>
             </div>
-            <div style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", color: "#4b5563" }}>
-              <span>CGST (2.5%):</span>
-              <span>₹{cgst.toLocaleString("en-IN")}</span>
-            </div>
-            <div style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", color: "#4b5563" }}>
-              <span>SGST (2.5%):</span>
-              <span>₹{sgst.toLocaleString("en-IN")}</span>
-            </div>
+
+            {isIntraState ? (
+              <>
+                <div style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", color: "#4b5563" }}>
+                  <span>CGST (Central Tax):</span>
+                  <span>₹{cgst.toLocaleString("en-IN")}</span>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", color: "#4b5563" }}>
+                  <span>SGST (State Tax):</span>
+                  <span>₹{sgst.toLocaleString("en-IN")}</span>
+                </div>
+              </>
+            ) : (
+              <div style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", color: "#4b5563" }}>
+                <span>IGST (Integrated Interstate Tax):</span>
+                <span>₹{igst.toLocaleString("en-IN")}</span>
+              </div>
+            )}
+
             {discount > 0 && (
               <div style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", color: "#166534" }}>
-                <span>Discount:</span>
+                <span>Coupon Discount:</span>
                 <span>- ₹{discount.toLocaleString("en-IN")}</span>
               </div>
             )}
+
             <div style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", color: "#4b5563" }}>
               <span>Shipping Fee:</span>
-              <span>{shippingFee === 0 ? "FREE" : `₹${shippingFee}`}</span>
+              <span>{shippingFee === 0 ? "FREE" : `₹${shippingFee.toLocaleString("en-IN")}`}</span>
             </div>
+
             <div
               style={{
                 display: "flex",
@@ -266,22 +344,40 @@ export default function GstInvoiceModal({ order, isOpen, onClose }) {
                 color: "#111827",
               }}
             >
-              <span>Total Invoice Amount:</span>
-              <span style={{ color: "#881A1C" }}>₹{grandTotal.toLocaleString("en-IN")}</span>
+              <span>Invoice Total (Incl. GST):</span>
+              <span>₹{grandTotal.toLocaleString("en-IN")}</span>
             </div>
           </div>
         </div>
 
-        {/* Footer Notes & Signatory */}
-        <div style={{ borderTop: "1px dashed #d1d5db", paddingTop: 16, display: "flex", justifyContent: "space-between", fontSize: 11, color: "#6b7280" }}>
-          <div>
-            <p style={{ margin: 0 }}><strong>Terms & Conditions:</strong></p>
-            <p style={{ margin: "2px 0 0" }}>• This is a computer-generated tax invoice eligible for input tax credit.</p>
-            <p style={{ margin: "2px 0 0" }}>• Handcrafted Khadi cotton garments. Dry clean or gentle wash recommended.</p>
+        {/* Legal Declaration & Authorized Signatory */}
+        <div
+          style={{
+            borderTop: "1px solid #e5e7eb",
+            paddingTop: 16,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-end",
+            fontSize: 11,
+            color: "#6b7280",
+          }}
+        >
+          <div style={{ maxWidth: 420 }}>
+            <p style={{ margin: "0 0 4px", fontWeight: 700, color: "#374151" }}>
+              Declaration & Tax Rules:
+            </p>
+            <p style={{ margin: 0, lineHeight: 1.45 }}>
+              We declare that this invoice shows the actual price of the goods described and that all particulars are true and correct. GST has been collected and will be deposited with the Government as per Section 31 of CGST Act 2017.
+            </p>
           </div>
+
           <div style={{ textAlign: "right" }}>
-            <p style={{ margin: 0, fontWeight: 700, color: "#111827" }}>For Sum Clothico</p>
-            <div style={{ marginTop: 24, borderTop: "1px solid #9ca3af", paddingTop: 4 }}>
+            <div style={{ height: 40, display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
+              <span style={{ fontSize: 13, fontFamily: "cursive", color: "#881A1C", fontWeight: 700 }}>
+                Sum Clothico Studio
+              </span>
+            </div>
+            <div style={{ borderTop: "1px dashed #9ca3af", paddingTop: 4, fontWeight: 700, color: "#111827" }}>
               Authorized Signatory
             </div>
           </div>
@@ -290,4 +386,3 @@ export default function GstInvoiceModal({ order, isOpen, onClose }) {
     </div>
   );
 }
-

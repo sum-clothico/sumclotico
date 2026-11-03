@@ -5,7 +5,7 @@ import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "../app/styles/horizontal-words.css";
-import { FiArrowRight, FiMapPin } from "react-icons/fi";
+import { FiArrowRight } from "react-icons/fi";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -110,28 +110,50 @@ export default function HorizontalWords() {
         },
       });
 
-      // Content elements smooth stagger entrance
+      // Content elements smooth kinetic word-by-word reveal & linear stagger entrance
       if (content) {
+        const titleWords = content.querySelectorAll(".hw-title-word");
+        if (titleWords.length > 0) {
+          gsap.fromTo(
+            titleWords,
+            { y: "115%", rotate: 2.5, opacity: 0 },
+            {
+              y: "0%",
+              rotate: 0,
+              opacity: 1,
+              duration: 1.05,
+              stagger: 0.05,
+              ease: "power4.out",
+              scrollTrigger: {
+                trigger: content,
+                start: "top 75%",
+              },
+            }
+          );
+        }
+
         gsap.fromTo(
-          content.querySelectorAll(".hw-editorial-item, .hw-portrait-card"),
-          { opacity: 0, y: 30 },
+          content.querySelectorAll(".hw-linear-text, .hw-portrait-card, .hw-action-cta"),
+          { opacity: 0, y: 22 },
           {
             opacity: 1,
             y: 0,
-            duration: 1,
-            stagger: 0.15,
+            duration: 0.9,
+            stagger: 0.12,
             ease: "power3.out",
             scrollTrigger: {
-              trigger: container,
-              start: "top 60%",
+              trigger: content,
+              start: "top 65%",
             },
-          },
+          }
         );
       }
     }, sectionRef);
 
     return () => ctx.revert();
   }, []);
+
+  const titleWords = ["Rooted", "in", "handwoven", "textiles."];
 
   return (
     <section
@@ -159,7 +181,7 @@ export default function HorizontalWords() {
         />
       </svg>
 
-      {/* ─── Elegant Editorial Content ─── */}
+      {/* ─── Elegant Editorial Content with Text Linearity ─── */}
       <div
         ref={contentRef}
         className="hw-content-wrapper"
@@ -178,9 +200,9 @@ export default function HorizontalWords() {
           boxSizing: "border-box",
         }}
       >
-        {/* Top Header */}
+        {/* Top Header with Brand Crimson Color & Kinetic Word Animation */}
         <div
-          style={{ textAlign: "center", maxWidth: "800px", marginBottom: "8px" }}
+          style={{ textAlign: "center", maxWidth: "800px", marginBottom: "4px" }}
           className="hw-editorial-item"
         >
           <span
@@ -189,63 +211,71 @@ export default function HorizontalWords() {
               fontWeight: 800,
               letterSpacing: "2.5px",
               textTransform: "uppercase",
-              color: "#f35c27",
+              color: "#881A1C", // Brand signature crimson color (replaces orange)
               display: "inline-block",
               marginBottom: "8px",
             }}
           >
             The Beginning of the Journey
           </span>
+
           <h2
             style={{
               fontSize: "clamp(24px, 3.8vw, 42px)",
-              fontWeight: 800,
+              fontWeight: 700,
               lineHeight: 1.15,
               letterSpacing: "-0.02em",
               color: "#111827",
               margin: 0,
+              overflow: "hidden",
             }}
           >
-            Rooted in handwoven textiles.
+            {titleWords.map((word, wIdx) => (
+              <span
+                key={wIdx}
+                style={{
+                  display: "inline-block",
+                  overflow: "hidden",
+                  verticalAlign: "top",
+                  marginRight: "0.26em",
+                }}
+              >
+                <span
+                  className="hw-title-word"
+                  style={{ display: "inline-block", transformOrigin: "bottom left" }}
+                >
+                  {word}
+                </span>
+              </span>
+            ))}
           </h2>
         </div>
 
-        {/* Flanking Story Columns (Left & Right of the Central Portrait Frame) */}
+        {/* Story Grid with Clean Linear Narrative Text */}
         <div className="hw-story-grid">
           {/* Left Column Narrative */}
           <div
-            className="hw-editorial-item hw-editorial-item--left"
+            className="hw-editorial-item hw-editorial-item--left hw-linear-text"
             style={{
               display: "flex",
               flexDirection: "column",
-              gap: "12px",
+              gap: "8px",
             }}
           >
             <p
               style={{
-                fontSize: "clamp(14px, 1.4vw, 17px)",
+                fontSize: "clamp(14px, 1.35vw, 16px)",
                 lineHeight: 1.65,
                 color: "#374151",
                 margin: 0,
-                fontWeight: 500,
+                fontWeight: 400,
               }}
             >
-              We start with the cloth.
-            </p>
-            <p
-              style={{
-                fontSize: "clamp(13px, 1.2vw, 15px)",
-                lineHeight: 1.6,
-                color: "#6b7280",
-                margin: 0,
-              }}
-            >
-              We&apos;re exploring handwoven textiles from across India — beginning
-              close to home.
+              We start with the cloth — exploring authentic handwoven textiles from across India, beginning close to home.
             </p>
           </div>
 
-          {/* Center Column Slot (Frame is at 50% center on desktop) */}
+          {/* Center Column Slot (Frame is at center on desktop) */}
           <div className="hw-center-slot" aria-hidden="true">
             {/* Center Static Portrait Card (MOBILE ONLY) */}
             <div className="hw-portrait-card">
@@ -258,18 +288,18 @@ export default function HorizontalWords() {
 
           {/* Right Column Narrative */}
           <div
-            className="hw-editorial-item hw-editorial-item--right"
+            className="hw-editorial-item hw-editorial-item--right hw-linear-text"
             style={{
               display: "flex",
               flexDirection: "column",
-              gap: "12px",
+              gap: "8px",
             }}
           >
             <p
               style={{
-                fontSize: "clamp(13px, 1.2vw, 15px)",
+                fontSize: "clamp(13px, 1.25vw, 15px)",
                 lineHeight: 1.6,
-                color: "#111827",
+                color: "#5C4033",
                 fontWeight: 600,
                 margin: 0,
               }}
@@ -279,9 +309,9 @@ export default function HorizontalWords() {
           </div>
         </div>
 
-        {/* Bottom Location & Action CTA */}
+        {/* Bottom Action CTA */}
         <div
-          className="hw-editorial-item"
+          className="hw-editorial-item hw-action-cta"
           style={{
             display: "flex",
             flexDirection: "column",
@@ -316,4 +346,3 @@ export default function HorizontalWords() {
     </section>
   );
 }
-

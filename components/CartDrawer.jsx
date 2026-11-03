@@ -438,6 +438,10 @@ export default function CartDrawer() {
               <span>Total Amount</span>
               <span style={{ color: "#111827" }}>₹{cartGrandTotal.toLocaleString("en-IN")}</span>
             </div>
+            <div style={{ fontSize: 11, color: "#166534", marginTop: 4, display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 4 }}>
+              <span style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: "#16a34a", display: "inline-block" }} />
+              <span>Inclusive of all taxes & GST</span>
+            </div>
 
             <Link
               href="/checkout"
