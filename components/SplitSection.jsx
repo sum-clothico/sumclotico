@@ -10,36 +10,32 @@ gsap.registerPlugin(ScrollTrigger);
 const PANELS = [
   {
     reversed: false,
-    title: ["Easy", "Moves With You"],
-    why: "Clothes that move with you wherever your day wanders.",
-    how: "Comfort that doesn't ask you to compromise on looking good — easy shapes with effortless attitude.",
+    title: ["Easy,", "Moves With You"],
+    description: "Comfortable, versatile styles that keep up with wherever your day takes you.",
     label: ["PRINCIPLE", "EASY"],
     model: "/assets/model.png",
     mobileModel: "/assets/img/15.png",
   },
   {
     reversed: true,
-    title: ["Thoughtful", "Every Detail"],
-    why: "Every detail has a clear reason to be there.",
-    how: "Thoughtful silhouettes, functional deep pockets, and cuts designed for real days and spontaneous plans.",
+    title: ["Thoughtful", "By Design"],
+    description: "Functional details, considered silhouettes and practical pockets made for everyday living.",
     label: ["PRINCIPLE", "THOUGHTFUL"],
     model: "/assets/m2.png",
     mobileModel: "/assets/img/13.png",
   },
   {
     reversed: false,
-    title: ["Rooted", "In Place"],
-    why: "Textiles with an authentic story, artisan hands, and a place.",
-    how: "Starting with pure Khadi cotton sourced from Madhya Pradesh, woven at human pace on wooden looms.",
+    title: ["Rooted", "in Craft"],
+    description: "Authentic Khadi cotton from Madhya Pradesh, woven by skilled artisans on traditional wooden looms.",
     label: ["PRINCIPLE", "ROOTED"],
     model: "/assets/m3.png",
     mobileModel: "/assets/img/24.png",
   },
   {
     reversed: true,
-    title: ["Long-Wearing", "Beyond Seasons"],
-    why: "Made to stay in your wardrobe beyond a single fleeting trend.",
-    how: "Pieces you can wear more than one way, softening and relaxing naturally with every wash.",
+    title: ["Made to Last", "Beyond Seasons"],
+    description: "Versatile pieces designed to be worn, reworn and loved beyond fleeting trends.",
     label: ["PRINCIPLE", "LONG-WEARING"],
     model: "/assets/m1.png",
     mobileModel: "/assets/img/26.png",
@@ -50,6 +46,7 @@ const PANELS = [
 const SplitPanel = ({
   reversed,
   title,
+  description,
   why,
   how,
   label,
@@ -173,32 +170,38 @@ const SplitPanel = ({
               </div>
             ))}
           </div>
-          <div className="split-section__why">
-            <span
+          {description ? (
+            <p
+              className="split-section__description"
               style={{
-                fontWeight: 700,
-                color: "#5C4033",
-                display: "block",
-                marginBottom: "4px",
+                fontFamily: "Poppins, sans-serif",
+                fontSize: "clamp(15px, 1.35vw, 18px)",
+                lineHeight: 1.65,
+                color: "#4a3c30",
+                marginTop: "16px",
+                marginBottom: 0,
+                fontWeight: 400,
+                maxWidth: "460px",
               }}
             >
-              WHY IT MATTERS
-            </span>
-            {why}
-          </div>
-          <div className="split-section__how">
-            <span
-              style={{
-                fontWeight: 700,
-                color: "#5C4033",
-                display: "block",
-                marginBottom: "4px",
-              }}
-            >
-              HOW IT FEELS
-            </span>
-            {how}
-          </div>
+              {description}
+            </p>
+          ) : (
+            <>
+              <div className="split-section__why">
+                <span style={{ fontWeight: 700, color: "#5C4033", display: "block", marginBottom: "4px" }}>
+                  WHY IT MATTERS
+                </span>
+                {why}
+              </div>
+              <div className="split-section__how">
+                <span style={{ fontWeight: 700, color: "#5C4033", display: "block", marginBottom: "4px" }}>
+                  HOW IT FEELS
+                </span>
+                {how}
+              </div>
+            </>
+          )}
         </div>
       </div>
 
@@ -456,32 +459,37 @@ const MobileStickyPrinciplesSection = () => {
                         <div key={lIdx}>{line}</div>
                       ))}
                     </div>
-                    <div className="split-section__why">
-                      <span
+                    {p.description ? (
+                      <p
+                        className="split-section__description"
                         style={{
-                          fontWeight: 700,
-                          color: "#5C4033",
-                          display: "block",
-                          marginBottom: "3px",
+                          fontFamily: "Poppins, sans-serif",
+                          fontSize: "0.88rem",
+                          lineHeight: 1.55,
+                          color: "#4a3c30",
+                          marginTop: "12px",
+                          marginBottom: 0,
+                          fontWeight: 400,
                         }}
                       >
-                        WHY IT MATTERS
-                      </span>
-                      {p.why}
-                    </div>
-                    <div className="split-section__how">
-                      <span
-                        style={{
-                          fontWeight: 700,
-                          color: "#5C4033",
-                          display: "block",
-                          marginBottom: "3px",
-                        }}
-                      >
-                        HOW IT FEELS
-                      </span>
-                      {p.how}
-                    </div>
+                        {p.description}
+                      </p>
+                    ) : (
+                      <>
+                        <div className="split-section__why">
+                          <span style={{ fontWeight: 700, color: "#5C4033", display: "block", marginBottom: "3px" }}>
+                            WHY IT MATTERS
+                          </span>
+                          {p.why}
+                        </div>
+                        <div className="split-section__how">
+                          <span style={{ fontWeight: 700, color: "#5C4033", display: "block", marginBottom: "3px" }}>
+                            HOW IT FEELS
+                          </span>
+                          {p.how}
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>

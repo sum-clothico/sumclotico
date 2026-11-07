@@ -61,8 +61,8 @@ export default function Home() {
         <div className="motion-cards-wrapper">
           <MotionCards />
         </div>
-        <AboutSection />
         <InstagramSection />
+        <AboutSection />
         <JournalPreviewSection />
       </main>
     </>
