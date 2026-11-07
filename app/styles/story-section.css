@@ -60,7 +60,7 @@
 /* ─── Centered Header Container (Heading + Subline in unified flow) ─── */
 .story-section__header {
   position: absolute;
-  top: clamp(86px, 11vh, 118px);
+  top: clamp(64px, 8.5vh, 88px);
   left: 50%;
   transform: translateX(-50%);
   width: 90%;
