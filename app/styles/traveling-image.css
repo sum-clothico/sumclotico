@@ -1,5 +1,5 @@
 :root {
-  --ti-card-h: clamp(170px, 36vh, 320px);
+  --ti-card-h: clamp(200px, 38vh, 320px);
   --ti-card-w: calc(var(--ti-card-h) * (230 / 320));
 }
 

@@ -251,14 +251,14 @@
 
   /* Header brought towards center */
   .story-section__header {
-    top: clamp(54px, 9.5vh, 84px) !important;
+    top: clamp(60px, 9.5vh, 84px) !important;
     width: 92% !important;
     max-width: 520px !important;
     gap: 8px !important;
   }
 
   .story-section__heading {
-    font-size: clamp(1.08rem, 4.2vw, 1.35rem) !important;
+    font-size: clamp(1.16rem, 4.5vw, 1.42rem) !important;
     padding: 0 8px !important;
     line-height: 1.25 !important;
     color: #1a1714 !important;
@@ -266,7 +266,7 @@
   }
 
   .story-section__subline {
-    font-size: clamp(0.72rem, 2.6vw, 0.82rem) !important;
+    font-size: clamp(0.78rem, 2.9vw, 0.86rem) !important;
     line-height: 1.45 !important;
     color: #4a3c30 !important;
     padding: 0 8px !important;
@@ -276,11 +276,11 @@
   .story-section__portrait {
     display: block !important;
     position: absolute !important;
-    top: clamp(190px, 48vh, 50%) !important;
+    top: 49% !important;
     left: 50% !important;
     transform: translate(-50%, -50%) !important;
-    height: clamp(135px, 26vh, 210px) !important;
-    width: calc(clamp(135px, 26vh, 210px) * (205 / 265)) !important;
+    height: clamp(195px, 34vh, 255px) !important;
+    width: calc(clamp(195px, 34vh, 255px) * (205 / 265)) !important;
     border-radius: 14px !important;
     overflow: hidden !important;
     z-index: 6 !important;
@@ -299,7 +299,7 @@
   /* Narrative card brought up closer towards center portrait with clean linearity */
   .story-phase-text {
     position: absolute;
-    bottom: clamp(52px, 8.5vh, 68px) !important;
+    bottom: clamp(66px, 10.5vh, 84px) !important;
     top: auto !important;
     left: 50% !important;
     right: auto !important;
@@ -318,7 +318,7 @@
   }
 
   .story-phase-text p {
-    font-size: clamp(0.74rem, 2.6vw, 0.82rem) !important;
+    font-size: clamp(0.8rem, 2.9vw, 0.88rem) !important;
     font-weight: 500 !important;
     color: #1a1714 !important;
     line-height: 1.5 !important;

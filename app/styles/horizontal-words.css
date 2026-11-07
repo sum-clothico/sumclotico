@@ -294,8 +294,8 @@
 
   .hw-portrait-card {
     display: block !important;
-    height: clamp(150px, 28vh, 240px) !important;
-    width: calc(clamp(150px, 28vh, 240px) * (215 / 275)) !important;
+    height: clamp(190px, 33vh, 255px) !important;
+    width: calc(clamp(190px, 33vh, 255px) * (215 / 275)) !important;
     max-width: 80% !important;
     border-radius: 14px !important;
     margin: 6px auto !important;
