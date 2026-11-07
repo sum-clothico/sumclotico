@@ -15,7 +15,7 @@ import IndianArchBadge from "./IndianArchBadge";
 export default function PageHeaderHero({
   badgeText = "SUM ATELIER",
   title = "Our Story",
-  subtitle = "Handwoven beginnings. Easy silhouettes. Clothes made for real days.",
+  subtitle = "",
   bgImage = "/assets/1.jpg",
 }) {
   const headerRef = useRef(null);
@@ -54,12 +54,14 @@ export default function PageHeaderHero({
         "-=0.45"
       );
 
-      tl.fromTo(
-        ".ph-subtitle",
-        { opacity: 0, y: 10 },
-        { opacity: 1, y: 0, duration: 0.6 },
-        "-=0.35"
-      );
+            if (el.querySelector(".ph-subtitle")) {
+        tl.fromTo(
+          ".ph-subtitle",
+          { opacity: 0, y: 10 },
+          { opacity: 1, y: 0, duration: 0.6 },
+          "-=0.35"
+        );
+      }
     }, headerRef);
 
     return () => ctx.revert();

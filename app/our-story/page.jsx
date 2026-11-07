@@ -15,7 +15,7 @@ export default function OurStoryPage() {
         bgImage="/assets/about/IMG_1040.JPG"
         badgeText="THE SUM STORY"
         title="The Sum Story"
-        subtitle="Sum is a sum of people, ideas, skills, places and techniques. And eventually, you."
+        subtitle=""
         breadcrumb="Home / Our Story"
       />
       <OurStoryClient />
