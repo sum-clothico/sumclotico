@@ -33,7 +33,11 @@
   margin-bottom: 0 !important;
 }
 .hw-story-grid {
-  margin: auto 0 !important;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto 0;
 }
 .hw-content-wrapper > div:last-child {
   margin-top: auto !important;

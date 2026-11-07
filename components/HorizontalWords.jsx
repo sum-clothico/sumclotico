@@ -133,7 +133,7 @@ export default function HorizontalWords() {
         }
 
         gsap.fromTo(
-          content.querySelectorAll(".hw-linear-text, .hw-portrait-card, .hw-action-cta"),
+          content.querySelectorAll(".hw-portrait-card, .hw-action-cta"),
           { opacity: 0, y: 22 },
           {
             opacity: 1,
@@ -200,25 +200,11 @@ export default function HorizontalWords() {
           boxSizing: "border-box",
         }}
       >
-        {/* Top Header with Brand Crimson Color & Kinetic Word Animation */}
+        {/* Top Header with Kinetic Word Animation */}
         <div
           style={{ textAlign: "center", maxWidth: "800px", marginBottom: "4px" }}
           className="hw-editorial-item"
         >
-          <span
-            style={{
-              fontSize: "11px",
-              fontWeight: 800,
-              letterSpacing: "2.5px",
-              textTransform: "uppercase",
-              color: "#881A1C", // Brand signature crimson color (replaces orange)
-              display: "inline-block",
-              marginBottom: "8px",
-            }}
-          >
-            The Beginning of the Journey
-          </span>
-
           <h2
             style={{
               fontSize: "clamp(24px, 3.8vw, 42px)",
@@ -251,31 +237,8 @@ export default function HorizontalWords() {
           </h2>
         </div>
 
-        {/* Story Grid with Clean Linear Narrative Text */}
+        {/* Center Slot for Traveling Image & Mobile Portrait Card */}
         <div className="hw-story-grid">
-          {/* Left Column Narrative */}
-          <div
-            className="hw-editorial-item hw-editorial-item--left hw-linear-text"
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "8px",
-            }}
-          >
-            <p
-              style={{
-                fontSize: "clamp(14px, 1.35vw, 16px)",
-                lineHeight: 1.65,
-                color: "#374151",
-                margin: 0,
-                fontWeight: 400,
-              }}
-            >
-              We start with the cloth — exploring authentic handwoven textiles from across India, beginning close to home.
-            </p>
-          </div>
-
-          {/* Center Column Slot (Frame is at center on desktop) */}
           <div className="hw-center-slot" aria-hidden="true">
             {/* Center Static Portrait Card (MOBILE ONLY) */}
             <div className="hw-portrait-card">
@@ -284,28 +247,6 @@ export default function HorizontalWords() {
                 alt="Artisan Handspinning Pure Khadi"
               />
             </div>
-          </div>
-
-          {/* Right Column Narrative */}
-          <div
-            className="hw-editorial-item hw-editorial-item--right hw-linear-text"
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "8px",
-            }}
-          >
-            <p
-              style={{
-                fontSize: "clamp(13px, 1.25vw, 15px)",
-                lineHeight: 1.6,
-                color: "#5C4033",
-                fontWeight: 600,
-                margin: 0,
-              }}
-            >
-              Currently: Khadi Cotton · Madhya Pradesh
-            </p>
           </div>
         </div>
 

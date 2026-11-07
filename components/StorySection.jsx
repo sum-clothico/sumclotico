@@ -1,4 +1,6 @@
 import React, { useEffect, useRef } from "react";
+import Link from "next/link";
+import { FiArrowRight } from "react-icons/fi";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "../app/styles/story-section.css";
