@@ -316,7 +316,7 @@ export default function JournalPage() {
         bgImage="/assets/Riya Top.png"
         badgeText="CHRONICLES & DIARIES"
         title="The Sum Journal"
-        subtitle="Clothes are rarely just clothes. They carry memories, places, and people."
+        subtitle=""
         breadcrumb="Home / Journal"
       />
 
@@ -392,13 +392,13 @@ export default function JournalPage() {
         .side-pattern-decor {
           width: 24px;
           background-size: 24px auto;
-          opacity: 0.12;
+          opacity: 0.04;
         }
         @media (max-width: 768px) {
           .side-pattern-decor {
             width: 16px !important;
             background-size: 16px auto !important;
-            opacity: 0.1 !important;
+            opacity: 0.035 !important;
           }
           .journal-page {
             padding: 95px 22px 60px !important;
@@ -423,7 +423,7 @@ export default function JournalPage() {
             backgroundRepeat: "repeat-y",
             backgroundPosition: "left top",
             backgroundSize: "24px auto",
-            opacity: 0.12,
+            opacity: 0.04,
             pointerEvents: "none",
             zIndex: 1,
           }}
@@ -444,7 +444,7 @@ export default function JournalPage() {
             backgroundPosition: "left top",
             backgroundSize: "24px auto",
             transform: "scaleX(-1)",
-            opacity: 0.12,
+            opacity: 0.04,
             pointerEvents: "none",
             zIndex: 1,
           }}

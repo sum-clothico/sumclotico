@@ -424,14 +424,14 @@ export default function ContactPage() {
         .side-pattern-decor {
           width: 24px;
           background-size: 24px auto;
-          opacity: 0.12;
+          opacity: 0.04;
         }
 
         @media (max-width: 768px) {
           .side-pattern-decor {
             width: 16px !important;
             background-size: 16px auto !important;
-            opacity: 0.1 !important;
+            opacity: 0.035 !important;
           }
           .contact-page {
             padding: 95px 22px 60px !important;
@@ -488,7 +488,7 @@ export default function ContactPage() {
             backgroundRepeat: "repeat-y",
             backgroundPosition: "left top",
             backgroundSize: "24px auto",
-            opacity: 0.12,
+            opacity: 0.04,
             pointerEvents: "none",
             zIndex: 1,
           }}
@@ -509,7 +509,7 @@ export default function ContactPage() {
             backgroundPosition: "left top",
             backgroundSize: "24px auto",
             transform: "scaleX(-1)",
-            opacity: 0.12,
+            opacity: 0.04,
             pointerEvents: "none",
             zIndex: 1,
           }}

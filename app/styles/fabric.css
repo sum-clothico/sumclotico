@@ -9,14 +9,14 @@
 .side-pattern-decor {
   width: 24px;
   background-size: 24px auto;
-  opacity: 0.12;
+  opacity: 0.04 !important;
 }
 
 @media (max-width: 768px) {
   .side-pattern-decor {
     width: 16px !important;
     background-size: 16px auto !important;
-    opacity: 0.1 !important;
+    opacity: 0.035 !important;
   }
   .fab-section, .fab-hero {
     padding-left: 20px !important;

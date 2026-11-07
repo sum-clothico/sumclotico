@@ -499,8 +499,8 @@
 
 @media (max-width: 768px) {
   .navbar-brand-logo {
-    height: 13px !important;
-    max-height: 14px !important;
+    height: 16px !important;
+    max-height: 18px !important;
   }
   .nav-center .logo-main {
     margin-right: 8px !important;

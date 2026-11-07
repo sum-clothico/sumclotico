@@ -167,35 +167,37 @@ export default function FabricClient() {
         }}
       >
         <div
+          className="side-pattern-decor"
           style={{
             position: "absolute",
             left: 0,
             top: 0,
             bottom: 0,
-            width: "32px",
+            width: "24px",
             backgroundImage: 'url("/assets/bgele2.png")',
             backgroundRepeat: "repeat-y",
             backgroundPosition: "left top",
-            backgroundSize: "32px auto",
-            opacity: 0.22,
+            backgroundSize: "24px auto",
+            opacity: 0.04,
             pointerEvents: "none",
             zIndex: 1,
           }}
           aria-hidden="true"
         />
         <div
+          className="side-pattern-decor"
           style={{
             position: "absolute",
             right: 0,
             top: 0,
             bottom: 0,
-            width: "32px",
+            width: "24px",
             backgroundImage: 'url("/assets/bgele2.png")',
             backgroundRepeat: "repeat-y",
             backgroundPosition: "left top",
-            backgroundSize: "32px auto",
+            backgroundSize: "24px auto",
             transform: "scaleX(-1)",
-            opacity: 0.22,
+            opacity: 0.04,
             pointerEvents: "none",
             zIndex: 1,
           }}

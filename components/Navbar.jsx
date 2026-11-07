@@ -228,9 +228,9 @@ export default function Navbar() {
               alt="Sum Clothico"
               className="navbar-brand-logo"
               style={{
-                height: "17px",
+                height: "20px",
                 width: "auto",
-                maxHeight: "18px",
+                maxHeight: "22px",
                 display: "block",
                 objectFit: "contain",
               }}

@@ -18,7 +18,6 @@ import {
 import { trackEvent } from "@/lib/analytics";
 
 import IndianArchBadge from "@/components/IndianArchBadge";
-import { SEED_PRODUCTS_FALLBACK } from "@/lib/catalogFallback";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -83,13 +82,15 @@ export default function FeaturedProductsSection() {
   }, []);
 
   // Filter products chosen to be featured by the admin (min 2, max 8)
-  const adminFeatured = (products && products.length > 0 ? products : SEED_PRODUCTS_FALLBACK).filter((p) => p.isFeatured);
+  const adminFeatured = (products || []).filter((p) => p.isFeatured);
   const featured =
     adminFeatured.length > 0
       ? adminFeatured
-      : products && products.length > 0
-        ? products.slice(0, 6)
-        : SEED_PRODUCTS_FALLBACK;
+      : (products || []).slice(0, 8);
+
+    if (!featured || featured.length === 0) {
+    return null;
+  }
 
   const [canScroll, setCanScroll] = useState(false);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
