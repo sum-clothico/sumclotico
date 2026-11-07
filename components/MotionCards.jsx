@@ -49,7 +49,6 @@ const JOURNEY = [
 
 export default function MotionCards() {
   const sectionRef = useRef(null);
-  const containerRef = useRef(null);
   const [journeyIdx, setJourneyIdx] = useState(0);
 
   useEffect(() => {
@@ -102,26 +101,6 @@ export default function MotionCards() {
         );
       }
 
-      // Grid Cards Staggered Slide-up Entrance
-      const cards = sectionRef.current.querySelectorAll(".motion-card__card");
-      if (cards.length > 0) {
-        gsap.fromTo(
-          cards,
-          { y: 35, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.9,
-            stagger: 0.12,
-            delay: 0.35,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: "top 70%",
-            },
-          },
-        );
-      }
 
       // Pattern rotate + scale on scroll
       const pattern = sectionRef.current.querySelector(".mc-pattern");
@@ -251,62 +230,6 @@ export default function MotionCards() {
         </div>
       </div>
 
-      {/* ─── Cards with authentic artisan craft imagery ─── */}
-      <div className="motion-card__cards-area">
-        <div ref={containerRef} className="motion-card__cards">
-          {/* Card 1: Handspun Charkha Yarn */}
-          <div className="motion-card__card motion-card__card--1">
-            <div className="motion-card__card-image">
-              <img
-                src="/assets/homepage/14887305-5caf-4e77-b3fa-c79443ced34b.png"
-                loading="lazy"
-                alt="Handspinning raw cotton on Charkha"
-                className="cover-image"
-              />
-              <span className="motion-card__tag">01 • Handspun Charkha</span>
-            </div>
-          </div>
-
-          {/* Card 2: Traditional Loom Weaving */}
-          <div className="motion-card__card motion-card__card--2">
-            <div className="motion-card__card-image">
-              <img
-                src="/assets/khadi.jpg"
-                loading="lazy"
-                alt="Pit loom artisan hand weaving"
-                className="cover-image"
-              />
-              <span className="motion-card__tag">02 • Pit Loom Weaving</span>
-            </div>
-          </div>
-
-          {/* Card 3: Master Hand Stitching */}
-          <div className="motion-card__card motion-card__card--3">
-            <div className="motion-card__card-image">
-              <img
-                src="/assets/homepage/IMG_7669.JPG"
-                loading="lazy"
-                alt="Master hands cutting and hand tailoring"
-                className="cover-image"
-              />
-              <span className="motion-card__tag">03 • Master Tailoring</span>
-            </div>
-          </div>
-
-          {/* Card 4: Living Khadi Cloth */}
-          <div className="motion-card__card motion-card__card--4">
-            <div className="motion-card__card-image">
-              <img
-                src="/assets/homepage/IMG_1046.JPG"
-                loading="lazy"
-                alt="Finished living handspun Khadi cloth"
-                className="cover-image"
-              />
-              <span className="motion-card__tag">04 • Living Khadi</span>
-            </div>
-          </div>
-        </div>
-      </div>
 
       {/* ─── Pattern Decoration ─── */}
       <img src="/assets/pat1.svg" alt="" className="mc-pattern" />

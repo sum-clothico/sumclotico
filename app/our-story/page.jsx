@@ -13,7 +13,7 @@ export default function OurStoryPage() {
       <Navbar />
       <PageHeaderHero
         badgeText="THE SUM STORY"
-        title="Rooted in Handwoven Living"
+        title="The Sum Story"
         subtitle="Sum is a sum of people, ideas, skills, places and techniques. And eventually, you."
         breadcrumb="Home / Our Story"
       />

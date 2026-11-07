@@ -138,7 +138,7 @@ export default function JournalPreviewSection() {
     return () => ctx.revert();
   }, []);
 
-  const headingWords = ["Things", "worth", "talking", "about."];
+  const headingWords = ["Top", "Stories"];
 
   return (
     <section
@@ -200,19 +200,24 @@ export default function JournalPreviewSection() {
             ))}
           </h2>
 
-          <p
-            className="jp-desc"
-            style={{
-              fontSize: "clamp(15px, 1.4vw, 17px)",
-              color: "#5C554E",
-              lineHeight: 1.65,
-              margin: "0 auto",
-              maxWidth: 640,
-            }}
-          >
-            Clothes are rarely just clothes. They carry memories. They tell us where we&apos;ve been.
-            They introduce us to people and places. And sometimes, they make us feel like ourselves again.
-          </p>
+          <div className="jp-desc" style={{ margin: "0 auto", textAlign: "center" }}>
+            <Link
+              href="/journal"
+              style={{
+                fontSize: "clamp(15px, 1.4vw, 17px)",
+                color: "#660608",
+                fontWeight: 600,
+                textDecoration: "none",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                transition: "opacity 0.2s ease, transform 0.2s ease",
+              }}
+            >
+              <span>Read more in Journal</span>
+              <FiArrowRight size={16} />
+            </Link>
+          </div>
         </div>
 
         {/* Stories Container — ASTAKA Scalloped Corner Cards */}
@@ -415,132 +420,7 @@ export default function JournalPreviewSection() {
           ))}
         </div>
 
-        {/* Section Bottom Actions / Community Hook — ASTAKA Royal Placard Frame */}
-        <div
-          className="jp-banner"
-          style={{
-            position: "relative",
-            padding: "clamp(24px, 5vw, 36px) clamp(18px, 4vw, 44px)",
-            background: "transparent",
-            display: "flex",
-            flexWrap: "wrap",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: 24,
-            boxShadow: "none",
-            width: "100%",
-            maxWidth: "100%",
-            boxSizing: "border-box",
-            overflow: "hidden",
-          }}
-        >
-          {/* SVG Placard with Stepped Scalloped Corners and Inner Hairline Border */}
-          <svg
-            viewBox="0 0 1192 200"
-            preserveAspectRatio="none"
-            style={{
-              position: "absolute",
-              inset: 0,
-              width: "100%",
-              height: "100%",
-              pointerEvents: "none",
-              zIndex: 0,
-            }}
-            aria-hidden="true"
-          >
-            {/* Outer Silhouette */}
-            <path
-              d="M 32,0 L 1160,0 L 1160,6 A 26 26 0 0 0 1186 32 L 1192 32 L 1192 168 L 1186 168 A 26 26 0 0 0 1160 194 L 1160 200 L 32 200 L 32 194 A 26 26 0 0 0 6 168 L 0 168 L 0 32 L 6 32 A 26 26 0 0 0 32 6 L 32 0 Z"
-              fill="#FAF6F0"
-              stroke="rgba(44, 32, 22, 0.2)"
-              strokeWidth="1.5"
-            />
-            {/* Inner Accent Hairline */}
-            <path
-              d="M 36,10 L 1156,10 L 1156,14 A 22 22 0 0 0 1178 36 L 1182 36 L 1182 164 L 1178 164 A 22 22 0 0 0 1156 186 L 1156 190 L 36 190 L 36 186 A 22 22 0 0 0 14 164 L 10 164 L 10 36 L 14 36 A 22 22 0 0 0 36 14 L 36 10 Z"
-              fill="none"
-              stroke="#660608"
-              strokeWidth="1"
-              strokeOpacity="0.38"
-            />
-          </svg>
-
-          <div style={{ maxWidth: 580, width: "100%", position: "relative", zIndex: 1 }}>
-            <IndianArchBadge style={{ marginBottom: 12, maxWidth: "100%" }}>
-              <span>Clothes have stories</span>
-            </IndianArchBadge>
-            <h4
-              style={{
-                fontSize: "clamp(18px, 2.5vw, 26px)",
-                fontWeight: 800,
-                color: "#2C2016",
-                margin: "0 0 10px",
-                letterSpacing: "-0.02em",
-                lineHeight: 1.25,
-              }}
-            >
-              Before it becomes your clothes, it passes through many hands.
-            </h4>
-            <p style={{ fontSize: "clamp(13px, 1.4vw, 14px)", color: "#6B5A4E", margin: 0, lineHeight: 1.65 }}>
-              A textile from your hometown. A garment you still remember. A place
-              we should visit. Or simply something you&apos;d like to tell us.
-            </p>
-          </div>
-
-          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center", position: "relative", zIndex: 1 }}>
-            <Link
-              href="/journal"
-              style={{
-                background: "#660608", // Accent #660608 CTA button
-                color: "#FAF6F0",
-                padding: "12px 24px",
-                borderRadius: 999,
-                fontSize: 13.5,
-                fontWeight: 700,
-                textDecoration: "none",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 8,
-                transition: "background 0.2s ease, transform 0.15s ease",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "#4d0406";
-                e.currentTarget.style.transform = "scale(1.03)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "#660608";
-                e.currentTarget.style.transform = "scale(1)";
-              }}
-            >
-              <span>Enter The Journal</span>
-              <FiArrowRight size={15} />
-            </Link>
-
-            <Link
-              href="/contact"
-              style={{
-                background: "#EBE5D9",
-                color: "#2C2016",
-                padding: "12px 20px",
-                borderRadius: 999,
-                fontSize: 13.5,
-                fontWeight: 700,
-                textDecoration: "none",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 8,
-                border: "1px solid rgba(44, 32, 22, 0.15)",
-                transition: "background 0.15s ease",
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = "#DFD7C8")}
-              onMouseLeave={(e) => (e.currentTarget.style.background = "#EBE5D9")}
-            >
-              <FiMessageCircle size={15} />
-              <span>Share Something</span>
-            </Link>
-          </div>
         </div>
-      </div>
     </section>
   );
 }

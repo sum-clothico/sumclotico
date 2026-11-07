@@ -236,24 +236,25 @@ export default function FabricClient() {
                   margin: "0 0 20px",
                 }}
               >
-                <AnimatedWords text="It begins with the cloth." />
+                <AnimatedWords text="Naturally Khadi. Thoughtfully Sum." />
               </h1>
               <div
                 className="fab-hero-sub"
                 style={{ fontSize: "1rem", lineHeight: 1.75, color: "#4a3c30" }}
               >
                 <p style={{ margin: "0 0 14px" }}>
-                  Before a Sum piece takes shape, there&apos;s a fabric, a place and the people behind it.
+                  We choose handspun, handwoven Khadi cotton from Madhya Pradesh for its breathable feel, natural texture and unmistakable character.
                 </p>
-                <p style={{ margin: 0 }}>
-                  Our journey begins with Khadi cotton from Madhya Pradesh —
-                  <strong style={{ color: "#1a140e" }}> handspun, handwoven and full of character.</strong>
+                <p style={{ margin: "0 0 14px" }}>
+                  Shaped into easy, functional silhouettes, every Sum piece brings together the best of both worlds — authentic Indian textiles and contemporary everyday comfort.
+                </p>
+                <p style={{ margin: 0, fontWeight: 700, color: "#660608", fontSize: "1.05rem" }}>
+                  Airy in feel. Earthy in origin. Fluid in form.
                 </p>
               </div>
             </div>
 
-            <div
-              className="fab-hero-visual"
+            <div className="fab-hero-visual"
               style={{
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr",

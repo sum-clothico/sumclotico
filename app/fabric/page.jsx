@@ -13,7 +13,7 @@ export default function FabricPage() {
       <Navbar />
       <PageHeaderHero
         badgeText="TEXTILE ARCHIVE"
-        title="Understanding the Fabric"
+        title="A Closer Look"
         subtitle="The story of pure Indian Khadi — spun by human hand, woven at human pace."
         breadcrumb="Home / Fabric"
       />

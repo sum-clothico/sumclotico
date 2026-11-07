@@ -470,16 +470,7 @@ export default function OurStoryClient() {
                 >
                   Simple. Easy. Made for real days.
                 </p>
-                <p
-                  style={{
-                    margin: "4px 0 0",
-                    fontSize: "0.92rem",
-                    color: "#55483d",
-                  }}
-                >
-                  No synthetic stiffness. Pure cotton that relaxes and softens
-                  with every wash.
-                </p>
+                
               </div>
             </div>
           </div>
@@ -776,7 +767,7 @@ export default function OurStoryClient() {
         </div>
       </section>
 
-      {/* ─── 5. CLOSING MANIFESTO WITH RICH VISUAL BANNER ─── */}
+      {/* ─── 5. VISION & CLOSING ─── */}
       <section
         className="os-anim-block"
         style={{
@@ -790,11 +781,26 @@ export default function OurStoryClient() {
           textAlign: "center",
         }}
       >
+        <p
+          className="os-text-item"
+          style={{
+            fontSize: "1.05rem",
+            lineHeight: 1.75,
+            color: "#3f3329",
+            margin: "0 auto 36px",
+            maxWidth: 680,
+          }}
+        >
+          Khadi is where we began. As we explore more Indian textiles and
+          techniques, the idea stays the same — clothes that become part of your
+          everyday life.
+        </p>
+
         <div
           className="os-block-badge"
           style={{ display: "inline-block", marginBottom: 14 }}
         >
-          <IndianArchBadge>Closing</IndianArchBadge>
+          <IndianArchBadge>Vision</IndianArchBadge>
         </div>
         <h2
           className="os-block-title"
@@ -806,9 +812,9 @@ export default function OurStoryClient() {
             lineHeight: 1.25,
           }}
         >
-          <AnimatedWords text="Thought by us. Shaped by many hands. Lived in by you." />
+          <AnimatedWords text="This is bigger than a collection." />
         </h2>
-        <p
+        <div
           className="os-text-item"
           style={{
             fontSize: "1.05rem",
@@ -818,10 +824,13 @@ export default function OurStoryClient() {
             maxWidth: 680,
           }}
         >
-          Khadi is where we began. As we explore more Indian textiles and
-          techniques, the idea stays the same — clothes that become part of your
-          everyday life.
-        </p>
+          <p style={{ margin: "0 0 12px" }}>
+            We&apos;re building a space where textiles, people and everyday clothing come together beyond trends.
+          </p>
+          <p style={{ margin: 0, fontWeight: 700, color: "#660608", fontSize: "1.1rem" }}>
+            Thoughtful. Human. Sum.
+          </p>
+        </div>
 
         {/* Action CTAs */}
         <div
@@ -867,7 +876,7 @@ export default function OurStoryClient() {
               boxShadow: "0 4px 14px rgba(102, 6, 8, 0.22)",
             }}
           >
-            Shop the Collection
+            Shop the Pieces
           </Link>
         </div>
       </section>
