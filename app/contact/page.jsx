@@ -185,6 +185,19 @@ export default function ContactPage() {
       />
 
       <style>{`
+        .contact-accordion-btn {
+          outline: none !important;
+          box-shadow: none !important;
+          -webkit-tap-highlight-color: transparent;
+        }
+        .contact-accordion-btn:focus,
+        .contact-accordion-btn:focus-visible {
+          outline: none !important;
+          box-shadow: none !important;
+        }
+        .contact-accordion-item:hover {
+          border-color: rgba(102, 6, 8, 0.35) !important;
+        }
         .contact-page {
           background-color: #EDE8DC;
           min-height: 100vh;
@@ -883,8 +896,18 @@ export default function ContactPage() {
           </div>
 
           
-          {/* ─── Contact Options (Collapsible ASTAKA Portal Buttons) ─── */}
-          <div className="contact-options-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: 20, marginBottom: 70 }}>
+          {/* ─── Contact Options (Collapsible ASTAKA Portal Accordions) ─── */}
+          <div
+            className="contact-accordion-list"
+            style={{
+              maxWidth: 780,
+              margin: "0 auto 60px",
+              display: "flex",
+              flexDirection: "column",
+              gap: 14,
+              width: "100%",
+            }}
+          >
             {[
               {
                 num: "01",
@@ -941,38 +964,44 @@ export default function ContactPage() {
               return (
                 <div
                   key={topic.num}
-                  className="contact-col-card"
+                  className="contact-accordion-item"
                   style={{
                     position: "relative",
-                    padding: "20px 22px",
                     background: "#FAF6F0",
                     borderRadius: 14,
-                    border: "1px solid rgba(44, 32, 22, 0.16)",
-                    boxShadow: isOpen ? "0 10px 28px rgba(44, 32, 22, 0.1)" : "0 4px 14px rgba(44, 32, 22, 0.05)",
-                    transition: "all 0.3s cubic-bezier(0.25, 1, 0.5, 1)",
-                    display: "flex",
-                    flexDirection: "column",
+                    border: isOpen
+                      ? "1.5px solid rgba(102, 6, 8, 0.45)"
+                      : "1px solid rgba(44, 32, 22, 0.16)",
+                    boxShadow: isOpen
+                      ? "0 8px 24px rgba(44, 32, 22, 0.08)"
+                      : "0 2px 8px rgba(44, 32, 22, 0.04)",
+                    transition: "all 0.25s ease",
+                    overflow: "hidden",
                   }}
                 >
                   <button
                     type="button"
                     onClick={() => toggleTopic(idx)}
+                    className="contact-accordion-btn"
                     style={{
                       width: "100%",
                       background: "transparent",
                       border: "none",
-                      padding: 0,
+                      outline: "none",
+                      padding: "18px 24px",
                       cursor: "pointer",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "space-between",
                       textAlign: "left",
+                      userSelect: "none",
+                      WebkitTapHighlightColor: "transparent",
                     }}
                     aria-expanded={isOpen}
                   >
                     <span
                       style={{
-                        fontSize: "0.85rem",
+                        fontSize: "clamp(0.85rem, 1.2vw, 0.95rem)",
                         fontWeight: 800,
                         letterSpacing: "0.08em",
                         textTransform: "uppercase",
@@ -982,31 +1011,68 @@ export default function ContactPage() {
                       {topic.num} • {topic.title}
                     </span>
                     <FiChevronDown
-                      size={18}
+                      size={20}
                       color="#660608"
                       style={{
                         transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
                         transition: "transform 0.25s ease",
                         flexShrink: 0,
-                        marginLeft: 8,
+                        marginLeft: 12,
                       }}
                     />
                   </button>
 
                   {isOpen && (
-                    <div style={{ marginTop: 14, paddingTop: 12, borderTop: "1px solid rgba(44, 32, 22, 0.1)" }}>
-                      <p style={{ fontSize: "0.85rem", color: "#8a7a6c", margin: "0 0 10px 0", fontWeight: 600 }}>
+                    <div
+                      style={{
+                        padding: "0 24px 22px",
+                        borderTop: "1px solid rgba(44, 32, 22, 0.08)",
+                        marginTop: 0,
+                        paddingTop: 16,
+                      }}
+                    >
+                      <p
+                        style={{
+                          fontSize: "0.88rem",
+                          color: "#8a7a6c",
+                          margin: "0 0 10px 0",
+                          fontWeight: 600,
+                        }}
+                      >
                         {topic.subtitle}
                       </p>
                       {topic.customText && (
-                        <p style={{ fontSize: "0.9rem", color: "#55483d", lineHeight: 1.6, margin: "0 0 14px 0" }}>
+                        <p
+                          style={{
+                            fontSize: "0.92rem",
+                            color: "#55483d",
+                            lineHeight: 1.6,
+                            margin: "0 0 14px 0",
+                          }}
+                        >
                           {topic.customText}
                         </p>
                       )}
                       {topic.items.length > 0 && (
-                        <ul className="contact-col__list" style={{ listStyle: "none", padding: 0, margin: "0 0 16px 0" }}>
+                        <ul
+                          style={{
+                            listStyle: "none",
+                            padding: 0,
+                            margin: "0 0 18px 0",
+                            display: "grid",
+                            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+                            gap: "6px 16px",
+                          }}
+                        >
                           {topic.items.map((item, i) => (
-                            <li key={i} style={{ fontSize: "0.9rem", color: "#55483d", lineHeight: 1.6, marginBottom: 4 }}>
+                            <li
+                              key={i}
+                              style={{
+                                fontSize: "0.9rem",
+                                color: "#55483d",
+                                lineHeight: 1.5,
+                              }}
+                            >
                               ✦ {item}
                             </li>
                           ))}
@@ -1015,24 +1081,34 @@ export default function ContactPage() {
                       <button
                         type="button"
                         onClick={() => selectCategoryAndScroll(topic.category)}
-                        className="contact-col__btn"
                         style={{
                           display: "inline-flex",
                           alignItems: "center",
-                          gap: 6,
+                          gap: 8,
                           background: "#660608",
                           color: "#FAF6F0",
                           border: "none",
-                          padding: "8px 16px",
+                          outline: "none",
+                          padding: "10px 22px",
                           borderRadius: 99,
                           fontSize: "0.78rem",
                           fontWeight: 700,
-                          letterSpacing: "0.05em",
+                          letterSpacing: "0.06em",
                           textTransform: "uppercase",
                           cursor: "pointer",
+                          transition: "background 0.2s ease, transform 0.15s ease",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = "#4d0406";
+                          e.currentTarget.style.transform = "scale(1.02)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = "#660608";
+                          e.currentTarget.style.transform = "scale(1)";
                         }}
                       >
-                        {topic.btnLabel} <FiArrowRight />
+                        <span>{topic.btnLabel}</span>
+                        <FiArrowRight size={14} />
                       </button>
                     </div>
                   )}
