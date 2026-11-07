@@ -21,7 +21,7 @@
 /* ─── SVG Frame (centered, matches traveling image size) ── */
 .story-section__frame {
   position: absolute;
-  top: 50%;
+  top: 58%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 240px;
@@ -60,7 +60,7 @@
 /* ─── Centered Header Container (Heading + Subline in unified flow) ─── */
 .story-section__header {
   position: absolute;
-  top: clamp(146px, 18.5vh, 195px);
+  top: clamp(86px, 11vh, 118px);
   left: 50%;
   transform: translateX(-50%);
   width: 90%;
@@ -70,7 +70,7 @@
   align-items: center;
   text-align: center;
   z-index: 10;
-  gap: 20px;
+  gap: clamp(10px, 1.6vh, 16px);
 }
 
 .story-section__heading {
@@ -99,14 +99,14 @@
   font-family: "Poppins", sans-serif;
   font-size: clamp(0.92rem, 1.2vw, 1.05rem);
   color: #4a3c30;
-  line-height: 1.6;
-  margin: 6px 0 0;
+  line-height: 1.55;
+  margin: 0;
 }
 
 /* ─── Phase Text ────────────────────────────────────────── */
 .story-phase-text {
   position: absolute;
-  top: 50%;
+  top: 58%;
   transform: translateY(-50%);
   max-width: 320px;
   opacity: 0;
@@ -361,5 +361,26 @@
   }
   .story-phase-text p {
     font-size: 0.83rem !important;
+  }
+}
+
+@media (max-height: 720px) and (min-width: 901px) {
+  .story-section__header {
+    top: 78px !important;
+    gap: 8px !important;
+  }
+  .story-section__heading {
+    font-size: clamp(1.45rem, 2.5vw, 1.95rem) !important;
+  }
+  .story-section__subline {
+    font-size: 0.88rem !important;
+  }
+  .story-section__frame {
+    width: 220px !important;
+    height: 308px !important;
+    top: 59% !important;
+  }
+  .story-phase-text {
+    top: 59% !important;
   }
 }

@@ -47,7 +47,16 @@ const PANELS = [
 ];
 
 /* ─── DESKTOP SPLIT PANEL COMPONENT ─── */
-const SplitPanel = ({ reversed, title, why, how, label, model, mobileModel, isLast }) => {
+const SplitPanel = ({
+  reversed,
+  title,
+  why,
+  how,
+  label,
+  model,
+  mobileModel,
+  isLast,
+}) => {
   const sectionRef = useRef(null);
   const modelRef = useRef(null);
 
@@ -56,7 +65,8 @@ const SplitPanel = ({ reversed, title, why, how, label, model, mobileModel, isLa
     const xTarget = 0;
 
     const ctx = gsap.context(() => {
-      const isDesktop = typeof window !== "undefined" && window.innerWidth > 900;
+      const isDesktop =
+        typeof window !== "undefined" && window.innerWidth > 900;
       if (!isDesktop) return;
 
       gsap.fromTo(
@@ -122,10 +132,7 @@ const SplitPanel = ({ reversed, title, why, how, label, model, mobileModel, isLa
     >
       {isLast && (
         <div className="last-split-portrait" aria-hidden="true">
-          <img
-            src="/assets/img/17.png"
-            alt="Long-Wearing Red Linen Shirt"
-          />
+          <img src="/assets/img/17.png" alt="Long-Wearing Red Linen Shirt" />
         </div>
       )}
 
@@ -154,7 +161,10 @@ const SplitPanel = ({ reversed, title, why, how, label, model, mobileModel, isLa
                   >
                     <span
                       className="split-title-word"
-                      style={{ display: "inline-block", transformOrigin: "bottom left" }}
+                      style={{
+                        display: "inline-block",
+                        transformOrigin: "bottom left",
+                      }}
                     >
                       {word}
                     </span>
@@ -164,11 +174,29 @@ const SplitPanel = ({ reversed, title, why, how, label, model, mobileModel, isLa
             ))}
           </div>
           <div className="split-section__why">
-            <span style={{ fontWeight: 700, color: "#5C4033", display: "block", marginBottom: "4px" }}>WHY IT MATTERS</span>
+            <span
+              style={{
+                fontWeight: 700,
+                color: "#5C4033",
+                display: "block",
+                marginBottom: "4px",
+              }}
+            >
+              WHY IT MATTERS
+            </span>
             {why}
           </div>
           <div className="split-section__how">
-            <span style={{ fontWeight: 700, color: "#5C4033", display: "block", marginBottom: "4px" }}>HOW IT FEELS</span>
+            <span
+              style={{
+                fontWeight: 700,
+                color: "#5C4033",
+                display: "block",
+                marginBottom: "4px",
+              }}
+            >
+              HOW IT FEELS
+            </span>
             {how}
           </div>
         </div>
@@ -178,7 +206,9 @@ const SplitPanel = ({ reversed, title, why, how, label, model, mobileModel, isLa
 
       <div ref={modelRef} className="split-section__model">
         <picture>
-          {mobileModel && <source media="(max-width: 900px)" srcSet={mobileModel} />}
+          {mobileModel && (
+            <source media="(max-width: 900px)" srcSet={mobileModel} />
+          )}
           <img src={model} alt="Khadi Model" />
         </picture>
       </div>
@@ -226,7 +256,13 @@ const MobileStickyPrinciplesSection = () => {
           gsap.set(slide, { opacity: 0, pointerEvents: "none" });
           gsap.set(texts[i], { opacity: 0, y: 26, filter: "blur(4px)" });
           // Incoming images start primed on the right arc
-          gsap.set(imgs[i], { opacity: 0, x: 130, y: 28, rotation: 12, scale: 0.92 });
+          gsap.set(imgs[i], {
+            opacity: 0,
+            x: 130,
+            y: 28,
+            rotation: 12,
+            scale: 0.92,
+          });
         }
       });
 
@@ -255,7 +291,7 @@ const MobileStickyPrinciplesSection = () => {
             ease: "none",
             duration: totalSteps,
           },
-          0
+          0,
         );
       }
 
@@ -281,7 +317,7 @@ const MobileStickyPrinciplesSection = () => {
               duration: 0.38,
               ease: "power2.in",
             },
-            stepTime + 0.5
+            stepTime + 0.5,
           );
         }
 
@@ -298,13 +334,17 @@ const MobileStickyPrinciplesSection = () => {
               duration: 0.46,
               ease: "power2.inOut",
             },
-            stepTime + 0.52
+            stepTime + 0.52,
           );
         }
 
         // Container pointer events switch
         tl.set(curSlide, { pointerEvents: "none" }, stepTime + 0.88);
-        tl.set(nextSlide, { opacity: 1, pointerEvents: "auto" }, stepTime + 0.56);
+        tl.set(
+          nextSlide,
+          { opacity: 1, pointerEvents: "auto" },
+          stepTime + 0.56,
+        );
 
         // --- Next Slide Entrance ---
         // Next image enters along circular sliding arc from the right into center
@@ -321,7 +361,7 @@ const MobileStickyPrinciplesSection = () => {
               duration: 0.48,
               ease: "power3.out",
             },
-            stepTime + 0.58
+            stepTime + 0.58,
           );
         }
 
@@ -337,7 +377,7 @@ const MobileStickyPrinciplesSection = () => {
               duration: 0.44,
               ease: "power3.out",
             },
-            stepTime + 0.65
+            stepTime + 0.65,
           );
         }
       }
@@ -417,13 +457,27 @@ const MobileStickyPrinciplesSection = () => {
                       ))}
                     </div>
                     <div className="split-section__why">
-                      <span style={{ fontWeight: 700, color: "#5C4033", display: "block", marginBottom: "3px" }}>
+                      <span
+                        style={{
+                          fontWeight: 700,
+                          color: "#5C4033",
+                          display: "block",
+                          marginBottom: "3px",
+                        }}
+                      >
                         WHY IT MATTERS
                       </span>
                       {p.why}
                     </div>
                     <div className="split-section__how">
-                      <span style={{ fontWeight: 700, color: "#5C4033", display: "block", marginBottom: "3px" }}>
+                      <span
+                        style={{
+                          fontWeight: 700,
+                          color: "#5C4033",
+                          display: "block",
+                          marginBottom: "3px",
+                        }}
+                      >
                         HOW IT FEELS
                       </span>
                       {p.how}
@@ -439,7 +493,12 @@ const MobileStickyPrinciplesSection = () => {
               >
                 <div className="split-section__model">
                   <picture>
-                    {p.mobileModel && <source media="(max-width: 900px)" srcSet={p.mobileModel} />}
+                    {p.mobileModel && (
+                      <source
+                        media="(max-width: 900px)"
+                        srcSet={p.mobileModel}
+                      />
+                    )}
                     <img src={p.model} alt="Khadi Model" />
                   </picture>
                 </div>

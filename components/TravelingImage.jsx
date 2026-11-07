@@ -38,7 +38,7 @@ const TravelingImage = () => {
         xPercent: -50,
         yPercent: -50,
         left: "50%",
-        top: "62%",
+        top: "58%",
         y: 0,
         autoAlpha: 1,
       });
@@ -59,7 +59,7 @@ const TravelingImage = () => {
       opacity: 1,
       scale: 1,
       left: "50%",
-      top: "62%",
+      top: "58%",
       duration: TOTAL_PIN_DISTANCE - 150,
       ease: "power2.out",
     });
@@ -73,7 +73,7 @@ const TravelingImage = () => {
           opacity: 0,
           scale: 1,
           left: "50%",
-          top: "62%",
+          top: "58%",
           y: 0,
           autoAlpha: 1,
         });
@@ -99,7 +99,7 @@ const TravelingImage = () => {
     }
 
     // ═══ PHASE 1 — Travel to StorySection ═══
-    // Both sections share frame position at left: 50%, top: 57%
+    // Both sections share frame position at left: 50%, top: 58%
     const travelToStoryTl = gsap.timeline({
       scrollTrigger: {
         trigger: storySection,
@@ -111,7 +111,7 @@ const TravelingImage = () => {
     triggers.push(travelToStoryTl.scrollTrigger);
     travelToStoryTl.to(el, {
       left: "50%",
-      top: "62%",
+      top: "58%",
       scale: 1,
       duration: 1,
       ease: "none",
@@ -172,7 +172,7 @@ const TravelingImage = () => {
           ? "50%"
           : splitSections[i - 1].classList.contains("split-section--reversed")
             ? "74%" : "26%";
-      const prevTop = i === 0 ? "50%" : "25%";
+      const prevTop = i === 0 ? "58%" : "25%";
       const prevScale = 1;
 
       // Moves promptly as section enters viewport so it arrives right into frame

@@ -1,7 +1,7 @@
 .traveling-image {
   position: fixed;
   left: 50%;
-  top: 72%;
+  top: 58%;
   transform: translate(-50%, -50%);
   opacity: 0;
   visibility: hidden;
@@ -98,5 +98,13 @@
 @media (max-width: 900px) {
   .traveling-image {
     display: none !important;
+  }
+}
+
+@media (max-height: 720px) and (min-width: 901px) {
+  .traveling-image {
+    width: 215px !important;
+    height: 300px !important;
+    top: 59% !important;
   }
 }

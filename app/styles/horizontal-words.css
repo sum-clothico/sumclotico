@@ -14,7 +14,7 @@
 /* ─── SVG Frame for Traveling Image ──────────────────────────────────── */
 .horizontal-words__frame {
   position: absolute;
-  top: 62%;
+  top: 58%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 240px;
@@ -26,8 +26,8 @@
 /* ─── Pin heading to top, prevent flex-center drift into image ────────── */
 .hw-content-wrapper {
   justify-content: flex-start !important;
-  gap: 20px !important;
-  padding-top: 40px !important;
+  gap: clamp(10px, 1.8vh, 18px) !important;
+  padding-top: clamp(84px, 11.5vh, 114px) !important;
 }
 .hw-content-wrapper > div:first-child {
   margin-bottom: 0 !important;
@@ -314,5 +314,17 @@
     width: 100% !important;
     max-width: 480px !important;
     box-sizing: border-box !important;
+  }
+}
+
+@media (max-height: 720px) and (min-width: 901px) {
+  .hw-content-wrapper {
+    padding-top: 76px !important;
+    gap: 8px !important;
+  }
+  .horizontal-words__frame {
+    width: 220px !important;
+    height: 308px !important;
+    top: 59% !important;
   }
 }
