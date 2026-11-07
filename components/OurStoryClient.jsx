@@ -6,7 +6,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "@/app/styles/our-story.css";
 import IndianArchBadge from "./IndianArchBadge";
-import { FiArrowRight, FiMapPin } from "react-icons/fi";
+import { FiArrowRight } from "react-icons/fi";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -603,38 +603,6 @@ export default function OurStoryClient() {
                   display: "block",
                 }}
               />
-              <div
-                style={{
-                  position: "absolute",
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  padding: "24px 14px 12px",
-                  background:
-                    "linear-gradient(to top, rgba(26,20,14,0.85) 0%, transparent 100%)",
-                  color: "#EDE8DC",
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: "0.65rem",
-                    fontWeight: 800,
-                    letterSpacing: "0.14em",
-                    textTransform: "uppercase",
-                    color: "#D4C4A8",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 4,
-                    marginBottom: 3,
-                  }}
-                >
-                  <FiMapPin size={10} />
-                  <span>{img.location}</span>
-                </div>
-                <div style={{ fontSize: "0.98rem", fontWeight: 700 }}>
-                  {img.label}
-                </div>
-              </div>
             </div>
           ))}
         </div>
