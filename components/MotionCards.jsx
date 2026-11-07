@@ -17,7 +17,7 @@ const JOURNEY = [
   },
   {
     label: "WOVEN",
-    image: "/assets/khadi.jpg",
+    image: "/assets/IMG_2373.JPG",
     caption: "Pit loom. Human rhythm.",
   },
   {
@@ -100,7 +100,6 @@ export default function MotionCards() {
           },
         );
       }
-
 
       // Pattern rotate + scale on scroll
       const pattern = sectionRef.current.querySelector(".mc-pattern");
@@ -202,7 +201,8 @@ export default function MotionCards() {
           <div className="mc-journey__scrim" />
           <div className="mc-journey__caption">
             <span className="mc-journey__step-num">
-              {String(journeyIdx + 1).padStart(2, "0")} / {String(JOURNEY.length).padStart(2, "0")}
+              {String(journeyIdx + 1).padStart(2, "0")} /{" "}
+              {String(JOURNEY.length).padStart(2, "0")}
             </span>
             <p key={journeyIdx}>{JOURNEY[journeyIdx].caption}</p>
           </div>
@@ -229,7 +229,6 @@ export default function MotionCards() {
           </div>
         </div>
       </div>
-
 
       {/* ─── Pattern Decoration ─── */}
       <img src="/assets/pat1.svg" alt="" className="mc-pattern" />

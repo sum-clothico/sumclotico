@@ -35,21 +35,21 @@ function AnimatedWords({ text, className = "os-anim-word" }) {
 
 const PEOPLE_IMAGES = [
   {
-    src: "/assets/bharatpur-spinners.jpg",
-    label: "Village Spinners",
-    location: "Bharatpur",
+    src: "/assets/about/IMG_3720.JPG",
+    label: "Artisan Hands",
   },
   {
-    src: "/assets/bharatpur-weaver.png",
-    label: "Master Weavers",
-    location: "Madhya Pradesh",
-  },
-  {
-    src: "/assets/homepage/14887305-5caf-4e77-b3fa-c79443ced34b.png",
+    src: "/assets/about/14887305-5caf-4e77-b3fa-c79443ced34b.png",
     label: "Charkha Spinning",
-    location: "Handcrafted",
   },
-  { src: "/assets/wev.jpg", label: "Pit Loom Weaving", location: "Human Pace" },
+  {
+    src: "/assets/about/c6aa1e50-2390-4fe4-b79e-fcf044fe17ca.jpg",
+    label: "Pattern Cutting",
+  },
+  {
+    src: "/assets/about/WhatsApp Image 2026-10-05 at 2.13.58 PM (1).jpeg",
+    label: "Loom Weaving",
+  },
 ];
 
 
@@ -488,7 +488,7 @@ export default function OurStoryClient() {
               }}
             >
               <img
-                src="/assets/img/14.png"
+                src="/assets/about/WhatsApp Image 2026-10-05 at 2.13.53 PM.jpeg"
                 alt="Sum Clothico handcrafted silhouette"
                 style={{
                   width: "100%",
@@ -509,7 +509,7 @@ export default function OurStoryClient() {
               }}
             >
               <img
-                src="/assets/img/2.png"
+                src="/assets/about/WhatsApp Image 2026-10-05 at 2.14.11 PM (4).jpeg"
                 alt="Sum handcrafted Khadi textile weave"
                 style={{
                   width: "100%",
@@ -642,7 +642,7 @@ export default function OurStoryClient() {
             }}
           >
             <img
-              src="/assets/homepage/IMG_3734 (1).JPG"
+              src="/assets/about/WhatsApp Image 2026-03-16 at 2.54.57 PM.jpeg"
               alt="Aditi Singh — founder, Sum Clothico"
               style={{
                 width: "100%",

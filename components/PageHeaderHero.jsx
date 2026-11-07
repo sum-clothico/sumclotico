@@ -16,6 +16,7 @@ export default function PageHeaderHero({
   badgeText = "SUM ATELIER",
   title = "Our Story",
   subtitle = "Handwoven beginnings. Easy silhouettes. Clothes made for real days.",
+  bgImage = "/assets/1.jpg",
 }) {
   const headerRef = useRef(null);
 
@@ -91,7 +92,7 @@ export default function PageHeaderHero({
         style={{
           position: "absolute",
           inset: 0,
-          backgroundImage: 'url("/assets/1.jpg")',
+          backgroundImage: `url("${bgImage}")`,
           backgroundSize: "cover",
           backgroundPosition: "center 30%",
           filter: "grayscale(20%) contrast(110%) brightness(0.96)",
