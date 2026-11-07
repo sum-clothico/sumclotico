@@ -752,21 +752,7 @@ export default function FabricClient() {
             textAlign: "center",
           }}
         >
-          <div className="fab-block-badge" style={{ display: "inline-block", marginBottom: 12 }}>
-            <IndianArchBadge>Closing</IndianArchBadge>
-          </div>
-          <h2
-            className="fab-block-title"
-            style={{
-              fontSize: "clamp(1.7rem, 2.8vw, 2.3rem)",
-              fontWeight: 600,
-              color: "#1a140e",
-              margin: "0 0 18px",
-              lineHeight: 1.25,
-            }}
-          >
-            <AnimatedWords text="Know the cloth. Make it yours." />
-          </h2>
+          
           <p
             className="fab-text-item"
             style={{

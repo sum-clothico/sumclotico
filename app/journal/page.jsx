@@ -314,7 +314,7 @@ export default function JournalPage() {
       <Navbar />
       <PageHeaderHero
         badgeText="CHRONICLES & DIARIES"
-        title="Things Worth Talking About"
+        title="The Sum Journal"
         subtitle="Clothes are rarely just clothes. They carry memories, places, and people."
         breadcrumb="Home / Journal"
       />
