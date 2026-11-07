@@ -17,8 +17,8 @@
   top: 58%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 240px;
-  height: 330px;
+  width: calc(var(--ti-card-w) + 10px);
+  height: calc(var(--ti-card-h) + 10px);
   z-index: 50;
   pointer-events: none;
 }
@@ -294,8 +294,8 @@
 
   .hw-portrait-card {
     display: block !important;
-    width: 215px !important;
-    height: 275px !important;
+    height: clamp(150px, 28vh, 240px) !important;
+    width: calc(clamp(150px, 28vh, 240px) * (215 / 275)) !important;
     max-width: 80% !important;
     border-radius: 14px !important;
     margin: 6px auto !important;
@@ -323,12 +323,20 @@
 
 @media (max-height: 720px) and (min-width: 901px) {
   .hw-content-wrapper {
-    padding-top: 76px !important;
-    gap: 8px !important;
+    padding-top: 54px !important;
+    gap: 6px !important;
   }
   .horizontal-words__frame {
-    width: 220px !important;
-    height: 308px !important;
-    top: 59% !important;
+    top: 64% !important;
+  }
+}
+
+@media (max-height: 600px) and (min-width: 901px) {
+  .hw-content-wrapper {
+    padding-top: 44px !important;
+    gap: 4px !important;
+  }
+  .horizontal-words__frame {
+    top: 66% !important;
   }
 }

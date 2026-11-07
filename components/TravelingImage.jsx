@@ -29,6 +29,13 @@ const TravelingImage = () => {
 
     const mm = gsap.matchMedia();
 
+    const getDynamicTop = () => {
+      if (typeof window === "undefined") return "58%";
+      if (window.innerHeight < 600) return "66%";
+      if (window.innerHeight < 720) return "64%";
+      return "58%";
+    };
+
     mm.add("(min-width: 901px)", () => {
       const triggers = [];
 
@@ -38,7 +45,7 @@ const TravelingImage = () => {
         xPercent: -50,
         yPercent: -50,
         left: "50%",
-        top: "58%",
+        top: getDynamicTop(),
         y: 0,
         autoAlpha: 1,
       });
@@ -59,7 +66,7 @@ const TravelingImage = () => {
       opacity: 1,
       scale: 1,
       left: "50%",
-      top: "58%",
+      top: getDynamicTop(),
       duration: TOTAL_PIN_DISTANCE - 150,
       ease: "power2.out",
     });
@@ -73,7 +80,7 @@ const TravelingImage = () => {
           opacity: 0,
           scale: 1,
           left: "50%",
-          top: "58%",
+          top: getDynamicTop(),
           y: 0,
           autoAlpha: 1,
         });
@@ -111,7 +118,7 @@ const TravelingImage = () => {
     triggers.push(travelToStoryTl.scrollTrigger);
     travelToStoryTl.to(el, {
       left: "50%",
-      top: "58%",
+      top: getDynamicTop(),
       scale: 1,
       duration: 1,
       ease: "none",
