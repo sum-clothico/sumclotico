@@ -335,26 +335,7 @@ export default function Footer() {
                 />
               </svg>
             </a>
-            <a
-              href="https://www.pinterest.com/sumclothico/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="single-social w-inline-block"
-              aria-label="Pinterest"
-              style={{
-                width: "34px",
-                height: "34px",
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "#2C2016",
-              }}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 0a12 12 0 0 0-4.37 23.17c-.07-.63-.13-1.6.03-2.29l1-4.24s-.26-.51-.26-1.27c0-1.19.69-2.08 1.55-2.08.73 0 1.08.55 1.08 1.21 0 .74-.47 1.84-.71 2.87-.2.86.43 1.56 1.28 1.56 1.54 0 2.72-1.62 2.72-3.96 0-2.07-1.49-3.52-3.61-3.52-2.46 0-3.91 1.85-3.91 3.75 0 .74.29 1.54.64 1.97a.33.33 0 0 1 .08.31c-.08.36-.28 1.13-.32 1.29-.05.21-.17.26-.39.16-1.44-.67-2.34-2.77-2.34-4.46 0-3.63 2.64-6.97 7.61-6.97 3.99 0 7.1 2.85 7.1 6.66 0 3.97-2.5 7.17-5.98 7.17-1.17 0-2.27-.61-2.64-1.33l-.72 2.74c-.26 1-.96 2.26-1.43 3.02A12 12 0 1 0 12 0z"/>
-              </svg>
-            </a>
-          </div>
+            </div>
         </div>
       </div>
 
@@ -379,7 +360,7 @@ export default function Footer() {
               Shipping:
             </span>
             <img
-              src="/assets/shiprocket.png"
+              src="/assets/images (1).png"
               alt="Shiprocket"
               style={{ height: "22px", width: "auto", objectFit: "contain" }}
               onError={(e) => {
@@ -398,7 +379,7 @@ export default function Footer() {
               Payments:
             </span>
             <img
-              src="/assets/cashfree.png"
+              src="/assets/images.png"
               alt="Cashfree Payments"
               style={{ height: "20px", width: "auto", objectFit: "contain" }}
               onError={(e) => {
@@ -423,22 +404,7 @@ export default function Footer() {
               Udyam: <span style={{ fontFamily: "monospace", color: "#1a140e" }}>UDYAM-MP-38-0030801</span> • SUM CLOTHICO
             </div>
           </div>
-          <img
-            src="/assets/udyam.png"
-            alt="Udyam Registration Certificate"
-            style={{
-              height: "36px",
-              width: "auto",
-              objectFit: "contain",
-              border: "1px solid rgba(44, 32, 22, 0.12)",
-              borderRadius: "4px",
-              padding: "2px 4px",
-              background: "#ffffff",
-            }}
-            onError={(e) => {
-              e.currentTarget.style.display = "none";
-            }}
-          />
+          
         </div>
       </div>
 

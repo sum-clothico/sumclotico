@@ -126,116 +126,6 @@ export default function Navbar() {
         transition: "all 0.3s ease",
       }}
     >
-      {/* ─── Top Announcement Ribbon with Dynamic Coupon & WhatsApp Push CTA ─── */}
-      {!isBannerDismissed && (
-        <div
-          className="top-announcement-bar"
-          style={{
-            background: "#2A1F14", // Warm brand dark brown from client swatch
-            color: "#FAF6F0",
-            padding: "6px 20px",
-            fontSize: "12px",
-            fontWeight: 700,
-            letterSpacing: "0.4px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            borderBottom: "1px solid rgba(255,255,255,0.08)",
-            flexWrap: "nowrap",
-            gap: "8px",
-          }}
-        >
-          {/* Left: WhatsApp Direct Push Button with QR Modal Trigger */}
-          <button
-            type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              handleWhatsAppClick();
-              setIsWhatsAppQROpen(true);
-            }}
-            className="top-announcement-wa-btn"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "6px",
-              background: "#25D366",
-              color: "#000000",
-              padding: "4px 10px",
-              borderRadius: "999px",
-              fontSize: "11px",
-              fontWeight: 800,
-              textDecoration: "none",
-              letterSpacing: "0.3px",
-              border: "1px solid #1ebc59",
-              cursor: "pointer",
-              transition: "transform 0.15s ease",
-              flexShrink: 0,
-            }}
-          >
-            <FaWhatsapp size={13} color="#000000" />
-            <span className="desktop-only">Chat on WhatsApp (Scan QR)</span>
-            <span className="mobile-only" style={{ display: "none" }}>WhatsApp</span>
-          </button>
-
-          {/* Center: Dynamic Admin Coupon Announcement */}
-          <div
-            className="top-announcement-msg"
-            style={{
-              textAlign: "center",
-              flex: 1,
-              minWidth: 0,
-              fontSize: "11px",
-              letterSpacing: "0.4px",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap",
-            }}
-          >
-            <span>
-              {activeBannerCoupon ? (
-                <>
-                  {activeBannerCoupon.bannerText || (
-                    <>
-                      {activeBannerCoupon.title.toUpperCase()} • CODE:{" "}
-                      <strong style={{ color: "#E07A5F" }}>{activeBannerCoupon.code}</strong>
-                    </>
-                  )}
-                </>
-              ) : (
-                <>
-                  <span className="desktop-only">FREE EXPRESS SHIPPING ON ORDERS ABOVE ₹1,999 • CODE: <strong style={{ color: "#E07A5F" }}>KHADI10</strong></span>
-                  <span className="mobile-only">FREE SHIPPING &gt; ₹1,999 • CODE: <strong style={{ color: "#E07A5F" }}>KHADI10</strong></span>
-                </>
-              )}
-            </span>
-          </div>
-
-          {/* Right: Close / Cross Button to Dismiss Banner */}
-          <div style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
-            <button
-              type="button"
-              onClick={handleDismissBanner}
-              style={{
-                background: "transparent",
-                border: "none",
-                color: "#9ca3af",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                padding: "3px",
-                borderRadius: "4px",
-                transition: "color 0.2s",
-              }}
-              title="Close announcement banner"
-              aria-label="Close announcement banner"
-            >
-              <FiX size={15} color="#d1d5db" />
-            </button>
-          </div>
-        </div>
-      )}
-
       {/* ─── Main Navbar Navigation ─── */}
       <nav
         className={`navbar ${isScrolled ? "on-light" : "on-light"}`}
@@ -336,10 +226,11 @@ export default function Navbar() {
             <img
               src="/assets/logo1.svg"
               alt="Sum Clothico"
+              className="navbar-brand-logo"
               style={{
-                height: "22px",
+                height: "17px",
                 width: "auto",
-                maxHeight: "25px",
+                maxHeight: "18px",
                 display: "block",
                 objectFit: "contain",
               }}

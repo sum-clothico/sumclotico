@@ -496,3 +496,13 @@
     letter-spacing: 0.02em;
     text-transform: uppercase;
 }
+
+@media (max-width: 768px) {
+  .navbar-brand-logo {
+    height: 13px !important;
+    max-height: 14px !important;
+  }
+  .nav-center .logo-main {
+    margin-right: 8px !important;
+  }
+}
