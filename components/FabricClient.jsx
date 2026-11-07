@@ -39,10 +39,10 @@ function AnimatedWords({ text, className = "fab-anim-word" }) {
 }
 
 const PROCESS_STEPS = [
-  { label: "Cotton", img: "/assets/ctn.jpg" },
-  { label: "Spinning", img: "/assets/homepage/14887305-5caf-4e77-b3fa-c79443ced34b.png" },
-  { label: "Weaving", img: "/assets/wev.jpg" },
-  { label: "Fabric", img: "/assets/khadi.jpg" },
+  { label: "Cotton", img: "/assets/fiber/14887305-5caf-4e77-b3fa-c79443ced34b.png" },
+  { label: "Spinning", img: "/assets/IMG_2373.JPG" },
+  { label: "Weaving", img: "/assets/fiber/IMG_1322.JPG" },
+  { label: "Fabric", img: "/assets/fiber/WhatsApp Image 2026-10-05 at 2.27.02 PM.jpeg" },
 ];
 
 const COMPARE_COLLAPSIBLES = [
@@ -271,7 +271,7 @@ export default function FabricClient() {
                 }}
               >
                 <img
-                  src="/assets/homepage/14887305-5caf-4e77-b3fa-c79443ced34b.png"
+                  src="/assets/fiber/WhatsApp Image 2026-10-05 at 2.14.11 PM (4).jpeg"
                   alt="Spinner at charkha"
                   style={{
                     width: "100%",
@@ -291,7 +291,7 @@ export default function FabricClient() {
                 }}
               >
                 <img
-                  src="/assets/han.jpg"
+                  src="/assets/fiber/WhatsApp Image 2026-10-05 at 8.56.14 PM.jpeg"
                   alt="Hands weaving khadi"
                   style={{
                     width: "100%",
@@ -401,9 +401,12 @@ export default function FabricClient() {
                 boxShadow: "0 14px 32px -12px rgba(44, 32, 22, 0.18)",
               }}
             >
-              <img
-                src="/assets/fabric.jpg"
-                alt="Khadi cotton weave"
+              <video
+                src="/assets/fiber/rooted-in-craft.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
                 style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
               />
             </div>
@@ -531,15 +534,20 @@ export default function FabricClient() {
                 overflow: "hidden",
                 border: "1px solid rgba(44, 32, 22, 0.14)",
                 boxShadow: "0 14px 32px -12px rgba(44, 32, 22, 0.18)",
+                background: "#FAF6F0",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "10px",
               }}
             >
               <img
-                src="/assets/khadi.jpg"
+                src="/assets/fiber/IMG_2962.PNG"
                 alt="Khadi fabric close-up"
                 style={{
                   width: "100%",
-                  aspectRatio: "4/5",
-                  objectFit: "cover",
+                  maxHeight: "560px",
+                  objectFit: "contain",
                   display: "block",
                 }}
               />
@@ -736,6 +744,46 @@ export default function FabricClient() {
             <span>Shaped by hands</span>
             <span style={{ color: "#D4C4A8" }}>•</span>
             <span>Produced thoughtfully</span>
+          </div>
+
+          {/* 3 Contemporary Khadi Silhouette Visuals */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+              gap: 20,
+              maxWidth: 960,
+              margin: "36px auto 0",
+            }}
+          >
+            {[
+              "/assets/fiber/Airy - 1.png",
+              "/assets/fiber/Airy - 2.png",
+              "/assets/fiber/Airy - 3.png",
+            ].map((src, idx) => (
+              <div
+                key={idx}
+                className="fab-image-reveal"
+                style={{
+                  borderRadius: 14,
+                  overflow: "hidden",
+                  border: "1px solid rgba(44, 32, 22, 0.14)",
+                  boxShadow: "0 12px 28px -10px rgba(44, 32, 22, 0.15)",
+                  aspectRatio: "4/5",
+                }}
+              >
+                <img
+                  src={src}
+                  alt={`Contemporary Khadi silhouette ${idx + 1}`}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    display: "block",
+                  }}
+                />
+              </div>
+            ))}
           </div>
         </section>
 

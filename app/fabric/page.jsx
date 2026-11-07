@@ -14,7 +14,7 @@ export default function FabricPage() {
       <PageHeaderHero
         badgeText="TEXTILE ARCHIVE"
         title="A Closer Look"
-        subtitle="The story of pure Indian Khadi — spun by human hand, woven at human pace."
+        subtitle=""
         breadcrumb="Home / Fabric"
       />
       <FabricClient />

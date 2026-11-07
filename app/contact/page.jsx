@@ -178,9 +178,10 @@ export default function ContactPage() {
     <div ref={containerRef} style={{ position: "relative", minHeight: "100vh", backgroundColor: "#EDE8DC" }}>
       <Navbar />
       <PageHeaderHero
+        bgImage="/assets/WhatsApp Image 2026-10-05 at 2.14.10 PM.jpeg"
         badgeText="CONCIERGE & CARE"
         title="Come Say Hello!"
-        subtitle="Whether you need help finding your size, want to collaborate, or share a story — we read every message."
+        subtitle=""
         breadcrumb="Home / Contact"
       />
 

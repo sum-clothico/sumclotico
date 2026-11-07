@@ -313,6 +313,7 @@ export default function JournalPage() {
     <div ref={containerRef} style={{ position: "relative", minHeight: "100vh", backgroundColor: "#EDE8DC" }}>
       <Navbar />
       <PageHeaderHero
+        bgImage="/assets/Riya Top.png"
         badgeText="CHRONICLES & DIARIES"
         title="The Sum Journal"
         subtitle="Clothes are rarely just clothes. They carry memories, places, and people."
