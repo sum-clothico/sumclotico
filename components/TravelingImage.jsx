@@ -9,10 +9,10 @@ const TOTAL_PIN_DISTANCE = 950;
 const STORY_PIN = 1000;
 
 const SPLIT_IMAGES = [
-  "/assets/img/12.png",
-  "/assets/img/19.png",
-  "/assets/img/18.png",
-  "/assets/img/17.png",
+  "/assets/img/DB9CF178-B34D-4E0D-AA48-108123659B39.jpg",
+  "/assets/img/IMG_8822.PNG",
+  "/assets/img/9B794187-0239-4802-ADC7-98F6E60E26CB.png",
+  "/assets/img/ChatGPT Image Aug 12, 2026, 11_33_46 PM.png",
 ];
 
 const TravelingImage = () => {

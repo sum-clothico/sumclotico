@@ -13,32 +13,32 @@ const PANELS = [
     title: ["Easy,", "Moves With You"],
     description: "Comfortable, versatile styles that keep up with wherever your day takes you.",
     label: ["PRINCIPLE", "EASY"],
-    model: "/assets/model.png",
-    mobileModel: "/assets/img/15.png",
+    model: "/assets/img/af066878-b95c-4eff-bb55-44f0dcaac8ac.jpg",
+    mobileModel: "/assets/img/af066878-b95c-4eff-bb55-44f0dcaac8ac.jpg",
   },
   {
     reversed: true,
     title: ["Thoughtful", "By Design"],
     description: "Functional details, considered silhouettes and practical pockets made for everyday living.",
     label: ["PRINCIPLE", "THOUGHTFUL"],
-    model: "/assets/m2.png",
-    mobileModel: "/assets/img/13.png",
+    model: "/assets/img/IMG_8825.PNG",
+    mobileModel: "/assets/img/IMG_8825.PNG",
   },
   {
     reversed: false,
     title: ["Rooted", "in Craft"],
     description: "Authentic Khadi cotton from Madhya Pradesh, woven by skilled artisans on traditional wooden looms.",
     label: ["PRINCIPLE", "ROOTED"],
-    model: "/assets/m3.png",
-    mobileModel: "/assets/img/24.png",
+    model: "/assets/img/E320377C-A987-4DFF-A540-53647862846C.png",
+    mobileModel: "/assets/img/E320377C-A987-4DFF-A540-53647862846C.png",
   },
   {
     reversed: true,
     title: ["Made to Last", "Beyond Seasons"],
     description: "Versatile pieces designed to be worn, reworn and loved beyond fleeting trends.",
     label: ["PRINCIPLE", "LONG-WEARING"],
-    model: "/assets/m1.png",
-    mobileModel: "/assets/img/26.png",
+    model: "/assets/img/D141A2C9-69BB-43E5-AD62-CF59ED64199A.png",
+    mobileModel: "/assets/img/D141A2C9-69BB-43E5-AD62-CF59ED64199A.png",
   },
 ];
 
@@ -129,7 +129,7 @@ const SplitPanel = ({
     >
       {isLast && (
         <div className="last-split-portrait" aria-hidden="true">
-          <img src="/assets/img/17.png" alt="Long-Wearing Red Linen Shirt" />
+          <img src="/assets/img/ChatGPT Image Aug 12, 2026, 11_33_46 PM.png" alt="Long-Wearing Purple Dress" />
         </div>
       )}
 
