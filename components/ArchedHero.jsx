@@ -12,10 +12,7 @@ export default function ArchedHero() {
   const videoPortalRef = useRef(null);
   const taglineRef = useRef(null);
   const ctaRef = useRef(null);
-  const ytContainerRef = useRef(null);
-  const playerObjRef = useRef(null);
 
-  const [isMuted, setIsMuted] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isVideoReady, setIsVideoReady] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -27,85 +24,6 @@ export default function ArchedHero() {
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
-  }, []);
-
-  // Initialize YouTube Player
-  useEffect(() => {
-    if (!window.YT && !document.querySelector('script[src*="youtube.com/iframe_api"]')) {
-      const tag = document.createElement("script");
-      tag.src = "https://www.youtube.com/iframe_api";
-      document.head.appendChild(tag);
-    }
-
-    const initPlayer = () => {
-      if (!ytContainerRef.current) return;
-      if (playerObjRef.current) return;
-
-      playerObjRef.current = new window.YT.Player(ytContainerRef.current, {
-        videoId: YT_HERO_ID,
-        playerVars: {
-          autoplay: 1,
-          mute: 1,
-          loop: 1,
-          playlist: YT_HERO_ID,
-          controls: 0,
-          showinfo: 0,
-          rel: 0,
-          modestbranding: 1,
-          playsinline: 1,
-          disablekb: 1,
-          fs: 0,
-          iv_load_policy: 3,
-          origin: typeof window !== "undefined" ? window.location.origin : undefined,
-        },
-        events: {
-          onReady: (e) => {
-            try {
-              e.target.mute();
-              e.target.playVideo();
-            } catch (_) {}
-          },
-          onStateChange: (e) => {
-            if (e.data === window.YT.PlayerState.ENDED) {
-              try {
-                e.target.playVideo();
-              } catch (_) {}
-            }
-            if (e.data === window.YT.PlayerState.PLAYING) {
-              // Delay revealing video until YouTube's initial center HUD has naturally hidden
-              setTimeout(() => {
-                setIsVideoReady(true);
-              }, 2800);
-            }
-          },
-        },
-      });
-    };
-
-    let pollTimer;
-    if (window.YT && window.YT.Player) {
-      initPlayer();
-    } else {
-      const prevCallback = window.onYouTubeIframeAPIReady;
-      window.onYouTubeIframeAPIReady = () => {
-        if (typeof prevCallback === "function") prevCallback();
-        initPlayer();
-      };
-      pollTimer = setInterval(() => {
-        if (window.YT && window.YT.Player && !playerObjRef.current) {
-          clearInterval(pollTimer);
-          initPlayer();
-        }
-      }, 200);
-    }
-
-    return () => {
-      if (pollTimer) clearInterval(pollTimer);
-      if (playerObjRef.current && typeof playerObjRef.current.destroy === "function") {
-        playerObjRef.current.destroy();
-        playerObjRef.current = null;
-      }
-    };
   }, []);
 
   // Entrance Animation
@@ -141,36 +59,13 @@ export default function ArchedHero() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isModalOpen]);
 
-  const toggleSound = (e) => {
-    e.stopPropagation();
-    if (playerObjRef.current && typeof playerObjRef.current.isMuted === "function") {
-      const muted = playerObjRef.current.isMuted();
-      if (muted) {
-        playerObjRef.current.unMute();
-        playerObjRef.current.setVolume(100);
-        setIsMuted(false);
-      } else {
-        playerObjRef.current.mute();
-        setIsMuted(true);
-      }
-    } else {
-      setIsMuted((prev) => !prev);
-    }
-  };
-
   const openModal = (e) => {
-    e.stopPropagation();
-    try {
-      playerObjRef.current?.pauseVideo();
-    } catch (_) {}
+    if (e && typeof e.stopPropagation === "function") e.stopPropagation();
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
-    try {
-      playerObjRef.current?.playVideo();
-    } catch (_) {}
   };
 
   return (
@@ -188,9 +83,19 @@ export default function ArchedHero() {
           className={`arched-hero__portal ${isMobile ? "arched-hero__portal--vertical" : "arched-hero__portal--landscape"}`}
         >
           <div className="arched-hero__mask">
-            {/* Embedded YouTube Player */}
+            {/* Embedded YouTube Direct Background Player — single mount, zero double-loading */}
             <div className="arched-hero__yt-wrap">
-              <div ref={ytContainerRef} className="arched-hero__yt-player" />
+              <iframe
+                className="arched-hero__yt-iframe"
+                src={`https://www.youtube-nocookie.com/embed/${YT_HERO_ID}?autoplay=1&mute=1&controls=0&loop=1&playlist=${YT_HERO_ID}&playsinline=1&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0`}
+                title="From Cotton to Clothing | The Story, People & Philosophy Behind Sum Clothico"
+                allow="autoplay; encrypted-media"
+                tabIndex={-1}
+                onLoad={() => {
+                  // Reveal video once loaded
+                  setTimeout(() => setIsVideoReady(true), 600);
+                }}
+              />
             </div>
 
             {/* Poster thumbnail placeholder before video is ready */}
@@ -202,28 +107,29 @@ export default function ArchedHero() {
 
             <div className="arched-hero__vignette" />
 
-            {/* Shield intercepting taps/clicks to suppress YouTube initial controls */}
+            {/* Click shield intercepting taps/clicks to open enlarged video */}
             <div
               className="arched-hero__click-shield"
               onClick={openModal}
-              title="Click to enlarge video"
+              title="Click to enlarge video with sound"
               role="button"
               tabIndex={0}
               onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") openModal(e); }}
               aria-label="Enlarge video player"
             />
 
-            {/* Video Controls Overlay */}
+            {/* Video Controls Overlay (Sound + Enlarge) */}
             <div className="hero-video-controls-row">
-              {/* Sound Toggle */}
+              {/* Sound / Watch button */}
               <button
                 type="button"
-                onClick={toggleSound}
+                onClick={openModal}
                 className="hero-video-sound-btn"
-                aria-label={isMuted ? "Unmute video" : "Mute video"}
+                aria-label="Watch with sound"
+                title="Watch with sound"
               >
-                {isMuted ? <FiVolumeX size={15} /> : <FiVolume2 size={15} />}
-                <span className="hero-video-btn-text">{isMuted ? "Sound Off" : "Sound On"}</span>
+                <FiVolume2 size={15} />
+                <span className="hero-video-btn-text">Watch with Sound</span>
               </button>
 
               {/* Enlarge / Fullscreen Modal Trigger */}
