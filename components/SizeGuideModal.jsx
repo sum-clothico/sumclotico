@@ -96,7 +96,7 @@ export default function SizeGuideModal() {
           }}
         >
           <img
-            src="/assets/homepage/b17b9cad-37de-4103-a916-71feb95c14e7.jpg"
+            src="/assets/homepage/Sum Clothico Size & Fit Guide-7.png"
             alt="Garment Size & Measurement Guide"
             style={{
               width: "100%",
