@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useStore } from "@/context/StoreContext";
+import FitDetailsModal from "@/components/FitDetailsModal";
 import { FiShoppingBag, FiCheck, FiX, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { trackViewItem, trackEvent } from "@/lib/analytics";
 
@@ -34,6 +35,7 @@ export default function ProductQuickView() {
   const [selectedColor, setSelectedColor] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
+  const [isFitModalOpen, setIsFitModalOpen] = useState(false);
   const [isZoomed, setIsZoomed] = useState(false);
 
   useEffect(() => {
@@ -78,7 +80,12 @@ export default function ProductQuickView() {
   };
 
   const handleAdd = () => {
-    addToCart(quickViewProduct, selectedSize, selectedColor || quickViewProduct.colors?.[0] || "", quantity, false);
+    setIsFitModalOpen(true);
+  };
+
+  const handleSaveFit = (fitData) => {
+    setIsFitModalOpen(false);
+    addToCart(quickViewProduct, fitData.size || selectedSize, selectedColor || quickViewProduct.colors?.[0] || "", quantity, true, fitData);
     setIsAdded(true);
     setTimeout(() => {
       setIsAdded(false);
@@ -770,6 +777,15 @@ export default function ProductQuickView() {
           </div>
         </div>
       </div>
+      <FitDetailsModal
+        isOpen={isFitModalOpen}
+        onClose={() => setIsFitModalOpen(false)}
+        product={quickViewProduct}
+        initialSize={selectedSize}
+        initialColor={selectedColor}
+        mode="add_to_cart"
+        onSaveAndProceed={handleSaveFit}
+      />
     </div>
   );
 }

@@ -248,6 +248,7 @@ function CheckoutContent() {
               quantity: item.quantity,
               selectedSize: item.selectedSize,
               selectedColor: item.selectedColor,
+              fitDetails: item.fitDetails || null,
             })),
             customer: {
               name: formData.name,
@@ -582,6 +583,11 @@ function CheckoutContent() {
                       <div style={{ flex: 1 }}>
                         <div style={{ fontWeight: 700, fontSize: 14 }}>{item.name}</div>
                         <div style={{ fontSize: 12, color: "#6b7280" }}>Size: {item.selectedSize} × {item.quantity}</div>
+                        {item.fitDetails && (
+                          <div style={{ fontSize: 11, color: "#881A1C", marginTop: 2 }}>
+                            ✦ Fit: Bust {item.fitDetails.bust}&quot; • Waist {item.fitDetails.waist}&quot; • Hips {item.fitDetails.hips}&quot;
+                          </div>
+                        )}
                       </div>
                       <div style={{ fontWeight: 700, fontSize: 14 }}>₹{(item.price * item.quantity).toLocaleString("en-IN")}</div>
                     </div>

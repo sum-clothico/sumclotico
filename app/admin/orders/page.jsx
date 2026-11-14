@@ -192,6 +192,13 @@ export default function AdminOrdersPage() {
                       <div key={i} style={{ fontSize: 12, marginBottom: 3 }}>
                         <span style={{ color: "#e5e7eb", fontWeight: 600 }}>{it.title || it.name}</span>{" "}
                         <span style={{ color: "#9ca3af" }}>({it.selectedSize}) × {it.quantity}</span>
+                        {it.fitDetails && (
+                          <div style={{ fontSize: 11, color: "#e8a87c", marginTop: 2, background: "rgba(232, 168, 124, 0.1)", padding: "2px 6px", borderRadius: 4 }}>
+                            ✦ Fit: Bust {it.fitDetails.bust}&quot; • Waist {it.fitDetails.waist}&quot; • Hips {it.fitDetails.hips}&quot;
+                            {it.fitDetails.fitPreference ? ` (${it.fitDetails.fitPreference})` : ""}
+                            {it.fitDetails.notes ? ` • Note: "${it.fitDetails.notes}"` : ""}
+                          </div>
+                        )}
                       </div>
                     ))}
                   </td>

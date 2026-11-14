@@ -2,9 +2,11 @@
 
 import React from "react";
 import Link from "next/link";
+import { useStore } from "@/context/StoreContext";
 import { SOCIAL_ICONS } from "@/lib/data";
 
 export default function Footer() {
+  const { setIsSizeGuideOpen } = useStore();
   return (
     <div
       className="footer-inner"
@@ -163,7 +165,13 @@ export default function Footer() {
             </Link>
             <Link
               href="/size-guide"
-              style={{ color: "#4A3E36", textDecoration: "none", transition: "color 0.2s" }}
+              onClick={(e) => {
+                if (setIsSizeGuideOpen) {
+                  e.preventDefault();
+                  setIsSizeGuideOpen(true);
+                }
+              }}
+              style={{ color: "#4A3E36", textDecoration: "none", transition: "color 0.2s", cursor: "pointer" }}
               onMouseEnter={(e) => (e.target.style.color = "#660608")}
               onMouseLeave={(e) => (e.target.style.color = "#4A3E36")}
             >

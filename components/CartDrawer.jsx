@@ -241,7 +241,7 @@ export default function CartDrawer() {
                             padding: 4,
                             transition: "color 0.2s",
                           }}
-                          onClick={() => removeFromCart(item.id, item.selectedSize, item.selectedColor)}
+                          onClick={() => removeFromCart(item.id, item.selectedSize, item.selectedColor, item.cartKey)}
                           title="Remove item"
                         >
                           <FiTrash2 size={16} />
@@ -252,6 +252,12 @@ export default function CartDrawer() {
                         Size: <strong style={{ color: "#111827" }}>{item.selectedSize}</strong>
                         {item.selectedColor ? ` | ${item.selectedColor}` : ""}
                       </div>
+                      {item.fitDetails && (
+                        <div style={{ fontSize: 11, color: "#660608", marginTop: 4, background: "#FAF4EC", border: "1px solid rgba(136, 26, 28, 0.15)", padding: "4px 8px", borderRadius: 6, lineHeight: 1.4 }}>
+                          <span style={{ fontWeight: 800 }}>✦ Fits:</span> Bust {item.fitDetails.bust}&quot; • Waist {item.fitDetails.waist}&quot; • Hips {item.fitDetails.hips}&quot;
+                          {item.fitDetails.fitPreference && ` • ${item.fitDetails.fitPreference}`}
+                        </div>
+                      )}
                     </div>
 
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 12 }}>
@@ -277,7 +283,7 @@ export default function CartDrawer() {
                             justifyContent: "center",
                             cursor: "pointer",
                           }}
-                          onClick={() => updateQuantity(item.id, item.selectedSize, item.selectedColor, -1)}
+                          onClick={() => updateQuantity(item.id, item.selectedSize, item.selectedColor, -1, item.cartKey)}
                           aria-label="Decrease quantity"
                         >
                           <FiMinus size={12} color="#374151" />
@@ -296,7 +302,7 @@ export default function CartDrawer() {
                             justifyContent: "center",
                             cursor: "pointer",
                           }}
-                          onClick={() => updateQuantity(item.id, item.selectedSize, item.selectedColor, 1)}
+                          onClick={() => updateQuantity(item.id, item.selectedSize, item.selectedColor, 1, item.cartKey)}
                           aria-label="Increase quantity"
                         >
                           <FiPlus size={12} color="#374151" />

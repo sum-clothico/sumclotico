@@ -17,6 +17,7 @@ import {
   FiHelpCircle
 } from "react-icons/fi";
 import IndianArchBadge from "@/components/IndianArchBadge";
+import FitDetailsModal from "@/components/FitDetailsModal";
 
 const COLOR_HEX_MAP = {
   "natural khadi": "#EBE5D8",
@@ -53,6 +54,9 @@ export default function ProductPage() {
   const [isVideoActive, setIsVideoActive] = useState(false);
   const [addedFeedback, setAddedFeedback] = useState(false);
   const [qty, setQty] = useState(1);
+  const [isFitModalOpen, setIsFitModalOpen] = useState(false);
+  const [fitMode, setFitMode] = useState("add_to_cart");
+  const [currentFitDetails, setCurrentFitDetails] = useState(null);
 
   useEffect(() => {
     if (product) {
@@ -118,9 +122,24 @@ export default function ProductPage() {
       return;
     }
     if (isOutOfStock) return;
-    addToCart(product, selectedSize, selectedColor, qty, false);
-    setAddedFeedback(true);
-    setTimeout(() => setAddedFeedback(false), 2400);
+    setFitMode("add_to_cart");
+    setIsFitModalOpen(true);
+  };
+
+  const handleBuyNow = () => {
+    if (!selectedSize) {
+      alert("Please select a size.");
+      return;
+    }
+    if (isOutOfStock) return;
+    setFitMode("buy_now");
+    setIsFitModalOpen(true);
+  };
+
+  const handleSaveFitAndProceed = (fitData) => {
+    setCurrentFitDetails(fitData);
+    setIsFitModalOpen(false);
+    addToCart(product, fitData.size || selectedSize, selectedColor, qty, false, fitData);
     trackEvent("add_to_cart", {
       currency: "INR",
       value: effectivePrice * qty,
@@ -130,32 +149,18 @@ export default function ProductPage() {
           item_name: product.name,
           price: effectivePrice,
           quantity: qty,
-          item_variant: selectedSize,
+          item_variant: fitData.size || selectedSize,
         },
       ],
     });
-  };
 
-  const handleBuyNow = () => {
-    if (!selectedSize) {
-      alert("Please select a size.");
-      return;
+    if (fitMode === "buy_now") {
+      router.push("/checkout");
+    } else {
+      setAddedFeedback(true);
+      setTimeout(() => setAddedFeedback(false), 2400);
+      setIsCartOpen(true);
     }
-    if (isOutOfStock) return;
-    addToCart(product, selectedSize, selectedColor, qty, false);
-    trackEvent("begin_checkout", {
-      currency: "INR",
-      value: effectivePrice * qty,
-      items: [
-        {
-          item_id: product.id,
-          item_name: product.name,
-          price: effectivePrice,
-          quantity: qty,
-        },
-      ],
-    });
-    router.push("/checkout");
   };
 
   const images = product.images?.length ? product.images : ["/assets/img/14.png"];
@@ -610,6 +615,41 @@ export default function ProductPage() {
                 </div>
               </div>
 
+              {/* Mandatory Custom Fit Details Banner / Trigger */}
+              <div
+                onClick={() => {
+                  setFitMode("add_to_cart");
+                  setIsFitModalOpen(true);
+                }}
+                style={{
+                  background: currentFitDetails ? "#EEF6EC" : "#FAF4EC",
+                  border: currentFitDetails ? "1.5px solid #2e7d32" : "1.5px dashed #881A1C",
+                  borderRadius: 12,
+                  padding: "12px 16px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  cursor: "pointer",
+                  marginTop: 6,
+                  transition: "all 0.2s ease",
+                }}
+              >
+                <div>
+                  <div style={{ fontSize: "0.82rem", fontWeight: 800, color: currentFitDetails ? "#1e4620" : "#660608", textTransform: "uppercase", letterSpacing: "0.06em", display: "flex", alignItems: "center", gap: 6 }}>
+                    <span>✦ Custom Fit Details (Mandatory)</span>
+                    {currentFitDetails && <span style={{ fontSize: 11, background: "#2e7d32", color: "#fff", padding: "1px 6px", borderRadius: 4 }}>Saved ✓</span>}
+                  </div>
+                  <div style={{ fontSize: "0.76rem", color: "#6B584C", marginTop: 2 }}>
+                    {currentFitDetails
+                      ? `Bust: ${currentFitDetails.bust}" • Waist: ${currentFitDetails.waist}" • Hips: ${currentFitDetails.hips}" (${currentFitDetails.fitPreference})`
+                      : "Click to provide your Bust, Waist & Length preferences for a tailored fit."}
+                  </div>
+                </div>
+                <span style={{ fontSize: "0.78rem", fontWeight: 700, color: currentFitDetails ? "#2e7d32" : "#881A1C", textDecoration: "underline" }}>
+                  {currentFitDetails ? "Edit Fits ✎" : "Enter Fits ✎"}
+                </span>
+              </div>
+
               {/* ─── FINAL PRODUCT CTAs ─── */}
               <div style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 10 }}>
                 {/* Primary: ADD TO BAG */}
@@ -842,6 +882,16 @@ export default function ProductPage() {
 
         </div>
       </div>
+
+      <FitDetailsModal
+        isOpen={isFitModalOpen}
+        onClose={() => setIsFitModalOpen(false)}
+        product={product}
+        initialSize={selectedSize}
+        initialColor={selectedColor}
+        mode={fitMode}
+        onSaveAndProceed={handleSaveFitAndProceed}
+      />
     </>
   );
 }

@@ -44,6 +44,15 @@ export default function SizeGuidePage() {
             </p>
           </div>
 
+          {/* Visual Branded Size & Fit Guide Infographic Poster */}
+          <div style={{ marginBottom: 32, textAlign: "center", borderRadius: 16, overflow: "hidden", border: "1px solid #e5e7eb", background: "#FAF6F0", boxShadow: "0 4px 24px rgba(0,0,0,0.05)" }}>
+            <img
+              src="/assets/homepage/Sum Clothico Size & Fit Guide-7.png"
+              alt="Sum Clothico Size & Fit Guide"
+              style={{ width: "100%", height: "auto", display: "block", maxHeight: "900px", objectFit: "contain", margin: "0 auto" }}
+            />
+          </div>
+
           <div style={{ background: "#ffffff", padding: "36px", borderRadius: 16, border: "1px solid #e5e7eb", boxShadow: "0 4px 20px rgba(0,0,0,0.03)" }}>
             {/* Unit Switcher */}
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
