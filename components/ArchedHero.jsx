@@ -63,7 +63,6 @@ export default function ArchedHero() {
             try {
               e.target.mute();
               e.target.playVideo();
-              setIsVideoReady(true);
             } catch (_) {}
           },
           onStateChange: (e) => {
@@ -73,7 +72,10 @@ export default function ArchedHero() {
               } catch (_) {}
             }
             if (e.data === window.YT.PlayerState.PLAYING) {
-              setIsVideoReady(true);
+              // Delay revealing video until YouTube's initial center HUD has naturally hidden
+              setTimeout(() => {
+                setIsVideoReady(true);
+              }, 2800);
             }
           },
         },

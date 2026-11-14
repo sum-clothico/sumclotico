@@ -16,6 +16,40 @@ const LENGTH_OPTIONS = ["Regular", "Hip Length", "Crop", "Midi", "Maxi / Full Le
 const SLEEVE_OPTIONS = ["Sleeveless", "Half Sleeve", "Full Sleeve", "3/4th Sleeve", "Cap Sleeve", "Bell Sleeve"];
 const NECK_OPTIONS = ["Round Neck", "V-Neck", "Boat Neck", "Shirt Collar", "Mandarin Collar", "Square Neck"];
 
+// Client-side image compression: downsizes large camera photos to max 1200px & ~150KB to respect MongoDB document limits
+const compressImage = (file, maxWidth = 1200, maxHeight = 1200, quality = 0.82) => {
+  return new Promise((resolve) => {
+    if (!file || typeof file === "string") return resolve(file);
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        let width = img.width;
+        let height = img.height;
+        if (width > maxWidth || height > maxHeight) {
+          if (width / height > maxWidth / maxHeight) {
+            height = Math.round((height * maxWidth) / width);
+            width = maxWidth;
+          } else {
+            width = Math.round((width * maxHeight) / height);
+            height = maxHeight;
+          }
+        }
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL("image/jpeg", quality));
+      };
+      img.onerror = () => resolve(e.target.result);
+      img.src = e.target.result;
+    };
+    reader.onerror = () => resolve(null);
+    reader.readAsDataURL(file);
+  });
+};
+
 export default function AdminProductsPage() {
   const { products, addProduct, updateProduct, deleteProduct, quickRestockProduct, categories = ["Tops", "Dresses", "Fabrics", "Accessories"], addCategory, toggleProductFeatured } = useStore();
 
@@ -315,12 +349,8 @@ export default function AdminProductsPage() {
         }
       } catch (err) {
         console.warn("Direct Cloudinary upload error, using fast data URL fallback:", err);
-        const dataUrl = await new Promise((resolve) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(reader.result);
-          reader.readAsDataURL(file);
-        });
-        if (dataUrl) addedUrls.push(dataUrl);
+        const compressedDataUrl = await compressImage(file);
+        if (compressedDataUrl) addedUrls.push(compressedDataUrl);
       }
     }
 
@@ -562,8 +592,8 @@ export default function AdminProductsPage() {
       stock: Number(form.stock) || 20,
       lowStockThreshold: Number(form.lowStockThreshold) || 5,
       images: finalImagesList,
-      base32Data: base32Image || null,
-      isBase32: Boolean(base32Image),
+      base32Data: null,
+      isBase32: false,
       mimeType: imageMime,
       sizes: compiledSizes.length > 0 ? compiledSizes : ["XS", "S", "M", "L", "XL"],
       colors: colorVariants.length > 0 ? colorVariants.map((cv) => cv.color) : (form.colors || "").split(",").map((c) => c.trim()).filter(Boolean),
@@ -592,10 +622,8 @@ export default function AdminProductsPage() {
     });
 
     setFeedback(`✓ Product "${newProd.name}" (SKU: ${cleanSku}) successfully published!`);
-    setTimeout(() => setFeedback(""), 5000);
-    } catch (err) {
-      setFeedback(`✕ Failed to publish product: ${err.message}`);
-    }
+    setTimeout(() => setFeedback(""), 6000);
+    setProductImages([]);
     setForm({
       name: "",
       subtitle: "",
@@ -633,6 +661,10 @@ export default function AdminProductsPage() {
       { size: "L", price: "1599" },
       { size: "XL", price: "1699" },
     ]);
+    } catch (err) {
+      console.error("Publish product error:", err);
+      setFeedback(`✕ Failed to publish product: ${err.message || "Unknown error"}`);
+    }
     setBase32Image("");
     setImagePreview("/assets/img/14.png");
     setImageFileName("");
