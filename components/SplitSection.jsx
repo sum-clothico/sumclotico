@@ -13,7 +13,7 @@ const PANELS = [
     title: ["Easy,", "Moves With You"],
     description: "Comfortable, versatile styles that keep up with wherever your day takes you.",
     label: ["PRINCIPLE", "EASY"],
-    model: "/assets/img/af066878-b95c-4eff-bb55-44f0dcaac8ac.jpg",
+    model: "/assets/img/af066878-b95c-4eff-bb55-44f0dcaac8ac-Photoroom.png",
     mobileModel: "/assets/img/af066878-b95c-4eff-bb55-44f0dcaac8ac.jpg",
   },
   {
@@ -21,7 +21,7 @@ const PANELS = [
     title: ["Thoughtful", "By Design"],
     description: "Functional details, considered silhouettes and practical pockets made for everyday living.",
     label: ["PRINCIPLE", "THOUGHTFUL"],
-    model: "/assets/img/IMG_8825.PNG",
+    model: "/assets/img/IMG_8825-Photoroom.png",
     mobileModel: "/assets/img/IMG_8825.PNG",
   },
   {
@@ -29,7 +29,7 @@ const PANELS = [
     title: ["Rooted", "in Craft"],
     description: "Authentic Khadi cotton from Madhya Pradesh, woven by skilled artisans on traditional wooden looms.",
     label: ["PRINCIPLE", "ROOTED"],
-    model: "/assets/img/E320377C-A987-4DFF-A540-53647862846C.png",
+    model: "/assets/img/E320377C-A987-4DFF-A540-53647862846C-Photoroom.png",
     mobileModel: "/assets/img/E320377C-A987-4DFF-A540-53647862846C.png",
   },
   {
@@ -37,7 +37,7 @@ const PANELS = [
     title: ["Made to Last", "Beyond Seasons"],
     description: "Versatile pieces designed to be worn, reworn and loved beyond fleeting trends.",
     label: ["PRINCIPLE", "LONG-WEARING"],
-    model: "/assets/img/D141A2C9-69BB-43E5-AD62-CF59ED64199A.png",
+    model: "/assets/img/D141A2C9-69BB-43E5-AD62-CF59ED64199A-Photoroom.png",
     mobileModel: "/assets/img/D141A2C9-69BB-43E5-AD62-CF59ED64199A.png",
   },
 ];
