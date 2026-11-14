@@ -91,6 +91,13 @@ export default function AdminProductsPage() {
   const [imageFileName, setImageFileName] = useState("");
   const [isEncoding, setIsEncoding] = useState(false);
   const [feedback, setFeedback] = useState("");
+  const [productImages, setProductImages] = useState([]);
+  const [isUploadingImages, setIsUploadingImages] = useState(false);
+  const [newImageUrl, setNewImageUrl] = useState("");
+  const [editProductImages, setEditProductImages] = useState([]);
+  const [isEditUploadingImages, setIsEditUploadingImages] = useState(false);
+  const [editNewImageUrl, setEditNewImageUrl] = useState("");
+  const [editFeedback, setEditFeedback] = useState("");
 
   // Product Edit State
   const [editingProduct, setEditingProduct] = useState(null);
@@ -408,6 +415,11 @@ export default function AdminProductsPage() {
         ? p.colors.map((c) => ({ color: c, hex: "#d4c5b9", stock: String(p.colorStock?.[c] ?? 10) }))
         : [];
     setEditColorVariants(reconstructedColors);
+    const existingImgs = (p.images && p.images.length > 0)
+      ? p.images.map((img) => typeof img === "string" ? img : img.url).filter(Boolean)
+      : (p.image ? [p.image] : ["/assets/img/14.png"]);
+    setEditProductImages(existingImgs);
+    setEditImagePreview(existingImgs[0] || "/assets/img/14.png");
     setEditForm({
       name: p.name || "",
       subtitle: p.subtitle || "",
@@ -494,7 +506,7 @@ export default function AdminProductsPage() {
       returnEligible: Boolean(editForm.returnEligible),
       videoUrl: editForm.videoUrl || "",
       variants: editVariants,
-      images: [finalImg, ...(editingProduct.images?.slice(1) || ["/assets/img/25.png"])],
+      images: (editProductImages && editProductImages.length > 0) ? editProductImages : [finalImg],
       base32Data: editBase32Image || editingProduct.base32Data,
       isBase32: Boolean(editBase32Image || editingProduct.isBase32),
       mimeType: editImageMime,
@@ -514,7 +526,10 @@ export default function AdminProductsPage() {
     if (!form.name) return;
 
     // Use base32 image if uploaded, otherwise preset image preview
-    const finalImageUrl = base32Image ? base32ToDataUrl(base32Image, imageMime) : imagePreview;
+    const finalImagesList = (productImages && productImages.length > 0)
+      ? productImages
+      : [base32Image ? base32ToDataUrl(base32Image, imageMime) : (imagePreview || "/assets/img/14.png")];
+    const finalImageUrl = finalImagesList[0];
     const cleanSku = form.sku.trim() || `SC-${form.category.slice(0, 3).toUpperCase()}-${Math.floor(100 + Math.random() * 900)}`;
 
     // Compile dynamic sizes and size prices from builder
@@ -647,60 +662,155 @@ export default function AdminProductsPage() {
 
         <form onSubmit={handleSubmit}>
           {/* Image Upload Section */}
-          <div style={{ background: "#1f242d", border: "1px dashed #374151", borderRadius: 10, padding: 20, marginBottom: 24 }}>
+          <div style={{ background: "#1f242d", border: "1px dashed #4b5563", borderRadius: 12, padding: 22, marginBottom: 24 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
               <div>
-                <strong style={{ fontSize: 14, color: "#fff" }}>Product Photography & Media</strong>
-                <p style={{ margin: "2px 0 0", fontSize: 12, color: "#9ca3af" }}>
-                  Select a high-resolution garment photo (.png, .jpg, or .webp).
+                <strong style={{ fontSize: 15, color: "#fff", display: "flex", alignItems: "center", gap: 8 }}>
+                  📸 Product Photography Gallery ({productImages.length} images)
+                </strong>
+                <p style={{ margin: "4px 0 0", fontSize: 12, color: "#9ca3af" }}>
+                  Upload high-res images from your device or paste direct image URLs. First image is the main storefront cover.
                 </p>
               </div>
-              {isEncoding && <span style={{ color: "#f35c27", fontSize: 12, fontWeight: 700 }}>Processing photo...</span>}
+              {isUploadingImages && <span style={{ color: "#f35c27", fontSize: 12, fontWeight: 700 }}>Uploading images...</span>}
             </div>
 
-            <div style={{ display: "flex", gap: 24, alignItems: "flex-start", flexWrap: "wrap" }}>
-              <div style={{ width: 110, height: 130, borderRadius: 8, overflow: "hidden", border: "2px solid #374151", background: "#111", flexShrink: 0 }}>
-                <img src={imagePreview} alt="Preview" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-              </div>
-
-              <div style={{ flex: 1, minWidth: 260 }}>
+            {/* Upload Controls */}
+            <div style={{ display: "flex", gap: 12, marginBottom: 16, flexWrap: "wrap", alignItems: "center" }}>
+              <label
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  padding: "10px 16px",
+                  background: "#f35c27",
+                  color: "#fff",
+                  borderRadius: 8,
+                  fontSize: 13,
+                  fontWeight: 600,
+                  cursor: "pointer",
+                }}
+              >
+                + Upload Image Files
                 <input
                   type="file"
+                  multiple
                   accept="image/*"
-                  onChange={(e) => handleImageFileUpload(e, false)}
-                  className="admin-form-input"
-                  style={{ background: "#111", padding: "8px 12px", marginBottom: 10 }}
+                  onChange={(e) => handleMultiImageUpload(e, false)}
+                  style={{ display: "none" }}
                 />
+              </label>
 
-                {base32Image && (
-                  <div style={{ fontSize: 11, color: "#34d399", background: "rgba(52, 211, 153, 0.1)", padding: "6px 10px", borderRadius: 6, marginBottom: 10 }}>
-                    ✓ Custom photo loaded: {imageFileName || "garment-photo.png"}
-                  </div>
-                )}
-
-                <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
-                  <span style={{ fontSize: 11, color: "#9ca3af" }}>Or choose sample photo:</span>
-                  {["/assets/img/14.png", "/assets/img/15.png", "/assets/img/22.png", "/assets/img/26.png"].map((preset, idx) => (
-                    <button
-                      key={idx}
-                      type="button"
-                      onClick={() => handleSelectPreset(preset)}
-                      style={{
-                        padding: "4px 10px",
-                        fontSize: 11,
-                        borderRadius: 4,
-                        background: imagePreview === preset ? "#f35c27" : "#374151",
-                        color: "#fff",
-                        border: "none",
-                        cursor: "pointer",
-                      }}
-                    >
-                      Sample {idx + 1}
-                    </button>
-                  ))}
-                </div>
+              <div style={{ display: "flex", gap: 6, flex: 1, minWidth: 260 }}>
+                <input
+                  type="url"
+                  placeholder="Or paste image URL (https://... or /assets/...)"
+                  className="admin-form-input"
+                  value={newImageUrl}
+                  onChange={(e) => setNewImageUrl(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); handleAddImageUrl(false); } }}
+                  style={{ margin: 0, fontSize: 12 }}
+                />
+                <button
+                  type="button"
+                  onClick={() => handleAddImageUrl(false)}
+                  className="admin-btn admin-btn-secondary"
+                  style={{ padding: "8px 16px", fontSize: 12, whiteSpace: "nowrap" }}
+                >
+                  + Add URL
+                </button>
               </div>
             </div>
+
+            {/* Thumbnail Gallery */}
+            {productImages.length === 0 ? (
+              <div style={{ padding: "20px", textAlign: "center", color: "#6b7280", fontSize: 12, border: "1px dashed #374151", borderRadius: 8 }}>
+                No photos added yet. Upload files or enter image URLs above.
+              </div>
+            ) : (
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(110px, 1fr))", gap: 12 }}>
+                {productImages.map((img, idx) => (
+                  <div
+                    key={idx}
+                    style={{
+                      position: "relative",
+                      borderRadius: 8,
+                      overflow: "hidden",
+                      border: idx === 0 ? "2px solid #f35c27" : "1px solid #374151",
+                      background: "#111",
+                      aspectRatio: "3 / 4",
+                    }}
+                  >
+                    <img src={img} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    {idx === 0 && (
+                      <span
+                        style={{
+                          position: "absolute",
+                          top: 4,
+                          left: 4,
+                          background: "#f35c27",
+                          color: "#fff",
+                          fontSize: 9,
+                          fontWeight: 800,
+                          padding: "2px 5px",
+                          borderRadius: 3,
+                          letterSpacing: 0.5,
+                        }}
+                      >
+                        ★ MAIN
+                      </span>
+                    )}
+                    <div
+                      style={{
+                        position: "absolute",
+                        bottom: 0,
+                        insetInline: 0,
+                        background: "rgba(0,0,0,0.8)",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        padding: "3px 4px",
+                      }}
+                    >
+                      {idx !== 0 && (
+                        <button
+                          type="button"
+                          onClick={() => handleSetCoverImage(idx, false)}
+                          style={{
+                            background: "transparent",
+                            border: "none",
+                            color: "#f35c27",
+                            fontSize: 10,
+                            cursor: "pointer",
+                            padding: "2px",
+                            fontWeight: 600,
+                          }}
+                          title="Set as main cover"
+                        >
+                          Cover
+                        </button>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveImage(idx, false)}
+                        style={{
+                          background: "transparent",
+                          border: "none",
+                          color: "#ef4444",
+                          fontSize: 11,
+                          cursor: "pointer",
+                          padding: "2px",
+                          fontWeight: 700,
+                          marginLeft: "auto",
+                        }}
+                        title="Remove image"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="admin-form-grid">
@@ -870,8 +980,7 @@ export default function AdminProductsPage() {
               <label className="admin-form-label">MRP / Regular Price (₹ INR) *</label>
               <input
                 type="number"
-                name="price"
-                className="admin-form-input"
+                name="price" min="0" step="1" className="admin-form-input"
                 placeholder="2499"
                 value={form.price}
                 onChange={handleChange}
@@ -883,8 +992,7 @@ export default function AdminProductsPage() {
               <label className="admin-form-label">Selling / Sale Price (₹ INR, optional)</label>
               <input
                 type="number"
-                name="salePrice"
-                className="admin-form-input"
+                name="salePrice" min="0" step="1" className="admin-form-input"
                 placeholder="1999"
                 value={form.salePrice}
                 onChange={handleChange}
@@ -1597,7 +1705,27 @@ export default function AdminProductsPage() {
             </div>
           </div>
 
-          <button type="submit" className="admin-btn admin-btn-primary" style={{ marginTop: 16 }}>
+          {feedback && (
+            <div
+              style={{
+                marginTop: 20,
+                marginBottom: 12,
+                padding: "14px 18px",
+                borderRadius: 8,
+                fontSize: 14,
+                fontWeight: 600,
+                background: feedback.startsWith("✓") ? "rgba(16, 185, 129, 0.15)" : "rgba(239, 68, 68, 0.18)",
+                color: feedback.startsWith("✓") ? "#34d399" : "#f87171",
+                border: feedback.startsWith("✓") ? "1px solid rgba(52, 211, 153, 0.3)" : "1px solid rgba(248, 113, 113, 0.3)",
+                display: "flex",
+                alignItems: "center",
+                gap: 10,
+              }}
+            >
+              {feedback}
+            </div>
+          )}
+          <button type="submit" className="admin-btn admin-btn-primary" style={{ marginTop: 8 }}>
             + Publish Product
           </button>
         </form>
@@ -1875,19 +2003,133 @@ export default function AdminProductsPage() {
 
             <form onSubmit={handleSaveEdit}>
               {/* Photo Preview & Upload */}
-              <div style={{ background: "#f8f9fa", padding: 16, borderRadius: 10, marginBottom: 18, border: "1px solid #e5e7eb" }}>
-                <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
-                  <img src={editImagePreview} alt="Preview" style={{ width: 60, height: 75, objectFit: "cover", borderRadius: 6 }} />
-                  <div style={{ flex: 1 }}>
-                    <label className="auth-label">Update Product Photo</label>
+              <div style={{ background: "#f8f9fa", padding: 18, borderRadius: 10, marginBottom: 20, border: "1px solid #e5e7eb" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+                  <div>
+                    <label className="auth-label" style={{ margin: 0, fontSize: 14, fontWeight: 700 }}>
+                      📸 Product Imagery & Gallery ({editProductImages.length} images)
+                    </label>
+                    <p style={{ margin: "2px 0 0", fontSize: 12, color: "#6b7280" }}>
+                      Manage all photos for this garment. The first photo acts as the primary cover.
+                    </p>
+                  </div>
+                  {isEditUploadingImages && <span style={{ color: "#f35c27", fontSize: 12, fontWeight: 700 }}>Uploading...</span>}
+                </div>
+
+                <div style={{ display: "flex", gap: 10, marginBottom: 14, flexWrap: "wrap", alignItems: "center" }}>
+                  <label
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 6,
+                      padding: "8px 14px",
+                      background: "#111827",
+                      color: "#fff",
+                      borderRadius: 6,
+                      fontSize: 12,
+                      fontWeight: 600,
+                      cursor: "pointer",
+                    }}
+                  >
+                    + Upload Images
                     <input
                       type="file"
+                      multiple
                       accept="image/*"
-                      onChange={(e) => handleImageFileUpload(e, true)}
-                      style={{ fontSize: 12 }}
+                      onChange={(e) => handleMultiImageUpload(e, true)}
+                      style={{ display: "none" }}
                     />
+                  </label>
+
+                  <div style={{ display: "flex", gap: 6, flex: 1, minWidth: 240 }}>
+                    <input
+                      type="url"
+                      placeholder="Paste image URL..."
+                      className="auth-input"
+                      value={editNewImageUrl}
+                      onChange={(e) => setEditNewImageUrl(e.target.value)}
+                      onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); handleAddImageUrl(true); } }}
+                      style={{ margin: 0, padding: "8px 12px", fontSize: 12 }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleAddImageUrl(true)}
+                      className="quickview-size-pill"
+                      style={{ padding: "8px 14px", fontSize: 12, whiteSpace: "nowrap" }}
+                    >
+                      + Add
+                    </button>
                   </div>
                 </div>
+
+                {editProductImages.length === 0 ? (
+                  <div style={{ padding: 14, textAlign: "center", color: "#9ca3af", fontSize: 12, border: "1px dashed #d1d5db", borderRadius: 6 }}>
+                    No photos assigned. Upload or paste a URL above.
+                  </div>
+                ) : (
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(90px, 1fr))", gap: 10 }}>
+                    {editProductImages.map((img, idx) => (
+                      <div
+                        key={idx}
+                        style={{
+                          position: "relative",
+                          borderRadius: 6,
+                          overflow: "hidden",
+                          border: idx === 0 ? "2px solid #f35c27" : "1px solid #d1d5db",
+                          background: "#e5e7eb",
+                          aspectRatio: "3 / 4",
+                        }}
+                      >
+                        <img src={img} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                        {idx === 0 && (
+                          <span
+                            style={{
+                              position: "absolute",
+                              top: 3,
+                              left: 3,
+                              background: "#f35c27",
+                              color: "#fff",
+                              fontSize: 8,
+                              fontWeight: 800,
+                              padding: "1px 4px",
+                              borderRadius: 2,
+                            }}
+                          >
+                            COVER
+                          </span>
+                        )}
+                        <div
+                          style={{
+                            position: "absolute",
+                            bottom: 0,
+                            insetInline: 0,
+                            background: "rgba(0,0,0,0.75)",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            padding: "2px 4px",
+                          }}
+                        >
+                          {idx !== 0 && (
+                            <button
+                              type="button"
+                              onClick={() => handleSetCoverImage(idx, true)}
+                              style={{ background: "transparent", border: "none", color: "#f35c27", fontSize: 9, cursor: "pointer", fontWeight: 700 }}
+                            >
+                              Cover
+                            </button>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveImage(idx, true)}
+                            style={{ background: "transparent", border: "none", color: "#ef4444", fontSize: 10, cursor: "pointer", fontWeight: 800, marginLeft: "auto" }}
+                          >
+                            ✕
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
@@ -2045,8 +2287,7 @@ export default function AdminProductsPage() {
                   <label className="auth-label">MRP / Regular Price (₹) *</label>
                   <input
                     type="number"
-                    name="price"
-                    className="auth-input"
+                    name="price" min="0" step="1" className="auth-input"
                     value={editForm.price}
                     onChange={handleEditChange}
                     required
@@ -2057,8 +2298,7 @@ export default function AdminProductsPage() {
                   <label className="auth-label">Selling / Sale Price (₹, optional)</label>
                   <input
                     type="number"
-                    name="salePrice"
-                    className="auth-input"
+                    name="salePrice" min="0" step="1" className="auth-input"
                     value={editForm.salePrice}
                     onChange={handleEditChange}
                   />
@@ -2704,7 +2944,23 @@ export default function AdminProductsPage() {
                 </div>
               </div>
 
-              <div style={{ display: "flex", gap: 10, marginTop: 20 }}>
+              {editFeedback && (
+                <div
+                  style={{
+                    marginTop: 16,
+                    padding: "12px 16px",
+                    borderRadius: 8,
+                    fontSize: 13,
+                    fontWeight: 600,
+                    background: editFeedback.startsWith("✓") ? "rgba(16, 185, 129, 0.15)" : "rgba(239, 68, 68, 0.18)",
+                    color: editFeedback.startsWith("✓") ? "#16a34a" : "#dc2626",
+                    border: editFeedback.startsWith("✓") ? "1px solid rgba(22, 163, 74, 0.3)" : "1px solid rgba(220, 38, 38, 0.3)",
+                  }}
+                >
+                  {editFeedback}
+                </div>
+              )}
+              <div style={{ display: "flex", gap: 10, marginTop: 14 }}>
                 <button type="submit" className="cart-checkout-btn" style={{ flex: 1, margin: 0, padding: "14px" }}>
                   Save Product Changes
                 </button>

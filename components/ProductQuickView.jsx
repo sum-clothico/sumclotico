@@ -8,24 +8,69 @@ import { FiShoppingBag, FiCheck, FiX, FiChevronLeft, FiChevronRight } from "reac
 import { trackViewItem, trackEvent } from "@/lib/analytics";
 
 const COLOR_HEX_MAP = {
-  "natural khadi": "#EBE5D8",
-  "forest sage": "#556B55",
+  "indigo blue": "#1B2A4A",
+  "indigo": "#1B2A4A",
   "indigo earth": "#2B3D4D",
-  "terracotta": "#9D5544",
-  "raw cotton": "#F4EFE6",
-  "white": "#FAF8F5",
-  "black": "#222222",
-  "olive": "#556B2F",
-  "rust": "#B7410E",
-  "sage": "#77815C",
+  "natural beige": "#D4C5B9",
   "beige": "#D4C5B9",
+  "natural khadi": "#EBE5D8",
+  "khadi": "#EBE5D8",
+  "raw cotton": "#F4EFE6",
+  "white": "#FFFFFF",
+  "off white": "#FAF8F5",
+  "black": "#1A1A1A",
+  "forest sage": "#556B55",
+  "sage": "#77815C",
+  "olive": "#556B2F",
+  "olive green": "#556B2F",
+  "terracotta": "#9D5544",
+  "rust": "#B7410E",
+  "mustard": "#E1AD01",
+  "mustard yellow": "#E1AD01",
+  "yellow": "#F5C518",
+  "maroon": "#800000",
+  "crimson": "#990000",
+  "red": "#C0392B",
   "navy": "#1B2A4A",
+  "navy blue": "#1B2A4A",
+  "sky blue": "#87CEEB",
+  "blue": "#2980B9",
+  "charcoal": "#36454F",
+  "grey": "#808080",
+  "gray": "#808080",
+  "lavender": "#E6E6FA",
+  "lilac": "#C8A2C8",
+  "purple": "#8E44AD",
+  "plum": "#673147",
+  "wine": "#722F37",
+  "burgundy": "#800020",
+  "rose": "#FF007F",
+  "pink": "#FFC0CB",
+  "blush": "#DE5D83",
+  "coral": "#F08080",
+  "peach": "#FFE5B4",
+  "brown": "#8B4513",
+  "earth": "#795548",
+  "tan": "#D2B48C",
+  "cream": "#FFFDD0",
+  "emerald": "#50C878",
+  "teal": "#008080",
+  "mint": "#98FF98",
+  "orange": "#E67E22",
 };
 
 const getColorHex = (name) => {
-  if (!name) return "#EBE5D8";
-  const key = name.toLowerCase().trim();
-  return COLOR_HEX_MAP[key] || "#D4C5B9";
+  if (!name) return "#D4C5B9";
+  const str = String(name).trim();
+  if (/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(str)) return str;
+  const hexMatch = str.match(/#([0-9a-f]{6}|[0-9a-f]{3})\b/i);
+  if (hexMatch) return hexMatch[0];
+  const key = str.toLowerCase().replace(/[^a-z0-9 ]/g, "").trim();
+  if (COLOR_HEX_MAP[key]) return COLOR_HEX_MAP[key];
+  for (const [k, v] of Object.entries(COLOR_HEX_MAP)) {
+    if (key.includes(k) || k.includes(key)) return v;
+  }
+  return "#D4C5B9";
 };
 
 export default function ProductQuickView() {
@@ -626,10 +671,10 @@ export default function ProductQuickView() {
                   Color Tone: <strong style={{ color: "#111111" }}>{selectedColor || availableColors[0]}</strong>
                 </label>
                 <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-                  {availableColors.map((color) => {
+                  {availableColors.map((color, cIdx) => {
                     const isSelected = (selectedColor || availableColors[0]) === color;
-                    const cv = quickViewProduct.colorVariants?.find((v) => v.color?.toLowerCase().trim() === color?.toLowerCase().trim());
-                    const bg = cv?.hex || (color.startsWith("#") ? color : getColorHex(color));
+                    const cv = quickViewProduct.colorVariants?.find((v) => v.color?.toLowerCase().trim() === color?.toLowerCase().trim()) || quickViewProduct.colorVariants?.[cIdx];
+                    const bg = cv?.hex || (color.startsWith("#") ? color : getColorHex(cv?.color || color));
                     return (
                       <button
                         key={color}

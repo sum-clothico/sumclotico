@@ -200,6 +200,17 @@ export default function ArchedHero() {
 
             <div className="arched-hero__vignette" />
 
+            {/* Shield intercepting taps/clicks to suppress YouTube initial controls */}
+            <div
+              className="arched-hero__click-shield"
+              onClick={openModal}
+              title="Click to enlarge video"
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") openModal(e); }}
+              aria-label="Enlarge video player"
+            />
+
             {/* Video Controls Overlay */}
             <div className="hero-video-controls-row">
               {/* Sound Toggle */}

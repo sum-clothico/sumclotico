@@ -1418,6 +1418,8 @@ export function StoreProvider({ children }) {
           sizes: prodData.sizes || [],
           colors: prodData.colors || [],
         },
+        colorVariants: prodData.colorVariants || [],
+        colorStock: prodData.colorStock || {},
         images: (prodData.images || []).map((url) =>
           typeof url === "string" ? { url } : url,
         ),
@@ -1632,6 +1634,12 @@ export function StoreProvider({ children }) {
           }),
           ...(updatedFields.variants !== undefined && {
             variants: updatedFields.variants,
+          }),
+          ...(updatedFields.colorVariants !== undefined && {
+            colorVariants: updatedFields.colorVariants,
+          }),
+          ...(updatedFields.colorStock !== undefined && {
+            colorStock: updatedFields.colorStock,
           }),
         };
 

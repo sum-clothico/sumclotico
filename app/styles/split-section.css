@@ -449,8 +449,8 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding-top: 86px;
-  padding-bottom: 24px;
+  padding-top: 74px;
+  padding-bottom: 14px;
   box-sizing: border-box;
   will-change: opacity;
 }
@@ -458,9 +458,10 @@
 /* Premium Layered Text Block */
 .split-mobile-text-layer {
   width: 100%;
-  padding: 0 20px;
+  padding: 0 18px;
   box-sizing: border-box;
   will-change: transform, opacity, filter;
+  flex-shrink: 0;
 }
 
 .split-mobile-text-layer .split-section__left {
@@ -469,9 +470,9 @@
 }
 
 .split-mobile-text-layer .split-section__title {
-  font-size: clamp(23px, 6vw, 30px) !important;
-  margin-bottom: 0.7rem !important;
-  line-height: 1.1 !important;
+  font-size: clamp(24px, 6.2vw, 32px) !important;
+  margin-bottom: 0.5rem !important;
+  line-height: 1.08 !important;
 }
 
 .split-mobile-text-layer .split-section__why {
@@ -486,7 +487,7 @@
   margin-bottom: 0 !important;
 }
 
-/* Premium Layered Image Block: fills bottom space without large empty gaps */
+/* Premium Layered Image Block: fills mobile container with elegant border radius & full width */
 .split-mobile-image-layer {
   flex: 1;
   min-height: 0;
@@ -494,7 +495,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 8px 16px 0;
+  padding: 8px 12px 0;
   box-sizing: border-box;
   overflow: hidden;
   will-change: transform, opacity;
@@ -503,9 +504,9 @@
 
 .split-mobile-image-layer .split-section__model {
   width: 100% !important;
-  max-width: 330px !important;
+  max-width: 100% !important;
   height: 100% !important;
-  max-height: 48vh !important;
+  max-height: 100% !important;
   margin: 0 auto !important;
   padding: 0 !important;
   display: flex !important;
@@ -518,19 +519,17 @@
 .split-mobile-image-layer picture {
   width: 100% !important;
   height: 100% !important;
-  max-height: 48vh !important;
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
+  max-height: 100% !important;
+  display: block !important;
 }
 
 .split-mobile-image-layer img {
-  width: auto !important;
+  width: 100% !important;
   max-width: 100% !important;
   height: 100% !important;
-  max-height: 48vh !important;
-  object-fit: contain !important;
-  border-radius: 18px !important;
-  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.14) !important;
+  max-height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 20px !important;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.16) !important;
   display: block !important;
 }
