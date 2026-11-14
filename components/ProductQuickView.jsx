@@ -43,7 +43,8 @@ export default function ProductQuickView() {
       setActiveImageIndex(0);
       const initialSize = quickViewProduct.sizes?.[0] || "M";
       setSelectedSize(initialSize);
-      setSelectedColor(quickViewProduct.colors?.[0] || "");
+      const initColor = (quickViewProduct.colors && quickViewProduct.colors.length > 0) ? quickViewProduct.colors[0] : (quickViewProduct.colorVariants && quickViewProduct.colorVariants.length > 0 ? quickViewProduct.colorVariants[0].color : "");
+      setSelectedColor(initColor);
       setQuantity(1);
       setIsAdded(false);
       setIsZoomed(false);
@@ -96,6 +97,11 @@ export default function ProductQuickView() {
   const effectivePrice = (quickViewProduct.sizePrices && quickViewProduct.sizePrices[selectedSize])
     ? Number(quickViewProduct.sizePrices[selectedSize])
     : (quickViewProduct.salePrice || quickViewProduct.price);
+  const availableColors = (quickViewProduct.colors && quickViewProduct.colors.length > 0)
+    ? quickViewProduct.colors
+    : (quickViewProduct.colorVariants && quickViewProduct.colorVariants.length > 0)
+      ? quickViewProduct.colorVariants.map((cv) => cv.color)
+      : [];
   const hasDiscount = quickViewProduct.salePrice && quickViewProduct.salePrice < quickViewProduct.price;
   const discountPercent = hasDiscount
     ? Math.round(((quickViewProduct.price - (quickViewProduct.sizePrices?.[selectedSize] || quickViewProduct.salePrice)) / quickViewProduct.price) * 100)
@@ -496,6 +502,9 @@ export default function ProductQuickView() {
                 </>
               )}
             </div>
+            <div style={{ fontSize: 12, color: "#6b7280", marginTop: 4, marginBottom: 12 }}>
+              Additional GST and shipping if applicable
+            </div>
 
             {/* Story & Description */}
             <p
@@ -601,7 +610,7 @@ export default function ProductQuickView() {
             </div>
 
             {/* Color / Shade Selector */}
-            {quickViewProduct.colors && quickViewProduct.colors.length > 0 && (
+            {availableColors.length > 0 && (
               <div style={{ marginBottom: 24 }}>
                 <label
                   style={{
@@ -614,11 +623,11 @@ export default function ProductQuickView() {
                     color: "#1f2937",
                   }}
                 >
-                  Color Tone: <strong style={{ color: "#111111" }}>{selectedColor || quickViewProduct.colors[0]}</strong>
+                  Color Tone: <strong style={{ color: "#111111" }}>{selectedColor || availableColors[0]}</strong>
                 </label>
                 <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-                  {quickViewProduct.colors.map((color) => {
-                    const isSelected = (selectedColor || quickViewProduct.colors[0]) === color;
+                  {availableColors.map((color) => {
+                    const isSelected = (selectedColor || availableColors[0]) === color;
                     const cv = quickViewProduct.colorVariants?.find((v) => v.color?.toLowerCase().trim() === color?.toLowerCase().trim());
                     const bg = cv?.hex || (color.startsWith("#") ? color : getColorHex(color));
                     return (

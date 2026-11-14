@@ -354,7 +354,7 @@ export default function CollectionClient() {
             Showing <strong>{filtered.length}</strong> {filtered.length === 1 ? "piece" : "pieces"}
           </div>
           <div style={{ fontSize: 12 }}>
-            Free shipping on orders above ₹1,999
+            Free shipping on orders above ₹2,800
           </div>
         </div>
       </section>

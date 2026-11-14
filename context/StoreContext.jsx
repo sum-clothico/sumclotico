@@ -147,7 +147,7 @@ const INITIAL_POLICIES = {
         id: "sec-2",
         title: "2. Shipping Charges & Free Delivery Threshold",
         content:
-          "• Free Standard Express Shipping: Available on all orders of ₹1,999 and above across all serviceable PIN codes in India.\n• Standard Shipping Fee: A nominal flat fee of ₹99 is applied to orders below ₹1,999.",
+          "• Free Standard Express Shipping: Available on all orders of ₹2,800 and above across all serviceable PIN codes in India.\n• Standard Shipping Fee: A nominal flat fee of ₹99 is applied to orders below ₹2,800.",
       },
       {
         id: "sec-3",
@@ -291,7 +291,15 @@ export function StoreProvider({ children }) {
           Array.isArray(data.products) &&
           data.products.length > 0
         ) {
-          setProducts(data.products);
+          const normalized = data.products.map((p) => ({
+            ...p,
+            colors: (p.colors && p.colors.length > 0)
+              ? p.colors
+              : (p.colorVariants && p.colorVariants.length > 0)
+                ? p.colorVariants.map((cv) => cv.color)
+                : [],
+          }));
+          setProducts(normalized);
           console.log(
             `%c[Backend: ✓ Loaded ${data.products.length} products from MongoDB]`,
             "background: #16a34a; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
@@ -630,8 +638,8 @@ export function StoreProvider({ children }) {
   const cartSubtotal = cart.reduce((acc, i) => acc + i.price * i.quantity, 0);
   const cartTotalItems = cart.reduce((acc, i) => acc + i.quantity, 0);
 
-  // Free shipping threshold (INR ₹1,999)
-  const shippingThreshold = 1999;
+  // Free shipping threshold (INR ₹2,800)
+  const shippingThreshold = 2800;
   const isFreeShipping =
     cartSubtotal >= shippingThreshold || cartSubtotal === 0;
   const shippingFee = isFreeShipping ? 0 : 99;

@@ -33,7 +33,7 @@ const FAQS = [
       },
       {
         q: "Is standard shipping free?",
-        a: "Yes, we provide FREE standard express shipping across India on all orders of ₹1,999 and above. For orders under ₹1,999, a flat delivery fee of ₹99 is applied.",
+        a: "Yes, we provide FREE standard express shipping across India on all orders of ₹2,800 and above. For orders under ₹2,800, a flat delivery fee of ₹99 is applied.",
       },
       {
         q: "How do I track my shipment?",

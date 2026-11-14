@@ -110,7 +110,7 @@ export default function Navbar() {
 
   // Find active banner coupon configured from admin panel
   const activeBannerCoupon = coupons.find((c) => c.showInBanner && c.isActive);
-  const defaultBannerCopy = "FREE EXPRESS SHIPPING ON ORDERS ABOVE ₹1,999 • CODE: KHADI10";
+  const defaultBannerCopy = "FREE EXPRESS SHIPPING ON ORDERS ABOVE ₹2,800 • CODE: KHADI10";
   const bannerMessage = activeBannerCoupon
     ? (activeBannerCoupon.bannerText || `${activeBannerCoupon.title.toUpperCase()} • CODE: ${activeBannerCoupon.code}`)
     : defaultBannerCopy;

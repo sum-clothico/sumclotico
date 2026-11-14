@@ -287,6 +287,75 @@ export default function AdminProductsPage() {
   };
 
   // Handle local image file upload & convert
+  
+  // Multi-image upload handlers (Cloudinary with local fallback)
+  const handleMultiImageUpload = async (e, isEdit = false) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+    const setLoader = isEdit ? setIsEditUploadingImages : setIsUploadingImages;
+    const setList = isEdit ? setEditProductImages : setProductImages;
+
+    setLoader(true);
+    const addedUrls = [];
+
+    for (const file of Array.from(files)) {
+      try {
+        const { image } = await uploadApi.uploadImage(file);
+        if (image && image.url) {
+          addedUrls.push(image.url);
+        } else {
+          throw new Error("No URL returned from upload");
+        }
+      } catch (err) {
+        console.warn("Direct Cloudinary upload error, using fast data URL fallback:", err);
+        const dataUrl = await new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.readAsDataURL(file);
+        });
+        if (dataUrl) addedUrls.push(dataUrl);
+      }
+    }
+
+    setList((prev) => {
+      const filtered = prev.filter((u) => u !== "/assets/img/14.png");
+      return [...filtered, ...addedUrls];
+    });
+
+    setLoader(false);
+    e.target.value = "";
+  };
+
+  const handleRemoveImage = (index, isEdit = false) => {
+    const setList = isEdit ? setEditProductImages : setProductImages;
+    setList((prev) => {
+      const updated = prev.filter((_, i) => i !== index);
+      return updated.length > 0 ? updated : ["/assets/img/14.png"];
+    });
+  };
+
+  const handleSetCoverImage = (index, isEdit = false) => {
+    const setList = isEdit ? setEditProductImages : setProductImages;
+    setList((prev) => {
+      const item = prev[index];
+      const rest = prev.filter((_, i) => i !== index);
+      return [item, ...rest];
+    });
+  };
+
+  const handleAddImageUrl = (isEdit = false) => {
+    const url = isEdit ? editNewImageUrl.trim() : newImageUrl.trim();
+    if (!url) return;
+    const setList = isEdit ? setEditProductImages : setProductImages;
+    const setInput = isEdit ? setEditNewImageUrl : setNewImageUrl;
+
+    setList((prev) => {
+      const filtered = prev.filter((u) => u !== "/assets/img/14.png");
+      return [...filtered, url];
+    });
+    setInput("");
+  };
+
   const handleImageFileUpload = async (e, isEdit = false) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -477,7 +546,7 @@ export default function AdminProductsPage() {
       gstPercent: Number(form.gstPercent) || 5,
       stock: Number(form.stock) || 20,
       lowStockThreshold: Number(form.lowStockThreshold) || 5,
-      images: [finalImageUrl, "/assets/img/25.png", "/assets/img/20.png"],
+      images: finalImagesList,
       base32Data: base32Image || null,
       isBase32: Boolean(base32Image),
       mimeType: imageMime,

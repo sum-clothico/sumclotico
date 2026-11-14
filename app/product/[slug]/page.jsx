@@ -60,7 +60,8 @@ export default function ProductPage() {
 
   useEffect(() => {
     if (product) {
-      setSelectedColor(product.colors?.[0] || "");
+      const initColor = (product.colors && product.colors.length > 0) ? product.colors[0] : (product.colorVariants && product.colorVariants.length > 0 ? product.colorVariants[0].color : "");
+      setSelectedColor(initColor);
       setSelectedSize(product.sizes?.[0] || "M");
       trackEvent("view_item", {
         currency: "INR",
@@ -164,21 +165,38 @@ export default function ProductPage() {
   };
 
   const images = product.images?.length ? product.images : ["/assets/img/14.png"];
+  const availableColors = (product?.colors && product.colors.length > 0)
+    ? product.colors
+    : (product?.colorVariants && product.colorVariants.length > 0)
+      ? product.colorVariants.map((cv) => cv.color)
+      : [];
+
 
   // Why you'll love it fallback per design guidelines
-  const whyYouLoveIt = product.whyYouLoveIt || [
-    { title: "EASY FIT", desc: "Room to move without losing its shape." },
-    { title: "POCKETS", desc: "Because clothes should actually be useful." },
-    { title: "BREATHABLE", desc: "Made in Khadi cotton for an airy, comfortable feel." },
-    { title: "VERSATILE", desc: "Dress it up, dress it down, wear it your way." },
-  ];
+  const whyYouLoveIt = (Array.isArray(product.whyYouLoveIt) && product.whyYouLoveIt.length > 0)
+    ? product.whyYouLoveIt
+    : (typeof product.whyYouLoveIt === "string" && product.whyYouLoveIt.trim())
+      ? product.whyYouLoveIt.split("\n").filter(Boolean).map((line, i) => {
+          const parts = line.split(":");
+          return { title: (parts[0] || "").trim().toUpperCase(), desc: (parts.slice(1).join(":") || parts[0]).trim() };
+        })
+      : [
+          { title: "EASY FIT", desc: "Room to move without losing its shape." },
+          { title: "POCKETS", desc: "Because clothes should actually be useful." },
+          { title: "BREATHABLE", desc: "Made in Khadi cotton for an airy, comfortable feel." },
+          { title: "VERSATILE", desc: "Dress it up, dress it down, wear it your way." },
+        ];
 
   // Made for you if fallback
-  const madeForYouIf = product.madeForYouIf || [
-    "You'd rather have a few really good pieces than a wardrobe full of trends.",
-    "You want comfort without looking underdressed.",
-    "You need clothes that can keep up with an unpredictable day.",
-  ];
+  const madeForYouIf = (Array.isArray(product.madeForYouIf) && product.madeForYouIf.length > 0)
+    ? product.madeForYouIf
+    : (typeof product.madeForYouIf === "string" && product.madeForYouIf.trim())
+      ? product.madeForYouIf.split("\n").map((s) => s.trim().replace(/^[-*•✦]\s*/, "")).filter(Boolean)
+      : [
+          "You'd rather have a few really good pieces than a wardrobe full of trends.",
+          "You want comfort without looking underdressed.",
+          "You need clothes that can keep up with an unpredictable day.",
+        ];
 
   // The story behind the piece
   const story = product.story || (
@@ -186,11 +204,18 @@ export default function ProductPage() {
   );
 
   // How to wear it 3 possibilities
-  const howToWear = product.howToWear || [
-    { occasion: "EVERYDAY", styling: "With flats + a simple bag." },
-    { occasion: "WORKDAY", styling: "With structured accessories + loafers." },
-    { occasion: "EVENING", styling: "With jewellery + a layer + your favourite shoes." },
-  ];
+  const howToWear = (Array.isArray(product.howToWear) && product.howToWear.length > 0)
+    ? product.howToWear
+    : (typeof product.howToWear === "string" && product.howToWear.trim())
+      ? product.howToWear.split("\n").filter(Boolean).map((line) => {
+          const parts = line.split(":");
+          return { occasion: (parts[0] || "EVERYDAY").trim().toUpperCase(), styling: (parts.slice(1).join(":") || parts[0]).trim() };
+        })
+      : [
+          { occasion: "EVERYDAY", styling: "With flats + a simple bag." },
+          { occasion: "WORKDAY", styling: "With structured accessories + loafers." },
+          { occasion: "EVENING", styling: "With jewellery + a layer + your favourite shoes." },
+        ];
 
   return (
     <>
@@ -469,7 +494,7 @@ export default function ProductPage() {
                     Rs {effectivePrice}
                   </span>
                   <span style={{ fontSize: 13, color: "#7a6c5f" }}>
-                    Inclusive of all taxes
+                    Additional GST and shipping if applicable
                   </span>
                 </div>
               </div>
@@ -482,7 +507,7 @@ export default function ProductPage() {
               </div>
 
               {/* Color Selection (if colors exist) — Live Color Wheel Swatches */}
-              {product.colors?.length > 0 && (
+              {availableColors.length > 0 && (
                 <div>
                   <span style={{ fontSize: 12, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "#6b5d52", display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
                     Color: <strong style={{ color: "#1a140e" }}>{selectedColor}</strong>
@@ -504,7 +529,7 @@ export default function ProductPage() {
                     )}
                   </span>
                   <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
-                    {product.colors.map((color) => {
+                    {availableColors.map((color) => {
                       const isSelected = selectedColor === color;
                       const cv = product.colorVariants?.find(
                         (v) => v.color?.toLowerCase().trim() === color?.toLowerCase().trim()
@@ -712,7 +737,7 @@ export default function ProductPage() {
               {/* Trust Features - Free Shipping */}
               <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "16px 0", borderTop: "1px solid rgba(42,31,20,0.1)", color: "#5C4A3E", fontSize: 13, fontWeight: 600 }}>
                 <FiTruck size={18} color="#b36338" />
-                <span>Free express shipping on all orders over ₹1,999 across India</span>
+                <span>Free express shipping on all orders over ₹2,800 across India</span>
               </div>
 
             </div>
@@ -772,7 +797,7 @@ export default function ProductPage() {
                 </div>
                 <div className="pdp-spec-row">
                   <span style={{ fontWeight: 700, color: "#8A7A6C", textTransform: "uppercase", fontSize: "0.78rem", letterSpacing: "0.1em" }}>Weave</span>
-                  <span style={{ fontWeight: 600, color: "#1a140e" }}>Traditional Wooden Pit Loom</span>
+                  <span style={{ fontWeight: 600, color: "#1a140e" }}>{product.weave || "Traditional Wooden Pit Loom"}</span>
                 </div>
                 <div className="pdp-spec-row">
                   <span style={{ fontWeight: 700, color: "#8A7A6C", textTransform: "uppercase", fontSize: "0.78rem", letterSpacing: "0.1em" }}>Fit</span>
@@ -780,7 +805,7 @@ export default function ProductPage() {
                 </div>
                 <div className="pdp-spec-row">
                   <span style={{ fontWeight: 700, color: "#8A7A6C", textTransform: "uppercase", fontSize: "0.78rem", letterSpacing: "0.1em" }}>Origin</span>
-                  <span style={{ fontWeight: 600, color: "#1a140e" }}>Madhya Pradesh, India</span>
+                  <span style={{ fontWeight: 600, color: "#1a140e" }}>{product.origin || "Madhya Pradesh, India"}</span>
                 </div>
                 {product.sleeveType && (
                   <div className="pdp-spec-row">
