@@ -39,10 +39,10 @@ function AnimatedWords({ text, className = "fab-anim-word" }) {
 }
 
 const PROCESS_STEPS = [
-  { label: "Cotton", img: "/assets/fiber/14887305-5caf-4e77-b3fa-c79443ced34b.png" },
-  { label: "Spinning", img: "/assets/IMG_2373.JPG" },
-  { label: "Weaving", img: "/assets/fiber/IMG_1322.JPG" },
-  { label: "Fabric", img: "/assets/fiber/WhatsApp Image 2026-10-05 at 2.27.02 PM.jpeg" },
+  { label: "Spinning", img: "/assets/fiber/14887305-5caf-4e77-b3fa-c79443ced34b.png" },
+  { label: "Weaving", img: "/assets/IMG_2373.JPG" },
+  { label: "Fabric", img: "/assets/fiber/IMG_1322.JPG" },
+  { label: "Outfit", img: "/assets/fiber/WhatsApp Image 2026-10-05 at 2.27.02 PM.jpeg" },
 ];
 
 const COMPARE_COLLAPSIBLES = [

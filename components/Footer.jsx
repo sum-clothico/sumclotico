@@ -108,7 +108,7 @@ export default function Footer() {
           >
             Khadi weaving cluster
             <br />
-            Madhya Pradesh & Kolkata, India
+            Madhya Pradesh, India
           </p>
           <div style={{ display: "flex", flexDirection: "column", gap: "10px", fontSize: "13.5px" }}>
             <Link
@@ -135,9 +135,6 @@ export default function Footer() {
             >
               Journal & Field Notes
             </Link>
-            <span style={{ fontSize: "12px", color: "#8C7868", fontWeight: 600 }}>
-              Artisan positions opening soon
-            </span>
           </div>
         </div>
 
