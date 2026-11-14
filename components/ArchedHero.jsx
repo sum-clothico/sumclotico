@@ -5,35 +5,109 @@ import { gsap } from "gsap";
 import { FiVolume2, FiVolumeX, FiMaximize2, FiX } from "react-icons/fi";
 import "@/app/styles/arched-hero.css";
 
-const DESKTOP_VIDEO_SRC = "/assets/videos/Hime%20page%20video%20landscape.mp4";
-const MOBILE_VIDEO_SRC = "/assets/homepage/Homepage%20vid.mp4";
+const YT_HERO_ID = "mLpKoIVzNys";
 
 export default function ArchedHero() {
   const containerRef = useRef(null);
   const videoPortalRef = useRef(null);
   const taglineRef = useRef(null);
   const ctaRef = useRef(null);
-  const videoRef = useRef(null);
-  const modalVideoRef = useRef(null);
+  const ytContainerRef = useRef(null);
+  const playerObjRef = useRef(null);
+
   const [isMuted, setIsMuted] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [videoSrc, setVideoSrc] = useState(DESKTOP_VIDEO_SRC);
+  const [isVideoReady, setIsVideoReady] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const updateResponsiveVideo = () => {
-      const mobile = window.innerWidth <= 768;
-      setIsMobile(mobile);
-      setVideoSrc(mobile ? MOBILE_VIDEO_SRC : DESKTOP_VIDEO_SRC);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
     };
-
-    updateResponsiveVideo();
-    window.addEventListener("resize", updateResponsiveVideo);
-    return () => window.removeEventListener("resize", updateResponsiveVideo);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
+  // Initialize YouTube Player
   useEffect(() => {
-    // Entrance Animation
+    if (!window.YT && !document.querySelector('script[src*="youtube.com/iframe_api"]')) {
+      const tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/iframe_api";
+      document.head.appendChild(tag);
+    }
+
+    const initPlayer = () => {
+      if (!ytContainerRef.current) return;
+      if (playerObjRef.current) return;
+
+      playerObjRef.current = new window.YT.Player(ytContainerRef.current, {
+        videoId: YT_HERO_ID,
+        playerVars: {
+          autoplay: 1,
+          mute: 1,
+          loop: 1,
+          playlist: YT_HERO_ID,
+          controls: 0,
+          showinfo: 0,
+          rel: 0,
+          modestbranding: 1,
+          playsinline: 1,
+          disablekb: 1,
+          fs: 0,
+          iv_load_policy: 3,
+          origin: typeof window !== "undefined" ? window.location.origin : undefined,
+        },
+        events: {
+          onReady: (e) => {
+            try {
+              e.target.mute();
+              e.target.playVideo();
+              setIsVideoReady(true);
+            } catch (_) {}
+          },
+          onStateChange: (e) => {
+            if (e.data === window.YT.PlayerState.ENDED) {
+              try {
+                e.target.playVideo();
+              } catch (_) {}
+            }
+            if (e.data === window.YT.PlayerState.PLAYING) {
+              setIsVideoReady(true);
+            }
+          },
+        },
+      });
+    };
+
+    let pollTimer;
+    if (window.YT && window.YT.Player) {
+      initPlayer();
+    } else {
+      const prevCallback = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = () => {
+        if (typeof prevCallback === "function") prevCallback();
+        initPlayer();
+      };
+      pollTimer = setInterval(() => {
+        if (window.YT && window.YT.Player && !playerObjRef.current) {
+          clearInterval(pollTimer);
+          initPlayer();
+        }
+      }, 200);
+    }
+
+    return () => {
+      if (pollTimer) clearInterval(pollTimer);
+      if (playerObjRef.current && typeof playerObjRef.current.destroy === "function") {
+        playerObjRef.current.destroy();
+        playerObjRef.current = null;
+      }
+    };
+  }, []);
+
+  // Entrance Animation
+  useEffect(() => {
     gsap.fromTo(
       videoPortalRef.current,
       { scale: 0.96, opacity: 0, y: 20 },
@@ -58,7 +132,7 @@ export default function ArchedHero() {
     if (!isModalOpen) return;
     const handleKeyDown = (e) => {
       if (e.key === "Escape") {
-        setIsModalOpen(false);
+        closeModal();
       }
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -67,19 +141,34 @@ export default function ArchedHero() {
 
   const toggleSound = (e) => {
     e.stopPropagation();
-    if (videoRef.current) {
-      videoRef.current.muted = !isMuted;
-      setIsMuted(!isMuted);
+    if (playerObjRef.current && typeof playerObjRef.current.isMuted === "function") {
+      const muted = playerObjRef.current.isMuted();
+      if (muted) {
+        playerObjRef.current.unMute();
+        playerObjRef.current.setVolume(100);
+        setIsMuted(false);
+      } else {
+        playerObjRef.current.mute();
+        setIsMuted(true);
+      }
+    } else {
+      setIsMuted((prev) => !prev);
     }
   };
 
   const openModal = (e) => {
     e.stopPropagation();
+    try {
+      playerObjRef.current?.pauseVideo();
+    } catch (_) {}
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
+    try {
+      playerObjRef.current?.playVideo();
+    } catch (_) {}
   };
 
   return (
@@ -91,25 +180,24 @@ export default function ArchedHero() {
       <img src="/assets/751.jpg" alt="" className="arched-hero__bg-right" aria-hidden="true" />
 
       <div className="arched-hero__inner">
-        {/* Center Video — Landscape on Desktop, Vertical on Mobile */}
+        {/* Center Video Portal */}
         <div
           ref={videoPortalRef}
           className={`arched-hero__portal ${isMobile ? "arched-hero__portal--vertical" : "arched-hero__portal--landscape"}`}
         >
           <div className="arched-hero__mask">
-            <video
-              key={videoSrc}
-              ref={videoRef}
-              className="arched-hero__video"
-              src={videoSrc}
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-            >
-              <source src={videoSrc} type="video/mp4" />
-            </video>
+            {/* Embedded YouTube Player */}
+            <div className="arched-hero__yt-wrap">
+              <div ref={ytContainerRef} className="arched-hero__yt-player" />
+            </div>
+
+            {/* Poster thumbnail placeholder before video is ready */}
+            <img
+              src={`https://i.ytimg.com/vi/${YT_HERO_ID}/maxresdefault.jpg`}
+              alt="From Cotton to Clothing | The Story, People & Philosophy Behind Sum Clothico"
+              className={`arched-hero__poster ${isVideoReady ? "arched-hero__poster--hidden" : ""}`}
+            />
+
             <div className="arched-hero__vignette" />
 
             {/* Video Controls Overlay */}
@@ -162,7 +250,7 @@ export default function ArchedHero() {
         </div>
       </div>
 
-      {/* ─── Video Enlarge Modal (Click anywhere to close) ─── */}
+      {/* ─── Video Enlarge Modal ─── */}
       {isModalOpen && (
         <div
           className="hero-video-modal-backdrop"
@@ -184,24 +272,16 @@ export default function ArchedHero() {
 
           {/* Modal Container */}
           <div
-            className={`hero-video-modal-content ${isMobile ? "hero-video-modal-content--vertical" : ""}`}
-            onClick={(e) => {
-              // If click is on the content wrapper or backdrop, close modal
-              if (e.target === e.currentTarget) {
-                closeModal();
-              }
-            }}
+            className="hero-video-modal-content"
+            onClick={(e) => e.stopPropagation()}
           >
-            <video
-              ref={modalVideoRef}
+            <iframe
               className="hero-video-modal-player"
-              src={videoSrc}
-              autoPlay
-              controls
-              playsInline
-            >
-              <source src={videoSrc} type="video/mp4" />
-            </video>
+              src={`https://www.youtube-nocookie.com/embed/${YT_HERO_ID}?autoplay=1&mute=0&controls=1&rel=0&playsinline=1`}
+              title="From Cotton to Clothing | The Story, People & Philosophy Behind Sum Clothico"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            />
           </div>
         </div>
       )}

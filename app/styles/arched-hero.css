@@ -81,7 +81,7 @@
 
 @media (min-width: 1024px) {
   .arched-hero__portal--landscape {
-    aspect-ratio: 16 / 8.5;
+    aspect-ratio: 16 / 9;
   }
 }
 
@@ -90,6 +90,46 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
+}
+
+
+.arched-hero__yt-wrap {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.arched-hero__yt-wrap iframe,
+.arched-hero__yt-player {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100.5%;
+  height: 100.5%;
+  min-width: 100%;
+  min-height: 100%;
+  transform: translate(-50%, -50%);
+  border: 0;
+  pointer-events: none;
+}
+
+.arched-hero__poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.arched-hero__poster--hidden {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .arched-hero__video {
@@ -340,9 +380,9 @@
     position: relative !important;
     inset: auto !important;
     width: 100% !important;
-    max-width: min(370px, 88vw) !important;
-    aspect-ratio: 4 / 5 !important;
-    max-height: min(440px, 52vh) !important;
+    aspect-ratio: 16 / 9 !important;
+    max-width: min(440px, 92vw) !important;
+    max-height: min(320px, 48vh) !important;
     border-radius: 18px !important;
     border: 1px solid rgba(44, 32, 22, 0.15) !important;
     box-shadow: 0 14px 34px rgba(44, 32, 22, 0.15) !important;
@@ -491,11 +531,12 @@
   }
 
   /* Responsive Modal for vertical video on mobile */
+  .hero-video-modal-content,
   .hero-video-modal-content--vertical {
-    aspect-ratio: 9 / 16 !important;
-    max-width: 86vw !important;
+    aspect-ratio: 16 / 9 !important;
+    max-width: 95vw !important;
     max-height: 82vh !important;
-    width: auto !important;
+    width: 100% !important;
   }
 }
 
@@ -507,8 +548,9 @@
   .arched-hero__portal,
   .arched-hero__portal--vertical,
   .arched-hero__portal--landscape {
-    max-width: 320px !important;
-    max-height: min(380px, 48vh) !important;
+    max-width: min(360px, 92vw) !important;
+    max-height: min(260px, 42vh) !important;
+    aspect-ratio: 16 / 9 !important;
   }
 
   .arched-hero__trio-tagline {
