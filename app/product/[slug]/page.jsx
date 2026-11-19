@@ -57,6 +57,11 @@ export default function ProductPage() {
   const [isFitModalOpen, setIsFitModalOpen] = useState(false);
   const [fitMode, setFitMode] = useState("add_to_cart");
   const [currentFitDetails, setCurrentFitDetails] = useState(null);
+  const [isMainImgLoading, setIsMainImgLoading] = useState(true);
+
+  useEffect(() => {
+    setIsMainImgLoading(true);
+  }, [activeImage, product?.id]);
 
   useEffect(() => {
     if (product) {
@@ -384,6 +389,17 @@ export default function ProductPage() {
             {/* LEFT: Gallery Visuals */}
             <div className="pdp-gallery-col">
               <div style={{ borderRadius: 18, overflow: "hidden", background: "#e8dfd0", aspectRatio: "3/4", marginBottom: 16, position: "relative", border: "1px solid rgba(42,31,20,0.08)" }}>
+                {isMainImgLoading && !isVideoActive && (
+                  <div
+                    className="sum-skeleton-shimmer"
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      zIndex: 2,
+                      borderRadius: 18,
+                    }}
+                  />
+                )}
                 {isVideoActive && product.videoUrl ? (
                   <video
                     src={product.videoUrl}
@@ -394,7 +410,19 @@ export default function ProductPage() {
                     style={{ width: "100%", height: "100%", objectFit: "cover", background: "#000" }}
                   />
                 ) : (
-                  <img src={images[activeImage]} alt={product.name} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center" }} />
+                  <img
+                    src={images[activeImage]}
+                    alt={product.name}
+                    onLoad={() => setIsMainImgLoading(false)}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      objectPosition: "top center",
+                      opacity: isMainImgLoading ? 0 : 1,
+                      transition: "opacity 0.25s ease",
+                    }}
+                  />
                 )}
 
                 {product.videoUrl && !isVideoActive && (
@@ -499,9 +527,9 @@ export default function ProductPage() {
                 </div>
               </div>
 
-              {/* Editorial Description */}
-              <div style={{ fontSize: "1.02rem", lineHeight: 1.8, color: "#3f3329" }}>
-                <p style={{ margin: "0 0 12px" }}>
+              {/* Editorial Description with line breaks preservation */}
+              <div style={{ fontSize: "1.02rem", lineHeight: 1.8, color: "#3f3329", whiteSpace: "pre-line" }}>
+                <p style={{ margin: "0 0 12px", whiteSpace: "pre-line" }}>
                   {product.description}
                 </p>
               </div>

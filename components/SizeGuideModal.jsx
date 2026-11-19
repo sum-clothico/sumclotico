@@ -1,17 +1,25 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useStore } from "@/context/StoreContext";
 import { FiX } from "react-icons/fi";
 import { trackEvent } from "@/lib/analytics";
 
 export default function SizeGuideModal() {
   const { isSizeGuideOpen, setIsSizeGuideOpen } = useStore();
+  const [isImgLoading, setIsImgLoading] = useState(true);
 
   useEffect(() => {
     if (isSizeGuideOpen) {
+      setIsImgLoading(true);
+      document.body.style.overflow = "hidden";
       trackEvent("view_size_guide_modal");
+    } else {
+      document.body.style.overflow = "";
     }
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [isSizeGuideOpen]);
 
   if (!isSizeGuideOpen) return null;
@@ -84,7 +92,7 @@ export default function SizeGuideModal() {
           </button>
         </div>
 
-        {/* Content Body with the Size Guide Image */}
+        {/* Content Body with the Size Guide Image & Skeleton Loader */}
         <div
           style={{
             padding: "16px",
@@ -93,11 +101,52 @@ export default function SizeGuideModal() {
             justifyContent: "center",
             alignItems: "center",
             background: "#FAF6F0",
+            minHeight: "440px",
+            position: "relative",
           }}
         >
+          {isImgLoading && (
+            <div
+              className="sum-skeleton-shimmer"
+              style={{
+                position: "absolute",
+                inset: 16,
+                borderRadius: 12,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 14,
+                zIndex: 2,
+              }}
+            >
+              <div
+                style={{
+                  width: 34,
+                  height: 34,
+                  border: "3px solid rgba(102, 6, 8, 0.2)",
+                  borderTopColor: "#660608",
+                  borderRadius: "50%",
+                  animation: "spin 0.8s linear infinite",
+                }}
+              />
+              <span
+                style={{
+                  fontSize: 13,
+                  fontWeight: 700,
+                  color: "#660608",
+                  letterSpacing: "0.04em",
+                  textTransform: "uppercase",
+                }}
+              >
+                Loading Size Guide...
+              </span>
+            </div>
+          )}
           <img
             src="/assets/homepage/Sum Clothico Size & Fit Guide-7.png"
             alt="Garment Size & Measurement Guide"
+            onLoad={() => setIsImgLoading(false)}
             style={{
               width: "100%",
               height: "auto",
@@ -106,6 +155,8 @@ export default function SizeGuideModal() {
               borderRadius: 12,
               display: "block",
               boxShadow: "0 4px 18px rgba(0,0,0,0.08)",
+              opacity: isImgLoading ? 0 : 1,
+              transition: "opacity 0.3s ease",
             }}
           />
         </div>

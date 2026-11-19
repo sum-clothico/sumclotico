@@ -82,10 +82,13 @@ export default function ProductQuickView() {
   const [isAdded, setIsAdded] = useState(false);
   const [isFitModalOpen, setIsFitModalOpen] = useState(false);
   const [isZoomed, setIsZoomed] = useState(false);
+  const [isImageLoading, setIsImageLoading] = useState(true);
 
   useEffect(() => {
     if (quickViewProduct) {
+      document.body.style.overflow = "hidden";
       setActiveImageIndex(0);
+      setIsImageLoading(true);
       const initialSize = quickViewProduct.sizes?.[0] || "M";
       setSelectedSize(initialSize);
       const initColor = (quickViewProduct.colors && quickViewProduct.colors.length > 0) ? quickViewProduct.colors[0] : (quickViewProduct.colorVariants && quickViewProduct.colorVariants.length > 0 ? quickViewProduct.colorVariants[0].color : "");
@@ -94,8 +97,17 @@ export default function ProductQuickView() {
       setIsAdded(false);
       setIsZoomed(false);
       trackViewItem(quickViewProduct, initialSize);
+    } else {
+      document.body.style.overflow = "";
     }
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [quickViewProduct]);
+
+  useEffect(() => {
+    setIsImageLoading(true);
+  }, [activeImageIndex]);
 
   // Handle keyboard navigation for modal
   useEffect(() => {
@@ -172,14 +184,14 @@ export default function ProductQuickView() {
           className="cart-close-btn"
           style={{
             position: "absolute",
-            top: 20,
-            right: 20,
-            zIndex: 30,
+            top: 18,
+            right: 18,
+            zIndex: 40,
             background: "#ffffff",
             border: "1px solid #e5e7eb",
             borderRadius: "50%",
-            width: 40,
-            height: 40,
+            width: 38,
+            height: 38,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -190,7 +202,7 @@ export default function ProductQuickView() {
           onClick={() => setQuickViewProduct(null)}
           aria-label="Close modal"
         >
-          <FiX size={20} color="#111827" />
+          <FiX size={18} color="#111827" />
         </button>
 
         {/* ─── BIG EDITORIAL IMAGE GALLERY ─── */}
@@ -290,10 +302,22 @@ export default function ProductQuickView() {
               {activeImageIndex + 1} / {images.length}
             </div>
 
-            {/* Showcase Image */}
+            {/* Showcase Image with Skeleton Loader */}
+            {isImageLoading && (
+              <div
+                className="sum-skeleton-shimmer"
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  zIndex: 2,
+                  borderRadius: 16,
+                }}
+              />
+            )}
             <img
               src={currentImage}
               alt={`${quickViewProduct.name} - View ${activeImageIndex + 1}`}
+              onLoad={() => setIsImageLoading(false)}
               style={{
                 width: "100%",
                 height: "100%",
@@ -302,6 +326,7 @@ export default function ProductQuickView() {
                 objectPosition: "top center",
                 transform: isZoomed ? "scale(1.3)" : "scale(1)",
                 transition: "transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease",
+                opacity: isImageLoading ? 0 : 1,
               }}
             />
 
@@ -425,39 +450,41 @@ export default function ProductQuickView() {
         <div
           className="quickview-details"
           style={{
-            padding: "36px 32px",
+            padding: "32px 28px",
             overflowY: "auto",
+            overflowX: "hidden",
+            maxHeight: "90vh",
+            minHeight: 0,
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
             background: "#ffffff",
+            overscrollBehavior: "contain",
           }}
         >
           <div>
-            {/* Category & Stock Tag */}
+            {/* Category & Stock Tag with clearance from close button */}
             <div
               style={{
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "space-between",
-                marginBottom: 8,
+                gap: 10,
+                marginBottom: 10,
                 flexWrap: "wrap",
-                gap: 6,
+                paddingRight: 48,
               }}
             >
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span
-                  style={{
-                    fontSize: 12,
-                    textTransform: "uppercase",
-                    letterSpacing: 1.5,
-                    color: "#6b7280",
-                    fontWeight: 700,
-                  }}
-                >
-                  Collection / {quickViewProduct.category || "Tops"}
-                </span>
-              </div>
+              <span
+                style={{
+                  fontSize: 12,
+                  textTransform: "uppercase",
+                  letterSpacing: 1.5,
+                  color: "#6b7280",
+                  fontWeight: 700,
+                }}
+              >
+                Collection / {quickViewProduct.category || "Tops"}
+              </span>
               <span
                 style={{
                   background: (quickViewProduct.stock || 20) <= 5 ? "#fef2f2" : "#dcfce7",
@@ -466,6 +493,8 @@ export default function ProductQuickView() {
                   fontWeight: 700,
                   padding: "3px 10px",
                   borderRadius: 999,
+                  display: "inline-flex",
+                  alignItems: "center",
                 }}
               >
                 {(quickViewProduct.stock || 20) <= 5 ? `Only ${quickViewProduct.stock} Left` : `In Stock (${quickViewProduct.stock || 20} units)`}
@@ -551,17 +580,18 @@ export default function ProductQuickView() {
               Additional GST and shipping if applicable
             </div>
 
-            {/* Story & Description */}
-            <p
+            {/* Story & Description with pre-line spacing */}
+            <div
               style={{
                 fontSize: 14,
                 color: "#4b5563",
-                lineHeight: 1.65,
+                lineHeight: 1.7,
                 margin: "0 0 16px",
+                whiteSpace: "pre-line",
               }}
             >
               {quickViewProduct.description}
-            </p>
+            </div>
 
             {/* Fabric & Care Note */}
             <div style={{ background: "#f9fafb", padding: "10px 14px", borderRadius: 8, marginBottom: 20, border: "1px solid #f3f4f6" }}>

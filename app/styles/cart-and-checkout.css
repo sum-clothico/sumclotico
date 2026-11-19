@@ -426,6 +426,7 @@
   color: #111111;
   width: 100%;
   max-width: 1040px;
+  max-height: 90vh;
   border-radius: 20px;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -441,6 +442,11 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  min-height: 0;
+  max-height: 90vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
 }
 
 .quickview-main-img {
@@ -455,6 +461,11 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  min-height: 0;
+  max-height: 90vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
 }
 
 .quickview-size-pill {
@@ -481,8 +492,7 @@
   .quickview-card {
     display: flex !important;
     flex-direction: column !important;
-    max-height: 86vh !important;
-    overflow-y: auto !important;
+    max-height: 88vh !important; overflow-y: auto !important; overflow-x: hidden !important; overscroll-behavior: contain !important;
     width: 100% !important;
     border-radius: 18px 18px 0 0 !important;
   }

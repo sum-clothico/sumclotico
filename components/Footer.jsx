@@ -269,6 +269,13 @@ export default function Footer() {
             Studio & Inquiries
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "10px", fontSize: "13.5px" }}>
+            <div style={{ color: "#4A3E36", lineHeight: 1.55, marginBottom: "4px" }}>
+              <span style={{ fontWeight: 800, color: "#2C2016", display: "block", marginBottom: "2px", textTransform: "uppercase", fontSize: "11px", letterSpacing: "1px" }}>
+                Offline Studio
+              </span>
+              Shanti Path, near Shanti Villas Colony,<br />
+              Laadli Laxmi Road, Rewa, MP
+            </div>
             <Link
               href="/contact"
               style={{ color: "#4A3E36", textDecoration: "none", transition: "color 0.2s" }}

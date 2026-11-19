@@ -78,3 +78,24 @@ div[class*="development-badge"] {
   position: relative !important;
   overflow: hidden !important;
 }
+
+/* ─── Universal Luxury Skeleton Shimmer ─── */
+@keyframes sum-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.sum-skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(235, 229, 217, 0.7) 0%,
+    rgba(252, 249, 244, 0.98) 50%,
+    rgba(235, 229, 217, 0.7) 100%
+  ) !important;
+  background-size: 200% 100% !important;
+  animation: sum-shimmer 1.6s infinite ease-in-out !important;
+}
