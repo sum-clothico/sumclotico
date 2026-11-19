@@ -544,7 +544,7 @@ export default function FabricClient() {
               }}
             >
               <img loading="lazy" decoding="async"
-                src="/assets/fiber/IMG_2962.PNG"
+                src="/assets/fiber/IMG_2962.png"
                 alt="Khadi fabric close-up"
                 style={{
                   width: "100%",

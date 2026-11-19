@@ -22,7 +22,7 @@ const PANELS = [
     description: "Functional details, considered silhouettes and practical pockets made for everyday living.",
     label: ["PRINCIPLE", "THOUGHTFUL"],
     model: "/assets/img/IMG_8825-Photoroom.png",
-    mobileModel: "/assets/img/IMG_8825.PNG",
+    mobileModel: "/assets/img/IMG_8825.png",
   },
   {
     reversed: false,
