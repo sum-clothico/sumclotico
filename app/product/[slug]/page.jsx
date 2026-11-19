@@ -6,15 +6,15 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import { useStore } from "@/context/StoreContext";
 import { trackEvent } from "@/lib/analytics";
-import { 
-  FiTruck, 
-  FiRefreshCw, 
-  FiShield, 
-  FiArrowRight, 
-  FiCheck, 
-  FiExternalLink, 
+import {
+  FiTruck,
+  FiRefreshCw,
+  FiShield,
+  FiArrowRight,
+  FiCheck,
+  FiExternalLink,
   FiShoppingBag,
-  FiHelpCircle
+  FiHelpCircle,
 } from "react-icons/fi";
 import IndianArchBadge from "@/components/IndianArchBadge";
 import FitDetailsModal from "@/components/FitDetailsModal";
@@ -24,15 +24,15 @@ const COLOR_HEX_MAP = {
   "natural khadi": "#EBE5D8",
   "forest sage": "#556B55",
   "indigo earth": "#2B3D4D",
-  "terracotta": "#9D5544",
+  terracotta: "#9D5544",
   "raw cotton": "#F4EFE6",
-  "white": "#FAF8F5",
-  "black": "#222222",
-  "olive": "#556B2F",
-  "rust": "#B7410E",
-  "sage": "#77815C",
-  "beige": "#D4C5B9",
-  "navy": "#1B2A4A",
+  white: "#FAF8F5",
+  black: "#222222",
+  olive: "#556B2F",
+  rust: "#B7410E",
+  sage: "#77815C",
+  beige: "#D4C5B9",
+  navy: "#1B2A4A",
 };
 
 const getColorHex = (name) => {
@@ -45,7 +45,12 @@ export default function ProductPage() {
   const params = useParams();
   const router = useRouter();
   const slug = params?.slug;
-  const { products = [], addToCart, setIsSizeGuideOpen, setIsFabricCareOpen } = useStore();
+  const {
+    products = [],
+    addToCart,
+    setIsSizeGuideOpen,
+    setIsFabricCareOpen,
+  } = useStore();
 
   const product = products.find((p) => p.slug === slug);
 
@@ -66,7 +71,12 @@ export default function ProductPage() {
 
   useEffect(() => {
     if (product) {
-      const initColor = (product.colors && product.colors.length > 0) ? product.colors[0] : (product.colorVariants && product.colorVariants.length > 0 ? product.colorVariants[0].color : "");
+      const initColor =
+        product.colors && product.colors.length > 0
+          ? product.colors[0]
+          : product.colorVariants && product.colorVariants.length > 0
+            ? product.colorVariants[0].color
+            : "";
       setSelectedColor(initColor);
       setSelectedSize(product.sizes?.[0] || "M");
       trackEvent("view_item", {
@@ -88,10 +98,43 @@ export default function ProductPage() {
     return (
       <>
         <Navbar />
-        <div style={{ minHeight: "70vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 16, padding: 40, background: "#FAF6F0" }}>
-          <h1 style={{ fontFamily: "Epilogue, sans-serif", fontSize: 28, fontWeight: 600, color: "#1a140e" }}>Piece Not Found</h1>
-          <p style={{ color: "#6b5d52" }}>The garment you are looking for is currently unavailable or has been archived.</p>
-          <Link href="/shop" style={{ display: "inline-flex", alignItems: "center", gap: 6, color: "#1a140e", fontWeight: 700, textDecoration: "underline" }}>
+        <div
+          style={{
+            minHeight: "70vh",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 16,
+            padding: 40,
+            background: "#FAF6F0",
+          }}
+        >
+          <h1
+            style={{
+              fontFamily: "Epilogue, sans-serif",
+              fontSize: 28,
+              fontWeight: 600,
+              color: "#1a140e",
+            }}
+          >
+            Piece Not Found
+          </h1>
+          <p style={{ color: "#6b5d52" }}>
+            The garment you are looking for is currently unavailable or has been
+            archived.
+          </p>
+          <Link
+            href="/shop"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              color: "#1a140e",
+              fontWeight: 700,
+              textDecoration: "underline",
+            }}
+          >
             Return to Shop All Pieces <FiArrowRight size={14} />
           </Link>
         </div>
@@ -103,8 +146,25 @@ export default function ProductPage() {
     return (
       <>
         <Navbar />
-        <div style={{ minHeight: "70vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#FAF6F0" }}>
-          <p style={{ color: "#8a7a6c", fontStyle: "italic", fontFamily: "Epilogue, sans-serif", fontSize: "1.2rem" }}>Unfolding piece details...</p>
+        <div
+          style={{
+            minHeight: "70vh",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            background: "#FAF6F0",
+          }}
+        >
+          <p
+            style={{
+              color: "#8a7a6c",
+              fontStyle: "italic",
+              fontFamily: "Epilogue, sans-serif",
+              fontSize: "1.2rem",
+            }}
+          >
+            Unfolding piece details...
+          </p>
         </div>
       </>
     );
@@ -112,15 +172,21 @@ export default function ProductPage() {
 
   const effectivePrice = product.sizePrices?.[selectedSize]
     ? Number(product.sizePrices[selectedSize])
-    : (product.salePrice || product.price);
+    : product.salePrice || product.price;
 
   const activeVariant = product.variants?.find(
-    (v) => v.size === selectedSize && (!selectedColor || v.color === selectedColor)
+    (v) =>
+      v.size === selectedSize && (!selectedColor || v.color === selectedColor),
   );
-  const colorStock = product.colorStock?.[selectedColor] !== undefined
-    ? Number(product.colorStock[selectedColor])
-    : (product.colorVariants?.find((cv) => cv.color === selectedColor)?.stock ?? activeVariant?.stock ?? (product.stock || 20));
-  const stockForVariant = activeVariant?.stock !== undefined ? activeVariant.stock : colorStock;
+  const colorStock =
+    product.colorStock?.[selectedColor] !== undefined
+      ? Number(product.colorStock[selectedColor])
+      : (product.colorVariants?.find((cv) => cv.color === selectedColor)
+          ?.stock ??
+        activeVariant?.stock ??
+        (product.stock || 20));
+  const stockForVariant =
+    activeVariant?.stock !== undefined ? activeVariant.stock : colorStock;
   const isOutOfStock = stockForVariant <= 0;
 
   const handleAddToCart = () => {
@@ -146,7 +212,14 @@ export default function ProductPage() {
   const handleSaveFitAndProceed = (fitData) => {
     setCurrentFitDetails(fitData);
     setIsFitModalOpen(false);
-    addToCart(product, fitData.size || selectedSize, selectedColor, qty, false, fitData);
+    addToCart(
+      product,
+      fitData.size || selectedSize,
+      selectedColor,
+      qty,
+      false,
+      fitData,
+    );
     trackEvent("add_to_cart", {
       currency: "INR",
       value: effectivePrice * qty,
@@ -183,6 +256,9 @@ export default function ProductPage() {
         const nextCart = [newItem, ...currentCart.filter((i) => !(i.id === newItem.id && i.selectedSize === newItem.selectedSize && i.selectedColor === newItem.selectedColor))];
         localStorage.setItem("sum_cart", JSON.stringify(nextCart));
         sessionStorage.setItem("sum_cart_backup", JSON.stringify(nextCart));
+        if (typeof document !== "undefined") {
+          document.cookie = `sum_cart=${encodeURIComponent(JSON.stringify(nextCart))}; path=/; max-age=2592000; SameSite=Lax`;
+        }
       } catch {}
       router.push("/checkout");
     } else {
@@ -192,58 +268,96 @@ export default function ProductPage() {
     }
   };
 
-  const images = product.images?.length ? product.images : ["/assets/img/14.png"];
-  const availableColors = (product?.colors && product.colors.length > 0)
-    ? product.colors
-    : (product?.colorVariants && product.colorVariants.length > 0)
-      ? product.colorVariants.map((cv) => cv.color)
-      : [];
-
+  const images = product.images?.length
+    ? product.images
+    : ["/assets/img/14.png"];
+  const availableColors =
+    product?.colors && product.colors.length > 0
+      ? product.colors
+      : product?.colorVariants && product.colorVariants.length > 0
+        ? product.colorVariants.map((cv) => cv.color)
+        : [];
 
   // Why you'll love it fallback per design guidelines
-  const whyYouLoveIt = (Array.isArray(product.whyYouLoveIt) && product.whyYouLoveIt.length > 0)
-    ? product.whyYouLoveIt
-    : (typeof product.whyYouLoveIt === "string" && product.whyYouLoveIt.trim())
-      ? product.whyYouLoveIt.split("\n").filter(Boolean).map((line, i) => {
-          const parts = line.split(":");
-          return { title: (parts[0] || "").trim().toUpperCase(), desc: (parts.slice(1).join(":") || parts[0]).trim() };
-        })
-      : [
-          { title: "EASY FIT", desc: "Room to move without losing its shape." },
-          { title: "POCKETS", desc: "Because clothes should actually be useful." },
-          { title: "BREATHABLE", desc: "Made in Khadi cotton for an airy, comfortable feel." },
-          { title: "VERSATILE", desc: "Dress it up, dress it down, wear it your way." },
-        ];
+  const whyYouLoveIt =
+    Array.isArray(product.whyYouLoveIt) && product.whyYouLoveIt.length > 0
+      ? product.whyYouLoveIt
+      : typeof product.whyYouLoveIt === "string" && product.whyYouLoveIt.trim()
+        ? product.whyYouLoveIt
+            .split("\n")
+            .filter(Boolean)
+            .map((line, i) => {
+              const parts = line.split(":");
+              return {
+                title: (parts[0] || "").trim().toUpperCase(),
+                desc: (parts.slice(1).join(":") || parts[0]).trim(),
+              };
+            })
+        : [
+            {
+              title: "EASY FIT",
+              desc: "Room to move without losing its shape.",
+            },
+            {
+              title: "POCKETS",
+              desc: "Because clothes should actually be useful.",
+            },
+            {
+              title: "BREATHABLE",
+              desc: "Made in Khadi cotton for an airy, comfortable feel.",
+            },
+            {
+              title: "VERSATILE",
+              desc: "Dress it up, dress it down, wear it your way.",
+            },
+          ];
 
   // Made for you if fallback
-  const madeForYouIf = (Array.isArray(product.madeForYouIf) && product.madeForYouIf.length > 0)
-    ? product.madeForYouIf
-    : (typeof product.madeForYouIf === "string" && product.madeForYouIf.trim())
-      ? product.madeForYouIf.split("\n").map((s) => s.trim().replace(/^[-*•✦]\s*/, "")).filter(Boolean)
-      : [
-          "You'd rather have a few really good pieces than a wardrobe full of trends.",
-          "You want comfort without looking underdressed.",
-          "You need clothes that can keep up with an unpredictable day.",
-        ];
+  const madeForYouIf =
+    Array.isArray(product.madeForYouIf) && product.madeForYouIf.length > 0
+      ? product.madeForYouIf
+      : typeof product.madeForYouIf === "string" && product.madeForYouIf.trim()
+        ? product.madeForYouIf
+            .split("\n")
+            .map((s) => s.trim().replace(/^[-*•✦]\s*/, ""))
+            .filter(Boolean)
+        : [
+            "You'd rather have a few really good pieces than a wardrobe full of trends.",
+            "You want comfort without looking underdressed.",
+            "You need clothes that can keep up with an unpredictable day.",
+          ];
 
   // The story behind the piece
-  const story = product.story || (
-    "We wanted a dress you could put on without having to figure out the rest of your outfit first. Something comfortable enough for a long day and considered enough to make you feel dressed. So we gave it an easy silhouette, useful pockets and room to move. Nothing unnecessary. Just things you'll actually use."
-  );
+  const story =
+    product.story ||
+    "We wanted a dress you could put on without having to figure out the rest of your outfit first. Something comfortable enough for a long day and considered enough to make you feel dressed. So we gave it an easy silhouette, useful pockets and room to move. Nothing unnecessary. Just things you'll actually use.";
 
   // How to wear it 3 possibilities
-  const howToWear = (Array.isArray(product.howToWear) && product.howToWear.length > 0)
-    ? product.howToWear
-    : (typeof product.howToWear === "string" && product.howToWear.trim())
-      ? product.howToWear.split("\n").filter(Boolean).map((line) => {
-          const parts = line.split(":");
-          return { occasion: (parts[0] || "EVERYDAY").trim().toUpperCase(), styling: (parts.slice(1).join(":") || parts[0]).trim() };
-        })
-      : [
-          { occasion: "EVERYDAY", styling: "With flats + a simple bag." },
-          { occasion: "WORKDAY", styling: "With structured accessories + loafers." },
-          { occasion: "EVENING", styling: "With jewellery + a layer + your favourite shoes." },
-        ];
+  const howToWear =
+    Array.isArray(product.howToWear) && product.howToWear.length > 0
+      ? product.howToWear
+      : typeof product.howToWear === "string" && product.howToWear.trim()
+        ? product.howToWear
+            .split("\n")
+            .filter(Boolean)
+            .map((line) => {
+              const parts = line.split(":");
+              return {
+                occasion: (parts[0] || "EVERYDAY").trim().toUpperCase(),
+                styling: (parts.slice(1).join(":") || parts[0]).trim(),
+              };
+            })
+        : [
+            { occasion: "EVERYDAY", styling: "With flats + a simple bag." },
+            {
+              occasion: "WORKDAY",
+              styling: "With structured accessories + loafers.",
+            },
+            {
+              occasion: "EVENING",
+              styling: "With jewellery + a layer + your favourite shoes.",
+            },
+          ];
 
   return (
     <>
@@ -396,22 +510,48 @@ export default function ProductPage() {
 
       <div className="pdp-wrapper">
         <div className="pdp-container">
-
           {/* Breadcrumb Navigation */}
-          <nav style={{ display: "flex", gap: 8, alignItems: "center", fontSize: 13, color: "#7a6c5f", marginBottom: 32 }}>
-            <Link href="/" style={{ color: "#7a6c5f", textDecoration: "none" }}>Home</Link>
+          <nav
+            style={{
+              display: "flex",
+              gap: 8,
+              alignItems: "center",
+              fontSize: 13,
+              color: "#7a6c5f",
+              marginBottom: 32,
+            }}
+          >
+            <Link href="/" style={{ color: "#7a6c5f", textDecoration: "none" }}>
+              Home
+            </Link>
             <span>/</span>
-            <Link href="/shop" style={{ color: "#7a6c5f", textDecoration: "none" }}>Shop All Pieces</Link>
+            <Link
+              href="/shop"
+              style={{ color: "#7a6c5f", textDecoration: "none" }}
+            >
+              Shop All Pieces
+            </Link>
             <span>/</span>
-            <span style={{ color: "#1a140e", fontWeight: 600 }}>{product.name}</span>
+            <span style={{ color: "#1a140e", fontWeight: 600 }}>
+              {product.name}
+            </span>
           </nav>
 
           {/* ─── PRODUCT HERO ─── */}
           <div className="pdp-hero-grid">
-
             {/* LEFT: Gallery Visuals */}
             <div className="pdp-gallery-col">
-              <div style={{ borderRadius: 18, overflow: "hidden", background: "#e8dfd0", aspectRatio: "3/4", marginBottom: 16, position: "relative", border: "1px solid rgba(42,31,20,0.08)" }}>
+              <div
+                style={{
+                  borderRadius: 18,
+                  overflow: "hidden",
+                  background: "#e8dfd0",
+                  aspectRatio: "3/4",
+                  marginBottom: 16,
+                  position: "relative",
+                  border: "1px solid rgba(42,31,20,0.08)",
+                }}
+              >
                 {isMainImgLoading && !isVideoActive && (
                   <div
                     className="sum-skeleton-shimmer"
@@ -430,7 +570,12 @@ export default function ProductPage() {
                     playsInline
                     autoPlay
                     loop
-                    style={{ width: "100%", height: "100%", objectFit: "cover", background: "#000" }}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      background: "#000",
+                    }}
                   />
                 ) : (
                   <img
@@ -476,15 +621,40 @@ export default function ProductPage() {
               </div>
 
               {/* Thumbnails */}
-              <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
+              <div
+                style={{
+                  display: "flex",
+                  gap: 10,
+                  flexWrap: "wrap",
+                  alignItems: "center",
+                }}
+              >
                 {images.map((img, i) => (
                   <div
                     key={i}
                     className={`pdp-thumb ${!isVideoActive && i === activeImage ? "active" : ""}`}
-                    onClick={() => { setIsVideoActive(false); setActiveImage(i); }}
-                    style={{ width: 70, height: 92, background: "#f3f4f6", cursor: "pointer", aspectRatio: "3 / 4" }}
+                    onClick={() => {
+                      setIsVideoActive(false);
+                      setActiveImage(i);
+                    }}
+                    style={{
+                      width: 70,
+                      height: 92,
+                      background: "#f3f4f6",
+                      cursor: "pointer",
+                      aspectRatio: "3 / 4",
+                    }}
                   >
-                    <img src={img} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center" }} />
+                    <img
+                      src={img}
+                      alt=""
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        objectPosition: "top center",
+                      }}
+                    />
                   </div>
                 ))}
 
@@ -505,11 +675,21 @@ export default function ProductPage() {
                       borderRadius: 8,
                       cursor: "pointer",
                       textAlign: "center",
-                      border: isVideoActive ? "2px solid #b36338" : "2px solid transparent",
+                      border: isVideoActive
+                        ? "2px solid #b36338"
+                        : "2px solid transparent",
                     }}
                   >
                     <span style={{ fontSize: 16 }}>▶</span>
-                    <span style={{ fontSize: 10, fontWeight: 800, letterSpacing: "0.08em", textTransform: "uppercase", color: "#d89b6c" }}>
+                    <span
+                      style={{
+                        fontSize: 10,
+                        fontWeight: 800,
+                        letterSpacing: "0.08em",
+                        textTransform: "uppercase",
+                        color: "#d89b6c",
+                      }}
+                    >
                       Motion
                     </span>
                   </div>
@@ -520,28 +700,77 @@ export default function ProductPage() {
             {/* RIGHT: Product Information & Purchase CTAs */}
             <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
               <div>
-                <span style={{ fontSize: "0.78rem", fontWeight: 800, letterSpacing: "0.15em", textTransform: "uppercase", color: "#b36338", display: "block", marginBottom: 8 }}>
+                <span
+                  style={{
+                    fontSize: "0.78rem",
+                    fontWeight: 800,
+                    letterSpacing: "0.15em",
+                    textTransform: "uppercase",
+                    color: "#b36338",
+                    display: "block",
+                    marginBottom: 8,
+                  }}
+                >
                   Khadi Handwoven Textiles
                 </span>
-                <h1 style={{ fontFamily: "Epilogue, sans-serif", fontSize: "clamp(2rem, 3.5vw, 2.7rem)", fontWeight: 600, color: "#1a140e", margin: "0 0 6px", lineHeight: 1.15 }}>
+                <h1
+                  style={{
+                    fontFamily: "Epilogue, sans-serif",
+                    fontSize: "clamp(2rem, 3.5vw, 2.7rem)",
+                    fontWeight: 600,
+                    color: "#1a140e",
+                    margin: "0 0 6px",
+                    lineHeight: 1.15,
+                  }}
+                >
                   {product.name.toUpperCase()}
                 </h1>
                 {product.subtitle && (
-                  <p style={{ fontSize: "1.15rem", color: "#5c4033", fontStyle: "italic", margin: "0 0 6px", fontWeight: 500 }}>
+                  <p
+                    style={{
+                      fontSize: "1.15rem",
+                      color: "#5c4033",
+                      fontStyle: "italic",
+                      margin: "0 0 6px",
+                      fontWeight: 500,
+                    }}
+                  >
                     {product.subtitle}
                   </p>
                 )}
                 {product.hook && (
-                  <p style={{ fontSize: "0.96rem", color: "#7a6c5f", margin: 0, fontWeight: 600 }}>
+                  <p
+                    style={{
+                      fontSize: "0.96rem",
+                      color: "#7a6c5f",
+                      margin: 0,
+                      fontWeight: 600,
+                    }}
+                  >
                     {product.hook}
                   </p>
                 )}
               </div>
 
               {/* Price */}
-              <div style={{ borderTop: "1px solid rgba(42,31,20,0.1)", borderBottom: "1px solid rgba(42,31,20,0.1)", padding: "16px 0" }}>
-                <div style={{ display: "flex", alignItems: "baseline", gap: 12 }}>
-                  <span style={{ fontSize: "1.85rem", fontWeight: 800, color: "#1a140e", fontFamily: "Epilogue, sans-serif" }}>
+              <div
+                style={{
+                  borderTop: "1px solid rgba(42,31,20,0.1)",
+                  borderBottom: "1px solid rgba(42,31,20,0.1)",
+                  padding: "16px 0",
+                }}
+              >
+                <div
+                  style={{ display: "flex", alignItems: "baseline", gap: 12 }}
+                >
+                  <span
+                    style={{
+                      fontSize: "1.85rem",
+                      fontWeight: 800,
+                      color: "#1a140e",
+                      fontFamily: "Epilogue, sans-serif",
+                    }}
+                  >
                     Rs {effectivePrice}
                   </span>
                   <span style={{ fontSize: 13, color: "#7a6c5f" }}>
@@ -551,40 +780,120 @@ export default function ProductPage() {
               </div>
 
               {/* Editorial Description with structured formatting & line breaks */}
-              <div style={{ fontSize: "1.02rem", lineHeight: 1.8, color: "#3f3329", marginBottom: 16 }}>
+              <div
+                style={{
+                  fontSize: "1.02rem",
+                  lineHeight: 1.8,
+                  color: "#3f3329",
+                  marginBottom: 16,
+                }}
+              >
                 <FormattedDescription description={product.description} />
               </div>
 
               {/* Color Selection (if colors exist) — Live Color Wheel Swatches */}
               {availableColors.length > 0 && (
                 <div>
-                  <span style={{ fontSize: 12, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "#6b5d52", display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
-                    Color: <strong style={{ color: "#1a140e" }}>{selectedColor}</strong>
+                  <span
+                    style={{
+                      fontSize: 12,
+                      fontWeight: 800,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.08em",
+                      color: "#6b5d52",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 8,
+                      marginBottom: 10,
+                    }}
+                  >
+                    Color:{" "}
+                    <strong style={{ color: "#1a140e" }}>
+                      {selectedColor}
+                    </strong>
                     {/* Live Hex badge from color wheel */}
                     {(() => {
-                      const cv = product.colorVariants?.find((v) => v.color?.toLowerCase().trim() === selectedColor?.toLowerCase().trim());
+                      const cv = product.colorVariants?.find(
+                        (v) =>
+                          v.color?.toLowerCase().trim() ===
+                          selectedColor?.toLowerCase().trim(),
+                      );
                       return cv?.hex ? (
-                        <span style={{ fontSize: 11, color: "#8a7a6c", fontFamily: "monospace", background: "rgba(0,0,0,0.06)", padding: "1px 6px", borderRadius: 4 }}>
+                        <span
+                          style={{
+                            fontSize: 11,
+                            color: "#8a7a6c",
+                            fontFamily: "monospace",
+                            background: "rgba(0,0,0,0.06)",
+                            padding: "1px 6px",
+                            borderRadius: 4,
+                          }}
+                        >
                           {cv.hex}
                         </span>
                       ) : null;
                     })()}
                     {colorStock <= 0 ? (
-                      <span style={{ fontSize: 10, fontWeight: 700, color: "#dc2626", background: "#fee2e2", padding: "2px 8px", borderRadius: 4 }}>Out of Stock</span>
+                      <span
+                        style={{
+                          fontSize: 10,
+                          fontWeight: 700,
+                          color: "#dc2626",
+                          background: "#fee2e2",
+                          padding: "2px 8px",
+                          borderRadius: 4,
+                        }}
+                      >
+                        Out of Stock
+                      </span>
                     ) : colorStock <= (product.lowStockThreshold || 5) ? (
-                      <span style={{ fontSize: 10, fontWeight: 700, color: "#d97706", background: "#fef3c7", padding: "2px 8px", borderRadius: 4 }}>Only {colorStock} left!</span>
+                      <span
+                        style={{
+                          fontSize: 10,
+                          fontWeight: 700,
+                          color: "#d97706",
+                          background: "#fef3c7",
+                          padding: "2px 8px",
+                          borderRadius: 4,
+                        }}
+                      >
+                        Only {colorStock} left!
+                      </span>
                     ) : (
-                      <span style={{ fontSize: 10, fontWeight: 600, color: "#16a34a", background: "#dcfce7", padding: "2px 8px", borderRadius: 4 }}>In Stock ({colorStock})</span>
+                      <span
+                        style={{
+                          fontSize: 10,
+                          fontWeight: 600,
+                          color: "#16a34a",
+                          background: "#dcfce7",
+                          padding: "2px 8px",
+                          borderRadius: 4,
+                        }}
+                      >
+                        In Stock ({colorStock})
+                      </span>
                     )}
                   </span>
-                  <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: 12,
+                      alignItems: "center",
+                      flexWrap: "wrap",
+                    }}
+                  >
                     {availableColors.map((color) => {
                       const isSelected = selectedColor === color;
                       const cv = product.colorVariants?.find(
-                        (v) => v.color?.toLowerCase().trim() === color?.toLowerCase().trim()
+                        (v) =>
+                          v.color?.toLowerCase().trim() ===
+                          color?.toLowerCase().trim(),
                       );
-                      const bg = cv?.hex || (color.startsWith("#") ? color : getColorHex(color));
-                      const stackForColor = product.colorStock?.[color] ?? cv?.stock ?? 10;
+                      const bg =
+                        cv?.hex ||
+                        (color.startsWith("#") ? color : getColorHex(color));
+                      const stackForColor =
+                        product.colorStock?.[color] ?? cv?.stock ?? 10;
                       const outOfStock = Number(stackForColor) <= 0;
 
                       return (
@@ -600,7 +909,9 @@ export default function ProductPage() {
                             height: 36,
                             borderRadius: "50%",
                             backgroundColor: bg,
-                            border: isSelected ? "3px solid #660608" : "1.5px solid rgba(42,31,20,0.25)",
+                            border: isSelected
+                              ? "3px solid #660608"
+                              : "1.5px solid rgba(42,31,20,0.25)",
                             boxShadow: isSelected
                               ? "0 0 0 2px #EDE8DC, 0 4px 10px rgba(102,6,8,0.3)"
                               : "0 2px 4px rgba(0,0,0,0.08)",
@@ -633,8 +944,23 @@ export default function ProductPage() {
 
               {/* Size Selector */}
               <div>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-                  <span style={{ fontSize: 12, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "#6b5d52" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginBottom: 10,
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: 12,
+                      fontWeight: 800,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.08em",
+                      color: "#6b5d52",
+                    }}
+                  >
                     Select Size:
                   </span>
                   <button
@@ -653,36 +979,79 @@ export default function ProductPage() {
                   </button>
                 </div>
                 <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-                  {(product.sizes || ["XS", "S", "M", "L", "XL"]).map((size) => (
-                    <button
-                      key={size}
-                      className={`pdp-size-btn ${selectedSize === size ? "active" : ""}`}
-                      onClick={() => setSelectedSize(size)}
-                    >
-                      {size}
-                    </button>
-                  ))}
+                  {(product.sizes || ["XS", "S", "M", "L", "XL"]).map(
+                    (size) => (
+                      <button
+                        key={size}
+                        className={`pdp-size-btn ${selectedSize === size ? "active" : ""}`}
+                        onClick={() => setSelectedSize(size)}
+                      >
+                        {size}
+                      </button>
+                    ),
+                  )}
                 </div>
               </div>
 
               {/* Quantity */}
               <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-                <span style={{ fontSize: 12, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "#6b5d52" }}>
+                <span
+                  style={{
+                    fontSize: 12,
+                    fontWeight: 800,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.08em",
+                    color: "#6b5d52",
+                  }}
+                >
                   Quantity:
                 </span>
-                <div style={{ display: "flex", alignItems: "center", background: "#ffffff", border: "1.5px solid rgba(42,31,20,0.2)", borderRadius: 8, overflow: "hidden" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    background: "#ffffff",
+                    border: "1.5px solid rgba(42,31,20,0.2)",
+                    borderRadius: 8,
+                    overflow: "hidden",
+                  }}
+                >
                   <button
                     onClick={() => setQty((q) => Math.max(1, q - 1))}
-                    style={{ padding: "8px 14px", border: "none", background: "none", cursor: "pointer", fontWeight: 700, fontSize: 16 }}
+                    style={{
+                      padding: "8px 14px",
+                      border: "none",
+                      background: "none",
+                      cursor: "pointer",
+                      fontWeight: 700,
+                      fontSize: 16,
+                    }}
                   >
                     −
                   </button>
-                  <span style={{ padding: "8px 16px", fontWeight: 700, minWidth: 32, textAlign: "center", fontSize: 14 }}>
+                  <span
+                    style={{
+                      padding: "8px 16px",
+                      fontWeight: 700,
+                      minWidth: 32,
+                      textAlign: "center",
+                      fontSize: 14,
+                    }}
+                  >
                     {qty}
                   </span>
                   <button
-                    onClick={() => setQty((q) => Math.min(stockForVariant || 99, q + 1))}
-                    style={{ padding: "8px 14px", border: "none", background: "none", cursor: "pointer", fontWeight: 700, fontSize: 16 }}
+                    onClick={() =>
+                      setQty((q) => Math.min(stockForVariant || 99, q + 1))
+                    }
+                    style={{
+                      padding: "8px 14px",
+                      border: "none",
+                      background: "none",
+                      cursor: "pointer",
+                      fontWeight: 700,
+                      fontSize: 16,
+                    }}
                   >
                     +
                   </button>
@@ -697,7 +1066,9 @@ export default function ProductPage() {
                 }}
                 style={{
                   background: currentFitDetails ? "#EEF6EC" : "#FAF4EC",
-                  border: currentFitDetails ? "1.5px solid #2e7d32" : "1.5px dashed #881A1C",
+                  border: currentFitDetails
+                    ? "1.5px solid #2e7d32"
+                    : "1.5px dashed #881A1C",
                   borderRadius: 12,
                   padding: "12px 16px",
                   display: "flex",
@@ -709,23 +1080,66 @@ export default function ProductPage() {
                 }}
               >
                 <div>
-                  <div style={{ fontSize: "0.82rem", fontWeight: 800, color: currentFitDetails ? "#1e4620" : "#660608", textTransform: "uppercase", letterSpacing: "0.06em", display: "flex", alignItems: "center", gap: 6 }}>
+                  <div
+                    style={{
+                      fontSize: "0.82rem",
+                      fontWeight: 800,
+                      color: currentFitDetails ? "#1e4620" : "#660608",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.06em",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 6,
+                    }}
+                  >
                     <span>✦ Custom Fit Details (Mandatory)</span>
-                    {currentFitDetails && <span style={{ fontSize: 11, background: "#2e7d32", color: "#fff", padding: "1px 6px", borderRadius: 4 }}>Saved ✓</span>}
+                    {currentFitDetails && (
+                      <span
+                        style={{
+                          fontSize: 11,
+                          background: "#2e7d32",
+                          color: "#fff",
+                          padding: "1px 6px",
+                          borderRadius: 4,
+                        }}
+                      >
+                        Saved ✓
+                      </span>
+                    )}
                   </div>
-                  <div style={{ fontSize: "0.76rem", color: "#6B584C", marginTop: 2 }}>
+                  <div
+                    style={{
+                      fontSize: "0.76rem",
+                      color: "#6B584C",
+                      marginTop: 2,
+                    }}
+                  >
                     {currentFitDetails
                       ? `Bust: ${currentFitDetails.bust}" • Waist: ${currentFitDetails.waist}" • Hips: ${currentFitDetails.hips}" (${currentFitDetails.fitPreference})`
                       : "Click to provide your Bust, Waist & Length preferences for a tailored fit."}
                   </div>
                 </div>
-                <span style={{ fontSize: "0.78rem", fontWeight: 700, color: currentFitDetails ? "#2e7d32" : "#881A1C", textDecoration: "underline" }}>
+                <span
+                  style={{
+                    fontSize: "0.78rem",
+                    fontWeight: 700,
+                    color: currentFitDetails ? "#2e7d32" : "#881A1C",
+                    textDecoration: "underline",
+                  }}
+                >
                   {currentFitDetails ? "Edit Fits ✎" : "Enter Fits ✎"}
                 </span>
               </div>
 
               {/* ─── FINAL PRODUCT CTAs ─── */}
-              <div style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 10 }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 12,
+                  marginTop: 10,
+                }}
+              >
                 {/* Primary: ADD TO BAG */}
                 <button
                   className={`pdp-add-btn ${addedFeedback ? "added" : ""}`}
@@ -733,7 +1147,11 @@ export default function ProductPage() {
                   disabled={isOutOfStock || !selectedSize}
                 >
                   <FiShoppingBag size={17} />
-                  {isOutOfStock ? "Out of Stock" : addedFeedback ? "Added to Bag ✓" : "ADD TO BAG"}
+                  {isOutOfStock
+                    ? "Out of Stock"
+                    : addedFeedback
+                      ? "Added to Bag ✓"
+                      : "ADD TO BAG"}
                 </button>
 
                 {/* Secondary: BUY NOW */}
@@ -748,12 +1166,29 @@ export default function ProductPage() {
               </div>
 
               {/* Support Links Below CTAs — Clean Inline Styling (No Floating White Box) */}
-              <div style={{ padding: "16px 0", borderTop: "1px solid rgba(44, 32, 22, 0.1)", display: "flex", flexDirection: "column", gap: 10, fontSize: 13, color: "#55483d" }}>
+              <div
+                style={{
+                  padding: "16px 0",
+                  borderTop: "1px solid rgba(44, 32, 22, 0.1)",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 10,
+                  fontSize: 13,
+                  color: "#55483d",
+                }}
+              >
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   <FiHelpCircle size={15} color="#b36338" />
                   <span>
                     Need help with your size?{" "}
-                    <Link href="/contact" style={{ color: "#1a140e", fontWeight: 800, textDecoration: "underline" }}>
+                    <Link
+                      href="/contact"
+                      style={{
+                        color: "#1a140e",
+                        fontWeight: 800,
+                        textDecoration: "underline",
+                      }}
+                    >
                       CONTACT US
                     </Link>
                   </span>
@@ -762,7 +1197,14 @@ export default function ProductPage() {
                   <FiArrowRight size={15} color="#b36338" />
                   <span>
                     Want to know more about the textile?{" "}
-                    <Link href="/fabric" style={{ color: "#1a140e", fontWeight: 800, textDecoration: "underline" }}>
+                    <Link
+                      href="/fabric"
+                      style={{
+                        color: "#1a140e",
+                        fontWeight: 800,
+                        textDecoration: "underline",
+                      }}
+                    >
                       EXPLORE THE FABRIC
                     </Link>
                   </span>
@@ -775,7 +1217,11 @@ export default function ProductPage() {
                       href="https://wa.me/c/99605240905904"
                       target="_blank"
                       rel="noopener noreferrer"
-                      style={{ color: "#15803d", fontWeight: 800, textDecoration: "underline" }}
+                      style={{
+                        color: "#15803d",
+                        fontWeight: 800,
+                        textDecoration: "underline",
+                      }}
                     >
                       VIEW WHATSAPP CATALOG
                     </a>
@@ -784,11 +1230,23 @@ export default function ProductPage() {
               </div>
 
               {/* Trust Features - Free Shipping */}
-              <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "16px 0", borderTop: "1px solid rgba(42,31,20,0.1)", color: "#5C4A3E", fontSize: 13, fontWeight: 600 }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 10,
+                  padding: "16px 0",
+                  borderTop: "1px solid rgba(42,31,20,0.1)",
+                  color: "#5C4A3E",
+                  fontSize: 13,
+                  fontWeight: 600,
+                }}
+              >
                 <FiTruck size={18} color="#b36338" />
-                <span>Free express shipping on all orders over ₹2,800 across India</span>
+                <span>
+                  Free express shipping on all orders over ₹2,800 across India
+                </span>
               </div>
-
             </div>
           </div>
 
@@ -809,28 +1267,82 @@ export default function ProductPage() {
 
           {/* ─── SEAMLESS EDITORIAL DETAILS (OUR STYLE — NO BOXES) ─── */}
           <section style={{ maxWidth: 900, margin: "0 auto 60px" }}>
-            <div style={{ textAlign: "center", maxWidth: 700, margin: "0 auto 36px" }}>
+            <div
+              style={{
+                textAlign: "center",
+                maxWidth: 700,
+                margin: "0 auto 36px",
+              }}
+            >
               <IndianArchBadge style={{ marginBottom: "16px" }}>
                 Khadi Handloom Craft
               </IndianArchBadge>
-              <h2 style={{ fontFamily: "Epilogue, sans-serif", fontSize: "clamp(2rem, 3.5vw, 2.8rem)", fontWeight: 600, color: "#2C2016", margin: "0 0 14px" }}>
+              <h2
+                style={{
+                  fontFamily: "Epilogue, sans-serif",
+                  fontSize: "clamp(2rem, 3.5vw, 2.8rem)",
+                  fontWeight: 600,
+                  color: "#2C2016",
+                  margin: "0 0 14px",
+                }}
+              >
                 The Details & Specifications
               </h2>
               {product.howItFeels && (
-                <p style={{ fontFamily: "Epilogue, sans-serif", fontSize: "1.15rem", fontStyle: "italic", color: "#5C4A3E", margin: 0, lineHeight: 1.6 }}>
+                <p
+                  style={{
+                    fontFamily: "Epilogue, sans-serif",
+                    fontSize: "1.15rem",
+                    fontStyle: "italic",
+                    color: "#5C4A3E",
+                    margin: 0,
+                    lineHeight: 1.6,
+                  }}
+                >
                   &ldquo;{product.howItFeels}&rdquo;
                 </p>
               )}
             </div>
 
             {/* 1. Considered Details / Why You'll Love It — Clean Editorial Row (No Card Boxes) */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 28, margin: "0 auto 50px" }}>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+                gap: 28,
+                margin: "0 auto 50px",
+              }}
+            >
               {whyYouLoveIt.map((item, idx) => (
-                <div key={idx} style={{ textAlign: "left", borderTop: "1.5px solid #660608", paddingTop: 14 }}>
-                  <span style={{ fontSize: "0.74rem", fontWeight: 800, color: "#660608", letterSpacing: "0.14em", textTransform: "uppercase", display: "block", marginBottom: 6 }}>
+                <div
+                  key={idx}
+                  style={{
+                    textAlign: "left",
+                    borderTop: "1.5px solid #660608",
+                    paddingTop: 14,
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: "0.74rem",
+                      fontWeight: 800,
+                      color: "#660608",
+                      letterSpacing: "0.14em",
+                      textTransform: "uppercase",
+                      display: "block",
+                      marginBottom: 6,
+                    }}
+                  >
                     0{idx + 1} • {item.title}
                   </span>
-                  <p style={{ fontSize: "0.92rem", lineHeight: 1.65, color: "#55483D", margin: 0 }}>
+                  <p
+                    style={{
+                      fontSize: "0.92rem",
+                      lineHeight: 1.65,
+                      color: "#55483D",
+                      margin: 0,
+                    }}
+                  >
                     {item.desc}
                   </p>
                 </div>
@@ -838,47 +1350,176 @@ export default function ProductPage() {
             </div>
 
             {/* 2. Clean Specifications Grid Directly on Background (No floating white box) */}
-            <div style={{ borderTop: "1px solid rgba(44, 32, 22, 0.14)", padding: "10px 0 0" }}>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "0 48px" }}>
+            <div
+              style={{
+                borderTop: "1px solid rgba(44, 32, 22, 0.14)",
+                padding: "10px 0 0",
+              }}
+            >
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+                  gap: "0 48px",
+                }}
+              >
                 <div className="pdp-spec-row">
-                  <span style={{ fontWeight: 700, color: "#8A7A6C", textTransform: "uppercase", fontSize: "0.78rem", letterSpacing: "0.1em" }}>Textile</span>
-                  <span style={{ fontWeight: 600, color: "#1a140e" }}>{product.fabricComposition || "100% Handspun Khadi Cotton"}</span>
+                  <span
+                    style={{
+                      fontWeight: 700,
+                      color: "#8A7A6C",
+                      textTransform: "uppercase",
+                      fontSize: "0.78rem",
+                      letterSpacing: "0.1em",
+                    }}
+                  >
+                    Textile
+                  </span>
+                  <span style={{ fontWeight: 600, color: "#1a140e" }}>
+                    {product.fabricComposition || "100% Handspun Khadi Cotton"}
+                  </span>
                 </div>
                 <div className="pdp-spec-row">
-                  <span style={{ fontWeight: 700, color: "#8A7A6C", textTransform: "uppercase", fontSize: "0.78rem", letterSpacing: "0.1em" }}>Weave</span>
-                  <span style={{ fontWeight: 600, color: "#1a140e" }}>{product.weave || "Traditional Wooden Pit Loom"}</span>
+                  <span
+                    style={{
+                      fontWeight: 700,
+                      color: "#8A7A6C",
+                      textTransform: "uppercase",
+                      fontSize: "0.78rem",
+                      letterSpacing: "0.1em",
+                    }}
+                  >
+                    Weave
+                  </span>
+                  <span style={{ fontWeight: 600, color: "#1a140e" }}>
+                    {product.weave || "Traditional Wooden Pit Loom"}
+                  </span>
                 </div>
                 <div className="pdp-spec-row">
-                  <span style={{ fontWeight: 700, color: "#8A7A6C", textTransform: "uppercase", fontSize: "0.78rem", letterSpacing: "0.1em" }}>Fit</span>
-                  <span style={{ fontWeight: 600, color: "#1a140e" }}>{product.fit || "Relaxed Silhouette"}</span>
+                  <span
+                    style={{
+                      fontWeight: 700,
+                      color: "#8A7A6C",
+                      textTransform: "uppercase",
+                      fontSize: "0.78rem",
+                      letterSpacing: "0.1em",
+                    }}
+                  >
+                    Fit
+                  </span>
+                  <span style={{ fontWeight: 600, color: "#1a140e" }}>
+                    {product.fit || "Relaxed Silhouette"}
+                  </span>
                 </div>
                 <div className="pdp-spec-row">
-                  <span style={{ fontWeight: 700, color: "#8A7A6C", textTransform: "uppercase", fontSize: "0.78rem", letterSpacing: "0.1em" }}>Origin</span>
-                  <span style={{ fontWeight: 600, color: "#1a140e" }}>{product.origin || "Madhya Pradesh, India"}</span>
+                  <span
+                    style={{
+                      fontWeight: 700,
+                      color: "#8A7A6C",
+                      textTransform: "uppercase",
+                      fontSize: "0.78rem",
+                      letterSpacing: "0.1em",
+                    }}
+                  >
+                    Origin
+                  </span>
+                  <span style={{ fontWeight: 600, color: "#1a140e" }}>
+                    {product.origin || "Madhya Pradesh, India"}
+                  </span>
                 </div>
                 {product.sleeveType && (
                   <div className="pdp-spec-row">
-                    <span style={{ fontWeight: 700, color: "#8A7A6C", textTransform: "uppercase", fontSize: "0.78rem", letterSpacing: "0.1em" }}>Sleeves</span>
-                    <span style={{ fontWeight: 600, color: "#1a140e" }}>{product.sleeveType}</span>
+                    <span
+                      style={{
+                        fontWeight: 700,
+                        color: "#8A7A6C",
+                        textTransform: "uppercase",
+                        fontSize: "0.78rem",
+                        letterSpacing: "0.1em",
+                      }}
+                    >
+                      Sleeves
+                    </span>
+                    <span style={{ fontWeight: 600, color: "#1a140e" }}>
+                      {product.sleeveType}
+                    </span>
                   </div>
                 )}
                 {product.neckType && (
                   <div className="pdp-spec-row">
-                    <span style={{ fontWeight: 700, color: "#8A7A6C", textTransform: "uppercase", fontSize: "0.78rem", letterSpacing: "0.1em" }}>Neckline</span>
-                    <span style={{ fontWeight: 600, color: "#1a140e" }}>{product.neckType}</span>
+                    <span
+                      style={{
+                        fontWeight: 700,
+                        color: "#8A7A6C",
+                        textTransform: "uppercase",
+                        fontSize: "0.78rem",
+                        letterSpacing: "0.1em",
+                      }}
+                    >
+                      Neckline
+                    </span>
+                    <span style={{ fontWeight: 600, color: "#1a140e" }}>
+                      {product.neckType}
+                    </span>
                   </div>
                 )}
                 <div className="pdp-spec-row">
-                  <span style={{ fontWeight: 700, color: "#8A7A6C", textTransform: "uppercase", fontSize: "0.78rem", letterSpacing: "0.1em" }}>Pockets</span>
-                  <span style={{ fontWeight: 600, color: "#1a140e" }}>{product.hasPockets ? "Functional Deep Pockets" : "Clean Line Without Pockets"}</span>
+                  <span
+                    style={{
+                      fontWeight: 700,
+                      color: "#8A7A6C",
+                      textTransform: "uppercase",
+                      fontSize: "0.78rem",
+                      letterSpacing: "0.1em",
+                    }}
+                  >
+                    Pockets
+                  </span>
+                  <span style={{ fontWeight: 600, color: "#1a140e" }}>
+                    {product.hasPockets
+                      ? "Functional Deep Pockets"
+                      : "Clean Line Without Pockets"}
+                  </span>
                 </div>
                 <div className="pdp-spec-row">
-                  <span style={{ fontWeight: 700, color: "#8A7A6C", textTransform: "uppercase", fontSize: "0.78rem", letterSpacing: "0.1em" }}>Care</span>
-                  <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4 }}>
-                    <span style={{ fontWeight: 600, color: "#1a140e", textAlign: "right" }}>{product.fabricCare || "Pure organic handspun cotton. Gentle cycle wash with similar colors."}</span>
+                  <span
+                    style={{
+                      fontWeight: 700,
+                      color: "#8A7A6C",
+                      textTransform: "uppercase",
+                      fontSize: "0.78rem",
+                      letterSpacing: "0.1em",
+                    }}
+                  >
+                    Care
+                  </span>
+                  <span style={{ fontWeight: 600, color: "#1a140e" }}>
+                    {product.fabricCare ||
+                      "Pure organic handspun cotton. Gentle cycle wash with similar colors."}
+                  </span>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "flex-end",
+                      gap: 4,
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontWeight: 600,
+                        color: "#1a140e",
+                        textAlign: "right",
+                      }}
+                    >
+                      {product.fabricCare ||
+                        "Pure organic handspun cotton. Gentle cycle wash with similar colors."}
+                    </span>
                     <button
                       type="button"
-                      onClick={() => setIsFabricCareOpen && setIsFabricCareOpen(true)}
+                      onClick={() =>
+                        setIsFabricCareOpen && setIsFabricCareOpen(true)
+                      }
                       style={{
                         background: "none",
                         border: "none",
@@ -899,19 +1540,71 @@ export default function ProductPage() {
           </section>
 
           {/* 3. Wardrobe Fit / Made For You If... — Clean Seamless Editorial (No Dark Box) */}
-          <section style={{ maxWidth: 900, margin: "0 auto 60px", padding: "36px 0", borderTop: "1px solid rgba(44, 32, 22, 0.12)", borderBottom: "1px solid rgba(44, 32, 22, 0.12)" }}>
+          <section
+            style={{
+              maxWidth: 900,
+              margin: "0 auto 60px",
+              padding: "36px 0",
+              borderTop: "1px solid rgba(44, 32, 22, 0.12)",
+              borderBottom: "1px solid rgba(44, 32, 22, 0.12)",
+            }}
+          >
             <div style={{ maxWidth: 680, margin: "0 auto" }}>
-              <span style={{ fontSize: "0.76rem", fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: "#660608", display: "block", textAlign: "center", marginBottom: 8 }}>
+              <span
+                style={{
+                  fontSize: "0.76rem",
+                  fontWeight: 800,
+                  letterSpacing: "0.16em",
+                  textTransform: "uppercase",
+                  color: "#660608",
+                  display: "block",
+                  textAlign: "center",
+                  marginBottom: 8,
+                }}
+              >
                 Wardrobe Fit
               </span>
-              <h3 style={{ fontFamily: "Epilogue, sans-serif", fontSize: "clamp(1.5rem, 2.4vw, 2rem)", color: "#1a140e", textAlign: "center", margin: "0 0 20px" }}>
+              <h3
+                style={{
+                  fontFamily: "Epilogue, sans-serif",
+                  fontSize: "clamp(1.5rem, 2.4vw, 2rem)",
+                  color: "#1a140e",
+                  textAlign: "center",
+                  margin: "0 0 20px",
+                }}
+              >
                 Made for you if...
               </h3>
-              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              <div
+                style={{ display: "flex", flexDirection: "column", gap: 12 }}
+              >
                 {madeForYouIf.map((item, idx) => (
-                  <div key={idx} style={{ display: "flex", alignItems: "flex-start", gap: 12, textAlign: "left" }}>
-                    <span style={{ color: "#660608", fontSize: "1.1rem", lineHeight: 1.4, flexShrink: 0 }}>✦</span>
-                    <span style={{ fontSize: "1rem", lineHeight: 1.7, color: "#4A3B30" }}>
+                  <div
+                    key={idx}
+                    style={{
+                      display: "flex",
+                      alignItems: "flex-start",
+                      gap: 12,
+                      textAlign: "left",
+                    }}
+                  >
+                    <span
+                      style={{
+                        color: "#660608",
+                        fontSize: "1.1rem",
+                        lineHeight: 1.4,
+                        flexShrink: 0,
+                      }}
+                    >
+                      ✦
+                    </span>
+                    <span
+                      style={{
+                        fontSize: "1rem",
+                        lineHeight: 1.7,
+                        color: "#4A3B30",
+                      }}
+                    >
                       {item}
                     </span>
                   </div>
@@ -922,14 +1615,40 @@ export default function ProductPage() {
 
           {/* 4. Origin & Intention — Story Block (No Floating White Box) */}
           <section style={{ maxWidth: 900, margin: "0 auto 60px" }}>
-            <div style={{ maxWidth: 720, margin: "0 auto", textAlign: "center" }}>
-              <span style={{ fontSize: "0.78rem", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "#660608", display: "block", marginBottom: 10 }}>
+            <div
+              style={{ maxWidth: 720, margin: "0 auto", textAlign: "center" }}
+            >
+              <span
+                style={{
+                  fontSize: "0.78rem",
+                  fontWeight: 800,
+                  letterSpacing: "0.18em",
+                  textTransform: "uppercase",
+                  color: "#660608",
+                  display: "block",
+                  marginBottom: 10,
+                }}
+              >
                 Origin & Intention
               </span>
-              <h3 style={{ fontFamily: "Epilogue, sans-serif", fontSize: "clamp(1.6rem, 2.5vw, 2.2rem)", color: "#1a140e", margin: "0 0 16px" }}>
+              <h3
+                style={{
+                  fontFamily: "Epilogue, sans-serif",
+                  fontSize: "clamp(1.6rem, 2.5vw, 2.2rem)",
+                  color: "#1a140e",
+                  margin: "0 0 16px",
+                }}
+              >
                 Why we made it.
               </h3>
-              <p style={{ fontSize: "1.06rem", lineHeight: 1.85, color: "#4A3B30", margin: "0 auto" }}>
+              <p
+                style={{
+                  fontSize: "1.06rem",
+                  lineHeight: 1.85,
+                  color: "#4A3B30",
+                  margin: "0 auto",
+                }}
+              >
                 {story}
               </p>
             </div>
@@ -937,19 +1656,69 @@ export default function ProductPage() {
 
           {/* 5. Styling Possibilities / One Piece. Your Way. (No Floating White Boxes) */}
           <section style={{ maxWidth: 900, margin: "0 auto 80px" }}>
-            <span style={{ fontSize: "0.76rem", fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: "#660608", display: "block", textAlign: "center", marginBottom: 8 }}>
+            <span
+              style={{
+                fontSize: "0.76rem",
+                fontWeight: 800,
+                letterSpacing: "0.16em",
+                textTransform: "uppercase",
+                color: "#660608",
+                display: "block",
+                textAlign: "center",
+                marginBottom: 8,
+              }}
+            >
               Styling Possibilities
             </span>
-            <h3 style={{ fontFamily: "Epilogue, sans-serif", fontSize: "clamp(1.5rem, 2.4vw, 2rem)", color: "#1a140e", textAlign: "center", margin: "0 0 24px" }}>
+            <h3
+              style={{
+                fontFamily: "Epilogue, sans-serif",
+                fontSize: "clamp(1.5rem, 2.4vw, 2rem)",
+                color: "#1a140e",
+                textAlign: "center",
+                margin: "0 0 24px",
+              }}
+            >
               One piece. Your way.
             </h3>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 20 }}>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+                gap: 20,
+              }}
+            >
               {howToWear.map((style, idx) => (
-                <div key={idx} style={{ padding: "16px 20px", borderLeft: "2.5px solid #660608", background: "rgba(250, 246, 240, 0.7)" }}>
-                  <span style={{ fontSize: "0.72rem", fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "#660608", display: "block", marginBottom: 6 }}>
+                <div
+                  key={idx}
+                  style={{
+                    padding: "16px 20px",
+                    borderLeft: "2.5px solid #660608",
+                    background: "rgba(250, 246, 240, 0.7)",
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: "0.72rem",
+                      fontWeight: 800,
+                      letterSpacing: "0.14em",
+                      textTransform: "uppercase",
+                      color: "#660608",
+                      display: "block",
+                      marginBottom: 6,
+                    }}
+                  >
                     {style.occasion}
                   </span>
-                  <p style={{ fontFamily: "Epilogue, sans-serif", fontSize: "1.02rem", lineHeight: 1.6, color: "#1a140e", margin: 0 }}>
+                  <p
+                    style={{
+                      fontFamily: "Epilogue, sans-serif",
+                      fontSize: "1.02rem",
+                      lineHeight: 1.6,
+                      color: "#1a140e",
+                      margin: 0,
+                    }}
+                  >
                     {style.styling}
                   </p>
                 </div>
@@ -971,7 +1740,6 @@ export default function ProductPage() {
             }}
             aria-hidden="true"
           />
-
         </div>
       </div>
 

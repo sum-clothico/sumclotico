@@ -178,12 +178,25 @@ function CheckoutContent() {
   useEffect(() => {
     if (cart.length === 0 && typeof window !== "undefined") {
       try {
+        let restored = null;
         const backup = sessionStorage.getItem("sum_cart_backup") || localStorage.getItem("sum_cart");
         if (backup) {
           const parsed = JSON.parse(backup);
           if (Array.isArray(parsed) && parsed.length > 0) {
-            setCart(parsed);
+            restored = parsed;
           }
+        }
+        if (!restored && typeof document !== "undefined") {
+          const m = document.cookie.match(/(^|;\s*)sum_cart=([^;]*)/);
+          if (m) {
+            const parsed = JSON.parse(decodeURIComponent(m[2]));
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              restored = parsed;
+            }
+          }
+        }
+        if (restored && setCart) {
+          setCart(restored);
         }
       } catch {}
     }
@@ -196,6 +209,13 @@ function CheckoutContent() {
       if (b) {
         const p = JSON.parse(b);
         if (Array.isArray(p) && p.length > 0) return p;
+      }
+      if (typeof document !== "undefined") {
+        const m = document.cookie.match(/(^|;\s*)sum_cart=([^;]*)/);
+        if (m) {
+          const p = JSON.parse(decodeURIComponent(m[2]));
+          if (Array.isArray(p) && p.length > 0) return p;
+        }
       }
     } catch {}
     return [];
@@ -377,6 +397,9 @@ function CheckoutContent() {
                   try {
                     localStorage.setItem("sum_cart", JSON.stringify(effectiveCart));
                     sessionStorage.setItem("sum_cart_backup", JSON.stringify(effectiveCart));
+                    if (typeof document !== "undefined") {
+                      document.cookie = `sum_cart=${encodeURIComponent(JSON.stringify(effectiveCart))}; path=/; max-age=2592000; SameSite=Lax`;
+                    }
                   } catch {}
                 }}
                 style={{
@@ -405,6 +428,9 @@ function CheckoutContent() {
                   try {
                     localStorage.setItem("sum_cart", JSON.stringify(effectiveCart));
                     sessionStorage.setItem("sum_cart_backup", JSON.stringify(effectiveCart));
+                    if (typeof document !== "undefined") {
+                      document.cookie = `sum_cart=${encodeURIComponent(JSON.stringify(effectiveCart))}; path=/; max-age=2592000; SameSite=Lax`;
+                    }
                   } catch {}
                 }}
                 style={{
@@ -424,27 +450,6 @@ function CheckoutContent() {
               >
                 Create New Account
               </Link>
-            </div>
-
-            <div
-              style={{
-                marginTop: 24,
-                paddingTop: 18,
-                borderTop: "1px solid #f3f4f6",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                gap: 16,
-                fontSize: 12,
-                color: "#9ca3af",
-              }}
-            >
-              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <FiShield size={14} color="#166534" />
-                <span style={{ color: "#374151" }}>256-Bit SSL Encrypted</span>
-              </div>
-              <span>•</span>
-              <div style={{ color: "#374151" }}>Instant OTP / Google Login</div>
             </div>
           </div>
         </div>
@@ -995,7 +1000,7 @@ function CheckoutContent() {
 
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, marginTop: 16, fontSize: 12, color: "#6b7280" }}>
                   <FiLock size={13} color="#15803d" />
-                  <span>256-Bit SSL Encrypted Payment</span>
+                  <span>100% Secure Checkout</span>
                 </div>
               </div>
             </div>
@@ -1036,7 +1041,7 @@ function CheckoutContent() {
             Connecting to Cashfree Secure Payments...
           </h3>
           <p style={{ color: "#d1d5db", fontSize: 14, margin: 0, maxWidth: 380, lineHeight: 1.5 }}>
-            Please wait while we initialize 256-bit encrypted checkout. Do not refresh or press back.
+            Please wait while we connect securely to payment gateway. Do not refresh or press back.
           </p>
         </div>
       )}

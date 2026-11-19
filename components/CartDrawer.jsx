@@ -480,6 +480,9 @@ export default function CartDrawer() {
                 try {
                   localStorage.setItem("sum_cart", JSON.stringify(cart));
                   sessionStorage.setItem("sum_cart_backup", JSON.stringify(cart));
+                  if (typeof document !== "undefined") {
+                    document.cookie = `sum_cart=${encodeURIComponent(JSON.stringify(cart))}; path=/; max-age=2592000; SameSite=Lax`;
+                  }
                 } catch {}
                 trackBeginCheckout(cart, cartGrandTotal, appliedCoupon?.code);
                 setIsCartOpen(false);
@@ -501,7 +504,7 @@ export default function CartDrawer() {
               }}
             >
               <FiShield size={14} color="#15803d" />
-              <span>Cashfree 256-Bit SSL Encrypted Checkout</span>
+              <span>100% Secure Checkout via Cashfree</span>
             </div>
           </div>
         )}

@@ -196,7 +196,7 @@ export function StoreProvider({ children }) {
   const isStoreHydratedRef = useRef(false);
   const [isCartHydrated, setIsCartHydrated] = useState(false);
 
-  // Cart State - lazy initialized from localStorage & sessionStorage to eliminate empty [] flicker and reload wipes
+  // Cart State - lazy initialized from localStorage, cookie & sessionStorage to eliminate empty [] flicker and reload wipes
   const [cart, setCart] = useState(() => {
     if (typeof window === "undefined") return [];
     try {
@@ -204,6 +204,13 @@ export function StoreProvider({ children }) {
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+      if (typeof document !== "undefined") {
+        const cookieMatch = document.cookie.match(/(^|;\s*)sum_cart=([^;]*)/);
+        if (cookieMatch) {
+          const parsedCookie = JSON.parse(decodeURIComponent(cookieMatch[2]));
+          if (Array.isArray(parsedCookie) && parsedCookie.length > 0) return parsedCookie;
+        }
       }
       const backup = sessionStorage.getItem("sum_cart_backup");
       if (backup) {
@@ -351,9 +358,14 @@ export function StoreProvider({ children }) {
         );
         const data = await apiFetch("/checkout/orders");
         if (data.success && Array.isArray(data.orders)) {
-          setOrders(data.orders);
+          const sanitizedOrders = data.orders.map((o) => ({
+            ...o,
+            carrier: o.carrier && !o.carrier.toLowerCase().includes("bluedart") ? o.carrier : "Shiprocket",
+            trackingNumber: o.trackingNumber && !/^BD\d+IN$/i.test(o.trackingNumber) ? o.trackingNumber : "",
+          }));
+          setOrders(sanitizedOrders);
           try {
-            localStorage.setItem("sum_orders", JSON.stringify(data.orders));
+            localStorage.setItem("sum_orders", JSON.stringify(sanitizedOrders));
           } catch {}
           console.log(
             `%c[Backend: ✓ Loaded ${data.orders.length} orders from MongoDB]`,
@@ -384,6 +396,18 @@ export function StoreProvider({ children }) {
         } catch (e) {
           console.warn("[Store] Could not parse sum_cart:", e);
         }
+      }
+      if (!loadedCart && typeof document !== "undefined") {
+        try {
+          const cookieMatch = document.cookie.match(/(^|;\s*)sum_cart=([^;]*)/);
+          if (cookieMatch) {
+            const parsed = JSON.parse(decodeURIComponent(cookieMatch[2]));
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              loadedCart = parsed;
+              localStorage.setItem("sum_cart", JSON.stringify(parsed));
+            }
+          }
+        } catch {}
       }
       if (!loadedCart) {
         const backupCart = sessionStorage.getItem("sum_cart_backup");
@@ -503,13 +527,16 @@ export function StoreProvider({ children }) {
     } catch {}
   }, [categories]);
 
-  // Save Cart to localStorage & sessionStorage backup - strictly after hydration
+  // Save Cart to localStorage, cookie & sessionStorage backup - strictly when items exist to prevent wipe
   useEffect(() => {
     if (!isCartHydrated) return;
     try {
-      localStorage.setItem("sum_cart", JSON.stringify(cart));
       if (Array.isArray(cart) && cart.length > 0) {
+        localStorage.setItem("sum_cart", JSON.stringify(cart));
         sessionStorage.setItem("sum_cart_backup", JSON.stringify(cart));
+        if (typeof document !== "undefined") {
+          document.cookie = `sum_cart=${encodeURIComponent(JSON.stringify(cart))}; path=/; max-age=2592000; SameSite=Lax`;
+        }
       }
     } catch {}
   }, [cart, isCartHydrated]);
@@ -690,6 +717,9 @@ export function StoreProvider({ children }) {
       localStorage.removeItem("sum_cart");
       localStorage.removeItem("sum_coupon");
       sessionStorage.removeItem("sum_cart_backup");
+      if (typeof document !== "undefined") {
+        document.cookie = "sum_cart=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax";
+      }
     } catch {}
   };
 

@@ -329,27 +329,6 @@ function TrackOrderContent() {
                 Create Account
               </Link>
             </div>
-
-            <div
-              style={{
-                marginTop: 24,
-                paddingTop: 18,
-                borderTop: "1px solid #f3f4f6",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                gap: 16,
-                fontSize: 12,
-                color: "#9ca3af",
-              }}
-            >
-              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <FiShield size={14} color="#166534" />
-                <span style={{ color: "#374151" }}>256-Bit SSL Encrypted</span>
-              </div>
-              <span>•</span>
-              <div style={{ color: "#374151" }}>Instant OTP / Google Login</div>
-            </div>
           </div>
         </div>
       </>
@@ -644,10 +623,10 @@ function TrackOrderContent() {
                         color: "#111827",
                       }}
                     >
-                      Carrier: {activeOrder.carrier || "Shiprocket"}
+                      Carrier: {activeOrder.carrier && !activeOrder.carrier.toLowerCase().includes("bluedart") ? activeOrder.carrier : "Shiprocket"}
                     </div>
                     <div style={{ fontSize: 12, color: "#6b7280" }}>
-                      {activeOrder.trackingNumber ? (
+                      {activeOrder.trackingNumber && !/^BD\d+IN$/i.test(activeOrder.trackingNumber) ? (
                         <>
                           AWB / Tracking Number:{" "}
                           <strong>{activeOrder.trackingNumber}</strong>
