@@ -91,14 +91,14 @@ export default function FAQPage() {
   return (
     <>
       <Navbar />
-      <div style={{ background: "#fbfbfc", minHeight: "100vh", padding: "140px 24px 80px", color: "#111827" }}>
+      <div style={{ background: "#fbfbfc", minHeight: "100vh", padding: "clamp(100px, 14vh, 140px) clamp(16px, 4vw, 24px) 80px", color: "#111827" }}>
         <div style={{ maxWidth: 840, margin: "0 auto" }}>
           {/* Header */}
           <div style={{ textAlign: "center", marginBottom: 48 }}>
             <span style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1.5, color: "#f35c27" }}>
               Help Center & Support
             </span>
-            <h1 style={{ fontSize: 36, fontWeight: 800, margin: "8px 0 12px", letterSpacing: "-0.5px" }}>
+            <h1 style={{ fontSize: "clamp(24px, 4.5vw, 36px)", fontWeight: 800, margin: "8px 0 12px", letterSpacing: "-0.5px" }}>
               Frequently Asked Questions
             </h1>
             <p style={{ color: "#6b7280", fontSize: 16, margin: 0 }}>
@@ -107,14 +107,14 @@ export default function FAQPage() {
           </div>
 
           {/* FAQs Categorized Sections */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
             {FAQS.map((cat, catIdx) => (
               <div
                 key={cat.category}
                 style={{
                   background: "#ffffff",
                   borderRadius: 16,
-                  padding: "28px 32px",
+                  padding: "clamp(20px, 4vw, 28px) clamp(16px, 4vw, 32px)",
                   border: "1px solid #e5e7eb",
                   boxShadow: "0 4px 16px rgba(0,0,0,0.03)",
                 }}

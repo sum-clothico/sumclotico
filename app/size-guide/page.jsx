@@ -29,14 +29,14 @@ export default function SizeGuidePage() {
   return (
     <>
       <Navbar />
-      <div style={{ background: "#fbfbfc", minHeight: "100vh", padding: "140px 24px 80px", color: "#111827" }}>
+      <div style={{ background: "#fbfbfc", minHeight: "100vh", padding: "clamp(100px, 14vh, 140px) clamp(16px, 4vw, 24px) 80px", color: "#111827" }}>
         <div style={{ maxWidth: 840, margin: "0 auto" }}>
           {/* Header */}
           <div style={{ textAlign: "center", marginBottom: 40 }}>
             <span style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1.5, color: "#f35c27" }}>
               Fit & Dimensions
             </span>
-            <h1 style={{ fontSize: 36, fontWeight: 800, margin: "8px 0 12px", letterSpacing: "-0.5px" }}>
+            <h1 style={{ fontSize: "clamp(24px, 4.5vw, 36px)", fontWeight: 800, margin: "8px 0 12px", letterSpacing: "-0.5px" }}>
               Garment Size & Measurement Guide
             </h1>
             <p style={{ color: "#6b7280", fontSize: 16, margin: 0 }}>
@@ -53,7 +53,7 @@ export default function SizeGuidePage() {
             />
           </div>
 
-          <div style={{ background: "#ffffff", padding: "36px", borderRadius: 16, border: "1px solid #e5e7eb", boxShadow: "0 4px 20px rgba(0,0,0,0.03)" }}>
+          <div style={{ background: "#ffffff", padding: "clamp(20px, 4vw, 36px)", borderRadius: 16, border: "1px solid #e5e7eb", boxShadow: "0 4px 20px rgba(0,0,0,0.03)" }}>
             {/* Unit Switcher */}
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
               <span style={{ fontSize: 13, fontWeight: 700, textTransform: "uppercase", color: "#6b7280" }}>
@@ -93,32 +93,34 @@ export default function SizeGuidePage() {
               </div>
             </div>
 
-            {/* Table */}
-            <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: 15, marginBottom: 32 }}>
-              <thead>
-                <tr style={{ background: "#f9fafb", borderBottom: "1px solid #e5e7eb" }}>
-                  <th style={{ padding: "12px 16px", fontWeight: 700 }}>Size</th>
-                  <th style={{ padding: "12px 16px", fontWeight: 700 }}>Chest / Bust</th>
-                  <th style={{ padding: "12px 16px", fontWeight: 700 }}>Waist</th>
-                  <th style={{ padding: "12px 16px", fontWeight: 700 }}>Hips</th>
-                  <th style={{ padding: "12px 16px", fontWeight: 700 }}>Length</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.map((row) => (
-                  <tr key={row.size} style={{ borderBottom: "1px solid #f3f4f6" }}>
-                    <td style={{ padding: "12px 16px", fontWeight: 800 }}>{row.size}</td>
-                    <td style={{ padding: "12px 16px", color: "#4b5563" }}>{row.chest}</td>
-                    <td style={{ padding: "12px 16px", color: "#4b5563" }}>{row.waist}</td>
-                    <td style={{ padding: "12px 16px", color: "#4b5563" }}>{row.hip}</td>
-                    <td style={{ padding: "12px 16px", color: "#4b5563" }}>{row.length}</td>
+            {/* Table with responsive horizontal scroll */}
+            <div style={{ width: "100%", overflowX: "auto", WebkitOverflowScrolling: "touch", marginBottom: 32 }}>
+              <table style={{ width: "100%", minWidth: 440, borderCollapse: "collapse", textAlign: "left", fontSize: 14 }}>
+                <thead>
+                  <tr style={{ background: "#f9fafb", borderBottom: "1px solid #e5e7eb" }}>
+                    <th style={{ padding: "12px 14px", fontWeight: 700 }}>Size</th>
+                    <th style={{ padding: "12px 14px", fontWeight: 700 }}>Chest / Bust</th>
+                    <th style={{ padding: "12px 14px", fontWeight: 700 }}>Waist</th>
+                    <th style={{ padding: "12px 14px", fontWeight: 700 }}>Hips</th>
+                    <th style={{ padding: "12px 14px", fontWeight: 700 }}>Length</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {data.map((row) => (
+                    <tr key={row.size} style={{ borderBottom: "1px solid #f3f4f6" }}>
+                      <td style={{ padding: "12px 14px", fontWeight: 800 }}>{row.size}</td>
+                      <td style={{ padding: "12px 14px", color: "#4b5563" }}>{row.chest}</td>
+                      <td style={{ padding: "12px 14px", color: "#4b5563" }}>{row.waist}</td>
+                      <td style={{ padding: "12px 14px", color: "#4b5563" }}>{row.hip}</td>
+                      <td style={{ padding: "12px 14px", color: "#4b5563" }}>{row.length}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
 
             {/* Tips Grid */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16 }}>
               <div style={{ background: "#f9fafb", padding: "20px", borderRadius: 12, border: "1px solid #e5e7eb" }}>
                 <h4 style={{ margin: "0 0 8px", fontSize: 14, fontWeight: 700, textTransform: "uppercase" }}>How to Measure</h4>
                 <p style={{ margin: 0, fontSize: 13, color: "#4b5563", lineHeight: 1.6 }}>

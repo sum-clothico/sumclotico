@@ -336,13 +336,13 @@ function CheckoutContent() {
   return (
     <>
       <Navbar />
-      <div style={{ background: "#fbfbfc", minHeight: "100vh", padding: "140px 24px 80px", color: "#111827" }}>
+      <div className="checkout-wrapper">
         <div style={{ maxWidth: 1120, margin: "0 auto" }}>
           <div style={{ marginBottom: 32 }}>
             <span style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1.5, color: "#f35c27" }}>
               Secure D2C Checkout
             </span>
-            <h1 style={{ fontSize: 32, fontWeight: 800, margin: "6px 0 8px", letterSpacing: "-0.5px" }}>
+            <h1 style={{ fontSize: "clamp(24px, 4.5vw, 32px)", fontWeight: 800, margin: "6px 0 8px", letterSpacing: "-0.5px" }}>
               Complete Your Order
             </h1>
             <p style={{ color: "#6b7280", margin: 0, fontSize: 14 }}>
@@ -363,16 +363,16 @@ function CheckoutContent() {
             </div>
           )}
 
-          <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: 36 }}>
+          <div className="checkout-grid">
             {/* Left Column: Customer Details & Payment Selector */}
-            <div>
+            <div className="checkout-form-col">
               <form onSubmit={handleProceedToPayment}>
                 {/* 1. Contact Information */}
-                <div style={{ background: "#ffffff", padding: 28, borderRadius: 14, border: "1px solid #e5e7eb", marginBottom: 20, boxShadow: "0 2px 8px rgba(0,0,0,0.02)" }}>
+                <div className="checkout-card">
                   <h3 style={{ fontSize: 17, fontWeight: 800, margin: "0 0 16px", borderBottom: "1px solid #f3f4f6", paddingBottom: 10 }}>
                     1. Contact Information
                   </h3>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+                  <div className="checkout-contact-grid">
                     <div className="auth-form-group">
                       <label className="auth-label">
                         Full Name <span style={{ color: "#dc2626" }}>*</span>
@@ -419,7 +419,7 @@ function CheckoutContent() {
                 </div>
 
                 {/* 2. Shipping Address */}
-                <div style={{ background: "#ffffff", padding: 28, borderRadius: 14, border: "1px solid #e5e7eb", marginBottom: 20, boxShadow: "0 2px 8px rgba(0,0,0,0.02)" }}>
+                <div className="checkout-card">
                   <h3 style={{ fontSize: 17, fontWeight: 800, margin: "0 0 16px", borderBottom: "1px solid #f3f4f6", paddingBottom: 10 }}>
                     2. Shipping Address (India)
                   </h3>
@@ -437,7 +437,7 @@ function CheckoutContent() {
                       required
                     />
                   </div>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 14 }}>
+                  <div className="checkout-address-grid">
                     <div className="auth-form-group">
                       <label className="auth-label">
                         City <span style={{ color: "#dc2626" }}>*</span>
@@ -485,7 +485,7 @@ function CheckoutContent() {
                 </div>
 
                 {/* 3. Payment Gateway Portal Selection */}
-                <div style={{ background: "#ffffff", padding: 28, borderRadius: 14, border: "1px solid #e5e7eb", boxShadow: "0 2px 8px rgba(0,0,0,0.02)" }}>
+                <div className="checkout-card">
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #f3f4f6", paddingBottom: 10, marginBottom: 16 }}>
                     <h3 style={{ fontSize: 17, fontWeight: 800, margin: 0 }}>
                       3. Select Payment Gateway
@@ -569,8 +569,8 @@ function CheckoutContent() {
             </div>
 
             {/* Right Column: Order Summary & Coupon Box */}
-            <div>
-              <div style={{ background: "#ffffff", padding: 28, borderRadius: 14, border: "1px solid #e5e7eb", position: "sticky", top: 120, boxShadow: "0 2px 10px rgba(0,0,0,0.02)" }}>
+            <div className="checkout-summary-col">
+              <div className="checkout-order-summary-card">
                 <h3 style={{ fontSize: 17, fontWeight: 800, margin: "0 0 16px", borderBottom: "1px solid #f3f4f6", paddingBottom: 10 }}>
                   Order Review ({cart.length})
                 </h3>

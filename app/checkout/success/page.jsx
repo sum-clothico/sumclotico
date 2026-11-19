@@ -203,7 +203,7 @@ function SuccessContent() {
     <div
       style={{
         background: "#ffffff",
-        padding: "40px",
+        padding: "clamp(24px, 5vw, 40px)",
         borderRadius: 16,
         border: "1px solid #e8e8e8",
         boxShadow: "0 10px 40px rgba(0,0,0,0.04)",
@@ -518,7 +518,7 @@ export default function CheckoutSuccessPage() {
         style={{
           background: "#fbfbfc",
           minHeight: "100vh",
-          padding: "140px 24px 80px",
+          padding: "clamp(100px, 14vh, 140px) clamp(16px, 4vw, 24px) 80px",
           color: "#111",
         }}
       >

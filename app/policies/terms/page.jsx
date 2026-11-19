@@ -16,8 +16,8 @@ export default function TermsPolicyPage() {
   return (
     <>
       <Navbar />
-      <div style={{ background: "#fbfbfc", minHeight: "100vh", padding: "140px 24px 80px", color: "#111827" }}>
-        <div style={{ maxWidth: 840, margin: "0 auto", background: "#ffffff", padding: "44px", borderRadius: 16, border: "1px solid #e5e7eb", boxShadow: "0 4px 24px rgba(0,0,0,0.04)" }}>
+      <div style={{ background: "#fbfbfc", minHeight: "100vh", padding: "clamp(100px, 14vh, 140px) clamp(16px, 4vw, 24px) 60px", color: "#111827" }}>
+        <div style={{ maxWidth: 840, margin: "0 auto", background: "#ffffff", padding: "clamp(22px, 5vw, 44px)", borderRadius: 16, border: "1px solid #e5e7eb", boxShadow: "0 4px 24px rgba(0,0,0,0.04)" }}>
           <span style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1.5, color: "#f35c27" }}>
             Legal & Compliance
           </span>
