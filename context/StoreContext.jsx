@@ -337,12 +337,13 @@ export function StoreProvider({ children }) {
                 : [],
           }));
           setProducts(normalized);
+          try {
+            localStorage.setItem("sum_products", JSON.stringify(normalized));
+          } catch {}
           console.log(
             `%c[Backend: ✓ Loaded ${data.products.length} products from MongoDB]`,
             "background: #16a34a; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
           );
-        } else {
-          setProducts([]);
         }
       } catch (err) {
         console.warn(
@@ -350,7 +351,6 @@ export function StoreProvider({ children }) {
           "background: #d97706; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
           err.message,
         );
-        setProducts([]);
       } finally {
         setIsLoadingProducts(false);
       }

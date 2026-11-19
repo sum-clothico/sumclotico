@@ -44,15 +44,87 @@ const getColorHex = (name) => {
 export default function ProductPage() {
   const params = useParams();
   const router = useRouter();
-  const slug = params?.slug;
+  const rawSlug = params?.slug;
+  const slug = typeof rawSlug === "string" ? decodeURIComponent(rawSlug) : "";
   const {
     products = [],
     addToCart,
     setIsSizeGuideOpen,
     setIsFabricCareOpen,
+    isLoadingProducts,
   } = useStore();
 
-  const product = products.find((p) => p.slug === slug);
+  const normalizeSlugStr = (s) =>
+    (s || "")
+      .toLowerCase()
+      .replace(/['’]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+
+  const cleanSlug = normalizeSlugStr(slug);
+
+  const matchedProduct = products.find((p) => {
+    if (!p) return false;
+    const pSlug = p.slug || "";
+    const pId = String(p.id || p._id || "");
+    const pTitle = p.title || p.name || "";
+
+    if (pSlug === slug || pId === slug) return true;
+
+    const normP = normalizeSlugStr(pSlug);
+    if (normP === cleanSlug) return true;
+
+    const stripSuffix = (str) => str.replace(/-[a-z0-9]{4}$/i, "");
+    if (stripSuffix(pSlug) === stripSuffix(slug)) return true;
+    if (stripSuffix(normP) === stripSuffix(cleanSlug)) return true;
+
+    if (normalizeSlugStr(pTitle) === cleanSlug) return true;
+    if (stripSuffix(normalizeSlugStr(pTitle)) === stripSuffix(cleanSlug)) return true;
+
+    return false;
+  });
+
+  const [directProduct, setDirectProduct] = useState(null);
+  const [isDirectLoading, setIsDirectLoading] = useState(false);
+  const [directFetchAttempted, setDirectFetchAttempted] = useState(false);
+
+  useEffect(() => {
+    if (matchedProduct) {
+      setIsDirectLoading(false);
+      setDirectFetchAttempted(false);
+      return;
+    }
+    if (!slug) return;
+
+    let isSubscribed = true;
+    setIsDirectLoading(true);
+
+    fetch(`/api/products/${encodeURIComponent(slug)}`)
+      .then((res) => {
+        if (!res.ok) throw new Error("Not found");
+        return res.json();
+      })
+      .then((data) => {
+        if (!isSubscribed) return;
+        const item = data?.product || (data?.success && data?.data) || data;
+        if (item && (item._id || item.id || item.title || item.name)) {
+          setDirectProduct(item);
+        }
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (isSubscribed) {
+          setIsDirectLoading(false);
+          setDirectFetchAttempted(true);
+        }
+      });
+
+    return () => {
+      isSubscribed = false;
+    };
+  }, [slug, matchedProduct]);
+
+  const product = matchedProduct || directProduct;
 
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
@@ -67,7 +139,7 @@ export default function ProductPage() {
 
   useEffect(() => {
     setIsMainImgLoading(true);
-  }, [activeImage, product?.id]);
+  }, [activeImage, product?.id, product?._id]);
 
   useEffect(() => {
     if (product) {
@@ -84,17 +156,59 @@ export default function ProductPage() {
         value: product.salePrice || product.price,
         items: [
           {
-            item_id: product.id,
-            item_name: product.name,
+            item_id: product.id || product._id,
+            item_name: product.name || product.title,
             price: product.salePrice || product.price,
             item_category: product.category,
           },
         ],
       });
     }
-  }, [product?.id]);
+  }, [product?.id, product?._id]);
 
-  if (!product && products.length > 0) {
+  // Loading state: wait for store hydration or direct fallback fetch
+  if (!product && (isLoadingProducts || isDirectLoading || !directFetchAttempted)) {
+    return (
+      <>
+        <Navbar />
+        <div
+          style={{
+            minHeight: "70vh",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            background: "#FAF6F0",
+            gap: 14,
+          }}
+        >
+          <div
+            style={{
+              width: 32,
+              height: 32,
+              border: "2px solid #e8dfd0",
+              borderTopColor: "#660608",
+              borderRadius: "50%",
+              animation: "spin 0.8s linear infinite",
+            }}
+          />
+          <p
+            style={{
+              color: "#8a7a6c",
+              fontStyle: "italic",
+              fontFamily: "Epilogue, sans-serif",
+              fontSize: "1.1rem",
+            }}
+          >
+            Unfolding piece details...
+          </p>
+        </div>
+      </>
+    );
+  }
+
+  // Not found: only after all sources have finished loading and returned nothing
+  if (!product) {
     return (
       <>
         <Navbar />
@@ -137,34 +251,6 @@ export default function ProductPage() {
           >
             Return to Shop All Pieces <FiArrowRight size={14} />
           </Link>
-        </div>
-      </>
-    );
-  }
-
-  if (!product) {
-    return (
-      <>
-        <Navbar />
-        <div
-          style={{
-            minHeight: "70vh",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            background: "#FAF6F0",
-          }}
-        >
-          <p
-            style={{
-              color: "#8a7a6c",
-              fontStyle: "italic",
-              fontFamily: "Epilogue, sans-serif",
-              fontSize: "1.2rem",
-            }}
-          >
-            Unfolding piece details...
-          </p>
         </div>
       </>
     );
@@ -280,9 +366,15 @@ export default function ProductPage() {
     }
   };
 
-  const images = product.images?.length
-    ? product.images
-    : ["/assets/img/14.png"];
+  const rawImages =
+    product?.images && product.images.length > 0
+      ? product.images
+      : product?.image
+        ? [product.image]
+        : ["/assets/img/14.png"];
+  const images = rawImages
+    .map((img) => (typeof img === "string" ? img : img?.url || "/assets/img/14.png"))
+    .filter(Boolean);
   const availableColors =
     product?.colors && product.colors.length > 0
       ? product.colors
@@ -572,6 +664,7 @@ export default function ProductPage() {
                       inset: 0,
                       zIndex: 2,
                       borderRadius: 18,
+                      pointerEvents: "none",
                     }}
                   />
                 )}
@@ -591,16 +684,22 @@ export default function ProductPage() {
                   />
                 ) : (
                   <img
-                    src={images[activeImage]}
-                    alt={product.name}
+                    key={`${product?.id || product?._id || slug}-${activeImage}-${images[activeImage]}`}
+                    src={images[activeImage] || "/assets/img/14.png"}
+                    alt={product.name || product.title || "Sum Clothico Garment"}
                     onLoad={() => setIsMainImgLoading(false)}
+                    onError={() => setIsMainImgLoading(false)}
+                    ref={(imgRef) => {
+                      if (imgRef && imgRef.complete) {
+                        setIsMainImgLoading(false);
+                      }
+                    }}
                     style={{
                       width: "100%",
                       height: "100%",
                       objectFit: "cover",
                       objectPosition: "top center",
-                      opacity: isMainImgLoading ? 0 : 1,
-                      transition: "opacity 0.25s ease",
+                      display: "block",
                     }}
                   />
                 )}

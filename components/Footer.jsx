@@ -125,26 +125,6 @@ export default function Footer() {
             Khadi weaving cluster
             <br />
             Madhya Pradesh, India
-            <br />
-            <span
-              style={{
-                display: "inline-block",
-                marginTop: "6px",
-                fontSize: "11px",
-                fontWeight: 800,
-                color: "#660608",
-                textTransform: "uppercase",
-                letterSpacing: "0.8px",
-              }}
-            >
-              Offline Studio
-            </span>
-            <br />
-            <span style={{ fontSize: "12.5px", color: "#4A3E36" }}>
-              Shanti Path, near Shanti Villas Colony,
-              <br />
-              Laadli Laxmi Road, Rewa, MP
-            </span>
           </p>
           <div
             style={{
