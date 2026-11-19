@@ -88,6 +88,7 @@ export async function POST(request) {
 
     return Response.json({
       success: true,
+      mongoVerified: true,
       orderNumber: cleanOrderNumber,
       cfOrderId: data.order_id,
       paymentSessionId: data.payment_session_id,

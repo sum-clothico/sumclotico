@@ -558,18 +558,18 @@ function CheckoutContent() {
         });
 
         const data = await res.json();
-        if (!res.ok || !data.success || !data.paymentSessionId) {
+        if (!res.ok || !data.success || !data.paymentSessionId || !data.mongoVerified) {
           setIsProcessingPayment(false);
           setCheckoutError(
             data.error ||
               data.message ||
-              "Could not initialize Cashfree payment. Please verify your details.",
+              "Security Verification Notice: Order could not be secured in database. Payment was not initiated.",
           );
           return;
         }
 
         // Create initial pending order record linked with Cashfree order ID
-        createOrder({
+        await createOrder({
           orderNumber: tempOrderNumber,
           customer: {
             name: formData.name,

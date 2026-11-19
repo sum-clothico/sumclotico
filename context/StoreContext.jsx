@@ -1130,7 +1130,7 @@ export function StoreProvider({ children }) {
     }
   };
 
-  const createOrder = ({
+  const createOrder = async ({
     customer,
     shippingAddress,
     paymentGateway = "Cashfree",
@@ -1198,8 +1198,9 @@ export function StoreProvider({ children }) {
 
     setOrders((prev) => [newOrder, ...prev]);
 
-    // Persist to MongoDB backend (async, non-blocking — local state already updated above)
-    persistOrderToBackend(newOrder, [...cart]);
+    // Persist to MongoDB backend (strictly awaited before browser navigates)
+    await persistOrderToBackend(newOrder, [...cart]);
+    return newOrder;
 
     // Send transactional order confirmation email via API (only when verified PAID)
     try {
