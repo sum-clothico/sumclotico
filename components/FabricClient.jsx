@@ -272,7 +272,7 @@ export default function FabricClient() {
                   boxShadow: "0 14px 32px -12px rgba(44, 32, 22, 0.18)",
                 }}
               >
-                <img
+                <img loading="lazy" decoding="async"
                   src="/assets/fiber/WhatsApp Image 2026-10-05 at 2.14.11 PM (4).jpeg"
                   alt="Spinner at charkha"
                   style={{
@@ -292,7 +292,7 @@ export default function FabricClient() {
                   boxShadow: "0 14px 32px -12px rgba(44, 32, 22, 0.18)",
                 }}
               >
-                <img
+                <img loading="lazy" decoding="async"
                   src="/assets/fiber/WhatsApp Image 2026-10-05 at 8.56.14 PM.jpeg"
                   alt="Hands weaving khadi"
                   style={{
@@ -480,7 +480,7 @@ export default function FabricClient() {
                   aspectRatio: "3/4",
                 }}
               >
-                <img
+                <img loading="lazy" decoding="async"
                   src={step.img}
                   alt={step.label}
                   style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
@@ -543,7 +543,7 @@ export default function FabricClient() {
                 padding: "10px",
               }}
             >
-              <img
+              <img loading="lazy" decoding="async"
                 src="/assets/fiber/IMG_2962.PNG"
                 alt="Khadi fabric close-up"
                 style={{
@@ -774,7 +774,7 @@ export default function FabricClient() {
                   aspectRatio: "4/5",
                 }}
               >
-                <img
+                <img loading="lazy" decoding="async"
                   src={src}
                   alt={`Contemporary Khadi silhouette ${idx + 1}`}
                   style={{

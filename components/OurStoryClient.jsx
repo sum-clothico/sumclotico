@@ -300,7 +300,7 @@ export default function OurStoryClient() {
               border: "1px solid rgba(44, 32, 22, 0.14)",
             }}
           >
-            <img
+            <img loading="lazy" decoding="async"
               src="/assets/bharatpur-spinners.jpg"
               alt="Artisan women hand-spinning cotton on charkhas"
               style={{
@@ -356,7 +356,7 @@ export default function OurStoryClient() {
               border: "1px solid rgba(44, 32, 22, 0.14)",
             }}
           >
-            <img
+            <img loading="lazy" decoding="async"
               src="/assets/bharatpur-weaver.png"
               alt="Traditional pit loom weaving"
               style={{
@@ -487,7 +487,7 @@ export default function OurStoryClient() {
                 transform: "translateY(-14px)",
               }}
             >
-              <img
+              <img loading="lazy" decoding="async"
                 src="/assets/about/WhatsApp Image 2026-10-05 at 2.13.53 PM.jpeg"
                 alt="Sum Clothico handcrafted silhouette"
                 style={{
@@ -508,7 +508,7 @@ export default function OurStoryClient() {
                 transform: "translateY(14px)",
               }}
             >
-              <img
+              <img loading="lazy" decoding="async"
                 src="/assets/about/WhatsApp Image 2026-10-05 at 2.14.11 PM (4).jpeg"
                 alt="Sum handcrafted Khadi textile weave"
                 style={{
@@ -593,7 +593,7 @@ export default function OurStoryClient() {
                 aspectRatio: "3/4",
               }}
             >
-              <img
+              <img loading="lazy" decoding="async"
                 src={img.src}
                 alt={img.label}
                 style={{
@@ -641,7 +641,7 @@ export default function OurStoryClient() {
               aspectRatio: "4/5",
             }}
           >
-            <img
+            <img loading="lazy" decoding="async"
               src="/assets/about/WhatsApp Image 2026-03-16 at 2.54.57 PM.jpeg"
               alt="Aditi Singh — founder, Sum Clothico"
               style={{

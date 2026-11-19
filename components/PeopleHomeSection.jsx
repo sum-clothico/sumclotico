@@ -135,7 +135,7 @@ export default function PeopleHomeSection() {
                 border: "1px solid rgba(44, 32, 22, 0.1)",
               }}
             >
-              <img
+              <img loading="lazy" decoding="async"
                 src="/assets/bharatpur-spinners.jpg"
                 alt="Charkha Spinners of Bharatpur"
                 style={{ width: "100%", height: "100%", objectFit: "cover" }}
@@ -151,7 +151,7 @@ export default function PeopleHomeSection() {
                 border: "1px solid rgba(44, 32, 22, 0.1)",
               }}
             >
-              <img
+              <img loading="lazy" decoding="async"
                 src="/assets/bharatpur-weaver.png"
                 alt="Master Weaver on Traditional Loom"
                 style={{ width: "100%", height: "100%", objectFit: "cover" }}

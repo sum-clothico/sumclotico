@@ -1194,20 +1194,34 @@ export function StoreProvider({ children }) {
 
   const updateOrderStatus = async (orderId, newStatus, carrierInfo = {}) => {
     const targetOrder = orders.find((o) => o.id === orderId || o.orderNumber === orderId);
-    if ((newStatus === "Shipped" || newStatus === "Dispatched") && targetOrder?.customer?.email) {
-      fetch("/api/send-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          type: "ORDER_SHIPPED",
-          to: targetOrder.customer.email,
-          data: {
-            orderNumber: targetOrder.orderNumber,
-            carrier: carrierInfo.carrier || targetOrder.carrier || "BlueDart Express",
-            trackingNumber: carrierInfo.trackingNumber || targetOrder.trackingNumber || ("TRK" + Date.now().toString().slice(-8)),
-          },
-        }),
-      }).catch((e) => console.warn("Order shipped email error:", e));
+    const normalizedStatus = (newStatus || "").toUpperCase();
+
+    if (targetOrder?.customer?.email && normalizedStatus) {
+      let emailType = null;
+      if (normalizedStatus === "CONFIRMED") emailType = "ORDER_CONFIRMATION";
+      else if (normalizedStatus === "PROCESSING") emailType = "ORDER_PROCESSING";
+      else if (normalizedStatus === "PACKED") emailType = "ORDER_PACKED";
+      else if (normalizedStatus === "SHIPPED" || normalizedStatus === "DISPATCHED") emailType = "ORDER_SHIPPED";
+      else if (normalizedStatus === "DELIVERED") emailType = "ORDER_DELIVERED";
+      else if (normalizedStatus === "CANCELLED") emailType = "ORDER_CANCELLED";
+
+      if (emailType) {
+        fetch("/api/send-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            type: emailType,
+            to: targetOrder.customer.email,
+            data: {
+              ...targetOrder,
+              orderNumber: targetOrder.orderNumber,
+              carrier: carrierInfo.carrier || targetOrder.carrier || "BlueDart Express",
+              trackingNumber: carrierInfo.trackingNumber || targetOrder.trackingNumber || ("BD" + Date.now().toString().slice(-8)),
+              status: normalizedStatus,
+            },
+          }),
+        }).catch((e) => console.warn("Order " + emailType + " email error:", e));
+      }
     }
     setOrders((prev) =>
       prev.map((o) =>

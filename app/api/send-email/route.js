@@ -29,9 +29,9 @@ export async function POST(request) {
     const body = await request.json();
     const { type, to, data } = body;
 
-    // Server-side Idempotency: block duplicate emails for the same order reference within 10 minutes
+    // Server-side Idempotency: block duplicate emails for the same order reference and status within 10 minutes
     const orderRef = data?.orderNumber || data?.orderId || data?.id || data?.cfOrderId;
-    const idempotencyKey = orderRef ? `${type}_${orderRef}` : null;
+    const idempotencyKey = orderRef ? `${type}_${data?.status || ""}_${orderRef}` : null;
 
     if (idempotencyKey && !checkAndSetIdempotency(idempotencyKey)) {
       console.warn(`[SendEmail Idempotency Guard] Blocked duplicate email dispatch for key: ${idempotencyKey}`);
@@ -254,6 +254,132 @@ export async function POST(request) {
           <p><strong>Carrier:</strong> ${data.carrier || "BlueDart Express"}</p>
           <p><strong>AWB Code:</strong> ${data.trackingNumber || "Auto-assigned"}</p>
           <p><a href="https://www.sumclothico.com/admin/orders" style="color: #166534; font-weight: 700;">View in Admin Orders CRM →</a></p>
+        </div>
+      `;
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // SCENARIO 3B: ORDER PROCESSING (Weaving / Tailoring in progress)
+    // ─────────────────────────────────────────────────────────────────────────────
+    else if (type === "ORDER_PROCESSING") {
+      customerSubject = `🧵 Your Sum Clothico Order #${data.orderNumber} is Being Handcrafted`;
+      customerHtml = `
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden;">
+          <div style="background: #111111; color: #ffffff; padding: 24px 32px; text-align: center;">
+            <h1 style="margin: 0; font-size: 20px; letter-spacing: 2px;">सम् CLOTHICO</h1>
+            <p style="margin: 6px 0 0; color: #9ca3af; font-size: 13px;">Handcrafted Khadi Textiles & Mindful Living</p>
+          </div>
+          <div style="padding: 32px;">
+            <div style="background: #faf6f0; border: 1px solid #e6ddc8; border-radius: 8px; padding: 16px; margin-bottom: 24px;">
+              <strong style="color: #660608; font-size: 15px;">🧵 Your order is in the hands of our artisans</strong>
+              <p style="margin: 4px 0 0; color: #5C4A3E; font-size: 13px;">Our master weavers have selected the handloom Khadi fabric and your garment is currently being tailored with care.</p>
+            </div>
+            <p style="color: #4b5563; font-size: 14px; line-height: 1.6;">
+              Namaste ${data.customer?.name || "Friend"}, thank you for your patience as we practice slow, deliberate craft. We will notify you as soon as your garment is packed.
+            </p>
+            <div style="text-align: center; margin: 28px 0;">
+              <a href="https://www.sumclothico.com/track-order?order=${data.orderNumber}" style="background: #2C2016; color: #ffffff; padding: 12px 28px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 14px; display: inline-block;">
+                View Order Status →
+              </a>
+            </div>
+            <p style="font-size: 12px; color: #6b7280; text-align: center; margin-top: 24px;">
+              Questions? WhatsApp us at +91 9329587707 or reply to support@sumclothico.com
+            </p>
+          </div>
+        </div>
+      `;
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // SCENARIO 3C: ORDER PACKED & AWAITING COURIER
+    // ─────────────────────────────────────────────────────────────────────────────
+    else if (type === "ORDER_PACKED") {
+      customerSubject = `✨ Your Sum Clothico Order #${data.orderNumber} is Packed & Ready`;
+      customerHtml = `
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden;">
+          <div style="background: #111111; color: #ffffff; padding: 24px 32px; text-align: center;">
+            <h1 style="margin: 0; font-size: 20px; letter-spacing: 2px;">सम् CLOTHICO</h1>
+            <p style="margin: 6px 0 0; color: #9ca3af; font-size: 13px;">Handcrafted Khadi Textiles & Mindful Living</p>
+          </div>
+          <div style="padding: 32px;">
+            <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 16px; margin-bottom: 24px;">
+              <strong style="color: #166534; font-size: 15px;">✨ Quality inspection passed & package sealed</strong>
+              <p style="margin: 4px 0 0; color: #15803d; font-size: 13px;">Your piece has been wrapped with care in our sustainable packaging and is awaiting courier pickup.</p>
+            </div>
+            <p style="color: #4b5563; font-size: 14px; line-height: 1.6;">
+              Namaste ${data.customer?.name || "Friend"}, your handcrafted Khadi order <strong>#${data.orderNumber}</strong> is ready for dispatch. We will send you the live tracking number the moment our courier partner picks it up.
+            </p>
+            <div style="text-align: center; margin: 28px 0;">
+              <a href="https://www.sumclothico.com/track-order?order=${data.orderNumber}" style="background: #2C2016; color: #ffffff; padding: 12px 28px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 14px; display: inline-block;">
+                Track Order Progress →
+              </a>
+            </div>
+            <p style="font-size: 12px; color: #6b7280; text-align: center; margin-top: 24px;">
+              Questions? WhatsApp us at +91 9329587707 or reply to support@sumclothico.com
+            </p>
+          </div>
+        </div>
+      `;
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // SCENARIO 3D: ORDER DELIVERED
+    // ─────────────────────────────────────────────────────────────────────────────
+    else if (type === "ORDER_DELIVERED") {
+      customerSubject = `🎉 Delivered: Your Sum Clothico Order #${data.orderNumber} Has Arrived!`;
+      customerHtml = `
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden;">
+          <div style="background: #111111; color: #ffffff; padding: 24px 32px; text-align: center;">
+            <h1 style="margin: 0; font-size: 20px; letter-spacing: 2px;">सम् CLOTHICO</h1>
+            <p style="margin: 6px 0 0; color: #9ca3af; font-size: 13px;">Handcrafted Khadi Textiles & Mindful Living</p>
+          </div>
+          <div style="padding: 32px;">
+            <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 16px; margin-bottom: 24px;">
+              <strong style="color: #166534; font-size: 15px;">🎉 Package Delivered Successfully!</strong>
+              <p style="margin: 4px 0 0; color: #15803d; font-size: 13px;">Your order has arrived at your shipping address.</p>
+            </div>
+            <p style="color: #4b5563; font-size: 14px; line-height: 1.6;">
+              Namaste ${data.customer?.name || "Friend"}, we hope you enjoy wearing your handcrafted Khadi piece as much as our artisans loved making it.
+            </p>
+            <div style="background: #faf6f0; border-radius: 8px; padding: 16px; margin: 20px 0; font-size: 13px; color: #5C4A3E;">
+              <strong>Artisanal Care Tip:</strong> Handspun Khadi breathes with the weather. Hand wash or machine wash gentle in cold water with mild detergent and line dry in the shade to preserve natural dyes.
+            </div>
+            <div style="text-align: center; margin: 28px 0;">
+              <a href="https://www.sumclothico.com/collection" style="background: #660608; color: #ffffff; padding: 12px 28px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 14px; display: inline-block;">
+                Explore More Silhouettes →
+              </a>
+            </div>
+            <p style="font-size: 12px; color: #6b7280; text-align: center; margin-top: 24px;">
+              Need an exchange or return? Visit <a href="https://www.sumclothico.com/track-order" style="color: #660608; font-weight: 700;">Track Order & Returns</a> within 7 days of delivery.
+            </p>
+          </div>
+        </div>
+      `;
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // SCENARIO 3E: ORDER CANCELLED
+    // ─────────────────────────────────────────────────────────────────────────────
+    else if (type === "ORDER_CANCELLED") {
+      customerSubject = `Notice: Order #${data.orderNumber} Cancelled — Sum Clothico`;
+      customerHtml = `
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff; border: 1px solid #fee2e2; border-radius: 12px; overflow: hidden;">
+          <div style="background: #111111; color: #ffffff; padding: 24px 32px; text-align: center;">
+            <h1 style="margin: 0; font-size: 20px; letter-spacing: 2px;">सम् CLOTHICO</h1>
+            <p style="margin: 6px 0 0; color: #9ca3af; font-size: 13px;">Handcrafted Khadi Textiles & Mindful Living</p>
+          </div>
+          <div style="padding: 32px;">
+            <div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 16px; margin-bottom: 24px;">
+              <strong style="color: #991b1b; font-size: 15px;">Order #${data.orderNumber} has been cancelled</strong>
+              <p style="margin: 4px 0 0; color: #b91c1c; font-size: 13px;">This order has been cancelled per request or administrative update.</p>
+            </div>
+            <p style="color: #4b5563; font-size: 14px; line-height: 1.6;">
+              Namaste ${data.customer?.name || "Friend"}, if any online payment was completed, a full refund has been initiated to your original payment method via Cashfree and will credit back within 5–7 business days.
+            </p>
+            <p style="font-size: 12px; color: #6b7280; text-align: center; margin-top: 24px;">
+              If you have any questions, reach out to us on WhatsApp (+91 9329587707) or email support@sumclothico.com
+            </p>
+          </div>
         </div>
       `;
     }
