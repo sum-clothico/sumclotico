@@ -69,7 +69,7 @@ const INITIAL_POLICIES = {
         id: "sec-3",
         title: "3. Pricing & Currency",
         content:
-          "All prices displayed on the store are inclusive of applicable GST taxes and denominated in Indian Rupees (INR ₹).",
+          "All prices displayed on the store are in Indian Rupees (INR ₹). Applicable GST taxes (5%) and shipping charges are computed and added at checkout.",
       },
     ],
   },
@@ -660,19 +660,20 @@ export function StoreProvider({ children }) {
     }
   }
 
-  const cartGrandTotal = Math.max(
-    0,
-    cartSubtotal - discountAmount + shippingFee,
-  );
-
-  // Embedded GST calculation (Prices are inclusive of GST, defaulting to 5%)
+  // Exclusive GST calculation: 5% tax is calculated on the discounted item subtotal and added to grand total
   const cartGstPercent = cart.length > 0 ? (Number(cart[0]?.gstPercent) || 5) : 5;
+  const discountRatio = cartSubtotal > 0 ? discountAmount / cartSubtotal : 0;
   const cartGstAmount = cart.reduce((acc, item) => {
     const rate = Number(item.gstPercent) || 5;
     const itemTotal = (Number(item.price) || 0) * (Number(item.quantity) || 1);
-    const taxable = itemTotal / (1 + rate / 100);
-    return acc + (itemTotal - taxable);
+    const discountedItemTotal = Math.max(0, itemTotal * (1 - discountRatio));
+    return acc + (discountedItemTotal * rate) / 100;
   }, 0);
+
+  const cartGrandTotal = Math.max(
+    0,
+    Math.round(cartSubtotal - discountAmount + cartGstAmount + shippingFee),
+  );
 
   // ─── COUPON ACTIONS ────────────────────────────────────────────────────────
 

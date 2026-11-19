@@ -41,9 +41,9 @@ export default function GstInvoiceModal({ order, isOpen, onClose }) {
     const gstRate = Number(it.gstPercent || it.productId?.gstPercent || it.gstRate || order.gstPercent || 5);
     gstRatesUsed.add(gstRate);
 
-    // Inclusive GST formula: Taxable = Total / (1 + Rate/100)
-    const taxableValue = Math.round((itemTotal / (1 + gstRate / 100)) * 100) / 100;
-    const gstAmt = Math.round((itemTotal - taxableValue) * 100) / 100;
+    // Exclusive GST formula: Taxable = itemTotal, GST = itemTotal * (gstRate / 100)
+    const taxableValue = itemTotal;
+    const gstAmt = Math.round((itemTotal * (gstRate / 100)) * 100) / 100;
 
     totalTaxableValue += taxableValue;
     totalGstAmount += gstAmt;
@@ -344,7 +344,7 @@ export default function GstInvoiceModal({ order, isOpen, onClose }) {
                 color: "#111827",
               }}
             >
-              <span>Invoice Total (Incl. GST):</span>
+              <span>Invoice Total:</span>
               <span>₹{grandTotal.toLocaleString("en-IN")}</span>
             </div>
           </div>

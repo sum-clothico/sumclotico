@@ -432,7 +432,7 @@ export default function CartDrawer() {
 
             <div className="cart-summary-row" style={{ fontSize: 12, color: "#6b7280" }}>
               <span>Estimated GST ({cartGstPercent || 5}%)</span>
-              <span>₹{Math.round(cartGstAmount || 0).toLocaleString("en-IN")} (incl.)</span>
+              <span>+ ₹{Math.round(cartGstAmount || 0).toLocaleString("en-IN")}</span>
             </div>
 
             <div
@@ -453,7 +453,7 @@ export default function CartDrawer() {
             </div>
             <div style={{ fontSize: 11, color: "#166534", marginTop: 4, display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 4 }}>
               <span style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: "#16a34a", display: "inline-block" }} />
-              <span>Inclusive of {cartGstPercent || 5}% GST (₹{Math.round(cartGstAmount || 0).toLocaleString("en-IN")}) & all taxes</span>
+              <span>5% GST (+₹{Math.round(cartGstAmount || 0).toLocaleString("en-IN")}) added at checkout</span>
             </div>
 
             <Link
