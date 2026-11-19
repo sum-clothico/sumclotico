@@ -45,7 +45,7 @@ export default function ProductPage() {
   const params = useParams();
   const router = useRouter();
   const slug = params?.slug;
-  const { products = [], addToCart, setIsSizeGuideOpen } = useStore();
+  const { products = [], addToCart, setIsSizeGuideOpen, setIsFabricCareOpen } = useStore();
 
   const product = products.find((p) => p.slug === slug);
 
@@ -852,7 +852,25 @@ export default function ProductPage() {
                 </div>
                 <div className="pdp-spec-row">
                   <span style={{ fontWeight: 700, color: "#8A7A6C", textTransform: "uppercase", fontSize: "0.78rem", letterSpacing: "0.1em" }}>Care</span>
-                  <span style={{ fontWeight: 600, color: "#1a140e" }}>{product.fabricCare || "Pure organic handspun cotton. Gentle cycle wash with similar colors."}</span>
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4 }}>
+                    <span style={{ fontWeight: 600, color: "#1a140e", textAlign: "right" }}>{product.fabricCare || "Pure organic handspun cotton. Gentle cycle wash with similar colors."}</span>
+                    <button
+                      type="button"
+                      onClick={() => setIsFabricCareOpen && setIsFabricCareOpen(true)}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        fontSize: "0.75rem",
+                        color: "#660608",
+                        fontWeight: 700,
+                        cursor: "pointer",
+                        padding: 0,
+                        textDecoration: "underline",
+                      }}
+                    >
+                      View Care Poster & Instructions →
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

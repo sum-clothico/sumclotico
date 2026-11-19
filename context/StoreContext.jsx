@@ -241,10 +241,11 @@ export function StoreProvider({ children }) {
     return wishlist.some((item) => item.id === prodId);
   };
 
-  // Search & Size Guide Modals
+  // Search, Size Guide & Fabric Care Modals
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
+  const [isFabricCareOpen, setIsFabricCareOpen] = useState(false);
 
   // Coupon Engine & Dynamic Coupons State
   const [coupons, setCoupons] = useState(AVAILABLE_COUPONS);
@@ -1946,6 +1947,8 @@ export function StoreProvider({ children }) {
         setSearchQuery,
         isSizeGuideOpen,
         setIsSizeGuideOpen,
+        isFabricCareOpen,
+        setIsFabricCareOpen,
 
         // Dynamic Categories
         categories,

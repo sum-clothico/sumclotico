@@ -6,7 +6,7 @@ import { useStore } from "@/context/StoreContext";
 import { SOCIAL_ICONS } from "@/lib/data";
 
 export default function Footer() {
-  const { setIsSizeGuideOpen } = useStore();
+  const { setIsSizeGuideOpen, setIsFabricCareOpen } = useStore();
   return (
     <div
       className="footer-inner"
@@ -27,8 +27,22 @@ export default function Footer() {
       }}
     >
       {/* ─── Top Brand Wordmark & Tagline ─── */}
-      <div style={{ textAlign: "center", marginBottom: "32px", width: "100%", maxWidth: "100%", overflow: "hidden" }}>
-        <div style={{ display: "inline-block", marginBottom: "10px", maxWidth: "100%" }}>
+      <div
+        style={{
+          textAlign: "center",
+          marginBottom: "32px",
+          width: "100%",
+          maxWidth: "100%",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          style={{
+            display: "inline-block",
+            marginBottom: "10px",
+            maxWidth: "100%",
+          }}
+        >
           <img
             src="/assets/logo1.svg"
             alt="Sum Clothico"
@@ -112,10 +126,21 @@ export default function Footer() {
             <br />
             Madhya Pradesh, India
           </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: "10px", fontSize: "13.5px" }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "10px",
+              fontSize: "13.5px",
+            }}
+          >
             <Link
               href="/our-story"
-              style={{ color: "#4A3E36", textDecoration: "none", transition: "color 0.2s" }}
+              style={{
+                color: "#4A3E36",
+                textDecoration: "none",
+                transition: "color 0.2s",
+              }}
               onMouseEnter={(e) => (e.target.style.color = "#660608")}
               onMouseLeave={(e) => (e.target.style.color = "#4A3E36")}
             >
@@ -123,7 +148,11 @@ export default function Footer() {
             </Link>
             <Link
               href="/fabric"
-              style={{ color: "#4A3E36", textDecoration: "none", transition: "color 0.2s" }}
+              style={{
+                color: "#4A3E36",
+                textDecoration: "none",
+                transition: "color 0.2s",
+              }}
               onMouseEnter={(e) => (e.target.style.color = "#660608")}
               onMouseLeave={(e) => (e.target.style.color = "#4A3E36")}
             >
@@ -131,7 +160,11 @@ export default function Footer() {
             </Link>
             <Link
               href="/journal"
-              style={{ color: "#4A3E36", textDecoration: "none", transition: "color 0.2s" }}
+              style={{
+                color: "#4A3E36",
+                textDecoration: "none",
+                transition: "color 0.2s",
+              }}
               onMouseEnter={(e) => (e.target.style.color = "#660608")}
               onMouseLeave={(e) => (e.target.style.color = "#4A3E36")}
             >
@@ -154,10 +187,21 @@ export default function Footer() {
           >
             Shop Silhouettes
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "10px", fontSize: "13.5px" }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "10px",
+              fontSize: "13.5px",
+            }}
+          >
             <Link
               href="/shop"
-              style={{ color: "#4A3E36", textDecoration: "none", transition: "color 0.2s" }}
+              style={{
+                color: "#4A3E36",
+                textDecoration: "none",
+                transition: "color 0.2s",
+              }}
               onMouseEnter={(e) => (e.target.style.color = "#660608")}
               onMouseLeave={(e) => (e.target.style.color = "#4A3E36")}
             >
@@ -171,7 +215,12 @@ export default function Footer() {
                   setIsSizeGuideOpen(true);
                 }
               }}
-              style={{ color: "#4A3E36", textDecoration: "none", transition: "color 0.2s", cursor: "pointer" }}
+              style={{
+                color: "#4A3E36",
+                textDecoration: "none",
+                transition: "color 0.2s",
+                cursor: "pointer",
+              }}
               onMouseEnter={(e) => (e.target.style.color = "#660608")}
               onMouseLeave={(e) => (e.target.style.color = "#4A3E36")}
             >
@@ -179,7 +228,18 @@ export default function Footer() {
             </Link>
             <Link
               href="/fabric#care"
-              style={{ color: "#4A3E36", textDecoration: "none", transition: "color 0.2s" }}
+              onClick={(e) => {
+                if (setIsFabricCareOpen) {
+                  e.preventDefault();
+                  setIsFabricCareOpen(true);
+                }
+              }}
+              style={{
+                color: "#4A3E36",
+                textDecoration: "none",
+                transition: "color 0.2s",
+                cursor: "pointer",
+              }}
               onMouseEnter={(e) => (e.target.style.color = "#660608")}
               onMouseLeave={(e) => (e.target.style.color = "#4A3E36")}
             >
@@ -187,7 +247,11 @@ export default function Footer() {
             </Link>
             <Link
               href="/track-order"
-              style={{ color: "#4A3E36", textDecoration: "none", transition: "color 0.2s" }}
+              style={{
+                color: "#4A3E36",
+                textDecoration: "none",
+                transition: "color 0.2s",
+              }}
               onMouseEnter={(e) => (e.target.style.color = "#660608")}
               onMouseLeave={(e) => (e.target.style.color = "#4A3E36")}
             >
@@ -210,10 +274,21 @@ export default function Footer() {
           >
             Care & Policies
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "10px", fontSize: "13.5px" }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "10px",
+              fontSize: "13.5px",
+            }}
+          >
             <Link
               href="/policies/shipping"
-              style={{ color: "#4A3E36", textDecoration: "none", transition: "color 0.2s" }}
+              style={{
+                color: "#4A3E36",
+                textDecoration: "none",
+                transition: "color 0.2s",
+              }}
               onMouseEnter={(e) => (e.target.style.color = "#660608")}
               onMouseLeave={(e) => (e.target.style.color = "#4A3E36")}
             >
@@ -221,7 +296,11 @@ export default function Footer() {
             </Link>
             <Link
               href="/policies/returns"
-              style={{ color: "#4A3E36", textDecoration: "none", transition: "color 0.2s" }}
+              style={{
+                color: "#4A3E36",
+                textDecoration: "none",
+                transition: "color 0.2s",
+              }}
               onMouseEnter={(e) => (e.target.style.color = "#660608")}
               onMouseLeave={(e) => (e.target.style.color = "#4A3E36")}
             >
@@ -229,7 +308,11 @@ export default function Footer() {
             </Link>
             <Link
               href="/policies/privacy"
-              style={{ color: "#4A3E36", textDecoration: "none", transition: "color 0.2s" }}
+              style={{
+                color: "#4A3E36",
+                textDecoration: "none",
+                transition: "color 0.2s",
+              }}
               onMouseEnter={(e) => (e.target.style.color = "#660608")}
               onMouseLeave={(e) => (e.target.style.color = "#4A3E36")}
             >
@@ -237,7 +320,11 @@ export default function Footer() {
             </Link>
             <Link
               href="/policies/terms"
-              style={{ color: "#4A3E36", textDecoration: "none", transition: "color 0.2s" }}
+              style={{
+                color: "#4A3E36",
+                textDecoration: "none",
+                transition: "color 0.2s",
+              }}
               onMouseEnter={(e) => (e.target.style.color = "#660608")}
               onMouseLeave={(e) => (e.target.style.color = "#4A3E36")}
             >
@@ -245,7 +332,11 @@ export default function Footer() {
             </Link>
             <Link
               href="/faq"
-              style={{ color: "#4A3E36", textDecoration: "none", transition: "color 0.2s" }}
+              style={{
+                color: "#4A3E36",
+                textDecoration: "none",
+                transition: "color 0.2s",
+              }}
               onMouseEnter={(e) => (e.target.style.color = "#660608")}
               onMouseLeave={(e) => (e.target.style.color = "#4A3E36")}
             >
@@ -268,17 +359,45 @@ export default function Footer() {
           >
             Studio & Inquiries
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "10px", fontSize: "13.5px" }}>
-            <div style={{ color: "#4A3E36", lineHeight: 1.55, marginBottom: "4px" }}>
-              <span style={{ fontWeight: 800, color: "#2C2016", display: "block", marginBottom: "2px", textTransform: "uppercase", fontSize: "11px", letterSpacing: "1px" }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "10px",
+              fontSize: "13.5px",
+            }}
+          >
+            <div
+              style={{
+                color: "#4A3E36",
+                lineHeight: 1.55,
+                marginBottom: "4px",
+              }}
+            >
+              <span
+                style={{
+                  fontWeight: 800,
+                  color: "#2C2016",
+                  display: "block",
+                  marginBottom: "2px",
+                  textTransform: "uppercase",
+                  fontSize: "11px",
+                  letterSpacing: "1px",
+                }}
+              >
                 Offline Studio
               </span>
-              Shanti Path, near Shanti Villas Colony,<br />
+              Shanti Path, near Shanti Villas Colony,
+              <br />
               Laadli Laxmi Road, Rewa, MP
             </div>
             <Link
               href="/contact"
-              style={{ color: "#4A3E36", textDecoration: "none", transition: "color 0.2s" }}
+              style={{
+                color: "#4A3E36",
+                textDecoration: "none",
+                transition: "color 0.2s",
+              }}
               onMouseEnter={(e) => (e.target.style.color = "#660608")}
               onMouseLeave={(e) => (e.target.style.color = "#4A3E36")}
             >
@@ -286,7 +405,11 @@ export default function Footer() {
             </Link>
             <a
               href="mailto:support@sumclothico.com"
-              style={{ color: "#4A3E36", textDecoration: "none", transition: "color 0.2s" }}
+              style={{
+                color: "#4A3E36",
+                textDecoration: "none",
+                transition: "color 0.2s",
+              }}
               onMouseEnter={(e) => (e.target.style.color = "#660608")}
               onMouseLeave={(e) => (e.target.style.color = "#4A3E36")}
             >
@@ -296,7 +419,12 @@ export default function Footer() {
               href="https://wa.me/919329587707"
               target="_blank"
               rel="noopener noreferrer"
-              style={{ color: "#4A3E36", textDecoration: "none", transition: "color 0.2s", fontWeight: 600 }}
+              style={{
+                color: "#4A3E36",
+                textDecoration: "none",
+                transition: "color 0.2s",
+                fontWeight: 600,
+              }}
               onMouseEnter={(e) => (e.target.style.color = "#660608")}
               onMouseLeave={(e) => (e.target.style.color = "#4A3E36")}
             >
@@ -304,7 +432,14 @@ export default function Footer() {
             </a>
           </div>
 
-          <div style={{ display: "flex", gap: "12px", marginTop: "18px", alignItems: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              gap: "12px",
+              marginTop: "18px",
+              alignItems: "center",
+            }}
+          >
             {SOCIAL_ICONS.map(({ href, label, svg }) => (
               <a
                 key={label}
@@ -326,7 +461,7 @@ export default function Footer() {
               />
             ))}
             <a
-              href="https://www.facebook.com/sumclotico"
+              href="https://www.facebook.com/sumclothico"
               target="_blank"
               rel="noopener noreferrer"
               className="single-social w-inline-block"
@@ -340,14 +475,20 @@ export default function Footer() {
                 color: "#2C2016",
               }}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 40 40" fill="none">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="22"
+                height="22"
+                viewBox="0 0 40 40"
+                fill="none"
+              >
                 <path
                   d="M20 4C11.163 4 4 11.163 4 20C4 28.837 11.163 36 20 36C28.837 36 36 28.837 36 20C36 11.163 28.837 4 20 4ZM24.5 14H22C21.173 14 21 14.327 21 15.2V17H24.5L24 21H21V33H17V21H15V17H17V15.2C17 12.013 18.513 10 22 10C23.343 10 24.5 10.1 24.5 10.1V14Z"
                   fill="currentColor"
                 />
               </svg>
             </a>
-            </div>
+          </div>
         </div>
       </div>
 
@@ -366,9 +507,24 @@ export default function Footer() {
           gap: "20px",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "28px", flexWrap: "wrap" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "28px",
+            flexWrap: "wrap",
+          }}
+        >
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <span style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1px", color: "#660608" }}>
+            <span
+              style={{
+                fontSize: "11px",
+                fontWeight: 700,
+                textTransform: "uppercase",
+                letterSpacing: "1px",
+                color: "#660608",
+              }}
+            >
               Shipping:
             </span>
             <img
@@ -381,13 +537,28 @@ export default function Footer() {
                 if (next) next.style.display = "inline";
               }}
             />
-            <span style={{ fontSize: "13px", fontWeight: 700, color: "#2C2016", display: "none" }}>
+            <span
+              style={{
+                fontSize: "13px",
+                fontWeight: 700,
+                color: "#2C2016",
+                display: "none",
+              }}
+            >
               Shiprocket
             </span>
           </div>
 
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <span style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1px", color: "#660608" }}>
+            <span
+              style={{
+                fontSize: "11px",
+                fontWeight: 700,
+                textTransform: "uppercase",
+                letterSpacing: "1px",
+                color: "#660608",
+              }}
+            >
               Payments:
             </span>
             <img
@@ -400,23 +571,50 @@ export default function Footer() {
                 if (next) next.style.display = "inline";
               }}
             />
-            <span style={{ fontSize: "13px", fontWeight: 700, color: "#2C2016", display: "none" }}>
+            <span
+              style={{
+                fontSize: "13px",
+                fontWeight: 700,
+                color: "#2C2016",
+                display: "none",
+              }}
+            >
               Cashfree Payments
             </span>
           </div>
         </div>
 
         {/* MSME Udyam Registration */}
-        <div style={{ display: "flex", alignItems: "center", gap: "14px", flexWrap: "wrap" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "14px",
+            flexWrap: "wrap",
+          }}
+        >
           <div style={{ textAlign: "right" }}>
-            <div style={{ fontSize: "11px", fontWeight: 800, color: "#660608", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+            <div
+              style={{
+                fontSize: "11px",
+                fontWeight: 800,
+                color: "#660608",
+                textTransform: "uppercase",
+                letterSpacing: "0.5px",
+              }}
+            >
               Government of India • Ministry of MSME
             </div>
-            <div style={{ fontSize: "12px", color: "#4A3E36", fontWeight: 600 }}>
-              Udyam: <span style={{ fontFamily: "monospace", color: "#1a140e" }}>UDYAM-MP-38-0030801</span> • SUM CLOTHICO
+            <div
+              style={{ fontSize: "12px", color: "#4A3E36", fontWeight: 600 }}
+            >
+              Udyam:{" "}
+              <span style={{ fontFamily: "monospace", color: "#1a140e" }}>
+                UDYAM-MP-38-0030801
+              </span>{" "}
+              • SUM CLOTHICO
             </div>
           </div>
-          
         </div>
       </div>
 
@@ -437,18 +635,28 @@ export default function Footer() {
         }}
       >
         <div>
-          © {new Date().getFullYear()} Sum Clothico. Handcrafted Khadi & Indian Handwoven Textiles. All rights reserved.
+          © {new Date().getFullYear()} Sum Clothico. Handcrafted Khadi & Indian
+          Handwoven Textiles. All rights reserved.
         </div>
         <div style={{ display: "flex", gap: "16px" }}>
-          <Link href="/policies/privacy" style={{ color: "inherit", textDecoration: "none" }}>
+          <Link
+            href="/policies/privacy"
+            style={{ color: "inherit", textDecoration: "none" }}
+          >
             Privacy
           </Link>
           <span>·</span>
-          <Link href="/policies/terms" style={{ color: "inherit", textDecoration: "none" }}>
+          <Link
+            href="/policies/terms"
+            style={{ color: "inherit", textDecoration: "none" }}
+          >
             Terms
           </Link>
           <span>·</span>
-          <Link href="/policies/shipping" style={{ color: "inherit", textDecoration: "none" }}>
+          <Link
+            href="/policies/shipping"
+            style={{ color: "inherit", textDecoration: "none" }}
+          >
             Shipping
           </Link>
         </div>

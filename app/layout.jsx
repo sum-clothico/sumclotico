@@ -7,6 +7,7 @@ import AuthModal from "@/components/AuthModal";
 import ProductQuickView from "@/components/ProductQuickView";
 import SearchModal from "@/components/SearchModal";
 import SizeGuideModal from "@/components/SizeGuideModal";
+import FabricCareModal from "@/components/FabricCareModal";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
 import WelcomePromoModal from "@/components/WelcomePromoModal";
 import CampaignTracker from "@/components/CampaignTracker";
@@ -95,6 +96,7 @@ export default function RootLayout({ children }) {
               <ProductQuickView />
               <SearchModal />
               <SizeGuideModal />
+              <FabricCareModal />
               <WelcomePromoModal />
               <CampaignTracker />
               <UserSyncManager />

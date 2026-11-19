@@ -75,7 +75,7 @@ const getColorHex = (name) => {
 };
 
 export default function ProductQuickView() {
-  const { quickViewProduct, setQuickViewProduct, addToCart, setIsCartOpen, setIsSizeGuideOpen } = useStore();
+  const { quickViewProduct, setQuickViewProduct, addToCart, setIsCartOpen, setIsSizeGuideOpen, setIsFabricCareOpen } = useStore();
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [selectedSize, setSelectedSize] = useState("M");
   const [selectedColor, setSelectedColor] = useState("");
@@ -593,8 +593,26 @@ export default function ProductQuickView() {
 
             {/* Fabric & Care Note */}
             <div style={{ background: "#f9fafb", padding: "10px 14px", borderRadius: 8, marginBottom: 20, border: "1px solid #f3f4f6" }}>
-              <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", color: "#6b7280", letterSpacing: 0.5 }}>
-                Fabric & Care
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", color: "#6b7280", letterSpacing: 0.5 }}>
+                  Fabric & Care
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setIsFabricCareOpen && setIsFabricCareOpen(true)}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    fontSize: 11,
+                    color: "#f35c27",
+                    fontWeight: 700,
+                    cursor: "pointer",
+                    padding: 0,
+                    textDecoration: "underline",
+                  }}
+                >
+                  View Care Guide →
+                </button>
               </div>
               <div style={{ fontSize: 12, color: "#374151", marginTop: 2 }}>
                 {quickViewProduct.fabricCare || "100% Handspun Khadi Cotton. Machine wash gentle in cold water."}
