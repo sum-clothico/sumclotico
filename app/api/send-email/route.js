@@ -64,7 +64,7 @@ export async function POST(request) {
             <td style="padding: 12px 0;">
               <strong style="color: #111;">${item.name || item.title}</strong><br/>
               <span style="color: #666; font-size: 12px;">Size: ${item.selectedSize || "Standard"} ${item.selectedColor ? `• Color: ${item.selectedColor}` : ""}</span>
-              ${item.fitDetails && (item.fitDetails.bust || item.fitDetails.waist || item.fitDetails.hips) ? `<br/><span style="color: #c2410c; font-size: 11px; background: #fff7ed; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-top: 2px;">✦ Custom Fit: Bust ${item.fitDetails.bust}" • Waist ${item.fitDetails.waist}" • Hips ${item.fitDetails.hips}"${item.fitDetails.fitPreference ? ` (${item.fitDetails.fitPreference})` : ""}</span>` : ""}
+              ${item.fitDetails && (item.fitDetails.bust || item.fitDetails.waist || item.fitDetails.hips || item.fitDetails.notes) ? `<br/><span style="color: #c2410c; font-size: 11px; background: #fff7ed; padding: 3px 8px; border-radius: 4px; display: inline-block; margin-top: 3px; border: 1px solid #fed7aa;">✦ Custom Fit: Bust ${item.fitDetails.bust}" • Waist ${item.fitDetails.waist}" • Hips ${item.fitDetails.hips}"${item.fitDetails.fitPreference ? ` • ${item.fitDetails.fitPreference}` : ""}${item.fitDetails.lengthPreference && item.fitDetails.lengthPreference !== "Standard length (as per style)" ? ` • Length: ${item.fitDetails.lengthPreference}` : ""}${item.fitDetails.notes ? ` • Note: "${item.fitDetails.notes}"` : ""}</span>` : ""}
             </td>
             <td style="padding: 12px 0; text-align: center; color: #444;">${item.quantity}</td>
             <td style="padding: 12px 0; text-align: right; color: #111; font-weight: 700;">₹${(item.price * item.quantity).toLocaleString("en-IN")}</td>
@@ -162,10 +162,16 @@ export async function POST(request) {
             <tbody>
               ${(data.items || []).map((i) => `
                 <tr style="border-bottom: 1px solid #eee;">
-                  <td style="padding: 6px;"><strong>${i.name || i.title}</strong></td>
-                  <td style="padding: 6px;">${i.selectedSize || "STD"}</td>
-                  <td style="padding: 6px;">${i.selectedColor || "-"}</td>
-                  <td style="padding: 6px;">${i.quantity}</td>
+                  <td style="padding: 8px 6px;">
+                    <strong>${i.name || i.title}</strong>
+                    ${i.fitDetails && (i.fitDetails.bust || i.fitDetails.waist || i.fitDetails.hips || i.fitDetails.notes) ? `
+                      <div style="font-size: 11px; color: #c2410c; background: #fff7ed; border: 1px solid #fed7aa; padding: 4px 6px; border-radius: 4px; margin-top: 4px;">
+                        <strong>✦ Custom Fit:</strong> Bust ${i.fitDetails.bust}" • Waist ${i.fitDetails.waist}" • Hips ${i.fitDetails.hips}"${i.fitDetails.fitPreference ? ` • ${i.fitDetails.fitPreference}` : ""}${i.fitDetails.lengthPreference && i.fitDetails.lengthPreference !== "Standard length (as per style)" ? ` • Length: ${i.fitDetails.lengthPreference}` : ""}${i.fitDetails.notes ? `<br/><em>Note: "${i.fitDetails.notes}"</em>` : ""}
+                      </div>` : ""}
+                  </td>
+                  <td style="padding: 8px 6px;">${i.selectedSize || "STD"}</td>
+                  <td style="padding: 8px 6px;">${i.selectedColor || "-"}</td>
+                  <td style="padding: 8px 6px;">${i.quantity}</td>
                 </tr>`).join("")}
             </tbody>
           </table>

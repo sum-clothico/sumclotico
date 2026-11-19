@@ -829,10 +829,16 @@ function CheckoutContent() {
                       <img src={item.image} alt={item.name} style={{ width: 46, height: 56, objectFit: "cover", borderRadius: 6 }} />
                       <div style={{ flex: 1 }}>
                         <div style={{ fontWeight: 700, fontSize: 14 }}>{item.name}</div>
-                        <div style={{ fontSize: 12, color: "#6b7280" }}>Size: {item.selectedSize} × {item.quantity}</div>
+                        <div style={{ fontSize: 12, color: "#6b7280" }}>
+                          Size: <strong>{item.selectedSize}</strong>
+                          {item.selectedColor ? ` • Color: ${item.selectedColor}` : ""} × {item.quantity}
+                        </div>
                         {item.fitDetails && (
-                          <div style={{ fontSize: 11, color: "#881A1C", marginTop: 2 }}>
+                          <div style={{ fontSize: 11, color: "#881A1C", marginTop: 2, background: "rgba(136, 26, 28, 0.05)", padding: "3px 6px", borderRadius: 4, display: "inline-block" }}>
                             ✦ Fit: Bust {item.fitDetails.bust}&quot; • Waist {item.fitDetails.waist}&quot; • Hips {item.fitDetails.hips}&quot;
+                            {item.fitDetails.fitPreference ? ` (${item.fitDetails.fitPreference})` : ""}
+                            {item.fitDetails.lengthPreference && item.fitDetails.lengthPreference !== "Standard length (as per style)" ? ` • Length: ${item.fitDetails.lengthPreference}` : ""}
+                            {item.fitDetails.notes ? ` • Note: "${item.fitDetails.notes}"` : ""}
                           </div>
                         )}
                       </div>

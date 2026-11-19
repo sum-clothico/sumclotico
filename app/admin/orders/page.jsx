@@ -189,37 +189,95 @@ export default function AdminOrdersPage() {
                   </td>
                   <td>
                     {(ord.items || []).map((it, i) => {
-                      const fit = typeof it.fitDetails === "string" ? (() => { try { return JSON.parse(it.fitDetails); } catch { return null; } })() : it.fitDetails;
+                      const fit = typeof it.fitDetails === "string"
+                        ? (() => {
+                            try {
+                              return JSON.parse(it.fitDetails);
+                            } catch {
+                              return { notes: it.fitDetails };
+                            }
+                          })()
+                        : it.fitDetails;
+
+                      const hasFitData = Boolean(
+                        fit &&
+                          (fit.bust ||
+                            fit.waist ||
+                            fit.hips ||
+                            fit.fitPreference ||
+                            (fit.lengthPreference && fit.lengthPreference !== "Standard length (as per style)") ||
+                            fit.notes)
+                      );
+
                       return (
-                        <div key={i} style={{ fontSize: 12, marginBottom: 6, background: "rgba(255,255,255,0.03)", padding: "6px 8px", borderRadius: 6, border: "1px solid rgba(255,255,255,0.06)" }}>
-                          <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
-                            <span style={{ color: "#ffffff", fontWeight: 700 }}>{it.title || it.name}</span>
-                            <span style={{ color: "#9ca3af", background: "#374151", padding: "1px 6px", borderRadius: 4, fontSize: 11, fontWeight: 600 }}>
+                        <div
+                          key={i}
+                          style={{
+                            fontSize: 12,
+                            marginBottom: 8,
+                            background: "rgba(255,255,255,0.03)",
+                            padding: "8px 10px",
+                            borderRadius: 6,
+                            border: "1px solid rgba(255,255,255,0.07)",
+                          }}
+                        >
+                          <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap", marginBottom: hasFitData ? 6 : 0 }}>
+                            <span style={{ color: "#ffffff", fontWeight: 700, fontSize: 13 }}>{it.title || it.name}</span>
+                            <span style={{ color: "#93c5fd", background: "rgba(59, 130, 246, 0.15)", border: "1px solid rgba(59, 130, 246, 0.3)", padding: "1px 7px", borderRadius: 4, fontSize: 11, fontWeight: 700 }}>
                               Size: {it.selectedSize || "Standard"}
                             </span>
                             {it.selectedColor && (
-                              <span style={{ color: "#fef3c7", background: "rgba(245, 158, 11, 0.15)", border: "1px solid rgba(245, 158, 11, 0.3)", padding: "1px 6px", borderRadius: 4, fontSize: 11, fontWeight: 600 }}>
+                              <span style={{ color: "#fef3c7", background: "rgba(245, 158, 11, 0.15)", border: "1px solid rgba(245, 158, 11, 0.3)", padding: "1px 7px", borderRadius: 4, fontSize: 11, fontWeight: 700 }}>
                                 Color: {it.selectedColor}
                               </span>
                             )}
-                            <span style={{ color: "#34d399", fontWeight: 700, fontSize: 11 }}>
+                            <span style={{ color: "#34d399", fontWeight: 800, fontSize: 12, marginLeft: "auto" }}>
                               × {it.quantity}
                             </span>
                           </div>
 
-                          {fit && (fit.bust || fit.waist || fit.hips || fit.notes) && (
-                            <div style={{ fontSize: 11, color: "#fed7aa", marginTop: 4, background: "rgba(249, 115, 22, 0.12)", border: "1px solid rgba(249, 115, 22, 0.25)", padding: "4px 8px", borderRadius: 4, lineHeight: 1.4 }}>
-                              <strong style={{ color: "#f97316" }}>✦ Custom Fit Measurements:</strong>
-                              <div style={{ marginTop: 2 }}>
-                                {fit.bust ? `Bust: ${fit.bust}"` : ""}
-                                {fit.waist ? ` • Waist: ${fit.waist}"` : ""}
-                                {fit.hips ? ` • Hips: ${fit.hips}"` : ""}
-                                {fit.fitPreference ? ` • ${fit.fitPreference}` : ""}
-                                {fit.lengthPreference && fit.lengthPreference !== "Standard length (as per style)" ? ` • Length: ${fit.lengthPreference}` : ""}
+                          {hasFitData && (
+                            <div
+                              style={{
+                                fontSize: 11.5,
+                                color: "#ffedd5",
+                                background: "rgba(234, 88, 12, 0.12)",
+                                border: "1px solid rgba(249, 115, 22, 0.35)",
+                                padding: "6px 10px",
+                                borderRadius: 6,
+                                lineHeight: 1.5,
+                              }}
+                            >
+                              <div style={{ display: "flex", alignItems: "center", gap: 6, fontWeight: 800, color: "#f97316", textTransform: "uppercase", letterSpacing: "0.5px", fontSize: 10 }}>
+                                <span>✦ Tailored Measurements &amp; Fit Data:</span>
+                                {fit.garmentType && (
+                                  <span style={{ background: "#ea580c", color: "#fff", padding: "1px 6px", borderRadius: 3, fontSize: 9 }}>
+                                    {fit.garmentType}
+                                  </span>
+                                )}
                               </div>
+
+                              {(fit.bust || fit.waist || fit.hips) && (
+                                <div style={{ marginTop: 3, fontWeight: 700, color: "#ffffff" }}>
+                                  {fit.bust ? `Bust: ${fit.bust}"` : ""}
+                                  {fit.waist ? ` • Waist: ${fit.waist}"` : ""}
+                                  {fit.hips ? ` • Hips: ${fit.hips}"` : ""}
+                                </div>
+                              )}
+
+                              {(fit.fitPreference || (fit.lengthPreference && fit.lengthPreference !== "Standard length (as per style)")) && (
+                                <div style={{ marginTop: 2, color: "#fed7aa" }}>
+                                  {fit.fitPreference && <span>Fit: <strong>{fit.fitPreference}</strong></span>}
+                                  {fit.fitPreference && fit.lengthPreference && fit.lengthPreference !== "Standard length (as per style)" ? " • " : ""}
+                                  {fit.lengthPreference && fit.lengthPreference !== "Standard length (as per style)" && (
+                                    <span>Length: <strong>{fit.lengthPreference}</strong></span>
+                                  )}
+                                </div>
+                              )}
+
                               {fit.notes && (
-                                <div style={{ fontStyle: "italic", color: "#fdba74", marginTop: 2 }}>
-                                  Note: &quot;{fit.notes}&quot;
+                                <div style={{ marginTop: 3, fontStyle: "italic", color: "#fde047", background: "rgba(0,0,0,0.25)", padding: "3px 6px", borderRadius: 4 }}>
+                                  Additional Notes: &quot;{fit.notes}&quot;
                                 </div>
                               )}
                             </div>

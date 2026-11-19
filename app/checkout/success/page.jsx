@@ -429,10 +429,12 @@ function SuccessContent() {
                   </div>
                   {(() => {
                     const fit = typeof item.fitDetails === "string" ? (() => { try { return JSON.parse(item.fitDetails); } catch { return null; } })() : item.fitDetails;
-                    return fit && (fit.bust || fit.waist || fit.hips) ? (
-                      <div style={{ fontSize: 11, color: "#c2410c", marginTop: 3, background: "#fff7ed", padding: "2px 6px", borderRadius: 4, display: "inline-block" }}>
-                        ✦ Custom Fit: Bust {fit.bust}&quot; • Waist {fit.waist}&quot; • Hips {fit.hips}&quot;
-                        {fit.fitPreference ? ` (${fit.fitPreference})` : ""}
+                    return fit && (fit.bust || fit.waist || fit.hips || fit.notes) ? (
+                      <div style={{ fontSize: 11, color: "#c2410c", marginTop: 3, background: "#fff7ed", padding: "4px 8px", borderRadius: 4, display: "inline-block", border: "1px solid #fed7aa" }}>
+                        <strong>✦ Custom Fit:</strong> Bust {fit.bust}&quot; • Waist {fit.waist}&quot; • Hips {fit.hips}&quot;
+                        {fit.fitPreference ? ` • ${fit.fitPreference}` : ""}
+                        {fit.lengthPreference && fit.lengthPreference !== "Standard length (as per style)" ? ` • Length: ${fit.lengthPreference}` : ""}
+                        {fit.notes ? ` • Note: "${fit.notes}"` : ""}
                       </div>
                     ) : null;
                   })()}

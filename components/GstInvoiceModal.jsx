@@ -278,10 +278,11 @@ export default function GstInvoiceModal({ order, isOpen, onClose }) {
                   </div>
                   {(() => {
                     const fit = typeof it.fitDetails === "string" ? (() => { try { return JSON.parse(it.fitDetails); } catch { return null; } })() : it.fitDetails;
-                    return fit && (fit.bust || fit.waist || fit.hips) ? (
-                      <div style={{ fontSize: 10, color: "#92400e", marginTop: 2, background: "rgba(245, 158, 11, 0.08)", padding: "2px 4px", borderRadius: 3, display: "inline-block" }}>
+                    return fit && (fit.bust || fit.waist || fit.hips || fit.notes) ? (
+                      <div style={{ fontSize: 10, color: "#92400e", marginTop: 2, background: "rgba(245, 158, 11, 0.08)", padding: "2px 6px", borderRadius: 3, display: "inline-block" }}>
                         Custom Fit: Bust {fit.bust}&quot; • Waist {fit.waist}&quot; • Hips {fit.hips}&quot;
-                        {fit.fitPreference ? ` (${fit.fitPreference})` : ""}
+                        {fit.fitPreference ? ` • ${fit.fitPreference}` : ""}
+                        {fit.lengthPreference && fit.lengthPreference !== "Standard length (as per style)" ? ` • Length: ${fit.lengthPreference}` : ""}
                         {fit.notes ? ` · Note: "${fit.notes}"` : ""}
                       </div>
                     ) : null;
