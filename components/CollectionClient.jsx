@@ -67,7 +67,18 @@ function ImageSlider({ images, altText }) {
 
 export default function CollectionClient() {
   const containerRef = useRef(null);
-  const { products = [], addToCart, setQuickViewProduct, setIsCartOpen, cartTotalItems, setIsSizeGuideOpen, categories = ["Tops", "Dresses", "Fabrics"], cart = [], updateQuantity } = useStore();
+  const {
+    products = [],
+    isLoadingProducts = false,
+    addToCart,
+    setQuickViewProduct,
+    setIsCartOpen,
+    cartTotalItems,
+    setIsSizeGuideOpen,
+    categories = ["Tops", "Dresses", "Fabrics"],
+    cart = [],
+    updateQuantity,
+  } = useStore();
   const [selectedSizes, setSelectedSizes] = useState({});
   const [addedFeedback, setAddedFeedback] = useState({});
 
@@ -351,7 +362,16 @@ export default function CollectionClient() {
         {/* Product Count Banner */}
         <div style={{ marginTop: 14, display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 13, color: "#6b7280" }}>
           <div>
-            Showing <strong>{filtered.length}</strong> {filtered.length === 1 ? "piece" : "pieces"}
+            {isLoadingProducts ? (
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 8, color: "#660608", fontWeight: 700 }}>
+                <span className="col-loading-spinner" style={{ width: 14, height: 14, borderWidth: 2 }} />
+                <span>Loading new collection...</span>
+              </span>
+            ) : (
+              <>
+                Showing <strong>{filtered.length}</strong> {filtered.length === 1 ? "piece" : "pieces"}
+              </>
+            )}
           </div>
           <div style={{ fontSize: 12 }}>
             Free shipping on orders above ₹2,800
@@ -361,7 +381,55 @@ export default function CollectionClient() {
 
       {/* ─── PRODUCTS GRID ─── */}
       <section className="prod-grid" style={{ maxWidth: 1360, margin: "0 auto 60px", padding: "0 24px 100px" }}>
-        {filtered.length === 0 ? (
+        {isLoadingProducts ? (
+          <>
+            {/* Loading Banner */}
+            <div
+              style={{
+                gridColumn: "1 / -1",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 16,
+                padding: "24px 28px",
+                background: "#FAF6F0",
+                borderRadius: 14,
+                border: "1px dashed rgba(102, 6, 8, 0.3)",
+                boxShadow: "0 4px 16px rgba(44, 32, 22, 0.04)",
+                marginBottom: 8,
+              }}
+            >
+              <span className="col-loading-spinner" />
+              <div>
+                <p style={{ margin: 0, fontSize: 15, fontWeight: 800, color: "#2C2016" }}>
+                  Loading new collection...
+                </p>
+                <p style={{ margin: "2px 0 0", fontSize: 13, color: "#7A695C" }}>
+                  Fetching handcrafted silhouettes & handwoven beginnings.
+                </p>
+              </div>
+            </div>
+
+            {/* Skeleton Cards */}
+            {[1, 2, 3, 4, 5, 6].map((idx) => (
+              <div key={idx} className="col-skeleton-card">
+                <div className="col-skeleton-img col-skeleton-shimmer" />
+                <div className="col-skeleton-info">
+                  <div className="col-skeleton-line col-skeleton-shimmer" style={{ width: "35%", height: 12 }} />
+                  <div className="col-skeleton-line col-skeleton-shimmer" style={{ width: "75%", height: 18 }} />
+                  <div className="col-skeleton-line col-skeleton-shimmer" style={{ width: "55%", height: 13, marginBottom: 6 }} />
+                  <div className="col-skeleton-line col-skeleton-shimmer" style={{ width: "40%", height: 20, marginBottom: 10 }} />
+                  <div style={{ display: "flex", gap: 6, marginBottom: 10 }}>
+                    {[1, 2, 3, 4].map((s) => (
+                      <div key={s} className="col-skeleton-shimmer" style={{ width: 32, height: 24, borderRadius: 6 }} />
+                    ))}
+                  </div>
+                  <div className="col-skeleton-shimmer" style={{ width: "100%", height: 38, borderRadius: 8, marginTop: "auto" }} />
+                </div>
+              </div>
+            ))}
+          </>
+        ) : filtered.length === 0 ? (
           <div style={{ gridColumn: "1 / -1", textAlign: "center", padding: "80px 20px" }}>
             <div style={{ width: 64, height: 64, borderRadius: "50%", background: "#f3f4f6", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
               <FiFilter size={26} color="#9ca3af" />
