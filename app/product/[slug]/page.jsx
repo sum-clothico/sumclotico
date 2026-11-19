@@ -162,6 +162,28 @@ export default function ProductPage() {
     });
 
     if (fitMode === "buy_now") {
+      try {
+        const newItem = {
+          id: product.id,
+          name: product.name,
+          subtitle: product.subtitle || "",
+          price: effectivePrice,
+          regularPrice: product.price,
+          selectedSize: fitData.size || selectedSize,
+          selectedColor,
+          quantity: qty,
+          image: product.images?.[0] || "/assets/img/14.png",
+          stock: product.stock || 20,
+          gstPercent: Number(product.gstPercent) || 5,
+          fitDetails: fitData,
+          cartKey: `${product.id}-${fitData.size || selectedSize}-${selectedColor}-${Date.now()}`,
+          sku: product.sku || "",
+        };
+        const currentCart = JSON.parse(localStorage.getItem("sum_cart") || "[]");
+        const nextCart = [newItem, ...currentCart.filter((i) => !(i.id === newItem.id && i.selectedSize === newItem.selectedSize && i.selectedColor === newItem.selectedColor))];
+        localStorage.setItem("sum_cart", JSON.stringify(nextCart));
+        sessionStorage.setItem("sum_cart_backup", JSON.stringify(nextCart));
+      } catch {}
       router.push("/checkout");
     } else {
       setAddedFeedback(true);

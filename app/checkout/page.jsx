@@ -3,7 +3,7 @@
 import React, { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { useUser } from "@clerk/nextjs";
+import { useUser, SignIn } from "@clerk/nextjs";
 import { useStore } from "@/context/StoreContext";
 import Navbar from "@/components/Navbar";
 import { FiShield, FiTag, FiCheck, FiTruck, FiLock, FiCreditCard, FiSmartphone, FiShoppingBag, FiArrowRight } from "react-icons/fi";
@@ -174,7 +174,34 @@ function CheckoutContent() {
     }
   }, []);
 
-  if (!isCartHydrated || !isClerkLoaded || isRestoringRetry) {
+  // Resilient cart recovery to guarantee items are never lost on reload, redirect, or auth state change
+  useEffect(() => {
+    if (cart.length === 0 && typeof window !== "undefined") {
+      try {
+        const backup = sessionStorage.getItem("sum_cart_backup") || localStorage.getItem("sum_cart");
+        if (backup) {
+          const parsed = JSON.parse(backup);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setCart(parsed);
+          }
+        }
+      } catch {}
+    }
+  }, [cart.length, setCart]);
+
+  const effectiveCart = cart.length > 0 ? cart : (() => {
+    if (typeof window === "undefined") return [];
+    try {
+      const b = sessionStorage.getItem("sum_cart_backup") || localStorage.getItem("sum_cart");
+      if (b) {
+        const p = JSON.parse(b);
+        if (Array.isArray(p) && p.length > 0) return p;
+      }
+    } catch {}
+    return [];
+  })();
+
+  if ((!isCartHydrated && effectiveCart.length === 0) || isRestoringRetry) {
     return (
       <>
         <Navbar />
@@ -191,7 +218,7 @@ function CheckoutContent() {
     );
   }
 
-  if (cart.length === 0) {
+  if (effectiveCart.length === 0) {
     return (
       <>
         <Navbar />
@@ -317,26 +344,41 @@ function CheckoutContent() {
               style={{
                 background: "#f9fafb",
                 borderRadius: 12,
-                padding: "12px 16px",
+                padding: "14px 16px",
                 marginBottom: 24,
                 border: "1px solid #f3f4f6",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                fontSize: 13,
+                textAlign: "left",
               }}
             >
-              <span style={{ color: "#4b5563" }}>
-                Items in your bag: <strong>{cart.reduce((sum, item) => sum + (item.quantity || 1), 0)}</strong>
-              </span>
-              <span style={{ fontWeight: 800, color: "#111827", fontSize: 14 }}>
-                ₹{cartGrandTotal.toLocaleString("en-IN")}
-              </span>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                <span style={{ color: "#4b5563", fontSize: 13 }}>
+                  Items in your bag: <strong>{effectiveCart.reduce((sum, item) => sum + (item.quantity || 1), 0)}</strong>
+                </span>
+                <span style={{ fontWeight: 800, color: "#111827", fontSize: 15 }}>
+                  ₹{cartGrandTotal.toLocaleString("en-IN")}
+                </span>
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 6, maxHeight: 120, overflowY: "auto" }}>
+                {effectiveCart.map((it, idx) => (
+                  <div key={idx} style={{ fontSize: 12, color: "#374151", display: "flex", justifyContent: "space-between" }}>
+                    <span>
+                      {it.name} (<strong>{it.selectedSize}</strong>{it.selectedColor ? ` / ${it.selectedColor}` : ""}) × {it.quantity}
+                    </span>
+                    <span style={{ fontWeight: 600 }}>₹{(it.price * it.quantity).toLocaleString("en-IN")}</span>
+                  </div>
+                ))}
+              </div>
             </div>
 
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               <Link
                 href="/sign-in?redirect_url=/checkout"
+                onClick={() => {
+                  try {
+                    localStorage.setItem("sum_cart", JSON.stringify(effectiveCart));
+                    sessionStorage.setItem("sum_cart_backup", JSON.stringify(effectiveCart));
+                  } catch {}
+                }}
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -359,6 +401,12 @@ function CheckoutContent() {
 
               <Link
                 href="/sign-up?redirect_url=/checkout"
+                onClick={() => {
+                  try {
+                    localStorage.setItem("sum_cart", JSON.stringify(effectiveCart));
+                    sessionStorage.setItem("sum_cart_backup", JSON.stringify(effectiveCart));
+                  } catch {}
+                }}
                 style={{
                   display: "flex",
                   alignItems: "center",

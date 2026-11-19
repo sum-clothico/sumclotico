@@ -196,8 +196,23 @@ export function StoreProvider({ children }) {
   const isStoreHydratedRef = useRef(false);
   const [isCartHydrated, setIsCartHydrated] = useState(false);
 
-  // Cart State
-  const [cart, setCart] = useState([]);
+  // Cart State - lazy initialized from localStorage & sessionStorage to eliminate empty [] flicker and reload wipes
+  const [cart, setCart] = useState(() => {
+    if (typeof window === "undefined") return [];
+    try {
+      const saved = localStorage.getItem("sum_cart");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+      const backup = sessionStorage.getItem("sum_cart_backup");
+      if (backup) {
+        const parsedBackup = JSON.parse(backup);
+        if (Array.isArray(parsedBackup) && parsedBackup.length > 0) return parsedBackup;
+      }
+    } catch {}
+    return [];
+  });
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   // Quick View State
@@ -358,16 +373,32 @@ export function StoreProvider({ children }) {
   // 3. Load session state from localStorage with dummy-purging sanitizer
   useEffect(() => {
     try {
+      let loadedCart = null;
       const savedCart = localStorage.getItem("sum_cart");
       if (savedCart) {
         try {
           const parsed = JSON.parse(savedCart);
           if (Array.isArray(parsed) && parsed.length > 0) {
-            setCart(parsed);
+            loadedCart = parsed;
           }
         } catch (e) {
           console.warn("[Store] Could not parse sum_cart:", e);
         }
+      }
+      if (!loadedCart) {
+        const backupCart = sessionStorage.getItem("sum_cart_backup");
+        if (backupCart) {
+          try {
+            const parsed = JSON.parse(backupCart);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              loadedCart = parsed;
+              localStorage.setItem("sum_cart", backupCart);
+            }
+          } catch {}
+        }
+      }
+      if (loadedCart && loadedCart.length > 0) {
+        setCart(loadedCart);
       }
 
       const savedCategories = localStorage.getItem("sum_categories");
@@ -472,11 +503,14 @@ export function StoreProvider({ children }) {
     } catch {}
   }, [categories]);
 
-  // Save Cart to localStorage (session state) - strictly after hydration to prevent empty overwrite on reload
+  // Save Cart to localStorage & sessionStorage backup - strictly after hydration
   useEffect(() => {
     if (!isCartHydrated) return;
     try {
       localStorage.setItem("sum_cart", JSON.stringify(cart));
+      if (Array.isArray(cart) && cart.length > 0) {
+        sessionStorage.setItem("sum_cart_backup", JSON.stringify(cart));
+      }
     } catch {}
   }, [cart, isCartHydrated]);
 
@@ -655,6 +689,7 @@ export function StoreProvider({ children }) {
     try {
       localStorage.removeItem("sum_cart");
       localStorage.removeItem("sum_coupon");
+      sessionStorage.removeItem("sum_cart_backup");
     } catch {}
   };
 

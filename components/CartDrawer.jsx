@@ -477,6 +477,10 @@ export default function CartDrawer() {
                 boxShadow: "0 6px 20px rgba(0, 0, 0, 0.16)",
               }}
               onClick={() => {
+                try {
+                  localStorage.setItem("sum_cart", JSON.stringify(cart));
+                  sessionStorage.setItem("sum_cart_backup", JSON.stringify(cart));
+                } catch {}
                 trackBeginCheckout(cart, cartGrandTotal, appliedCoupon?.code);
                 setIsCartOpen(false);
               }}
