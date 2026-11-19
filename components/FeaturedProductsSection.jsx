@@ -88,9 +88,7 @@ export default function FeaturedProductsSection() {
       ? adminFeatured
       : (products || []).slice(0, 8);
 
-    if (!featured || featured.length === 0) {
-    return null;
-  }
+
 
   const [canScroll, setCanScroll] = useState(false);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -163,6 +161,10 @@ export default function FeaturedProductsSection() {
   };
 
   const fpWords = ["Clothes", "that", "keep", "up", "with", "you."];
+
+  if (!featured || featured.length === 0) {
+    return null;
+  }
 
   return (
     <section
