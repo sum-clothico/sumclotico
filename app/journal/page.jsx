@@ -938,7 +938,7 @@ export default function JournalPage() {
                         required
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        placeholder="priya@example.com"
+                        placeholder="yourname@gmail.com"
                         style={{
                           width: "100%",
                           padding: "12px 14px",

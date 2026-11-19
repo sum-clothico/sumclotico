@@ -6,13 +6,24 @@ import Link from "next/link";
 import { useUser, SignIn } from "@clerk/nextjs";
 import { useStore } from "@/context/StoreContext";
 import Navbar from "@/components/Navbar";
-import { FiShield, FiTag, FiCheck, FiTruck, FiLock, FiCreditCard, FiSmartphone, FiShoppingBag, FiArrowRight } from "react-icons/fi";
+import {
+  FiShield,
+  FiTag,
+  FiCheck,
+  FiTruck,
+  FiLock,
+  FiCreditCard,
+  FiSmartphone,
+  FiShoppingBag,
+  FiArrowRight,
+} from "react-icons/fi";
 import { trackEvent } from "@/lib/analytics";
 
 function CheckoutContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const retryOrderNumber = searchParams?.get("retry") || searchParams?.get("orderNumber");
+  const retryOrderNumber =
+    searchParams?.get("retry") || searchParams?.get("orderNumber");
 
   const {
     cart = [],
@@ -26,7 +37,6 @@ function CheckoutContent() {
     cartGstPercent = 5,
     cartGstAmount = 0,
     currentUser,
-    loginCustomer,
     createOrder,
     appliedCoupon,
     couponFeedback,
@@ -58,12 +68,21 @@ function CheckoutContent() {
     pincode: currentUser?.addresses?.[0]?.pincode || "",
   });
 
-  // Pre-fill customer details from authenticated user or saved customer info
+  // Pre-fill customer details from authenticated user
   useEffect(() => {
     if (clerkUser) {
-      const email = clerkUser.primaryEmailAddress?.emailAddress || clerkUser.emailAddresses?.[0]?.emailAddress || "";
-      const name = clerkUser.fullName || `${clerkUser.firstName || ""} ${clerkUser.lastName || ""}`.trim() || "";
-      const phone = clerkUser.primaryPhoneNumber?.phoneNumber?.replace(/[^0-9]/g, "").slice(-10) || "";
+      const email =
+        clerkUser.primaryEmailAddress?.emailAddress ||
+        clerkUser.emailAddresses?.[0]?.emailAddress ||
+        "";
+      const name =
+        clerkUser.fullName ||
+        `${clerkUser.firstName || ""} ${clerkUser.lastName || ""}`.trim() ||
+        "";
+      const phone =
+        clerkUser.primaryPhoneNumber?.phoneNumber
+          ?.replace(/[^0-9]/g, "")
+          .slice(-10) || "";
       setFormData((prev) => ({
         ...prev,
         name: prev.name || name,
@@ -76,30 +95,7 @@ function CheckoutContent() {
         name: prev.name || currentUser.name || "",
         email: prev.email || currentUser.email || "",
         phone: prev.phone || currentUser.phone || "",
-        street: prev.street || currentUser.addresses?.[0]?.street || "",
-        city: prev.city || currentUser.addresses?.[0]?.city || "",
-        state: prev.state || currentUser.addresses?.[0]?.state || "",
-        pincode: prev.pincode || currentUser.addresses?.[0]?.pincode || "",
       }));
-    } else if (typeof window !== "undefined") {
-      try {
-        const saved = localStorage.getItem("sum_customer_info");
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          if (parsed && typeof parsed === "object") {
-            setFormData((prev) => ({
-              ...prev,
-              name: prev.name || parsed.name || "",
-              email: prev.email || parsed.email || "",
-              phone: prev.phone || parsed.phone || "",
-              street: prev.street || parsed.street || "",
-              city: prev.city || parsed.city || "",
-              state: prev.state || parsed.state || "",
-              pincode: prev.pincode || parsed.pincode || "",
-            }));
-          }
-        }
-      } catch {}
     }
   }, [clerkUser, currentUser]);
 
@@ -109,7 +105,9 @@ function CheckoutContent() {
   const [agreedToTerms, setAgreedToTerms] = useState(true);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [checkoutError, setCheckoutError] = useState("");
-  const [isRestoringRetry, setIsRestoringRetry] = useState(Boolean(retryOrderNumber && cart.length === 0));
+  const [isRestoringRetry, setIsRestoringRetry] = useState(
+    Boolean(retryOrderNumber && cart.length === 0),
+  );
   const [restoredBanner, setRestoredBanner] = useState("");
 
   // Restore order from retry parameter if customer reopens checkout from email or failure screen
@@ -124,11 +122,14 @@ function CheckoutContent() {
     async function loadRetryOrder() {
       try {
         let order = (orders || []).find(
-          (o) => o.orderNumber === retryOrderNumber || o.id === retryOrderNumber
+          (o) =>
+            o.orderNumber === retryOrderNumber || o.id === retryOrderNumber,
         );
 
         if (!order) {
-          const res = await fetch(`/api/orders/${encodeURIComponent(retryOrderNumber)}`);
+          const res = await fetch(
+            `/api/orders/${encodeURIComponent(retryOrderNumber)}`,
+          );
           if (res.ok) {
             const json = await res.json();
             if (json.success && json.order) {
@@ -148,9 +149,18 @@ function CheckoutContent() {
             pincode: prev.pincode || order.shippingAddress?.pincode || "",
           }));
 
-          if (cart.length === 0 && Array.isArray(order.items) && order.items.length > 0 && setCart) {
+          if (
+            cart.length === 0 &&
+            Array.isArray(order.items) &&
+            order.items.length > 0 &&
+            setCart
+          ) {
             const restoredItems = order.items.map((item, idx) => ({
-              id: item.productId?._id || item.productId || item.id || `retry_${idx}`,
+              id:
+                item.productId?._id ||
+                item.productId ||
+                item.id ||
+                `retry_${idx}`,
               _mongoId: item.productId?._id || item.productId,
               name: item.title || item.name || "Handcrafted Piece",
               title: item.title || item.name || "Handcrafted Piece",
@@ -158,13 +168,16 @@ function CheckoutContent() {
               quantity: Number(item.quantity) || 1,
               selectedSize: item.selectedSize || "Standard",
               selectedColor: item.selectedColor || "Natural",
-              image: item.image || item.productId?.images?.[0]?.url || "/assets/img/14.png",
+              image:
+                item.image ||
+                item.productId?.images?.[0]?.url ||
+                "/assets/img/14.png",
             }));
             setCart(restoredItems);
           }
 
           setRestoredBanner(
-            `Reopened Order #${retryOrderNumber}: Your handcrafted pieces and shipping details have been restored.`
+            `Reopened Order #${retryOrderNumber}: Your handcrafted pieces and shipping details have been restored.`,
           );
         }
       } catch (err) {
@@ -203,7 +216,9 @@ function CheckoutContent() {
     if (cart.length === 0 && typeof window !== "undefined") {
       try {
         let restored = null;
-        const backup = sessionStorage.getItem("sum_cart_backup") || localStorage.getItem("sum_cart");
+        const backup =
+          sessionStorage.getItem("sum_cart_backup") ||
+          localStorage.getItem("sum_cart");
         if (backup) {
           const parsed = JSON.parse(backup);
           if (Array.isArray(parsed) && parsed.length > 0) {
@@ -226,36 +241,71 @@ function CheckoutContent() {
     }
   }, [cart.length, setCart]);
 
-  const effectiveCart = cart.length > 0 ? cart : (() => {
-    if (typeof window === "undefined") return [];
-    try {
-      const b = sessionStorage.getItem("sum_cart_backup") || localStorage.getItem("sum_cart");
-      if (b) {
-        const p = JSON.parse(b);
-        if (Array.isArray(p) && p.length > 0) return p;
-      }
-      if (typeof document !== "undefined") {
-        const m = document.cookie.match(/(^|;\s*)sum_cart=([^;]*)/);
-        if (m) {
-          const p = JSON.parse(decodeURIComponent(m[2]));
-          if (Array.isArray(p) && p.length > 0) return p;
-        }
-      }
-    } catch {}
-    return [];
-  })();
+  const effectiveCart =
+    cart.length > 0
+      ? cart
+      : (() => {
+          if (typeof window === "undefined") return [];
+          try {
+            const b =
+              sessionStorage.getItem("sum_cart_backup") ||
+              localStorage.getItem("sum_cart");
+            if (b) {
+              const p = JSON.parse(b);
+              if (Array.isArray(p) && p.length > 0) return p;
+            }
+            if (typeof document !== "undefined") {
+              const m = document.cookie.match(/(^|;\s*)sum_cart=([^;]*)/);
+              if (m) {
+                const p = JSON.parse(decodeURIComponent(m[2]));
+                if (Array.isArray(p) && p.length > 0) return p;
+              }
+            }
+          } catch {}
+          return [];
+        })();
 
   if ((!isCartHydrated && effectiveCart.length === 0) || isRestoringRetry) {
     return (
       <>
         <Navbar />
-        <div style={{ minHeight: "70vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px 20px" }}>
-          <div style={{ width: 44, height: 44, border: "3px solid #f3f3f3", borderTop: "3px solid #881A1C", borderRadius: "50%", animation: "spin 1s linear infinite", marginBottom: 16 }} />
-          <h2 style={{ fontSize: 20, marginBottom: 8, fontWeight: 700, color: "#111827" }}>
-            {isRestoringRetry ? `Restoring Order #${retryOrderNumber}...` : "Loading your bag..."}
+        <div
+          style={{
+            minHeight: "70vh",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "40px 20px",
+          }}
+        >
+          <div
+            style={{
+              width: 44,
+              height: 44,
+              border: "3px solid #f3f3f3",
+              borderTop: "3px solid #881A1C",
+              borderRadius: "50%",
+              animation: "spin 1s linear infinite",
+              marginBottom: 16,
+            }}
+          />
+          <h2
+            style={{
+              fontSize: 20,
+              marginBottom: 8,
+              fontWeight: 700,
+              color: "#111827",
+            }}
+          >
+            {isRestoringRetry
+              ? `Restoring Order #${retryOrderNumber}...`
+              : "Loading your bag..."}
           </h2>
           <p style={{ color: "#666", fontSize: 14 }}>
-            {isRestoringRetry ? "Retrieving your saved handcrafted pieces and details." : "Fetching your selected handcrafted pieces."}
+            {isRestoringRetry
+              ? "Retrieving your saved handcrafted pieces and details."
+              : "Fetching your selected handcrafted pieces."}
           </p>
         </div>
       </>
@@ -266,12 +316,50 @@ function CheckoutContent() {
     return (
       <>
         <Navbar />
-        <div style={{ minHeight: "70vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px 20px", textAlign: "center" }}>
-          <div style={{ width: 64, height: 64, borderRadius: "50%", background: "#f5ebe6", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
+        <div
+          style={{
+            minHeight: "70vh",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "40px 20px",
+            textAlign: "center",
+          }}
+        >
+          <div
+            style={{
+              width: 64,
+              height: 64,
+              borderRadius: "50%",
+              background: "#f5ebe6",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              marginBottom: 20,
+            }}
+          >
             <FiShoppingBag size={30} color="#660608" />
           </div>
-          <h1 style={{ fontSize: 28, fontWeight: 800, color: "#111827", marginBottom: 12 }}>Your Bag is Empty</h1>
-          <p style={{ color: "#666", marginBottom: 26, fontSize: 14, maxWidth: 380, lineHeight: 1.6 }}>
+          <h1
+            style={{
+              fontSize: 28,
+              fontWeight: 800,
+              color: "#111827",
+              marginBottom: 12,
+            }}
+          >
+            Your Bag is Empty
+          </h1>
+          <p
+            style={{
+              color: "#666",
+              marginBottom: 26,
+              fontSize: 14,
+              maxWidth: 380,
+              lineHeight: 1.6,
+            }}
+          >
             You don't have any items in your bag to checkout.
           </p>
           <Link
@@ -312,7 +400,9 @@ function CheckoutContent() {
     setCheckoutError("");
 
     if (!agreedToTerms) {
-      setCheckoutError("Please agree to the terms and shipping policy before placing your order.");
+      setCheckoutError(
+        "Please agree to the terms and shipping policy before placing your order.",
+      );
       return;
     }
 
@@ -322,16 +412,22 @@ function CheckoutContent() {
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email || !emailRegex.test(formData.email.trim())) {
-      setCheckoutError("Please enter a valid email address for your order confirmation and invoice.");
+      setCheckoutError(
+        "Please enter a valid email address for your order confirmation and invoice.",
+      );
       return;
     }
-    const cleanPhone = String(formData.phone || "").replace(/[^0-9]/g, "").slice(-10);
+    const cleanPhone = String(formData.phone || "")
+      .replace(/[^0-9]/g, "")
+      .slice(-10);
     if (!cleanPhone || cleanPhone.length !== 10) {
       setCheckoutError("Please enter a valid 10-digit Indian mobile number.");
       return;
     }
     if (!formData.street || formData.street.trim().length < 5) {
-      setCheckoutError("Please enter your complete street address (House / Flat / Street).");
+      setCheckoutError(
+        "Please enter your complete street address (House / Flat / Street).",
+      );
       return;
     }
     if (!formData.city || formData.city.trim().length < 2) {
@@ -347,36 +443,6 @@ function CheckoutContent() {
       setCheckoutError("Please enter a valid 6-digit Indian PIN code.");
       return;
     }
-
-    try {
-      localStorage.setItem(
-        "sum_customer_info",
-        JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          phone: cleanPhone,
-          street: formData.street,
-          city: formData.city,
-          state: formData.state,
-          pincode: cleanPincode,
-        })
-      );
-      if (loginCustomer) {
-        loginCustomer({
-          name: formData.name,
-          email: formData.email,
-          phone: cleanPhone,
-          addresses: [
-            {
-              street: formData.street,
-              city: formData.city,
-              state: formData.state,
-              pincode: cleanPincode,
-            },
-          ],
-        });
-      }
-    } catch {}
 
     trackEvent("add_shipping_info", {
       shipping_tier: "Express Shiprocket Courier",
@@ -431,14 +497,18 @@ function CheckoutContent() {
               pincode: cleanPincode,
               country: "India",
             },
-            returnUrl: `${window.location.origin}/checkout/success?orderNumber=${tempOrderNumber}&cf_order_id={order_id}`
+            returnUrl: `${window.location.origin}/checkout/success?orderNumber=${tempOrderNumber}&cf_order_id={order_id}`,
           }),
         });
 
         const data = await res.json();
         if (!res.ok || !data.success || !data.paymentSessionId) {
           setIsProcessingPayment(false);
-          setCheckoutError(data.error || data.message || "Could not initialize Cashfree payment. Please verify your details.");
+          setCheckoutError(
+            data.error ||
+              data.message ||
+              "Could not initialize Cashfree payment. Please verify your details.",
+          );
           return;
         }
 
@@ -483,23 +553,25 @@ function CheckoutContent() {
           const cashfree = CashfreeSDK({ mode });
           cashfree.checkout({
             paymentSessionId: data.paymentSessionId,
-            redirectTarget: "_self"
+            redirectTarget: "_self",
           });
           return;
         } else {
           setIsProcessingPayment(false);
-          setCheckoutError("Could not load payment gateway SDK. Please disable ad-blockers and try again.");
+          setCheckoutError(
+            "Could not load payment gateway SDK. Please disable ad-blockers and try again.",
+          );
           return;
         }
       } catch (cfErr) {
         setIsProcessingPayment(false);
         console.error("Cashfree Checkout error:", cfErr);
-        setCheckoutError("Failed to connect to payment server. Please check your internet connection.");
+        setCheckoutError(
+          "Failed to connect to payment server. Please check your internet connection.",
+        );
         return;
       }
     }
-
-
   };
 
   const handleApplyCouponCode = (e) => {
@@ -515,26 +587,67 @@ function CheckoutContent() {
       <div className="checkout-wrapper">
         <div style={{ maxWidth: 1120, margin: "0 auto" }}>
           <div style={{ marginBottom: 32 }}>
-            <span style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1.5, color: "#f35c27" }}>
+            <span
+              style={{
+                fontSize: 12,
+                fontWeight: 700,
+                textTransform: "uppercase",
+                letterSpacing: 1.5,
+                color: "#f35c27",
+              }}
+            >
               Secure D2C Checkout
             </span>
-            <h1 style={{ fontSize: "clamp(24px, 4.5vw, 32px)", fontWeight: 800, margin: "6px 0 8px", letterSpacing: "-0.5px" }}>
+            <h1
+              style={{
+                fontSize: "clamp(24px, 4.5vw, 32px)",
+                fontWeight: 800,
+                margin: "6px 0 8px",
+                letterSpacing: "-0.5px",
+              }}
+            >
               Complete Your Order
             </h1>
             <p style={{ color: "#6b7280", margin: 0, fontSize: 14 }}>
-              Fast, encrypted checkout via Cashfree Payments with automated order confirmation dispatched to your email.
+              Fast, encrypted checkout via Cashfree Payments with automated
+              order confirmation dispatched to your email.
             </p>
           </div>
 
           {restoredBanner && (
-            <div style={{ background: "#fffbeb", border: "1px solid #fcd34d", color: "#92400e", padding: "14px 18px", borderRadius: 10, marginBottom: 20, fontSize: 14, fontWeight: 600, display: "flex", alignItems: "center", gap: 10 }}>
+            <div
+              style={{
+                background: "#fffbeb",
+                border: "1px solid #fcd34d",
+                color: "#92400e",
+                padding: "14px 18px",
+                borderRadius: 10,
+                marginBottom: 20,
+                fontSize: 14,
+                fontWeight: 600,
+                display: "flex",
+                alignItems: "center",
+                gap: 10,
+              }}
+            >
               <FiShield size={20} color="#d97706" />
               <span>{restoredBanner}</span>
             </div>
           )}
 
           {checkoutError && (
-            <div style={{ background: "#fef2f2", border: "1px solid #f87171", color: "#991b1b", padding: "14px 18px", borderRadius: 10, marginBottom: 24, fontSize: 14, fontWeight: 600 }}>
+            <div
+              style={{
+                background: "#fef2f2",
+                border: "1px solid #f87171",
+                color: "#991b1b",
+                padding: "14px 18px",
+                borderRadius: 10,
+                marginBottom: 24,
+                fontSize: 14,
+                fontWeight: 600,
+              }}
+            >
               ⚠️ {checkoutError}
             </div>
           )}
@@ -545,7 +658,15 @@ function CheckoutContent() {
               <form onSubmit={handleProceedToPayment}>
                 {/* 1. Contact Information */}
                 <div className="checkout-card">
-                  <h3 style={{ fontSize: 17, fontWeight: 800, margin: "0 0 16px", borderBottom: "1px solid #f3f4f6", paddingBottom: 10 }}>
+                  <h3
+                    style={{
+                      fontSize: 17,
+                      fontWeight: 800,
+                      margin: "0 0 16px",
+                      borderBottom: "1px solid #f3f4f6",
+                      paddingBottom: 10,
+                    }}
+                  >
                     1. Contact Information
                   </h3>
                   <div className="checkout-contact-grid">
@@ -565,7 +686,8 @@ function CheckoutContent() {
                     </div>
                     <div className="auth-form-group">
                       <label className="auth-label">
-                        Email (for receipt & invoice) <span style={{ color: "#dc2626" }}>*</span>
+                        Email (for receipt & invoice){" "}
+                        <span style={{ color: "#dc2626" }}>*</span>
                       </label>
                       <input
                         type="email"
@@ -573,13 +695,17 @@ function CheckoutContent() {
                         className="auth-input"
                         value={formData.email}
                         onChange={handleInputChange}
-                        placeholder="e.g. priya@example.com"
+                        placeholder="e.g. yourname@gmail.com"
                         required
                       />
                     </div>
-                    <div className="auth-form-group" style={{ gridColumn: "1 / -1" }}>
+                    <div
+                      className="auth-form-group"
+                      style={{ gridColumn: "1 / -1" }}
+                    >
                       <label className="auth-label">
-                        Mobile Phone Number <span style={{ color: "#dc2626" }}>*</span>
+                        Mobile Phone Number{" "}
+                        <span style={{ color: "#dc2626" }}>*</span>
                       </label>
                       <input
                         type="tel"
@@ -596,12 +722,21 @@ function CheckoutContent() {
 
                 {/* 2. Shipping Address */}
                 <div className="checkout-card">
-                  <h3 style={{ fontSize: 17, fontWeight: 800, margin: "0 0 16px", borderBottom: "1px solid #f3f4f6", paddingBottom: 10 }}>
+                  <h3
+                    style={{
+                      fontSize: 17,
+                      fontWeight: 800,
+                      margin: "0 0 16px",
+                      borderBottom: "1px solid #f3f4f6",
+                      paddingBottom: 10,
+                    }}
+                  >
                     2. Shipping Address (India)
                   </h3>
                   <div className="auth-form-group">
                     <label className="auth-label">
-                      Street Address / House / Flat No. <span style={{ color: "#dc2626" }}>*</span>
+                      Street Address / House / Flat No.{" "}
+                      <span style={{ color: "#dc2626" }}>*</span>
                     </label>
                     <input
                       type="text"
@@ -662,16 +797,40 @@ function CheckoutContent() {
 
                 {/* 3. Payment Gateway Portal Selection */}
                 <div className="checkout-card">
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #f3f4f6", paddingBottom: 10, marginBottom: 16 }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      borderBottom: "1px solid #f3f4f6",
+                      paddingBottom: 10,
+                      marginBottom: 16,
+                    }}
+                  >
                     <h3 style={{ fontSize: 17, fontWeight: 800, margin: 0 }}>
                       3. Select Payment Gateway
                     </h3>
-                    <span style={{ fontSize: 11, background: "#ecfdf5", color: "#065f46", padding: "3px 8px", borderRadius: 4, fontWeight: 700 }}>
+                    <span
+                      style={{
+                        fontSize: 11,
+                        background: "#ecfdf5",
+                        color: "#065f46",
+                        padding: "3px 8px",
+                        borderRadius: 4,
+                        fontWeight: 700,
+                      }}
+                    >
                       Prepaid Cashfree PG Active
                     </span>
                   </div>
 
-                  <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 12,
+                    }}
+                  >
                     {/* Portal 1: Cashfree Payments */}
                     <label
                       style={{
@@ -682,7 +841,10 @@ function CheckoutContent() {
                         border: `2px solid ${selectedGateway === "cashfree" ? "#111111" : "#e5e7eb"}`,
                         borderRadius: 12,
                         cursor: "pointer",
-                        background: selectedGateway === "cashfree" ? "#fbfbfc" : "#ffffff",
+                        background:
+                          selectedGateway === "cashfree"
+                            ? "#fbfbfc"
+                            : "#ffffff",
                         transition: "all 0.2s ease",
                       }}
                     >
@@ -694,23 +856,59 @@ function CheckoutContent() {
                         style={{ marginTop: 4 }}
                       />
                       <div style={{ flex: 1 }}>
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 2 }}>
-                          <span style={{ fontWeight: 800, fontSize: 15, color: "#111827" }}>Cashfree Payments Portal</span>
-                          <span style={{ fontSize: 11, background: "#f35c27", color: "#fff", fontWeight: 700, padding: "2px 8px", borderRadius: 4 }}>
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            marginBottom: 2,
+                          }}
+                        >
+                          <span
+                            style={{
+                              fontWeight: 800,
+                              fontSize: 15,
+                              color: "#111827",
+                            }}
+                          >
+                            Cashfree Payments Portal
+                          </span>
+                          <span
+                            style={{
+                              fontSize: 11,
+                              background: "#f35c27",
+                              color: "#fff",
+                              fontWeight: 700,
+                              padding: "2px 8px",
+                              borderRadius: 4,
+                            }}
+                          >
                             CASHFREE
                           </span>
                         </div>
-                        <div style={{ fontSize: 12, color: "#6b7280", lineHeight: 1.4 }}>
-                          Instant UPI (Google Pay, PhonePe, Paytm, CRED), Cards (Visa, MasterCard, RuPay), NetBanking & PayLater.
+                        <div
+                          style={{
+                            fontSize: 12,
+                            color: "#6b7280",
+                            lineHeight: 1.4,
+                          }}
+                        >
+                          Instant UPI (Google Pay, PhonePe, Paytm, CRED), Cards
+                          (Visa, MasterCard, RuPay), NetBanking & PayLater.
                         </div>
                       </div>
                     </label>
-
-
                   </div>
 
                   {/* Terms & Policy Agreement */}
-                  <div style={{ marginTop: 20, display: "flex", alignItems: "center", gap: 8 }}>
+                  <div
+                    style={{
+                      marginTop: 20,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 8,
+                    }}
+                  >
                     <input
                       type="checkbox"
                       id="terms"
@@ -718,8 +916,25 @@ function CheckoutContent() {
                       onChange={(e) => setAgreedToTerms(e.target.checked)}
                       required
                     />
-                    <label htmlFor="terms" style={{ fontSize: 13, color: "#4b5563" }}>
-                      I agree to the <Link href="/policies/terms" style={{ color: "#111", textDecoration: "underline" }}>Terms</Link> and <Link href="/policies/shipping" style={{ color: "#111", textDecoration: "underline" }}>Shipping Policy</Link>.
+                    <label
+                      htmlFor="terms"
+                      style={{ fontSize: 13, color: "#4b5563" }}
+                    >
+                      I agree to the{" "}
+                      <Link
+                        href="/policies/terms"
+                        style={{ color: "#111", textDecoration: "underline" }}
+                      >
+                        Terms
+                      </Link>{" "}
+                      and{" "}
+                      <Link
+                        href="/policies/shipping"
+                        style={{ color: "#111", textDecoration: "underline" }}
+                      >
+                        Shipping Policy
+                      </Link>
+                      .
                     </label>
                   </div>
 
@@ -747,51 +962,149 @@ function CheckoutContent() {
             {/* Right Column: Order Summary & Coupon Box */}
             <div className="checkout-summary-col">
               <div className="checkout-order-summary-card">
-                <h3 style={{ fontSize: 17, fontWeight: 800, margin: "0 0 16px", borderBottom: "1px solid #f3f4f6", paddingBottom: 10 }}>
+                <h3
+                  style={{
+                    fontSize: 17,
+                    fontWeight: 800,
+                    margin: "0 0 16px",
+                    borderBottom: "1px solid #f3f4f6",
+                    paddingBottom: 10,
+                  }}
+                >
                   Order Review ({cart.length})
                 </h3>
 
                 {/* Items List */}
-                <div style={{ maxHeight: 260, overflowY: "auto", marginBottom: 16 }}>
+                <div
+                  style={{
+                    maxHeight: 260,
+                    overflowY: "auto",
+                    marginBottom: 16,
+                  }}
+                >
                   {cart.map((item) => (
-                    <div key={`${item.id}-${item.selectedSize}`} style={{ display: "flex", gap: 12, marginBottom: 12, alignItems: "center" }}>
-                      <img src={item.image} alt={item.name} style={{ width: 46, height: 56, objectFit: "cover", borderRadius: 6 }} />
+                    <div
+                      key={`${item.id}-${item.selectedSize}`}
+                      style={{
+                        display: "flex",
+                        gap: 12,
+                        marginBottom: 12,
+                        alignItems: "center",
+                      }}
+                    >
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        style={{
+                          width: 46,
+                          height: 56,
+                          objectFit: "cover",
+                          borderRadius: 6,
+                        }}
+                      />
                       <div style={{ flex: 1 }}>
-                        <div style={{ fontWeight: 700, fontSize: 14 }}>{item.name}</div>
+                        <div style={{ fontWeight: 700, fontSize: 14 }}>
+                          {item.name}
+                        </div>
                         <div style={{ fontSize: 12, color: "#6b7280" }}>
                           Size: <strong>{item.selectedSize}</strong>
-                          {item.selectedColor ? ` • Color: ${item.selectedColor}` : ""} × {item.quantity}
+                          {item.selectedColor
+                            ? ` • Color: ${item.selectedColor}`
+                            : ""}{" "}
+                          × {item.quantity}
                         </div>
                         {item.fitDetails && (
-                          <div style={{ fontSize: 11, color: "#881A1C", marginTop: 2, background: "rgba(136, 26, 28, 0.05)", padding: "3px 6px", borderRadius: 4, display: "inline-block" }}>
-                            ✦ Fit: Bust {item.fitDetails.bust}&quot; • Waist {item.fitDetails.waist}&quot; • Hips {item.fitDetails.hips}&quot;
-                            {item.fitDetails.fitPreference ? ` (${item.fitDetails.fitPreference})` : ""}
-                            {item.fitDetails.lengthPreference && item.fitDetails.lengthPreference !== "Standard length (as per style)" ? ` • Length: ${item.fitDetails.lengthPreference}` : ""}
-                            {item.fitDetails.notes ? ` • Note: "${item.fitDetails.notes}"` : ""}
+                          <div
+                            style={{
+                              fontSize: 11,
+                              color: "#881A1C",
+                              marginTop: 2,
+                              background: "rgba(136, 26, 28, 0.05)",
+                              padding: "3px 6px",
+                              borderRadius: 4,
+                              display: "inline-block",
+                            }}
+                          >
+                            ✦ Fit: Bust {item.fitDetails.bust}&quot; • Waist{" "}
+                            {item.fitDetails.waist}&quot; • Hips{" "}
+                            {item.fitDetails.hips}&quot;
+                            {item.fitDetails.fitPreference
+                              ? ` (${item.fitDetails.fitPreference})`
+                              : ""}
+                            {item.fitDetails.lengthPreference &&
+                            item.fitDetails.lengthPreference !==
+                              "Standard length (as per style)"
+                              ? ` • Length: ${item.fitDetails.lengthPreference}`
+                              : ""}
+                            {item.fitDetails.notes
+                              ? ` • Note: "${item.fitDetails.notes}"`
+                              : ""}
                           </div>
                         )}
                       </div>
-                      <div style={{ fontWeight: 700, fontSize: 14 }}>₹{(item.price * item.quantity).toLocaleString("en-IN")}</div>
+                      <div style={{ fontWeight: 700, fontSize: 14 }}>
+                        ₹{(item.price * item.quantity).toLocaleString("en-IN")}
+                      </div>
                     </div>
                   ))}
                 </div>
 
                 {/* Coupon Input Box */}
-                <div style={{ borderTop: "1px solid #f3f4f6", paddingTop: 14, marginBottom: 16 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, fontWeight: 700, color: "#111827", marginBottom: 8 }}>
+                <div
+                  style={{
+                    borderTop: "1px solid #f3f4f6",
+                    paddingTop: 14,
+                    marginBottom: 16,
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 6,
+                      fontSize: 13,
+                      fontWeight: 700,
+                      color: "#111827",
+                      marginBottom: 8,
+                    }}
+                  >
                     <FiTag size={14} color="#f35c27" />
                     <span>Apply Coupon Code</span>
                   </div>
 
                   {appliedCoupon ? (
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#ecfdf5", border: "1px solid #a7f3d0", padding: "8px 12px", borderRadius: 8 }}>
-                      <div style={{ fontSize: 12, fontWeight: 700, color: "#065f46" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        background: "#ecfdf5",
+                        border: "1px solid #a7f3d0",
+                        padding: "8px 12px",
+                        borderRadius: 8,
+                      }}
+                    >
+                      <div
+                        style={{
+                          fontSize: 12,
+                          fontWeight: 700,
+                          color: "#065f46",
+                        }}
+                      >
                         ✓ {appliedCoupon.code} (-₹{discountAmount})
                       </div>
                       <button
                         type="button"
                         onClick={removeCoupon}
-                        style={{ background: "none", border: "none", color: "#dc2626", fontSize: 11, fontWeight: 700, cursor: "pointer", textDecoration: "underline" }}
+                        style={{
+                          background: "none",
+                          border: "none",
+                          color: "#dc2626",
+                          fontSize: 11,
+                          fontWeight: 700,
+                          cursor: "pointer",
+                          textDecoration: "underline",
+                        }}
                       >
                         Remove
                       </button>
@@ -833,7 +1146,16 @@ function CheckoutContent() {
                   )}
 
                   {couponFeedback && (
-                    <div style={{ fontSize: 11, marginTop: 4, color: couponFeedback.type === "success" ? "#047857" : "#b91c1c" }}>
+                    <div
+                      style={{
+                        fontSize: 11,
+                        marginTop: 4,
+                        color:
+                          couponFeedback.type === "success"
+                            ? "#047857"
+                            : "#b91c1c",
+                      }}
+                    >
                       {couponFeedback.message}
                     </div>
                   )}
@@ -847,7 +1169,10 @@ function CheckoutContent() {
                   </div>
 
                   {discountAmount > 0 && (
-                    <div className="cart-summary-row" style={{ fontSize: 14, color: "#15803d" }}>
+                    <div
+                      className="cart-summary-row"
+                      style={{ fontSize: 14, color: "#15803d" }}
+                    >
                       <span>Discount ({appliedCoupon?.code})</span>
                       <span>- ₹{discountAmount.toLocaleString("en-IN")}</span>
                     </div>
@@ -855,26 +1180,69 @@ function CheckoutContent() {
 
                   <div className="cart-summary-row" style={{ fontSize: 14 }}>
                     <span>Shipping</span>
-                    <span>{shippingFee === 0 ? <strong style={{ color: "#15803d" }}>FREE</strong> : `₹${shippingFee}`}</span>
+                    <span>
+                      {shippingFee === 0 ? (
+                        <strong style={{ color: "#15803d" }}>FREE</strong>
+                      ) : (
+                        `₹${shippingFee}`
+                      )}
+                    </span>
                   </div>
 
-                  <div className="cart-summary-row" style={{ fontSize: 13, color: "#4b5563" }}>
+                  <div
+                    className="cart-summary-row"
+                    style={{ fontSize: 13, color: "#4b5563" }}
+                  >
                     <span>Estimated GST ({cartGstPercent || 5}%)</span>
-                    <span>+ ₹{Math.round(cartGstAmount || 0).toLocaleString("en-IN")}</span>
+                    <span>
+                      + ₹
+                      {Math.round(cartGstAmount || 0).toLocaleString("en-IN")}
+                    </span>
                   </div>
 
-                  <div className="cart-summary-row cart-summary-total" style={{ fontSize: 18 }}>
+                  <div
+                    className="cart-summary-row cart-summary-total"
+                    style={{ fontSize: 18 }}
+                  >
                     <span>Grand Total</span>
                     <span>₹{cartGrandTotal.toLocaleString("en-IN")}</span>
                   </div>
 
-                  <div style={{ fontSize: 11, color: "#166534", marginTop: 6, display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 4 }}>
-                    <span style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: "#16a34a", display: "inline-block" }} />
+                  <div
+                    style={{
+                      fontSize: 11,
+                      color: "#166534",
+                      marginTop: 6,
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "center",
+                      gap: 4,
+                    }}
+                  >
+                    <span
+                      style={{
+                        width: 6,
+                        height: 6,
+                        borderRadius: "50%",
+                        backgroundColor: "#16a34a",
+                        display: "inline-block",
+                      }}
+                    />
                     <span>5% GST added at checkout</span>
                   </div>
                 </div>
 
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, marginTop: 16, fontSize: 12, color: "#6b7280" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 6,
+                    marginTop: 16,
+                    fontSize: 12,
+                    color: "#6b7280",
+                  }}
+                >
                   <FiLock size={13} color="#15803d" />
                   <span>100% Secure Checkout</span>
                 </div>
@@ -913,11 +1281,27 @@ function CheckoutContent() {
               marginBottom: 20,
             }}
           />
-          <h3 style={{ fontSize: 22, fontWeight: 800, margin: "0 0 8px", color: "#ffffff" }}>
+          <h3
+            style={{
+              fontSize: 22,
+              fontWeight: 800,
+              margin: "0 0 8px",
+              color: "#ffffff",
+            }}
+          >
             Connecting to Cashfree Secure Payments...
           </h3>
-          <p style={{ color: "#d1d5db", fontSize: 14, margin: 0, maxWidth: 380, lineHeight: 1.5 }}>
-            Please wait while we connect securely to payment gateway. Do not refresh or press back.
+          <p
+            style={{
+              color: "#d1d5db",
+              fontSize: 14,
+              margin: 0,
+              maxWidth: 380,
+              lineHeight: 1.5,
+            }}
+          >
+            Please wait while we connect securely to payment gateway. Do not
+            refresh or press back.
           </p>
         </div>
       )}
@@ -925,14 +1309,22 @@ function CheckoutContent() {
   );
 }
 
-
 export default function CheckoutPage() {
   return (
-    <Suspense fallback={
-      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <p style={{ color: "#666" }}>Loading checkout...</p>
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div
+          style={{
+            minHeight: "100vh",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <p style={{ color: "#666" }}>Loading checkout...</p>
+        </div>
+      }
+    >
       <CheckoutContent />
     </Suspense>
   );
