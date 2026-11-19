@@ -1505,10 +1505,6 @@ export default function ProductPage() {
                   >
                     Care
                   </span>
-                  <span style={{ fontWeight: 600, color: "#1a140e" }}>
-                    {product.fabricCare ||
-                      "Pure organic handspun cotton. Gentle cycle wash with similar colors."}
-                  </span>
                   <div
                     style={{
                       display: "flex",
@@ -1525,7 +1521,7 @@ export default function ProductPage() {
                       }}
                     >
                       {product.fabricCare ||
-                        "Pure organic handspun cotton. Gentle cycle wash with similar colors."}
+                        "Khadi Cotton. Machine wash gentle in cold water."}
                     </span>
                     <button
                       type="button"

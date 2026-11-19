@@ -86,7 +86,63 @@ export default function FeaturedProductsSection() {
   const featured =
     adminFeatured.length > 0
       ? adminFeatured
-      : (products || []).slice(0, 8);
+      : (products && products.length > 0)
+        ? products.slice(0, 8)
+        : [
+            {
+              id: "aarohis-coord",
+              _id: "aarohis-coord",
+              name: "Aarohi's Coord",
+              category: "Co-ords",
+              price: 2650,
+              salePrice: 2650,
+              statement: "Less time figuring out what to wear. More time figuring out where to go.",
+              images: ["/assets/m3.png", "/assets/model.png"],
+              sizes: ["XS", "S", "M", "L", "XL"],
+              colors: ["Dusty Rose Pink"],
+              isFeatured: true,
+            },
+            {
+              id: "meeras-dress",
+              _id: "meeras-dress",
+              name: "Meera's Dress",
+              category: "Dresses",
+              price: 2450,
+              salePrice: 2450,
+              statement: "For everything you carry through the day — and everything you don't need to carry in your hands.",
+              images: ["/assets/model.png"],
+              sizes: ["XS", "S", "M", "L", "XL"],
+              colors: ["Lime Green"],
+              isFeatured: true,
+            },
+            {
+              id: "divyas-dress",
+              _id: "divyas-dress",
+              name: "Divya's Dress",
+              category: "Dresses",
+              price: 2450,
+              regularPrice: 2650,
+              salePrice: 2450,
+              statement: "Made for days that unfold differently, and a style that goes with every version of you.",
+              images: ["/assets/m1.png", "/assets/model.png"],
+              sizes: ["XS", "S", "M", "L", "XL"],
+              colors: ["Wine Red"],
+              isFeatured: true,
+            },
+            {
+              id: "riyas-top",
+              _id: "riyas-top",
+              name: "Riya's Top",
+              category: "Tops",
+              price: 1650,
+              salePrice: 1650,
+              statement: "A little sunshine, a little contrast, and a whole lot of ease.",
+              images: ["/assets/m2.png", "/assets/Riya Top.png"],
+              sizes: ["XS", "S", "M", "L", "XL"],
+              colors: ["Dusty Rose Pink"],
+              isFeatured: true,
+            },
+          ];
 
 
 
@@ -162,9 +218,7 @@ export default function FeaturedProductsSection() {
 
   const fpWords = ["Clothes", "that", "keep", "up", "with", "you."];
 
-  if (!featured || featured.length === 0) {
-    return null;
-  }
+  // Never collapse section to prevent layout glitching
 
   return (
     <section

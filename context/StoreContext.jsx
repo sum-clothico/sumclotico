@@ -282,8 +282,18 @@ export function StoreProvider({ children }) {
   // Abandoned Carts State (start empty — real data from real user sessions)
   const [abandonedCarts, setAbandonedCarts] = useState([]);
 
-  // Product Catalog (loaded from MongoDB) & Live Orders
-  const [products, setProducts] = useState([]);
+  // Product Catalog (loaded from MongoDB, cached in localStorage for 0ms instant render)
+  const [products, setProducts] = useState(() => {
+    if (typeof window === "undefined") return [];
+    try {
+      const cached = localStorage.getItem("sum_products");
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch {}
+    return [];
+  });
   const [orders, setOrders] = useState([]);
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
 
