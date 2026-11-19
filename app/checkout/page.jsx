@@ -544,57 +544,26 @@ function CheckoutContent() {
               </div>
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              <button
-                type="button"
-                onClick={() => {
-                  if (setIsAuthModalOpen) {
-                    setIsAuthModalOpen(true);
-                  }
+            <div style={{ marginTop: 20, textAlign: "left" }}>
+              <SignIn
+                routing="hash"
+                fallbackRedirectUrl="/checkout"
+                appearance={{
+                  elements: {
+                    rootBox: { width: "100%" },
+                    card: {
+                      boxShadow: "none",
+                      padding: 0,
+                      width: "100%",
+                      background: "transparent",
+                    },
+                    headerTitle: { display: "none" },
+                    headerSubtitle: { display: "none" },
+                    footer: { "& + div": { display: "none !important" } },
+                    footerAction: { borderBottom: "none" },
+                  },
                 }}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 10,
-                  width: "100%",
-                  padding: "16px",
-                  borderRadius: 12,
-                  background: "#111111",
-                  color: "#ffffff",
-                  fontSize: 14,
-                  fontWeight: 700,
-                  border: "none",
-                  cursor: "pointer",
-                  boxShadow: "0 4px 14px rgba(0,0,0,0.14)",
-                }}
-              >
-                <span>Sign In to Continue</span>
-                <FiArrowRight size={16} />
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  if (setIsAuthModalOpen) {
-                    setIsAuthModalOpen(true);
-                  }
-                }}
-                style={{
-                  display: "block",
-                  width: "100%",
-                  padding: "14px",
-                  borderRadius: 12,
-                  background: "#f3f4f6",
-                  color: "#111827",
-                  fontSize: 13,
-                  fontWeight: 700,
-                  border: "none",
-                  cursor: "pointer",
-                }}
-              >
-                Create New Account
-              </button>
+              />
             </div>
           </div>
         </div>
