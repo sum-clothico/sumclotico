@@ -32,6 +32,7 @@ export default function AdminDashboardPage() {
       "Payment Status",
       "Order Status",
       "Items Count",
+      "Custom Fit Details",
       "Total Amount (INR)",
       "Shipping City",
       "Order Date",
@@ -45,6 +46,7 @@ export default function AdminDashboardPage() {
       o.paymentStatus || "PAID",
       o.orderStatus || "PLACED",
       o.items?.length || 1,
+      `"${((o.items || []).map((it) => { const f = typeof it.fitDetails === "string" ? (() => { try { return JSON.parse(it.fitDetails); } catch { return null; } })() : it.fitDetails; return f && (f.bust || f.waist || f.hips || f.notes) ? (it.title || it.name) + ": Bust " + (f.bust || "-") + " Waist " + (f.waist || "-") + " Hips " + (f.hips || "-") + (f.notes ? " (" + f.notes + ")" : "") : ""; }).filter(Boolean).join("; ")).replace(/"/g, '""')}"`,
       o.totalAmount || 0,
       `"${(o.shippingAddress?.city || "").replace(/"/g, '""')}"`,
       `"${formatDate(o.createdAt)}"`,
@@ -281,7 +283,18 @@ export default function AdminDashboardPage() {
                     <td>
                       {(ord.items || []).map((it, i) => (
                         <div key={i} style={{ fontSize: 12 }}>
-                          • {it.title || it.name} ({it.selectedSize || "M"}) × {it.quantity || 1}
+                          <>
+                            • <strong>{it.title || it.name}</strong> ({it.selectedSize || "M"}) × {it.quantity || 1}
+                            {(() => {
+                              const fit = typeof it.fitDetails === "string" ? (() => { try { return JSON.parse(it.fitDetails); } catch { return null; } })() : it.fitDetails;
+                              return fit && (fit.bust || fit.waist || fit.hips || fit.notes) ? (
+                                <div style={{ fontSize: 10, color: "#f97316", background: "rgba(249,115,22,0.12)", border: "1px solid rgba(249,115,22,0.3)", padding: "2px 6px", borderRadius: 4, marginTop: 3, lineHeight: 1.4 }}>
+                                  ✦ Fit: Bust {fit.bust}&quot; • Waist {fit.waist}&quot; • Hips {fit.hips}&quot;
+                                  {fit.notes ? ` · "${fit.notes}"` : ""}
+                                </div>
+                              ) : null;
+                            })()}
+                          </>
                         </div>
                       ))}
                     </td>

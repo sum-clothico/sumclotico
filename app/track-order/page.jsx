@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, Suspense, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
-import { useUser } from "@clerk/nextjs";
+import { useUser, SignIn } from "@clerk/nextjs";
 import { useStore } from "@/context/StoreContext";
 import Navbar from "@/components/Navbar";
 import {
@@ -17,6 +17,7 @@ import {
   FiArrowRight,
   FiLock,
   FiShield,
+  FiBox,
 } from "react-icons/fi";
 import Link from "next/link";
 import { trackEvent } from "@/lib/analytics";
@@ -38,14 +39,30 @@ function getStageIndex(status) {
   return 0; // CONFIRMED or PLACED
 }
 
+const isMockOrTestOrder = (o) => {
+  if (!o) return true;
+  const num = (o.orderNumber || o.id || "").toUpperCase();
+  const name = (o.customer?.name || "").toLowerCase().trim();
+  const street = (o.shippingAddress?.street || "").toLowerCase().trim();
+  const city = (o.shippingAddress?.city || "").toLowerCase().trim();
+  return (
+    ["SUM-98214", "SUM-98215", "SUM-98216", "SUM-98217", "SUM-70908", "ORD-101", "ORD-102"].includes(num) ||
+    name === "test" ||
+    street === "testtesttest" ||
+    city === "cuttack"
+  );
+};
+
 function TrackOrderContent() {
   const { orders = [], requestReturn, currentUser } = useStore();
   const searchParams = useSearchParams();
-  const queryParam = searchParams ? (searchParams.get("order") || searchParams.get("awb") || searchParams.get("id")) : null;
+  const queryParam = searchParams
+    ? searchParams.get("order") || searchParams.get("awb") || searchParams.get("id")
+    : null;
 
   let clerkUser = null;
   let isClerkSignedIn = false;
-  let isClerkLoaded = true;
+  let isClerkLoaded = false;
   try {
     const clerk = useUser();
     clerkUser = clerk?.user;
@@ -59,21 +76,135 @@ function TrackOrderContent() {
   const [activeOrder, setActiveOrder] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [searchError, setSearchError] = useState("");
+  const [backendOrders, setBackendOrders] = useState([]);
+  const [isFetchingBackend, setIsFetchingBackend] = useState(true);
+
   const [returnModalOpen, setReturnModalOpen] = useState(false);
   const [returnReason, setReturnReason] = useState("Size fit issue");
   const [returnFeedback, setReturnFeedback] = useState("");
 
-  const userEmail = clerkUser?.primaryEmailAddress?.emailAddress || clerkUser?.emailAddresses?.[0]?.emailAddress || currentUser?.email;
+  const userEmail =
+    clerkUser?.primaryEmailAddress?.emailAddress ||
+    clerkUser?.emailAddresses?.[0]?.emailAddress ||
+    currentUser?.email;
 
+  const userPhone =
+    clerkUser?.primaryPhoneNumber?.phoneNumber ||
+    clerkUser?.phoneNumbers?.[0]?.phoneNumber ||
+    currentUser?.phone ||
+    "";
+
+  // Sanitize localStorage on mount to purge any old test/mock orders from earlier test sessions
   useEffect(() => {
-    if (!activeOrder && !searchTerm && userEmail && orders.length > 0) {
-      const myOrder = orders.find((o) => (o.customer?.email || "").toLowerCase() === userEmail.toLowerCase());
-      if (myOrder) {
-        setSearchTerm(myOrder.orderNumber);
-        setActiveOrder(myOrder);
+    if (typeof window !== "undefined") {
+      try {
+        const raw = localStorage.getItem("sum_orders");
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          const cleaned = (Array.isArray(parsed) ? parsed : []).filter((o) => !isMockOrTestOrder(o));
+          if (cleaned.length !== parsed.length) {
+            localStorage.setItem("sum_orders", JSON.stringify(cleaned));
+          }
+        }
+      } catch {}
+    }
+  }, []);
+
+  // Fetch real-time live orders directly from MongoDB backend
+  useEffect(() => {
+    let isMounted = true;
+    const fetchOrders = async () => {
+      try {
+        const res = await fetch("/api/checkout/orders");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.success && Array.isArray(data.orders) && isMounted) {
+            setBackendOrders(data.orders);
+          }
+        }
+      } catch (err) {
+        console.warn("Could not load backend orders:", err);
+      } finally {
+        if (isMounted) setIsFetchingBackend(false);
+      }
+    };
+    fetchOrders();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  // Merge client store orders and fresh MongoDB orders (purging any mock/test artifacts)
+  const allOrders = useMemo(() => {
+    const map = new Map();
+    (orders || []).forEach((o) => {
+      if (o && o.orderNumber && !isMockOrTestOrder(o)) map.set(o.orderNumber, o);
+    });
+    (backendOrders || []).forEach((o) => {
+      if (o && o.orderNumber && !isMockOrTestOrder(o)) {
+        map.set(o.orderNumber, {
+          ...map.get(o.orderNumber),
+          ...o,
+          carrier:
+            o.carrier && !o.carrier.toLowerCase().includes("bluedart")
+              ? o.carrier
+              : "Shiprocket Express",
+          trackingNumber:
+            o.trackingNumber && !/^BD\d+IN$/i.test(o.trackingNumber)
+              ? o.trackingNumber
+              : "",
+        });
+      }
+    });
+    return Array.from(map.values());
+  }, [orders, backendOrders]);
+
+  const cleanUserEmail = (userEmail || "").toLowerCase().trim();
+  const cleanUserPhone = String(userPhone).replace(/\D/g, "").slice(-10);
+
+  // All genuine orders belonging strictly to the logged in customer
+  const userOrders = useMemo(() => {
+    if (!cleanUserEmail && !cleanUserPhone) return [];
+    return allOrders.filter((o) => {
+      if (!o) return false;
+      const oEmail = (o.customer?.email || "").toLowerCase().trim();
+      const oPhone = String(o.customer?.phone || "").replace(/\D/g, "").slice(-10);
+
+      const emailMatches = cleanUserEmail && oEmail === cleanUserEmail;
+      const phoneMatches =
+        cleanUserPhone && cleanUserPhone.length >= 10 && oPhone === cleanUserPhone;
+      return emailMatches || phoneMatches;
+    });
+  }, [allOrders, cleanUserEmail, cleanUserPhone]);
+
+  // Undelivered orders (active in transit / tailoring / packing)
+  const undeliveredOrders = useMemo(() => {
+    return userOrders.filter((o) => {
+      const status = (o.orderStatus || "").toUpperCase().trim();
+      return status !== "DELIVERED" && status !== "CANCELLED";
+    });
+  }, [userOrders]);
+
+  // Delivered orders (completed shipments)
+  const deliveredOrders = useMemo(() => {
+    return userOrders.filter((o) => {
+      const status = (o.orderStatus || "").toUpperCase().trim();
+      return status === "DELIVERED";
+    });
+  }, [userOrders]);
+
+  // Auto-select latest genuine order WITHOUT polluting the search input
+  useEffect(() => {
+    if (!activeOrder && !searchTerm) {
+      if (undeliveredOrders.length > 0) {
+        setActiveOrder(undeliveredOrders[0]);
+        // Note: We deliberately do NOT call setSearchTerm, keeping the input completely empty
+      } else if (deliveredOrders.length > 0) {
+        setActiveOrder(deliveredOrders[0]);
+        // Note: Keep input empty
       }
     }
-  }, [userEmail, orders, activeOrder, searchTerm]);
+  }, [undeliveredOrders, deliveredOrders, activeOrder, searchTerm]);
 
   const runSearch = async (termToSearch) => {
     if (!termToSearch || !termToSearch.trim()) return;
@@ -86,7 +217,7 @@ function TrackOrderContent() {
     const formattedSum = `sum-${numericPart}`;
 
     const isMatch = (o) => {
-      if (!o) return false;
+      if (!o || isMockOrTestOrder(o)) return false;
       const num = (o.orderNumber || "").toLowerCase().trim();
       const numClean = num.replace(/^#+/, "");
       const numDigits = numClean.replace(/^sum[-_]?/i, "");
@@ -107,8 +238,8 @@ function TrackOrderContent() {
       );
     };
 
-    // 1. Check in client store
-    let found = orders.find(isMatch);
+    // 1. Check in combined store & backend list
+    let found = allOrders.find(isMatch);
 
     // 2. Check in localStorage directly
     if (!found) {
@@ -121,7 +252,7 @@ function TrackOrderContent() {
       } catch {}
     }
 
-    // 3. If still not found, fetch from backend API
+    // 3. If still not found, fetch single order from backend API
     if (!found) {
       try {
         const primaryQuery = cleanTerm.startsWith("sum-")
@@ -133,7 +264,7 @@ function TrackOrderContent() {
         const res = await fetch(`/api/orders/${encodeURIComponent(primaryQuery)}`);
         if (res.ok) {
           const data = await res.json();
-          if (data.success && data.order) {
+          if (data.success && data.order && !isMockOrTestOrder(data.order)) {
             found = data.order;
           }
         }
@@ -156,7 +287,7 @@ function TrackOrderContent() {
     } else {
       setActiveOrder(null);
       setSearchError(
-        `No shipment found matching "${termToSearch}". Please verify your Order Reference (e.g. SUM-28211) or email address.`
+        `No shipment found matching "${termToSearch}". Please verify your Order Reference (e.g. SUM-28211) or registered email.`
       );
     }
   };
@@ -166,7 +297,7 @@ function TrackOrderContent() {
       setSearchTerm(queryParam);
       runSearch(queryParam);
     }
-  }, [queryParam, orders.length]);
+  }, [queryParam]);
 
   const handleSearch = async (e) => {
     if (e) e.preventDefault();
@@ -191,10 +322,125 @@ function TrackOrderContent() {
     }, 2000);
   };
 
-  const currentStageIndex = activeOrder
-    ? getStageIndex(activeOrder.orderStatus)
-    : 0;
+  const currentStageIndex = activeOrder ? getStageIndex(activeOrder.orderStatus) : 0;
 
+  // ── Authentication Loading State ──
+  if (!isClerkLoaded) {
+    return (
+      <>
+        <Navbar />
+        <div
+          style={{
+            minHeight: "80vh",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            background: "#FAF6F0",
+            padding: "120px 20px 60px",
+          }}
+        >
+          <div
+            style={{
+              width: 44,
+              height: 44,
+              border: "3px solid #e5e7eb",
+              borderTop: "3px solid #881A1C",
+              borderRadius: "50%",
+              animation: "spin 1s linear infinite",
+              marginBottom: 16,
+            }}
+          />
+          <p style={{ color: "#6b7280", fontSize: 14 }}>
+            Verifying secure customer session...
+          </p>
+        </div>
+      </>
+    );
+  }
+
+  // ── Mandatory Authentication Gate (Visitors cannot track without sign in) ──
+  if (!isAuthenticated) {
+    return (
+      <>
+        <Navbar />
+        <div
+          style={{
+            minHeight: "100vh",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            background: "#FAF6F0",
+            padding: "120px 20px 60px",
+          }}
+        >
+          <div style={{ textAlign: "center", marginBottom: 24, maxWidth: 460 }}>
+            <span
+              style={{
+                fontSize: 12,
+                fontWeight: 700,
+                textTransform: "uppercase",
+                letterSpacing: 1.5,
+                color: "#881A1C",
+              }}
+            >
+              Secure Order Tracking Portal
+            </span>
+            <h1
+              style={{
+                fontSize: "clamp(1.5rem, 3.5vw, 2rem)",
+                fontWeight: 800,
+                margin: "6px 0 8px",
+                color: "#111827",
+              }}
+            >
+              Sign In to Track Your Orders
+            </h1>
+            <p
+              style={{
+                color: "#6b7280",
+                fontSize: 13,
+                margin: 0,
+                lineHeight: 1.5,
+              }}
+            >
+              Please sign in with Google or your email OTP to securely view your active shipments in transit, custom tailoring status, and live courier tracking.
+            </p>
+          </div>
+
+          <div
+            className="clerk-crop-wrap"
+            style={{
+              position: "relative",
+              overflow: "hidden",
+              borderRadius: 16,
+              boxShadow: "0 10px 30px rgba(0,0,0,0.06)",
+            }}
+          >
+            <SignIn
+              routing="hash"
+              signUpUrl="/sign-up?redirect_url=/track-order"
+              fallbackRedirectUrl="/track-order"
+            />
+          </div>
+
+          <div style={{ marginTop: "24px", textAlign: "center" }}>
+            <Link
+              href="/"
+              style={{
+                fontSize: "13px",
+                color: "#6b7280",
+                textDecoration: "underline",
+              }}
+            >
+              ← Return to Homepage
+            </Link>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
@@ -279,36 +525,37 @@ function TrackOrderContent() {
       `}</style>
 
       <div className="track-order-wrapper">
-        <div style={{ maxWidth: 840, margin: "0 auto" }}>
+        <div style={{ maxWidth: 880, margin: "0 auto" }}>
           {/* Header */}
-          <div style={{ textAlign: "center", marginBottom: 36 }}>
+          <div style={{ textAlign: "center", marginBottom: 32 }}>
             <span
               style={{
                 fontSize: 12,
                 fontWeight: 700,
                 textTransform: "uppercase",
                 letterSpacing: 1.5,
-                color: "#f35c27",
+                color: "#881A1C",
               }}
             >
               Live Fulfillment Center
             </span>
             <h1
               style={{
-                fontSize: "clamp(1.75rem, 4vw, 2rem)",
+                fontSize: "clamp(1.75rem, 4vw, 2.25rem)",
                 fontWeight: 800,
                 margin: "6px 0 10px",
                 letterSpacing: "-0.5px",
+                color: "#111827",
               }}
             >
-              Track Your Order & Delivery
+              Track Your Orders & Shipments
             </h1>
             <p style={{ color: "#6b7280", fontSize: 14, margin: 0 }}>
-              Enter your Order Reference (e.g. <strong>SUM-28211</strong>) or email address to view live courier transit milestones.
+              Live transit milestones from our Rewa & Kolkata artisan studios via <strong>Shiprocket Express</strong>.
             </p>
           </div>
 
-          {/* Search Input Box */}
+          {/* Search Input Box (Clean, never auto-filled) */}
           <form
             onSubmit={handleSearch}
             style={{
@@ -320,8 +567,8 @@ function TrackOrderContent() {
               display: "flex",
               alignItems: "center",
               gap: 8,
-              marginBottom: searchError ? 16 : 36,
-              maxWidth: 640,
+              marginBottom: searchError ? 16 : 30,
+              maxWidth: 680,
               marginLeft: "auto",
               marginRight: "auto",
             }}
@@ -339,7 +586,7 @@ function TrackOrderContent() {
             </div>
             <input
               type="text"
-              placeholder="Enter Order # or Email"
+              placeholder="Search by Order # (e.g. SUM-28211)"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               style={{
@@ -383,8 +630,8 @@ function TrackOrderContent() {
                 padding: "12px 16px",
                 borderRadius: 10,
                 fontSize: 13,
-                maxWidth: 640,
-                margin: "0 auto 30px",
+                maxWidth: 680,
+                margin: "0 auto 26px",
                 textAlign: "center",
               }}
             >
@@ -392,7 +639,234 @@ function TrackOrderContent() {
             </div>
           )}
 
-          {/* Active Order Tracker Card */}
+          {/* ─── ACTIVE UNDELIVERED ORDERS SECTION ─── */}
+          {undeliveredOrders.length > 0 && (
+            <div style={{ marginBottom: 32 }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  marginBottom: 14,
+                  flexWrap: "wrap",
+                  gap: 8,
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <span
+                    style={{
+                      display: "inline-block",
+                      width: 10,
+                      height: 10,
+                      borderRadius: "50%",
+                      background: "#f59e0b",
+                      boxShadow: "0 0 0 3px rgba(245, 158, 11, 0.2)",
+                    }}
+                  />
+                  <h2
+                    style={{
+                      fontSize: 15,
+                      fontWeight: 800,
+                      textTransform: "uppercase",
+                      letterSpacing: 0.5,
+                      color: "#111827",
+                      margin: 0,
+                    }}
+                  >
+                    Your Active Shipments in Transit ({undeliveredOrders.length})
+                  </h2>
+                </div>
+                <span style={{ fontSize: 12, color: "#6b7280" }}>
+                  Select an order to view live timeline
+                </span>
+              </div>
+
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns:
+                    undeliveredOrders.length > 1
+                      ? "repeat(auto-fit, minmax(280px, 1fr))"
+                      : "1fr",
+                  gap: 14,
+                }}
+              >
+                {undeliveredOrders.map((ord) => {
+                  const isSelected = activeOrder?.orderNumber === ord.orderNumber;
+                  const itemCount =
+                    (ord.items || []).reduce(
+                      (acc, i) => acc + (i.quantity || 1),
+                      0
+                    ) || 1;
+
+                  return (
+                    <div
+                      key={ord.orderNumber}
+                      onClick={() => {
+                        setActiveOrder(ord);
+                      }}
+                      style={{
+                        background: "#ffffff",
+                        borderRadius: 14,
+                        padding: "16px 18px",
+                        border: isSelected
+                          ? "2px solid #881A1C"
+                          : "1px solid #e5e7eb",
+                        boxShadow: isSelected
+                          ? "0 8px 24px rgba(136, 26, 28, 0.12)"
+                          : "0 2px 8px rgba(0,0,0,0.03)",
+                        cursor: "pointer",
+                        transition: "all 0.2s ease",
+                        position: "relative",
+                      }}
+                    >
+                      {/* Top Row: Order # and Status Badge */}
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "flex-start",
+                          marginBottom: 10,
+                        }}
+                      >
+                        <div>
+                          <span
+                            style={{
+                              fontSize: 13,
+                              color: "#111827",
+                              fontWeight: 800,
+                            }}
+                          >
+                            #{ord.orderNumber}
+                          </span>
+                          <div
+                            style={{
+                              fontSize: 11,
+                              color: "#6b7280",
+                              marginTop: 2,
+                            }}
+                          >
+                            {ord.createdAt
+                              ? new Date(ord.createdAt).toLocaleDateString(
+                                  "en-IN",
+                                  {
+                                    day: "numeric",
+                                    month: "short",
+                                    year: "numeric",
+                                  }
+                                )
+                              : "Recent"}
+                          </div>
+                        </div>
+
+                        <span
+                          style={{
+                            fontSize: 11,
+                            fontWeight: 800,
+                            padding: "4px 10px",
+                            borderRadius: 999,
+                            background:
+                              ord.orderStatus === "SHIPPED" ||
+                              ord.orderStatus === "OUT_FOR_DELIVERY"
+                                ? "#eff6ff"
+                                : "#fffbeb",
+                            color:
+                              ord.orderStatus === "SHIPPED" ||
+                              ord.orderStatus === "OUT_FOR_DELIVERY"
+                                ? "#1d4ed8"
+                                : "#b45309",
+                            border:
+                              ord.orderStatus === "SHIPPED" ||
+                              ord.orderStatus === "OUT_FOR_DELIVERY"
+                                ? "1px solid #bfdbfe"
+                                : "1px solid #fde68a",
+                            textTransform: "uppercase",
+                          }}
+                        >
+                          {ord.orderStatus || "CONFIRMED"}
+                        </span>
+                      </div>
+
+                      {/* Items Preview */}
+                      <div
+                        style={{
+                          display: "flex",
+                          gap: 10,
+                          alignItems: "center",
+                          margin: "12px 0",
+                        }}
+                      >
+                        <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
+                          {(ord.items || []).slice(0, 3).map((item, iIdx) => (
+                            <img
+                              key={iIdx}
+                              src={item.image || "/assets/img/14.png"}
+                              alt={item.title || item.name}
+                              style={{
+                                width: 44,
+                                height: 54,
+                                objectFit: "cover",
+                                borderRadius: 6,
+                                border: "1px solid #f3f4f6",
+                              }}
+                            />
+                          ))}
+                        </div>
+
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <div
+                            style={{
+                              fontSize: 13,
+                              fontWeight: 700,
+                              color: "#111827",
+                              whiteSpace: "nowrap",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                            }}
+                          >
+                            {ord.items?.[0]?.title || ord.items?.[0]?.name || "Khadi Piece"}
+                            {ord.items?.length > 1
+                              ? ` + ${ord.items.length - 1} more`
+                              : ""}
+                          </div>
+                          <div style={{ fontSize: 12, color: "#6b7280", marginTop: 2 }}>
+                            ₹{(ord.totalAmount || 0).toLocaleString("en-IN")} • {itemCount} {itemCount === 1 ? "garment" : "garments"}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Action & Est delivery footer */}
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          marginTop: 10,
+                          paddingTop: 8,
+                          borderTop: "1px dashed #f3f4f6",
+                          fontSize: 12,
+                        }}
+                      >
+                        <span style={{ color: "#059669", fontWeight: 600 }}>
+                          Est. Delivery: {ord.estimatedDelivery || "3-5 business days"}
+                        </span>
+                        <span
+                          style={{
+                            color: isSelected ? "#881A1C" : "#6b7280",
+                            fontWeight: 700,
+                          }}
+                        >
+                          {isSelected ? "Currently Viewing ✓" : "View Timeline →"}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* ─── ACTIVE ORDER TRACKER CARD ─── */}
           {activeOrder ? (
             <div className="track-card">
               {/* Top Order Metadata Banner */}
@@ -459,7 +933,7 @@ function TrackOrderContent() {
                 </div>
               </div>
 
-              {/* Carrier & AWB Bar */}
+              {/* Carrier Bar - WITHOUT ANY AWB PLACEHOLDER */}
               <div
                 style={{
                   background: "#f9fafb",
@@ -484,20 +958,18 @@ function TrackOrderContent() {
                         color: "#111827",
                       }}
                     >
-                      Carrier: {activeOrder.carrier && !activeOrder.carrier.toLowerCase().includes("bluedart") ? activeOrder.carrier : "Shiprocket"}
+                      Carrier:{" "}
+                      {activeOrder.carrier &&
+                      !activeOrder.carrier.toLowerCase().includes("bluedart")
+                        ? activeOrder.carrier
+                        : "Shiprocket Express"}
                     </div>
-                    <div style={{ fontSize: 12, color: "#6b7280" }}>
-                      {activeOrder.trackingNumber && !/^BD\d+IN$/i.test(activeOrder.trackingNumber) ? (
-                        <>
-                          AWB / Tracking Number:{" "}
-                          <strong>{activeOrder.trackingNumber}</strong>
-                        </>
-                      ) : (
-                        <span style={{ color: "#6b7280" }}>
-                          AWB: Awaiting dispatch assignment via Shiprocket
-                        </span>
-                      )}
-                    </div>
+                    {activeOrder.trackingNumber &&
+                    !/^BD\d+IN$/i.test(activeOrder.trackingNumber) ? (
+                      <div style={{ fontSize: 12, color: "#6b7280", marginTop: 2 }}>
+                        Tracking: <strong>{activeOrder.trackingNumber}</strong>
+                      </div>
+                    ) : null}
                   </div>
                 </div>
 
@@ -546,10 +1018,7 @@ function TrackOrderContent() {
                     const isCurrent = idx === currentStageIndex;
 
                     return (
-                      <div
-                        key={stage.key}
-                        className="track-stage-node"
-                      >
+                      <div key={stage.key} className="track-stage-node">
                         <div
                           className="track-stage-circle"
                           style={{
@@ -572,23 +1041,13 @@ function TrackOrderContent() {
                         >
                           {stage.label}
                         </div>
-                        <div
-                          style={{
-                            fontSize: 11,
-                            color: "#6b7280",
-                            marginTop: 2,
-                            display: "none",
-                          }}
-                        >
-                          {stage.desc}
-                        </div>
                       </div>
                     );
                   })}
                 </div>
               </div>
 
-              {/* Items in Order */}
+              {/* Items in Order with Custom Fit Details */}
               <div
                 style={{
                   borderTop: "1px solid #f3f4f6",
@@ -598,7 +1057,7 @@ function TrackOrderContent() {
               >
                 <h3
                   style={{
-                    fontSize: 15,
+                    fontSize: 14,
                     fontWeight: 700,
                     textTransform: "uppercase",
                     letterSpacing: 0.5,
@@ -612,64 +1071,88 @@ function TrackOrderContent() {
                 <div
                   style={{ display: "flex", flexDirection: "column", gap: 12 }}
                 >
-                  {(activeOrder.items || []).map((item, idx) => (
-                    <div
-                      key={idx}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        padding: "10px 14px",
-                        background: "#fafafa",
-                        borderRadius: 8,
-                      }}
-                    >
+                  {(activeOrder.items || []).map((item, idx) => {
+                    const fit =
+                      typeof item.fitDetails === "string"
+                        ? (() => {
+                            try {
+                              return JSON.parse(item.fitDetails);
+                            } catch {
+                              return null;
+                            }
+                          })()
+                        : item.fitDetails;
+
+                    return (
                       <div
+                        key={idx}
                         style={{
                           display: "flex",
                           alignItems: "center",
-                          gap: 12,
+                          justifyContent: "space-between",
+                          padding: "12px 14px",
+                          background: "#fafafa",
+                          borderRadius: 10,
+                          border: "1px solid #f3f4f6",
                         }}
                       >
-                        <img
-                          src={item.image || "/assets/img/14.png"}
-                          alt={item.title || item.name}
+                        <div
                           style={{
-                            width: 44,
-                            height: 54,
-                            objectFit: "cover",
-                            borderRadius: 6,
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 14,
                           }}
-                        />
-                        <div>
-                          <strong style={{ fontSize: 14, color: "#111827" }}>
-                            {item.title || item.name}
-                          </strong>
-                          <div style={{ fontSize: 12, color: "#6b7280" }}>
-                            Size: <strong>{item.selectedSize || "M"}</strong>{" "}
-                            {item.selectedColor
-                              ? `| ${item.selectedColor}`
-                              : ""}{" "}
-                            × {item.quantity || 1}
-                          </div>
-                          {(() => {
-                            const fit = typeof item.fitDetails === "string" ? (() => { try { return JSON.parse(item.fitDetails); } catch { return null; } })() : item.fitDetails;
-                            return fit && (fit.bust || fit.waist || fit.hips) ? (
-                              <div style={{ fontSize: 11, color: "#c2410c", marginTop: 4, background: "#fff7ed", padding: "2px 6px", borderRadius: 4, display: "inline-block" }}>
-                                ✦ Fit: Bust {fit.bust}&quot; • Waist {fit.waist}&quot; • Hips {fit.hips}&quot;
+                        >
+                          <img
+                            src={item.image || "/assets/img/14.png"}
+                            alt={item.title || item.name}
+                            style={{
+                              width: 48,
+                              height: 58,
+                              objectFit: "cover",
+                              borderRadius: 6,
+                            }}
+                          />
+                          <div>
+                            <strong style={{ fontSize: 14, color: "#111827" }}>
+                              {item.title || item.name}
+                            </strong>
+                            <div style={{ fontSize: 12, color: "#6b7280", marginTop: 2 }}>
+                              Size: <strong>{item.selectedSize || "M"}</strong>{" "}
+                              {item.selectedColor ? `| ${item.selectedColor}` : ""}{" "}
+                              × {item.quantity || 1}
+                            </div>
+                            {fit && (fit.bust || fit.waist || fit.hips || fit.notes) && (
+                              <div
+                                style={{
+                                  fontSize: 11.5,
+                                  color: "#9a3412",
+                                  marginTop: 5,
+                                  background: "#fff7ed",
+                                  padding: "4px 8px",
+                                  borderRadius: 4,
+                                  display: "inline-block",
+                                  border: "1px solid #fed7aa",
+                                  fontWeight: 600,
+                                }}
+                              >
+                                ✦ Custom Fit: Bust {fit.bust}&quot; • Waist {fit.waist}&quot; • Hips {fit.hips}&quot;
+                                {fit.fitPreference ? ` • ${fit.fitPreference}` : ""}
+                                {fit.lengthPreference && fit.lengthPreference !== "Standard length (as per style)" ? ` • Length: ${fit.lengthPreference}` : ""}
+                                {fit.notes ? ` • Note: "${fit.notes}"` : ""}
                               </div>
-                            ) : null;
-                          })()}
+                            )}
+                          </div>
                         </div>
+                        <span style={{ fontWeight: 800, fontSize: 14, color: "#111827" }}>
+                          ₹
+                          {(
+                            (item.price || 0) * (item.quantity || 1)
+                          ).toLocaleString("en-IN")}
+                        </span>
                       </div>
-                      <span style={{ fontWeight: 700, fontSize: 14 }}>
-                        ₹
-                        {(
-                          (item.price || 0) * (item.quantity || 1)
-                        ).toLocaleString("en-IN")}
-                      </span>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
 
@@ -704,6 +1187,10 @@ function TrackOrderContent() {
                     {activeOrder.shippingAddress?.city},{" "}
                     {activeOrder.shippingAddress?.state} -{" "}
                     {activeOrder.shippingAddress?.pincode}
+                    <br />
+                    <span style={{ color: "#6b7280", fontSize: 12 }}>
+                      Phone: {activeOrder.customer?.phone}
+                    </span>
                   </div>
                 </div>
 
@@ -767,7 +1254,7 @@ function TrackOrderContent() {
                   height: 56,
                   borderRadius: "50%",
                   background: "#fdf3eb",
-                  color: "#f35c27",
+                  color: "#881A1C",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -776,13 +1263,43 @@ function TrackOrderContent() {
               >
                 <FiPackage size={26} />
               </div>
-              <h3 style={{ fontSize: 18, fontWeight: 800, margin: "0 0 8px", color: "#111827" }}>
-                Ready to Track Your Handcrafted Khadi Shipment
+              <h3
+                style={{
+                  fontSize: 18,
+                  fontWeight: 800,
+                  margin: "0 0 8px",
+                  color: "#111827",
+                }}
+              >
+                No Active Shipments in Transit
               </h3>
-              <p style={{ color: "#6b7280", fontSize: 14, maxWidth: 460, margin: "0 auto 24px", lineHeight: 1.6 }}>
-                Enter your Order Reference from your order confirmation (e.g. <strong>SUM-28211</strong>) or your registered checkout email address to view live courier transit milestones.
+              <p
+                style={{
+                  color: "#6b7280",
+                  fontSize: 14,
+                  maxWidth: 480,
+                  margin: "0 auto 24px",
+                  lineHeight: 1.6,
+                }}
+              >
+                {userEmail ? (
+                  <>
+                    No pending shipments found under <strong>{userEmail}</strong>. If you placed an order with another reference number, enter it in the search bar above.
+                  </>
+                ) : (
+                  <>
+                    Enter your Order Reference from your order confirmation (e.g. <strong>SUM-28211</strong>) to view live courier transit milestones.
+                  </>
+                )}
               </p>
-              <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+              <div
+                style={{
+                  display: "flex",
+                  gap: 12,
+                  justifyContent: "center",
+                  flexWrap: "wrap",
+                }}
+              >
                 <Link
                   href="/shop"
                   style={{
@@ -811,6 +1328,73 @@ function TrackOrderContent() {
                 >
                   Contact Support
                 </Link>
+              </div>
+            </div>
+          )}
+
+          {/* ─── DELIVERED / PAST ORDERS ACCORDION ─── */}
+          {deliveredOrders.length > 0 && (
+            <div style={{ marginTop: 36 }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  marginBottom: 14,
+                }}
+              >
+                <h3
+                  style={{
+                    fontSize: 14,
+                    fontWeight: 800,
+                    textTransform: "uppercase",
+                    letterSpacing: 0.5,
+                    color: "#059669",
+                    margin: 0,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                  }}
+                >
+                  <FiCheckCircle size={16} /> Delivered Orders ({deliveredOrders.length})
+                </h3>
+                <span style={{ fontSize: 12, color: "#6b7280" }}>
+                  Eligible for 7-day returns & exchanges
+                </span>
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                {deliveredOrders.map((dOrd) => (
+                  <div
+                    key={dOrd.orderNumber}
+                    onClick={() => {
+                      setActiveOrder(dOrd);
+                    }}
+                    style={{
+                      background: "#ffffff",
+                      borderRadius: 10,
+                      padding: "12px 16px",
+                      border: "1px solid #e5e7eb",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      cursor: "pointer",
+                      transition: "background 0.2s",
+                    }}
+                  >
+                    <div>
+                      <strong style={{ fontSize: 13, color: "#111827" }}>
+                        #{dOrd.orderNumber}
+                      </strong>
+                      <span style={{ fontSize: 12, color: "#6b7280", marginLeft: 8 }}>
+                        Delivered safely • ₹{(dOrd.totalAmount || 0).toLocaleString("en-IN")}
+                      </span>
+                    </div>
+                    <span style={{ fontSize: 12, color: "#881A1C", fontWeight: 700 }}>
+                      View Details →
+                    </span>
+                  </div>
+                ))}
               </div>
             </div>
           )}

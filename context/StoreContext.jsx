@@ -482,7 +482,7 @@ export function StoreProvider({ children }) {
       const savedCoupon = localStorage.getItem("sum_coupon");
       if (savedCoupon) setAppliedCoupon(JSON.parse(savedCoupon));
 
-      // Sanitize orders (purge legacy dummy demo orders)
+      // Sanitize orders (purge legacy dummy demo orders and old test submissions)
       const savedOrders = localStorage.getItem("sum_orders");
       if (savedOrders) {
         const parsed = JSON.parse(savedOrders);
@@ -495,9 +495,13 @@ export function StoreProvider({ children }) {
                 "SUM-98215",
                 "SUM-98216",
                 "SUM-98217",
+                "SUM-70908",
                 "ord-101",
                 "ord-102",
-              ].includes(o.id || o.orderNumber),
+              ].includes(o.id || o.orderNumber) &&
+              (o.customer?.name || "").toLowerCase() !== "test" &&
+              (o.shippingAddress?.street || "").toLowerCase() !== "testtesttest" &&
+              (o.shippingAddress?.city || "").toLowerCase() !== "cuttack",
           )
           .map((o) => {
             if (o.orderNumber?.includes("63012") || (!o.cfPaymentVerified && o.paymentGateway === "Cashfree" && o.paymentStatus === "PAID")) {
