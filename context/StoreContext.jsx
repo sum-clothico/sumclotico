@@ -1168,7 +1168,7 @@ export function StoreProvider({ children }) {
       orderStatus: "CONFIRMED",
       carrier: "Shiprocket",
       trackingNumber: null,
-      estimatedDelivery: "3 - 5 business days",
+      estimatedDelivery: "10 - 15 business days",
       createdAt: new Date().toISOString(),
     };
 

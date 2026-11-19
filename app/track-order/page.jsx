@@ -845,19 +845,40 @@ function TrackOrderContent() {
                           paddingTop: 8,
                           borderTop: "1px dashed #f3f4f6",
                           fontSize: 12,
+                          flexWrap: "wrap",
+                          gap: 6,
                         }}
                       >
                         <span style={{ color: "#059669", fontWeight: 600 }}>
-                          Est. Delivery: {ord.estimatedDelivery || "3-5 business days"}
+                          Est. Delivery: {ord.estimatedDelivery || "10-15 business days"}
                         </span>
-                        <span
-                          style={{
-                            color: isSelected ? "#881A1C" : "#6b7280",
-                            fontWeight: 700,
-                          }}
-                        >
-                          {isSelected ? "Currently Viewing ✓" : "View Timeline →"}
-                        </span>
+                        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                          {ord.paymentStatus !== "PAID" && (
+                            <Link
+                              href={`/checkout?retry=${encodeURIComponent(ord.orderNumber)}`}
+                              onClick={(e) => e.stopPropagation()}
+                              style={{
+                                background: "#881A1C",
+                                color: "#ffffff",
+                                padding: "4px 10px",
+                                borderRadius: 6,
+                                fontSize: 11,
+                                fontWeight: 800,
+                                textDecoration: "none",
+                              }}
+                            >
+                              Retry Payment →
+                            </Link>
+                          )}
+                          <span
+                            style={{
+                              color: isSelected ? "#881A1C" : "#6b7280",
+                              fontWeight: 700,
+                            }}
+                          >
+                            {isSelected ? "Currently Viewing ✓" : "View Timeline →"}
+                          </span>
+                        </div>
                       </div>
                     </div>
                   );
@@ -905,19 +926,40 @@ function TrackOrderContent() {
                   </div>
                 </div>
 
-                <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
                   <div
                     style={{
-                      background: "#ecfdf5",
-                      color: "#065f46",
+                      background: activeOrder.paymentStatus === "PAID" ? "#ecfdf5" : "#fef2f2",
+                      color: activeOrder.paymentStatus === "PAID" ? "#065f46" : "#dc2626",
+                      border: activeOrder.paymentStatus === "PAID" ? "1px solid #a7f3d0" : "1px solid #fecaca",
                       padding: "6px 12px",
                       borderRadius: 999,
                       fontSize: 12,
                       fontWeight: 700,
                     }}
                   >
-                    Payment: {activeOrder.paymentStatus || "PAID"}
+                    Payment: {activeOrder.paymentStatus || "UNPAID"}
                   </div>
+                  {activeOrder.paymentStatus !== "PAID" && (
+                    <Link
+                      href={`/checkout?retry=${encodeURIComponent(activeOrder.orderNumber)}`}
+                      style={{
+                        background: "#881A1C",
+                        color: "#ffffff",
+                        padding: "6px 14px",
+                        borderRadius: 999,
+                        fontSize: 12,
+                        fontWeight: 800,
+                        textDecoration: "none",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 4,
+                        boxShadow: "0 2px 6px rgba(136, 26, 28, 0.2)",
+                      }}
+                    >
+                      <span>Retry Payment →</span>
+                    </Link>
+                  )}
                   <div
                     style={{
                       background: "#fdf8f6",
@@ -977,7 +1019,7 @@ function TrackOrderContent() {
                   style={{ fontSize: 13, color: "#059669", fontWeight: 700 }}
                 >
                   Estimated Delivery:{" "}
-                  {activeOrder.estimatedDelivery || "3-5 business days"}
+                  {activeOrder.estimatedDelivery || "10-15 business days"}
                 </div>
               </div>
 
@@ -1215,6 +1257,28 @@ function TrackOrderContent() {
                     <FiRefreshCw size={14} />
                     <span>Return / Exchange</span>
                   </button>
+
+                  {activeOrder.paymentStatus !== "PAID" && (
+                    <Link
+                      href={`/checkout?retry=${encodeURIComponent(activeOrder.orderNumber)}`}
+                      style={{
+                        background: "#881A1C",
+                        color: "#ffffff",
+                        padding: "10px 20px",
+                        borderRadius: 8,
+                        fontSize: 13,
+                        fontWeight: 700,
+                        textDecoration: "none",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: 6,
+                        boxShadow: "0 2px 8px rgba(136, 26, 28, 0.25)",
+                      }}
+                    >
+                      <span>Retry Payment with Cashfree →</span>
+                    </Link>
+                  )}
 
                   <Link
                     href="/shop"

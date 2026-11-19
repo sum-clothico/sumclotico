@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useStore } from "@/context/StoreContext";
 import { FiShoppingBag, FiTrash2, FiPlus, FiMinus, FiX, FiArrowRight, FiShield, FiTag, FiCheck } from "react-icons/fi";
 import { trackViewCart, trackBeginCheckout, trackEvent } from "@/lib/analytics";
@@ -30,14 +31,19 @@ export default function CartDrawer() {
     removeCoupon,
   } = useStore();
 
+  const router = useRouter();
   const [couponCodeInput, setCouponCodeInput] = useState("");
   const [editingFitItem, setEditingFitItem] = useState(null);
+  const [isNavigatingCheckout, setIsNavigatingCheckout] = useState(false);
 
   useEffect(() => {
     if (isCartOpen && cart.length > 0) {
       trackViewCart(cart, cartGrandTotal);
     }
-  }, [isCartOpen]);
+    if (!isCartOpen) {
+      setIsNavigatingCheckout(false);
+    }
+  }, [isCartOpen, cart, cartGrandTotal]);
 
   if (!isCartOpen) return null;
 
@@ -494,10 +500,14 @@ export default function CartDrawer() {
               <span>5% GST (+₹{Math.round(cartGstAmount || 0).toLocaleString("en-IN")}) added at checkout</span>
             </div>
 
-            <Link
-              href="/checkout"
+            <button
+              type="button"
+              disabled={isNavigatingCheckout}
               className="cart-checkout-btn"
               style={{
+                width: "100%",
+                border: "none",
+                cursor: isNavigatingCheckout ? "not-allowed" : "pointer",
                 marginTop: 18,
                 padding: "18px",
                 fontSize: 16,
@@ -509,10 +519,12 @@ export default function CartDrawer() {
                 alignItems: "center",
                 justifyContent: "center",
                 gap: 10,
-                textDecoration: "none",
                 boxShadow: "0 6px 20px rgba(0, 0, 0, 0.16)",
+                opacity: isNavigatingCheckout ? 0.85 : 1,
+                transition: "opacity 0.2s ease, transform 0.2s ease",
               }}
               onClick={() => {
+                setIsNavigatingCheckout(true);
                 try {
                   localStorage.setItem("sum_cart", JSON.stringify(cart));
                   sessionStorage.setItem("sum_cart_backup", JSON.stringify(cart));
@@ -521,12 +533,33 @@ export default function CartDrawer() {
                   }
                 } catch {}
                 trackBeginCheckout(cart, cartGrandTotal, appliedCoupon?.code);
-                setIsCartOpen(false);
+                router.push("/checkout");
+                setTimeout(() => {
+                  setIsCartOpen(false);
+                }, 1000);
               }}
             >
-              <span>Proceed to Checkout</span>
-              <FiArrowRight size={18} />
-            </Link>
+              {isNavigatingCheckout ? (
+                <>
+                  <div
+                    style={{
+                      width: 18,
+                      height: 18,
+                      border: "2px solid rgba(255,255,255,0.3)",
+                      borderTop: "2px solid #ffffff",
+                      borderRadius: "50%",
+                      animation: "spin 0.8s linear infinite",
+                    }}
+                  />
+                  <span>Loading Secure Checkout...</span>
+                </>
+              ) : (
+                <>
+                  <span>Proceed to Checkout</span>
+                  <FiArrowRight size={18} />
+                </>
+              )}
+            </button>
 
             <div
               style={{
