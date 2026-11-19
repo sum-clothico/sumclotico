@@ -17,17 +17,17 @@ const JOURNEY = [
   },
   {
     label: "WOVEN",
-    image: "/assets/IMG_2373.JPG",
+    image: "/assets/IMG_2373.jpg",
     caption: "Pit loom. Human rhythm.",
   },
   {
     label: "SOURCED",
-    image: "/assets/homepage/IMG_3721.JPG",
+    image: "/assets/homepage/IMG_3721.jpg",
     caption: "Cloth chosen with care.",
   },
   {
     label: "DESIGNED",
-    image: "/assets/homepage/IMG_5069%20(1).JPG",
+    image: "/assets/homepage/IMG_5069%20(1).jpg",
     caption: "Easy silhouettes, honest cuts.",
   },
   {
@@ -37,12 +37,12 @@ const JOURNEY = [
   },
   {
     label: "STITCHED",
-    image: "/assets/homepage/IMG_7669.JPG",
+    image: "/assets/homepage/IMG_7669.jpg",
     caption: "Women tailors, piece by piece.",
   },
   {
     label: "WORN",
-    image: "/assets/homepage/IMG_1046.JPG",
+    image: "/assets/homepage/IMG_1046.jpg",
     caption: "Then it becomes yours.",
   },
 ];

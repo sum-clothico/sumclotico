@@ -238,7 +238,7 @@ const StorySection = () => {
         />
         <img
           className="story-portrait-img story-img-0"
-          src="/assets/homepage/IMG_1048.JPG"
+          src="/assets/homepage/IMG_1048.jpg"
           alt="Khadi Artisan Craft"
         />
       </div>

@@ -35,7 +35,7 @@ function AnimatedWords({ text, className = "os-anim-word" }) {
 
 const PEOPLE_IMAGES = [
   {
-    src: "/assets/about/IMG_3720.JPG",
+    src: "/assets/about/IMG_3720.jpg",
     label: "Artisan Hands",
   },
   {
@@ -47,7 +47,7 @@ const PEOPLE_IMAGES = [
     label: "Pattern Cutting",
   },
   {
-    src: "/assets/about/WhatsApp Image 2026-10-05 at 2.13.58 PM (1).jpeg",
+    src: "/assets/about/WhatsApp Image 2026-10-05 at 2.13.58 PM (1).jpg",
     label: "Loom Weaving",
   },
 ];
@@ -488,7 +488,7 @@ export default function OurStoryClient() {
               }}
             >
               <img loading="lazy" decoding="async"
-                src="/assets/about/WhatsApp Image 2026-10-05 at 2.13.53 PM.jpeg"
+                src="/assets/about/WhatsApp Image 2026-10-05 at 2.13.53 PM.jpg"
                 alt="Sum Clothico handcrafted silhouette"
                 style={{
                   width: "100%",
@@ -509,7 +509,7 @@ export default function OurStoryClient() {
               }}
             >
               <img loading="lazy" decoding="async"
-                src="/assets/about/WhatsApp Image 2026-10-05 at 2.14.11 PM (4).jpeg"
+                src="/assets/about/WhatsApp Image 2026-10-05 at 2.14.11 PM (4).jpg"
                 alt="Sum handcrafted Khadi textile weave"
                 style={{
                   width: "100%",
@@ -642,7 +642,7 @@ export default function OurStoryClient() {
             }}
           >
             <img loading="lazy" decoding="async"
-              src="/assets/about/WhatsApp Image 2026-03-16 at 2.54.57 PM.jpeg"
+              src="/assets/about/WhatsApp Image 2026-03-16 at 2.54.57 PM.jpg"
               alt="Aditi Singh — founder, Sum Clothico"
               style={{
                 width: "100%",

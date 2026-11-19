@@ -13,7 +13,7 @@ export default function OurStoryPage() {
     <main>
       <Navbar />
       <PageHeaderHero
-        bgImage="/assets/about/IMG_1040.JPG"
+        bgImage="/assets/about/IMG_1040.jpg"
         badgeText="Our STORY"
         title="The Sum Story"
         subtitle=""

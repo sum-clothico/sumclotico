@@ -40,9 +40,9 @@ function AnimatedWords({ text, className = "fab-anim-word" }) {
 
 const PROCESS_STEPS = [
   { label: "Spinning", img: "/assets/fiber/14887305-5caf-4e77-b3fa-c79443ced34b.png" },
-  { label: "Weaving", img: "/assets/IMG_2373.JPG" },
-  { label: "Fabric", img: "/assets/fiber/IMG_1322.JPG" },
-  { label: "Outfit", img: "/assets/fiber/WhatsApp Image 2026-10-05 at 2.27.02 PM.jpeg" },
+  { label: "Weaving", img: "/assets/IMG_2373.jpg" },
+  { label: "Fabric", img: "/assets/fiber/IMG_1322.jpg" },
+  { label: "Outfit", img: "/assets/fiber/WhatsApp Image 2026-10-05 at 2.27.02 PM.jpg" },
 ];
 
 const COMPARE_COLLAPSIBLES = [
@@ -273,7 +273,7 @@ export default function FabricClient() {
                 }}
               >
                 <img loading="lazy" decoding="async"
-                  src="/assets/fiber/WhatsApp Image 2026-10-05 at 2.14.11 PM (4).jpeg"
+                  src="/assets/fiber/WhatsApp Image 2026-10-05 at 2.14.11 PM (4).jpg"
                   alt="Spinner at charkha"
                   style={{
                     width: "100%",
@@ -293,7 +293,7 @@ export default function FabricClient() {
                 }}
               >
                 <img loading="lazy" decoding="async"
-                  src="/assets/fiber/WhatsApp Image 2026-10-05 at 8.56.14 PM.jpeg"
+                  src="/assets/fiber/WhatsApp Image 2026-10-05 at 8.56.14 PM.jpg"
                   alt="Hands weaving khadi"
                   style={{
                     width: "100%",

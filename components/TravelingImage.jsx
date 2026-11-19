@@ -143,7 +143,7 @@ const TravelingImage = () => {
       clipPath: "inset(0% 0% 0% 0%)",
     });
 
-    // Phase 1 hold on IMG_1048.JPG
+    // Phase 1 hold on IMG_1048.jpg
     splitTl.to({}, { duration: 0.28 });
     if (curtain0) {
       splitTl.to(curtain0, {
@@ -307,7 +307,7 @@ const TravelingImage = () => {
         />
       </div>
       <div className="traveling-image__curtain curtain-0">
-        <img src="/assets/homepage/IMG_1048.JPG" alt="Khadi Artisan Craft" />
+        <img src="/assets/homepage/IMG_1048.jpg" alt="Khadi Artisan Craft" />
       </div>
       {SPLIT_IMAGES.map((src, i) => (
         <img key={i} className="ti-split" src={src} alt="" />

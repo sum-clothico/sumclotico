@@ -178,7 +178,7 @@ export default function ContactPage() {
     <div ref={containerRef} style={{ position: "relative", minHeight: "100vh", backgroundColor: "#EDE8DC" }}>
       <Navbar />
       <PageHeaderHero
-        bgImage="/assets/WhatsApp Image 2026-10-05 at 2.14.10 PM.jpeg"
+        bgImage="/assets/WhatsApp Image 2026-10-05 at 2.14.10 PM.jpg"
         badgeText="CONCIERGE & CARE"
         title="Come Say Hello!"
         subtitle=""
