@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useStore } from "@/context/StoreContext";
 import Navbar from "@/components/Navbar";
-import { FiShield, FiTag, FiCheck, FiTruck, FiLock, FiCreditCard, FiSmartphone } from "react-icons/fi";
+import { FiShield, FiTag, FiCheck, FiTruck, FiLock, FiCreditCard, FiSmartphone, FiShoppingBag } from "react-icons/fi";
 import { trackEvent } from "@/lib/analytics";
 
 function CheckoutContent() {
@@ -16,6 +16,7 @@ function CheckoutContent() {
   const {
     cart = [],
     setCart,
+    isCartHydrated,
     orders = [],
     cartSubtotal = 0,
     shippingFee = 0,
@@ -136,14 +137,18 @@ function CheckoutContent() {
     }
   }, []);
 
-  if (isRestoringRetry) {
+  if (!isCartHydrated || isRestoringRetry) {
     return (
       <>
         <Navbar />
         <div style={{ minHeight: "70vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px 20px" }}>
           <div style={{ width: 44, height: 44, border: "3px solid #f3f3f3", borderTop: "3px solid #881A1C", borderRadius: "50%", animation: "spin 1s linear infinite", marginBottom: 16 }} />
-          <h2 style={{ fontSize: 20, marginBottom: 8, fontWeight: 700 }}>Restoring Order #{retryOrderNumber}...</h2>
-          <p style={{ color: "#666", fontSize: 14 }}>Retrieving your saved handcrafted pieces and details.</p>
+          <h2 style={{ fontSize: 20, marginBottom: 8, fontWeight: 700, color: "#111827" }}>
+            {isRestoringRetry ? `Restoring Order #${retryOrderNumber}...` : "Loading your bag..."}
+          </h2>
+          <p style={{ color: "#666", fontSize: 14 }}>
+            {isRestoringRetry ? "Retrieving your saved handcrafted pieces and details." : "Fetching your selected handcrafted pieces."}
+          </p>
         </div>
       </>
     );
@@ -153,11 +158,34 @@ function CheckoutContent() {
     return (
       <>
         <Navbar />
-        <div style={{ minHeight: "70vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px 20px" }}>
-          <h1 style={{ fontSize: 28, marginBottom: 12 }}>Your Bag is Empty</h1>
-          <p style={{ color: "#666", marginBottom: 24 }}>You don't have any items in your bag to checkout.</p>
-          <Link href="/collection" className="cart-checkout-btn" style={{ padding: "12px 28px", textDecoration: "none" }}>
-            Browse Collection →
+        <div style={{ minHeight: "70vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px 20px", textAlign: "center" }}>
+          <div style={{ width: 64, height: 64, borderRadius: "50%", background: "#f5ebe6", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
+            <FiShoppingBag size={30} color="#660608" />
+          </div>
+          <h1 style={{ fontSize: 28, fontWeight: 800, color: "#111827", marginBottom: 12 }}>Your Bag is Empty</h1>
+          <p style={{ color: "#666", marginBottom: 26, fontSize: 14, maxWidth: 380, lineHeight: 1.6 }}>
+            You don't have any items in your bag to checkout.
+          </p>
+          <Link
+            href="/collection"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              background: "#111111",
+              color: "#ffffff",
+              padding: "14px 36px",
+              borderRadius: "999px",
+              fontWeight: 700,
+              fontSize: "13px",
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              textDecoration: "none",
+              boxShadow: "0 4px 14px rgba(0, 0, 0, 0.15)",
+              transition: "transform 0.2s ease, background 0.2s ease",
+            }}
+          >
+            BROWSE COLLECTION →
           </Link>
         </div>
       </>

@@ -6,6 +6,7 @@ import React, {
   useState,
   useEffect,
   useCallback,
+  useRef,
 } from "react";
 import { AVAILABLE_COUPONS, validateAndApplyCoupon } from "@/lib/coupons";
 import { trackEvent } from "@/lib/analytics";
@@ -192,6 +193,9 @@ const INITIAL_POLICIES = {
 };
 
 export function StoreProvider({ children }) {
+  const isStoreHydratedRef = useRef(false);
+  const [isCartHydrated, setIsCartHydrated] = useState(false);
+
   // Cart State
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -354,7 +358,16 @@ export function StoreProvider({ children }) {
   useEffect(() => {
     try {
       const savedCart = localStorage.getItem("sum_cart");
-      if (savedCart) setCart(JSON.parse(savedCart));
+      if (savedCart) {
+        try {
+          const parsed = JSON.parse(savedCart);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setCart(parsed);
+          }
+        } catch (e) {
+          console.warn("[Store] Could not parse sum_cart:", e);
+        }
+      }
 
       const savedCategories = localStorage.getItem("sum_categories");
       if (savedCategories) setCategories(JSON.parse(savedCategories));
@@ -436,11 +449,15 @@ export function StoreProvider({ children }) {
       }
     } catch (e) {
       console.error("Failed to load session data from localStorage:", e);
+    } finally {
+      isStoreHydratedRef.current = true;
+      setIsCartHydrated(true);
     }
   }, []);
 
   // Save Policies to localStorage
   useEffect(() => {
+    if (!isStoreHydratedRef.current) return;
     try {
       localStorage.setItem("sum_policies", JSON.stringify(policies));
     } catch {}
@@ -448,6 +465,7 @@ export function StoreProvider({ children }) {
 
   // Save Categories to localStorage
   useEffect(() => {
+    if (!isStoreHydratedRef.current) return;
     try {
       localStorage.setItem("sum_categories", JSON.stringify(categories));
     } catch {}
@@ -455,6 +473,7 @@ export function StoreProvider({ children }) {
 
   // Save Cart to localStorage (session state)
   useEffect(() => {
+    if (!isStoreHydratedRef.current) return;
     try {
       localStorage.setItem("sum_cart", JSON.stringify(cart));
     } catch {}
@@ -471,6 +490,7 @@ export function StoreProvider({ children }) {
 
   // Save Coupons to localStorage
   useEffect(() => {
+    if (!isStoreHydratedRef.current) return;
     try {
       localStorage.setItem("sum_coupons", JSON.stringify(coupons));
     } catch {}
@@ -478,6 +498,7 @@ export function StoreProvider({ children }) {
 
   // Save Campaign Links to localStorage
   useEffect(() => {
+    if (!isStoreHydratedRef.current) return;
     try {
       localStorage.setItem("sum_campaign_links", JSON.stringify(campaignLinks));
     } catch {}
@@ -485,6 +506,7 @@ export function StoreProvider({ children }) {
 
   // Cache orders to localStorage
   useEffect(() => {
+    if (!isStoreHydratedRef.current) return;
     try {
       localStorage.setItem("sum_orders", JSON.stringify(orders));
     } catch {}
@@ -492,6 +514,7 @@ export function StoreProvider({ children }) {
 
   // Cache abandoned carts to localStorage
   useEffect(() => {
+    if (!isStoreHydratedRef.current) return;
     try {
       localStorage.setItem(
         "sum_abandoned_carts",
@@ -629,6 +652,7 @@ export function StoreProvider({ children }) {
     setCart([]);
     setAppliedCoupon(null);
     try {
+      localStorage.removeItem("sum_cart");
       localStorage.removeItem("sum_coupon");
     } catch {}
   };
@@ -1880,6 +1904,8 @@ export function StoreProvider({ children }) {
       value={{
         // Cart
         cart,
+        isCartHydrated,
+        isStoreHydrated: isCartHydrated,
         setCart,
         isCartOpen,
         setIsCartOpen,

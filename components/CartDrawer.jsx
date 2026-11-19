@@ -180,6 +180,8 @@ export default function CartDrawer() {
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
+                  justifyContent: "center",
+                  width: "auto",
                   gap: 8,
                   padding: "14px 28px",
                   textDecoration: "none",
