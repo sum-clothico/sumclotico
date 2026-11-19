@@ -398,6 +398,55 @@ function CheckoutContent() {
     );
   }
 
+  // ── Customer Authentication Gate (Mandatory Clerk Sign-In Before Checkout) ──
+  if (!isAuthenticated) {
+    return (
+      <>
+        <Navbar />
+        <div
+          style={{
+            minHeight: "100vh",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            background: "#FAF6F0",
+            padding: "120px 20px 60px",
+          }}
+        >
+          <div
+            className="clerk-crop-wrap"
+            style={{
+              position: "relative",
+              overflow: "hidden",
+              borderRadius: 16,
+              boxShadow: "0 10px 30px rgba(0,0,0,0.06)",
+            }}
+          >
+            <SignIn
+              routing="hash"
+              signUpUrl="/sign-up?redirect_url=/checkout"
+              fallbackRedirectUrl="/checkout"
+            />
+          </div>
+
+          <div style={{ marginTop: "24px", textAlign: "center" }}>
+            <Link
+              href="/"
+              style={{
+                fontSize: "13px",
+                color: "#6b7280",
+                textDecoration: "underline",
+              }}
+            >
+              ← Return to Homepage
+            </Link>
+          </div>
+        </div>
+      </>
+    );
+  }
+
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };

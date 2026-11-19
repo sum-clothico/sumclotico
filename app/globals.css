@@ -68,17 +68,6 @@ div[class*="development-badge"] {
   pointer-events: none !important;
 }
 
-.cl-footerAction + div,
-.cl-footer + div,
-.cl-card > div:last-child:has(span) {
-  display: none !important;
-}
-
-.cl-card {
-  position: relative !important;
-  overflow: hidden !important;
-}
-
 /* ─── Universal Luxury Skeleton Shimmer ─── */
 @keyframes sum-shimmer {
   0% {

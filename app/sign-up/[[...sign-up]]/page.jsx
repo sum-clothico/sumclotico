@@ -36,16 +36,6 @@ function SignUpContent() {
           path="/sign-up"
           signInUrl={`/sign-in${redirectUrl ? `?redirect_url=${encodeURIComponent(redirectUrl)}` : ""}`}
           fallbackRedirectUrl={redirectUrl}
-          appearance={{
-            elements: {
-              footer: {
-                "& + div": { display: "none !important" },
-              },
-              footerAction: {
-                borderBottom: "none",
-              },
-            },
-          }}
         />
       </div>
 
