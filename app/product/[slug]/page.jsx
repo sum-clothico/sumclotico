@@ -18,6 +18,7 @@ import {
 } from "react-icons/fi";
 import IndianArchBadge from "@/components/IndianArchBadge";
 import FitDetailsModal from "@/components/FitDetailsModal";
+import FormattedDescription from "@/components/FormattedDescription";
 
 const COLOR_HEX_MAP = {
   "natural khadi": "#EBE5D8",
@@ -527,11 +528,9 @@ export default function ProductPage() {
                 </div>
               </div>
 
-              {/* Editorial Description with line breaks preservation */}
-              <div style={{ fontSize: "1.02rem", lineHeight: 1.8, color: "#3f3329", whiteSpace: "pre-line" }}>
-                <p style={{ margin: "0 0 12px", whiteSpace: "pre-line" }}>
-                  {product.description}
-                </p>
+              {/* Editorial Description with structured formatting & line breaks */}
+              <div style={{ fontSize: "1.02rem", lineHeight: 1.8, color: "#3f3329", marginBottom: 16 }}>
+                <FormattedDescription description={product.description} />
               </div>
 
               {/* Color Selection (if colors exist) — Live Color Wheel Swatches */}

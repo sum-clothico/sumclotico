@@ -566,7 +566,7 @@ export default function ContactPage() {
               {[
                 { label: "Response Time", value: "Under 24h", note: "on all inquiries" },
                 { label: "Reach us directly", value: "hello@sumclothico.com", note: "or WhatsApp us" },
-                { label: "Based In", value: "Rewa, Madhya Pradesh", note: "Shipping pan-India" },
+                { label: "Offline Studio", value: "Shanti Path, Rewa", note: "Near Shanti Villas Colony, MP" },
               ].map((item, i) => (
                 <div
                   key={i}

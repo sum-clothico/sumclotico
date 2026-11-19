@@ -20,14 +20,49 @@ function SuccessContent() {
 
   const { orders, updatePaymentStatus } = useStore();
 
-  const order =
-    orders.find(
+  const [orderState, setOrderState] = useState(() => {
+    return orders.find(
       (o) =>
         o.orderNumber === cleanOrderNumber ||
         o.orderNumber === rawOrderParam ||
         o.cashfreeOrderId === rawOrderParam ||
         (cfOrderId && o.cashfreeOrderId === cfOrderId),
-    ) || orders[0];
+    ) || null;
+  });
+
+  const order = orderState;
+
+  // Asynchronously resolve order if not initially available in memory
+  useEffect(() => {
+    let isMounted = true;
+    const existing = orders.find(
+      (o) =>
+        o.orderNumber === cleanOrderNumber ||
+        o.orderNumber === rawOrderParam ||
+        o.cashfreeOrderId === rawOrderParam ||
+        (cfOrderId && o.cashfreeOrderId === cfOrderId),
+    );
+    if (existing) {
+      setOrderState(existing);
+      return;
+    }
+
+    const orderToQuery = cleanOrderNumber || rawOrderParam;
+    if (!orderToQuery) return;
+
+    fetch(`/api/orders/${encodeURIComponent(orderToQuery)}`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((json) => {
+        if (isMounted && json?.success && json?.order) {
+          setOrderState(json.order);
+        }
+      })
+      .catch((e) => console.warn("[Success] Could not fetch order:", e));
+
+    return () => {
+      isMounted = false;
+    };
+  }, [cleanOrderNumber, rawOrderParam, cfOrderId, orders]);
 
   const [verifying, setVerifying] = useState(Boolean(cfOrderId));
   const [verifiedStatus, setVerifiedStatus] = useState(
@@ -81,20 +116,35 @@ function SuccessContent() {
           try { sessionStorage.setItem(cacheKey, "PAID"); } catch {}
           setStatusMessage("Payment verified successfully via Cashfree.");
 
-          if (order && updatePaymentStatus) {
-            updatePaymentStatus(order.id, "PAID", cfOrderId);
+          const targetOrderNum = cleanOrderNumber || order?.orderNumber;
+          if (updatePaymentStatus && (order?.id || targetOrderNum)) {
+            updatePaymentStatus(order?.id || targetOrderNum, "PAID", cfOrderId);
           }
 
-          // Idempotent email dispatch: strictly once per order ID
+          // Direct backend update fallback to ensure MongoDB is immediately updated
+          if (targetOrderNum) {
+            fetch(`/api/orders/${encodeURIComponent(targetOrderNum)}/status`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                paymentStatus: "PAID",
+                orderStatus: "CONFIRMED",
+                transactionId: cfOrderId,
+              }),
+            }).catch(() => {});
+          }
+
+          // Idempotent email dispatch: strictly once per order ID, ONLY if customer email exists
           const emailSentKey = `email_dispatched_paid_${cfOrderId}`;
-          if (typeof window !== "undefined" && !sessionStorage.getItem(emailSentKey)) {
+          const customerEmail = order?.customer?.email;
+          if (typeof window !== "undefined" && !sessionStorage.getItem(emailSentKey) && customerEmail) {
             try { sessionStorage.setItem(emailSentKey, "1"); } catch {}
             fetch("/api/send-email", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
                 type: "ORDER_CONFIRMATION",
-                to: order?.customer?.email,
+                to: customerEmail,
                 data: {
                   ...order,
                   paymentStatus: "PAID",
@@ -112,8 +162,9 @@ function SuccessContent() {
               : `Payment status: ${cfStatus || "FAILED"}. No order has been placed.`
           );
 
-          if (order && updatePaymentStatus) {
-            updatePaymentStatus(order.id, "CANCELLED");
+          const targetOrderNum = cleanOrderNumber || order?.orderNumber;
+          if (updatePaymentStatus && (order?.id || targetOrderNum)) {
+            updatePaymentStatus(order?.id || targetOrderNum, "CANCELLED");
           }
 
           // Idempotent failed email dispatch: strictly once per order ID
@@ -302,15 +353,19 @@ function SuccessContent() {
                   #{order.orderNumber}
                 </strong>
               </div>
-              <div style={{ textAlign: "right" }}>
+              <div style={{ textAlign: "right", display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
                 <span
                   style={{
+                    display: "inline-block",
                     fontSize: 11,
                     fontWeight: 700,
+                    lineHeight: 1.3,
                     padding: "4px 10px",
                     borderRadius: 4,
                     background: isPaid ? "#2e7d32" : "#d97706",
                     color: "#ffffff",
+                    letterSpacing: "0.04em",
+                    whiteSpace: "nowrap",
                   }}
                 >
                   {isPaid ? "PAID" : "PAYMENT PENDING"}
@@ -369,9 +424,18 @@ function SuccessContent() {
                   <strong style={{ fontSize: 14, color: "#111" }}>
                     {item.title || item.name}
                   </strong>
-                  <div style={{ fontSize: 12, color: "#777" }}>
-                    Size: {item.selectedSize} × {item.quantity}
+                  <div style={{ fontSize: 12, color: "#666", marginTop: 2 }}>
+                    Size: <strong>{item.selectedSize}</strong> {item.selectedColor ? `• Color: ${item.selectedColor}` : ""} × {item.quantity}
                   </div>
+                  {(() => {
+                    const fit = typeof item.fitDetails === "string" ? (() => { try { return JSON.parse(item.fitDetails); } catch { return null; } })() : item.fitDetails;
+                    return fit && (fit.bust || fit.waist || fit.hips) ? (
+                      <div style={{ fontSize: 11, color: "#c2410c", marginTop: 3, background: "#fff7ed", padding: "2px 6px", borderRadius: 4, display: "inline-block" }}>
+                        ✦ Custom Fit: Bust {fit.bust}&quot; • Waist {fit.waist}&quot; • Hips {fit.hips}&quot;
+                        {fit.fitPreference ? ` (${fit.fitPreference})` : ""}
+                      </div>
+                    ) : null;
+                  })()}
                 </div>
                 <span style={{ fontWeight: 600, fontSize: 14 }}>
                   ₹{(item.price * item.quantity).toLocaleString("en-IN")}

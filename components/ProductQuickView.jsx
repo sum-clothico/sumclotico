@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useStore } from "@/context/StoreContext";
 import FitDetailsModal from "@/components/FitDetailsModal";
+import FormattedDescription from "@/components/FormattedDescription";
 import { FiShoppingBag, FiCheck, FiX, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { trackViewItem, trackEvent } from "@/lib/analytics";
 
@@ -393,15 +394,19 @@ export default function ProductQuickView() {
             )}
           </div>
 
-          {/* Thumbnails Gallery Strip */}
+          {/* Thumbnails Gallery Strip with horizontal scroll protection */}
           {images.length > 1 && (
             <div
               style={{
                 display: "flex",
-                gap: 12,
+                gap: 8,
                 marginTop: 16,
-                justifyContent: "center",
+                justifyContent: images.length > 6 ? "flex-start" : "center",
                 alignItems: "center",
+                overflowX: "auto",
+                maxWidth: "100%",
+                paddingBottom: 6,
+                scrollbarWidth: "thin",
               }}
             >
               {images.map((img, idx) => {
@@ -580,18 +585,11 @@ export default function ProductQuickView() {
               Additional GST and shipping if applicable
             </div>
 
-            {/* Story & Description with pre-line spacing */}
-            <div
-              style={{
-                fontSize: 14,
-                color: "#4b5563",
-                lineHeight: 1.7,
-                margin: "0 0 16px",
-                whiteSpace: "pre-line",
-              }}
-            >
-              {quickViewProduct.description}
-            </div>
+            {/* Story & Description with structured section formatting & spacing */}
+            <FormattedDescription
+              description={quickViewProduct.description}
+              style={{ margin: "0 0 16px" }}
+            />
 
             {/* Fabric & Care Note */}
             <div style={{ background: "#f9fafb", padding: "10px 14px", borderRadius: 8, marginBottom: 20, border: "1px solid #f3f4f6" }}>

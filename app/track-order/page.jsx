@@ -599,6 +599,14 @@ function TrackOrderContent() {
                               : ""}{" "}
                             × {item.quantity || 1}
                           </div>
+                          {(() => {
+                            const fit = typeof item.fitDetails === "string" ? (() => { try { return JSON.parse(item.fitDetails); } catch { return null; } })() : item.fitDetails;
+                            return fit && (fit.bust || fit.waist || fit.hips) ? (
+                              <div style={{ fontSize: 11, color: "#c2410c", marginTop: 4, background: "#fff7ed", padding: "2px 6px", borderRadius: 4, display: "inline-block" }}>
+                                ✦ Fit: Bust {fit.bust}&quot; • Waist {fit.waist}&quot; • Hips {fit.hips}&quot;
+                              </div>
+                            ) : null;
+                          })()}
                         </div>
                       </div>
                       <span style={{ fontWeight: 700, fontSize: 14 }}>

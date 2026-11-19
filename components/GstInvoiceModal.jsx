@@ -274,8 +274,18 @@ export default function GstInvoiceModal({ order, isOpen, onClose }) {
                 <td style={{ padding: "10px 10px" }}>
                   <strong style={{ color: "#111827" }}>{it.title || it.name || "Handcrafted Textile Piece"}</strong>
                   <div style={{ fontSize: 11, color: "#6b7280" }}>
-                    Size: {it.selectedSize || "M"} {it.selectedColor ? `· Color: ${it.selectedColor}` : ""}
+                    Size: <strong>{it.selectedSize || "M"}</strong> {it.selectedColor ? `· Color: ${it.selectedColor}` : ""}
                   </div>
+                  {(() => {
+                    const fit = typeof it.fitDetails === "string" ? (() => { try { return JSON.parse(it.fitDetails); } catch { return null; } })() : it.fitDetails;
+                    return fit && (fit.bust || fit.waist || fit.hips) ? (
+                      <div style={{ fontSize: 10, color: "#92400e", marginTop: 2, background: "rgba(245, 158, 11, 0.08)", padding: "2px 4px", borderRadius: 3, display: "inline-block" }}>
+                        Custom Fit: Bust {fit.bust}&quot; • Waist {fit.waist}&quot; • Hips {fit.hips}&quot;
+                        {fit.fitPreference ? ` (${fit.fitPreference})` : ""}
+                        {fit.notes ? ` · Note: "${fit.notes}"` : ""}
+                      </div>
+                    ) : null;
+                  })()}
                 </td>
                 <td style={{ padding: "10px 10px", color: "#6b7280" }}>6204</td>
                 <td style={{ padding: "10px 10px", textAlign: "center" }}>{it.qty}</td>

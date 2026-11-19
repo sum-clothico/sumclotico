@@ -471,13 +471,13 @@ export function StoreProvider({ children }) {
     } catch {}
   }, [categories]);
 
-  // Save Cart to localStorage (session state)
+  // Save Cart to localStorage (session state) - strictly after hydration to prevent empty overwrite on reload
   useEffect(() => {
-    if (!isStoreHydratedRef.current) return;
+    if (!isCartHydrated) return;
     try {
       localStorage.setItem("sum_cart", JSON.stringify(cart));
     } catch {}
-  }, [cart]);
+  }, [cart, isCartHydrated]);
 
   // Cache products in localStorage as fallback
   useEffect(() => {
@@ -967,6 +967,7 @@ export function StoreProvider({ children }) {
           quantity: item.quantity,
           selectedSize: item.selectedSize || "",
           selectedColor: item.selectedColor || "",
+          fitDetails: item.fitDetails || null,
           image: item.image || "",
         })),
         subtotal: order.subtotal,
@@ -1317,17 +1318,21 @@ export function StoreProvider({ children }) {
       } catch {}
     }
 
-        try {
-      const targetOrder = orders.find((o) => o.id === orderId || o.orderNumber === orderId);
+    try {
+      const targetOrder = confirmedOrder || orders.find((o) => o.id === orderId || o.orderNumber === orderId);
       const queryId = targetOrder?._mongoId || targetOrder?.orderNumber || (orderId && !orderId.startsWith("ord-") ? orderId : null);
       if (queryId) {
-        await apiFetch(`/checkout/orders/${queryId}/status`, {
+        await apiFetch(`/checkout/orders/${encodeURIComponent(queryId)}/status`, {
           method: "PUT",
-          body: JSON.stringify({ paymentStatus: newPaymentStatus }),
+          body: JSON.stringify({
+            paymentStatus: newPaymentStatus,
+            orderStatus: newPaymentStatus === "PAID" ? "CONFIRMED" : undefined,
+            transactionId: txnId || undefined,
+          }),
         });
       }
       console.log(
-        `%c[Backend: ✓ Payment status updated in MongoDB for ${orderId}]`,
+        `%c[Backend: ✓ Payment status updated in MongoDB for ${queryId || orderId}]`,
         "background: #16a34a; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
       );
     } catch (err) {

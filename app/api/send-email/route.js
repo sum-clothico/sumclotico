@@ -64,6 +64,7 @@ export async function POST(request) {
             <td style="padding: 12px 0;">
               <strong style="color: #111;">${item.name || item.title}</strong><br/>
               <span style="color: #666; font-size: 12px;">Size: ${item.selectedSize || "Standard"} ${item.selectedColor ? `• Color: ${item.selectedColor}` : ""}</span>
+              ${item.fitDetails && (item.fitDetails.bust || item.fitDetails.waist || item.fitDetails.hips) ? `<br/><span style="color: #c2410c; font-size: 11px; background: #fff7ed; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-top: 2px;">✦ Custom Fit: Bust ${item.fitDetails.bust}" • Waist ${item.fitDetails.waist}" • Hips ${item.fitDetails.hips}"${item.fitDetails.fitPreference ? ` (${item.fitDetails.fitPreference})` : ""}</span>` : ""}
             </td>
             <td style="padding: 12px 0; text-align: center; color: #444;">${item.quantity}</td>
             <td style="padding: 12px 0; text-align: right; color: #111; font-weight: 700;">₹${(item.price * item.quantity).toLocaleString("en-IN")}</td>

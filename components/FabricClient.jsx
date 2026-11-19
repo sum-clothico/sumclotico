@@ -39,10 +39,16 @@ function AnimatedWords({ text, className = "fab-anim-word" }) {
 }
 
 const PROCESS_STEPS = [
-  { label: "Spinning", img: "/assets/fiber/14887305-5caf-4e77-b3fa-c79443ced34b.png" },
+  {
+    label: "Spinning",
+    img: "/assets/fiber/14887305-5caf-4e77-b3fa-c79443ced34b.png",
+  },
   { label: "Weaving", img: "/assets/IMG_2373.jpg" },
   { label: "Fabric", img: "/assets/fiber/IMG_1322.jpg" },
-  { label: "Outfit", img: "/assets/fiber/WhatsApp Image 2026-10-05 at 2.27.02 PM.jpg" },
+  {
+    label: "Outfit",
+    img: "/assets/fiber/WhatsApp Image 2026-10-05 at 2.27.02 PM.jpg",
+  },
 ];
 
 const COMPARE_COLLAPSIBLES = [
@@ -111,15 +117,30 @@ export default function FabricClient() {
           tl.fromTo(
             badge,
             { opacity: 0, y: -14, scale: 0.88 },
-            { opacity: 1, y: 0, scale: 1, duration: 0.55, ease: "back.out(1.5)" },
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              duration: 0.55,
+              ease: "back.out(1.5)",
+            },
           );
         }
-        const titleWords = block.querySelectorAll(".fab-block-title .fab-anim-word");
+        const titleWords = block.querySelectorAll(
+          ".fab-block-title .fab-anim-word",
+        );
         if (titleWords.length > 0) {
           tl.fromTo(
             titleWords,
             { y: "120%", rotate: 2, opacity: 0 },
-            { y: "0%", rotate: 0, opacity: 1, duration: 0.85, stagger: 0.04, ease: "power4.out" },
+            {
+              y: "0%",
+              rotate: 0,
+              opacity: 1,
+              duration: 0.85,
+              stagger: 0.04,
+              ease: "power4.out",
+            },
             "-=0.3",
           );
         }
@@ -128,7 +149,13 @@ export default function FabricClient() {
           tl.fromTo(
             items,
             { opacity: 0, y: 22 },
-            { opacity: 1, y: 0, duration: 0.7, stagger: 0.08, ease: "power3.out" },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.7,
+              stagger: 0.08,
+              ease: "power3.out",
+            },
             "-=0.5",
           );
         }
@@ -137,7 +164,14 @@ export default function FabricClient() {
           tl.fromTo(
             images,
             { opacity: 0, scale: 0.95, y: 26 },
-            { opacity: 1, scale: 1, y: 0, duration: 0.85, stagger: 0.1, ease: "power3.out" },
+            {
+              opacity: 1,
+              scale: 1,
+              y: 0,
+              duration: 0.85,
+              stagger: 0.1,
+              ease: "power3.out",
+            },
             "-=0.6",
           );
         }
@@ -225,7 +259,10 @@ export default function FabricClient() {
             }}
           >
             <div>
-              <div className="fab-hero-badge" style={{ display: "inline-block", marginBottom: 16 }}>
+              <div
+                className="fab-hero-badge"
+                style={{ display: "inline-block", marginBottom: 16 }}
+              >
                 <IndianArchBadge>Introduction</IndianArchBadge>
               </div>
               <h1
@@ -245,18 +282,30 @@ export default function FabricClient() {
                 style={{ fontSize: "1rem", lineHeight: 1.75, color: "#4a3c30" }}
               >
                 <p style={{ margin: "0 0 14px" }}>
-                  We choose handspun, handwoven Khadi cotton from Madhya Pradesh for its breathable feel, natural texture and unmistakable character.
+                  We choose handspun, handwoven Khadi cotton from Madhya Pradesh
+                  for its breathable feel, natural texture and unmistakable
+                  character.
                 </p>
                 <p style={{ margin: "0 0 14px" }}>
-                  Shaped into easy, functional silhouettes, every Sum piece brings together the best of both worlds — authentic Indian textiles and contemporary everyday comfort.
+                  Shaped into easy, functional silhouettes, every Sum piece
+                  brings together the best of both worlds — authentic Indian
+                  textiles and contemporary everyday comfort.
                 </p>
-                <p style={{ margin: 0, fontWeight: 700, color: "#660608", fontSize: "1.05rem" }}>
+                <p
+                  style={{
+                    margin: 0,
+                    fontWeight: 700,
+                    color: "#660608",
+                    fontSize: "1.05rem",
+                  }}
+                >
                   Airy in feel. Earthy in origin. Fluid in form.
                 </p>
               </div>
             </div>
 
-            <div className="fab-hero-visual"
+            <div
+              className="fab-hero-visual"
               style={{
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr",
@@ -272,7 +321,9 @@ export default function FabricClient() {
                   boxShadow: "0 14px 32px -12px rgba(44, 32, 22, 0.18)",
                 }}
               >
-                <img loading="lazy" decoding="async"
+                <img
+                  loading="lazy"
+                  decoding="async"
                   src="/assets/fiber/WhatsApp Image 2026-10-05 at 2.14.11 PM (4).jpg"
                   alt="Spinner at charkha"
                   style={{
@@ -292,7 +343,9 @@ export default function FabricClient() {
                   boxShadow: "0 14px 32px -12px rgba(44, 32, 22, 0.18)",
                 }}
               >
-                <img loading="lazy" decoding="async"
+                <img
+                  loading="lazy"
+                  decoding="async"
                   src="/assets/fiber/WhatsApp Image 2026-10-05 at 8.56.14 PM.jpg"
                   alt="Hands weaving khadi"
                   style={{
@@ -352,8 +405,8 @@ export default function FabricClient() {
                   margin: "0 0 20px",
                 }}
               >
-                We&apos;re beginning our textile journey close to home, exploring the craft,
-                people and processes behind Khadi cotton.
+                We&apos;re beginning our textile journey close to home,
+                exploring the craft, people and processes behind Khadi cotton.
               </p>
               <div
                 className="fab-text-item"
@@ -409,7 +462,12 @@ export default function FabricClient() {
                 loop
                 muted
                 playsInline
-                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  display: "block",
+                }}
               />
             </div>
           </div>
@@ -427,8 +485,17 @@ export default function FabricClient() {
             zIndex: 2,
           }}
         >
-          <div style={{ textAlign: "center", maxWidth: 760, margin: "0 auto 32px" }}>
-            <div className="fab-block-badge" style={{ display: "inline-block", marginBottom: 12 }}>
+          <div
+            style={{
+              textAlign: "center",
+              maxWidth: 760,
+              margin: "0 auto 32px",
+            }}
+          >
+            <div
+              className="fab-block-badge"
+              style={{ display: "inline-block", marginBottom: 12 }}
+            >
               <IndianArchBadge>What Is Khadi</IndianArchBadge>
             </div>
             <h2
@@ -445,16 +512,27 @@ export default function FabricClient() {
             </h2>
             <p
               className="fab-text-item"
-              style={{ fontSize: "1rem", lineHeight: 1.75, color: "#443528", margin: "0 0 10px" }}
+              style={{
+                fontSize: "1rem",
+                lineHeight: 1.75,
+                color: "#443528",
+                margin: "0 0 10px",
+              }}
             >
-              Khadi is a textile made from handspun yarn and handwoven on a loom.
+              Khadi is a textile made from handspun yarn and handwoven on a
+              loom.
             </p>
             <p
               className="fab-text-item"
-              style={{ fontSize: "0.98rem", lineHeight: 1.75, color: "#6e5d4e", margin: 0 }}
+              style={{
+                fontSize: "0.98rem",
+                lineHeight: 1.75,
+                color: "#6e5d4e",
+                margin: 0,
+              }}
             >
-              The process gives the fabric its characteristic texture and natural variations —
-              small reminders of the human hands behind it.
+              The process gives the fabric its characteristic texture and
+              natural variations — small reminders of the human hands behind it.
             </p>
           </div>
 
@@ -480,10 +558,17 @@ export default function FabricClient() {
                   aspectRatio: "3/4",
                 }}
               >
-                <img loading="lazy" decoding="async"
+                <img
+                  loading="lazy"
+                  decoding="async"
                   src={step.img}
                   alt={step.label}
-                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    display: "block",
+                  }}
                 />
                 <div
                   style={{
@@ -492,7 +577,8 @@ export default function FabricClient() {
                     right: 0,
                     bottom: 0,
                     padding: "16px 10px 8px",
-                    background: "linear-gradient(to top, rgba(26,20,14,0.78), transparent)",
+                    background:
+                      "linear-gradient(to top, rgba(26,20,14,0.78), transparent)",
                     color: "#EDE8DC",
                     fontSize: "0.75rem",
                     fontWeight: 800,
@@ -543,7 +629,9 @@ export default function FabricClient() {
                 padding: "10px",
               }}
             >
-              <img loading="lazy" decoding="async"
+              <img
+                loading="lazy"
+                decoding="async"
                 src="/assets/fiber/IMG_2962.png"
                 alt="Khadi fabric close-up"
                 style={{
@@ -579,8 +667,8 @@ export default function FabricClient() {
                   margin: "0 0 14px",
                 }}
               >
-                We love Khadi for its natural texture, breathability and the way cotton Khadi
-                can soften with use and washing.
+                We love Khadi for its natural texture, breathability and the way
+                cotton Khadi can soften with use and washing.
               </p>
               <p
                 className="fab-text-item"
@@ -684,7 +772,10 @@ export default function FabricClient() {
             textAlign: "center",
           }}
         >
-          <div className="fab-block-badge" style={{ display: "inline-block", marginBottom: 12 }}>
+          <div
+            className="fab-block-badge"
+            style={{ display: "inline-block", marginBottom: 12 }}
+          >
             <IndianArchBadge>Khadi For Today</IndianArchBadge>
           </div>
           <h2
@@ -721,8 +812,8 @@ export default function FabricClient() {
               maxWidth: 680,
             }}
           >
-            At Sum, we bring Khadi into contemporary silhouettes, with practical details and
-            easy fits for the lives women lead today.
+            At Sum, we bring Khadi into contemporary silhouettes, with practical
+            details and easy fits for the lives women lead today.
           </p>
           <div
             className="fab-text-item"
@@ -774,7 +865,9 @@ export default function FabricClient() {
                   aspectRatio: "4/5",
                 }}
               >
-                <img loading="lazy" decoding="async"
+                <img
+                  loading="lazy"
+                  decoding="async"
                   src={src}
                   alt={`Contemporary Khadi silhouette ${idx + 1}`}
                   style={{
@@ -802,7 +895,6 @@ export default function FabricClient() {
             textAlign: "center",
           }}
         >
-          
           <p
             className="fab-text-item"
             style={{
@@ -813,8 +905,8 @@ export default function FabricClient() {
               maxWidth: 620,
             }}
           >
-            There&apos;s more to discover behind every textile. Follow our visits, learnings
-            and conversations in the Sum Journal.
+            There&apos;s more to discover behind every textile. Follow our
+            visits, learnings and conversations in the Sum Journal.
           </p>
           <div
             style={{
@@ -861,7 +953,7 @@ export default function FabricClient() {
                 boxShadow: "0 4px 14px rgba(102, 6, 8, 0.22)",
               }}
             >
-              Shop Khadi <FiArrowRight />
+              Shop <FiArrowRight />
             </Link>
           </div>
         </section>

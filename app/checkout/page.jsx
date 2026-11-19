@@ -183,6 +183,9 @@ function CheckoutContent() {
               textDecoration: "none",
               boxShadow: "0 4px 14px rgba(0, 0, 0, 0.15)",
               transition: "transform 0.2s ease, background 0.2s ease",
+              width: "auto",
+              maxWidth: "280px",
+              margin: "0 auto",
             }}
           >
             BROWSE COLLECTION →

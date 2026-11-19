@@ -188,19 +188,45 @@ export default function AdminOrdersPage() {
                     </div>
                   </td>
                   <td>
-                    {(ord.items || []).map((it, i) => (
-                      <div key={i} style={{ fontSize: 12, marginBottom: 3 }}>
-                        <span style={{ color: "#e5e7eb", fontWeight: 600 }}>{it.title || it.name}</span>{" "}
-                        <span style={{ color: "#9ca3af" }}>({it.selectedSize}) × {it.quantity}</span>
-                        {it.fitDetails && (
-                          <div style={{ fontSize: 11, color: "#e8a87c", marginTop: 2, background: "rgba(232, 168, 124, 0.1)", padding: "2px 6px", borderRadius: 4 }}>
-                            ✦ Fit: Bust {it.fitDetails.bust}&quot; • Waist {it.fitDetails.waist}&quot; • Hips {it.fitDetails.hips}&quot;
-                            {it.fitDetails.fitPreference ? ` (${it.fitDetails.fitPreference})` : ""}
-                            {it.fitDetails.notes ? ` • Note: "${it.fitDetails.notes}"` : ""}
+                    {(ord.items || []).map((it, i) => {
+                      const fit = typeof it.fitDetails === "string" ? (() => { try { return JSON.parse(it.fitDetails); } catch { return null; } })() : it.fitDetails;
+                      return (
+                        <div key={i} style={{ fontSize: 12, marginBottom: 6, background: "rgba(255,255,255,0.03)", padding: "6px 8px", borderRadius: 6, border: "1px solid rgba(255,255,255,0.06)" }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
+                            <span style={{ color: "#ffffff", fontWeight: 700 }}>{it.title || it.name}</span>
+                            <span style={{ color: "#9ca3af", background: "#374151", padding: "1px 6px", borderRadius: 4, fontSize: 11, fontWeight: 600 }}>
+                              Size: {it.selectedSize || "Standard"}
+                            </span>
+                            {it.selectedColor && (
+                              <span style={{ color: "#fef3c7", background: "rgba(245, 158, 11, 0.15)", border: "1px solid rgba(245, 158, 11, 0.3)", padding: "1px 6px", borderRadius: 4, fontSize: 11, fontWeight: 600 }}>
+                                Color: {it.selectedColor}
+                              </span>
+                            )}
+                            <span style={{ color: "#34d399", fontWeight: 700, fontSize: 11 }}>
+                              × {it.quantity}
+                            </span>
                           </div>
-                        )}
-                      </div>
-                    ))}
+
+                          {fit && (fit.bust || fit.waist || fit.hips || fit.notes) && (
+                            <div style={{ fontSize: 11, color: "#fed7aa", marginTop: 4, background: "rgba(249, 115, 22, 0.12)", border: "1px solid rgba(249, 115, 22, 0.25)", padding: "4px 8px", borderRadius: 4, lineHeight: 1.4 }}>
+                              <strong style={{ color: "#f97316" }}>✦ Custom Fit Measurements:</strong>
+                              <div style={{ marginTop: 2 }}>
+                                {fit.bust ? `Bust: ${fit.bust}"` : ""}
+                                {fit.waist ? ` • Waist: ${fit.waist}"` : ""}
+                                {fit.hips ? ` • Hips: ${fit.hips}"` : ""}
+                                {fit.fitPreference ? ` • ${fit.fitPreference}` : ""}
+                                {fit.lengthPreference && fit.lengthPreference !== "Standard length (as per style)" ? ` • Length: ${fit.lengthPreference}` : ""}
+                              </div>
+                              {fit.notes && (
+                                <div style={{ fontStyle: "italic", color: "#fdba74", marginTop: 2 }}>
+                                  Note: &quot;{fit.notes}&quot;
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
                   </td>
                   <td>
                     <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
