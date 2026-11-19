@@ -3,9 +3,10 @@
 import React, { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { useUser } from "@clerk/nextjs";
 import { useStore } from "@/context/StoreContext";
 import Navbar from "@/components/Navbar";
-import { FiShield, FiTag, FiCheck, FiTruck, FiLock, FiCreditCard, FiSmartphone, FiShoppingBag } from "react-icons/fi";
+import { FiShield, FiTag, FiCheck, FiTruck, FiLock, FiCreditCard, FiSmartphone, FiShoppingBag, FiArrowRight } from "react-icons/fi";
 import { trackEvent } from "@/lib/analytics";
 
 function CheckoutContent() {
@@ -32,6 +33,20 @@ function CheckoutContent() {
     removeCoupon,
   } = useStore();
 
+  let clerkUser = null;
+  let isClerkSignedIn = false;
+  let isClerkLoaded = true;
+  try {
+    const clerk = useUser();
+    clerkUser = clerk?.user;
+    isClerkSignedIn = !!clerk?.isSignedIn;
+    isClerkLoaded = clerk?.isLoaded !== false;
+  } catch {
+    // Fallback if Clerk is loading or offline
+  }
+
+  const isAuthenticated = isClerkSignedIn || !!currentUser;
+
   const [formData, setFormData] = useState({
     name: currentUser?.name || "",
     email: currentUser?.email || "",
@@ -41,6 +56,28 @@ function CheckoutContent() {
     state: currentUser?.addresses?.[0]?.state || "",
     pincode: currentUser?.addresses?.[0]?.pincode || "",
   });
+
+  // Pre-fill customer details from authenticated user
+  useEffect(() => {
+    if (clerkUser) {
+      const email = clerkUser.primaryEmailAddress?.emailAddress || clerkUser.emailAddresses?.[0]?.emailAddress || "";
+      const name = clerkUser.fullName || `${clerkUser.firstName || ""} ${clerkUser.lastName || ""}`.trim() || "";
+      const phone = clerkUser.primaryPhoneNumber?.phoneNumber?.replace(/[^0-9]/g, "").slice(-10) || "";
+      setFormData((prev) => ({
+        ...prev,
+        name: prev.name || name,
+        email: prev.email || email,
+        phone: prev.phone || phone,
+      }));
+    } else if (currentUser) {
+      setFormData((prev) => ({
+        ...prev,
+        name: prev.name || currentUser.name || "",
+        email: prev.email || currentUser.email || "",
+        phone: prev.phone || currentUser.phone || "",
+      }));
+    }
+  }, [clerkUser, currentUser]);
 
   const [couponInput, setCouponInput] = useState("");
   // Selected portal: "cashfree" | "cod"
@@ -137,7 +174,7 @@ function CheckoutContent() {
     }
   }, []);
 
-  if (!isCartHydrated || isRestoringRetry) {
+  if (!isCartHydrated || !isClerkLoaded || isRestoringRetry) {
     return (
       <>
         <Navbar />
@@ -190,6 +227,178 @@ function CheckoutContent() {
           >
             BROWSE COLLECTION →
           </Link>
+        </div>
+      </>
+    );
+  }
+
+  // ── Authentication Gate: Ask Customer to Log In / Sign Up Before Checkout ──
+  if (!isAuthenticated) {
+    return (
+      <>
+        <Navbar />
+        <div
+          style={{
+            minHeight: "80vh",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "clamp(120px, 15vh, 160px) 20px 80px",
+            background: "#fbfbfc",
+          }}
+        >
+          <div
+            style={{
+              width: "100%",
+              maxWidth: 480,
+              background: "#ffffff",
+              borderRadius: 20,
+              padding: "clamp(28px, 5vw, 40px)",
+              boxShadow: "0 20px 50px rgba(0,0,0,0.06)",
+              border: "1px solid #eef0f2",
+              textAlign: "center",
+            }}
+          >
+            <div
+              style={{
+                width: 64,
+                height: 64,
+                borderRadius: "50%",
+                background: "#fdf2f2",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                margin: "0 auto 20px",
+              }}
+            >
+              <FiLock size={28} color="#881A1C" />
+            </div>
+
+            <span
+              style={{
+                fontSize: 11,
+                fontWeight: 800,
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                color: "#881A1C",
+                display: "block",
+                marginBottom: 6,
+              }}
+            >
+              Secure Customer Portal
+            </span>
+
+            <h1
+              style={{
+                fontSize: "clamp(22px, 3vw, 26px)",
+                fontWeight: 800,
+                color: "#111827",
+                marginBottom: 10,
+                letterSpacing: "-0.02em",
+              }}
+            >
+              Sign in to Checkout
+            </h1>
+
+            <p
+              style={{
+                fontSize: 14,
+                color: "#6b7280",
+                lineHeight: 1.6,
+                marginBottom: 24,
+              }}
+            >
+              Please sign in or create an account to proceed with checkout. Your account securely preserves your delivery address, live courier tracking, and GST tax invoice.
+            </p>
+
+            {/* Bag overview summary banner */}
+            <div
+              style={{
+                background: "#f9fafb",
+                borderRadius: 12,
+                padding: "12px 16px",
+                marginBottom: 24,
+                border: "1px solid #f3f4f6",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                fontSize: 13,
+              }}
+            >
+              <span style={{ color: "#4b5563" }}>
+                Items in your bag: <strong>{cart.reduce((sum, item) => sum + (item.quantity || 1), 0)}</strong>
+              </span>
+              <span style={{ fontWeight: 800, color: "#111827", fontSize: 14 }}>
+                ₹{cartGrandTotal.toLocaleString("en-IN")}
+              </span>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              <Link
+                href="/sign-in?redirect_url=/checkout"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 10,
+                  width: "100%",
+                  padding: "16px",
+                  borderRadius: 12,
+                  background: "#111111",
+                  color: "#ffffff",
+                  fontSize: 14,
+                  fontWeight: 700,
+                  textDecoration: "none",
+                  boxShadow: "0 4px 14px rgba(0,0,0,0.14)",
+                }}
+              >
+                <span>Sign In to Continue</span>
+                <FiArrowRight size={16} />
+              </Link>
+
+              <Link
+                href="/sign-up?redirect_url=/checkout"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "100%",
+                  padding: "15px",
+                  borderRadius: 12,
+                  background: "#ffffff",
+                  color: "#111111",
+                  border: "1.5px solid #e5e7eb",
+                  fontSize: 14,
+                  fontWeight: 700,
+                  textDecoration: "none",
+                }}
+              >
+                Create New Account
+              </Link>
+            </div>
+
+            <div
+              style={{
+                marginTop: 24,
+                paddingTop: 18,
+                borderTop: "1px solid #f3f4f6",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: 16,
+                fontSize: 12,
+                color: "#9ca3af",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <FiShield size={14} color="#166534" />
+                <span style={{ color: "#374151" }}>256-Bit SSL Encrypted</span>
+              </div>
+              <span>•</span>
+              <div style={{ color: "#374151" }}>Instant OTP / Google Login</div>
+            </div>
+          </div>
         </div>
       </>
     );

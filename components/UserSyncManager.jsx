@@ -2,9 +2,11 @@
 
 import { useEffect, useRef } from "react";
 import { useUser } from "@clerk/nextjs";
+import { useStore } from "@/context/StoreContext";
 
 export default function UserSyncManager() {
   const { isLoaded, isSignedIn, user } = useUser();
+  const { loginCustomer, currentUser } = useStore();
   const lastSyncedId = useRef(null);
 
   useEffect(() => {
@@ -16,6 +18,17 @@ export default function UserSyncManager() {
     const name = user.fullName || `${user.firstName || ""} ${user.lastName || ""}`.trim() || user.username || "Customer";
     const phone = user.primaryPhoneNumber?.phoneNumber || "";
     const clerkId = user.id;
+
+    // Sync to in-memory store session
+    if (!currentUser || currentUser.email !== email) {
+      loginCustomer({
+        id: clerkId,
+        clerkId,
+        email,
+        name,
+        phone,
+      });
+    }
 
     // Avoid duplicated sync calls within the same browser session
     const sessionKey = `sum_synced_${clerkId}`;
