@@ -125,6 +125,26 @@ export default function Footer() {
             Khadi weaving cluster
             <br />
             Madhya Pradesh, India
+            <br />
+            <span
+              style={{
+                display: "inline-block",
+                marginTop: "6px",
+                fontSize: "11px",
+                fontWeight: 800,
+                color: "#660608",
+                textTransform: "uppercase",
+                letterSpacing: "0.8px",
+              }}
+            >
+              Offline Studio
+            </span>
+            <br />
+            <span style={{ fontSize: "12.5px", color: "#4A3E36" }}>
+              Shanti Path, near Shanti Villas Colony,
+              <br />
+              Laadli Laxmi Road, Rewa, MP
+            </span>
           </p>
           <div
             style={{
@@ -371,15 +391,19 @@ export default function Footer() {
               style={{
                 color: "#4A3E36",
                 lineHeight: 1.55,
-                marginBottom: "4px",
+                marginBottom: "8px",
+                padding: "10px 14px",
+                backgroundColor: "rgba(102, 6, 8, 0.04)",
+                borderRadius: "6px",
+                borderLeft: "3px solid #660608",
               }}
             >
               <span
                 style={{
                   fontWeight: 800,
-                  color: "#2C2016",
+                  color: "#660608",
                   display: "block",
-                  marginBottom: "2px",
+                  marginBottom: "4px",
                   textTransform: "uppercase",
                   fontSize: "11px",
                   letterSpacing: "1px",

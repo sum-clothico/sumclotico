@@ -470,6 +470,7 @@ const MobileStickyPrinciplesSection = () => {
                           marginTop: "12px",
                           marginBottom: 0,
                           fontWeight: 400,
+                          whiteSpace: "pre-line",
                         }}
                       >
                         {p.description}

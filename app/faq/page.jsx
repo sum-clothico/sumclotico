@@ -29,7 +29,7 @@ const FAQS = [
     items: [
       {
         q: "How long does standard delivery take?",
-        a: "Orders are processed within 24-48 business hours. Delivery across metro cities (Bengaluru, Delhi, Mumbai, Kolkata, Hyderabad, Chennai) takes 3-4 business days. Other regions typically arrive in 4-6 business days via BlueDart and Delhivery.",
+        a: "Orders are processed within 24-48 business hours. Delivery across metro cities (Bengaluru, Delhi, Mumbai, Kolkata, Hyderabad, Chennai) takes 3-4 business days. Other regions typically arrive in 4-6 business days via Shiprocket Express partners.",
       },
       {
         q: "Is standard shipping free?",

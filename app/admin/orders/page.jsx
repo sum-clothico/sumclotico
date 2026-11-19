@@ -12,7 +12,7 @@ export default function AdminOrdersPage() {
   const [search, setSearch] = useState("");
   const [editingAwbOrderId, setEditingAwbOrderId] = useState(null);
   const [awbInput, setAwbInput] = useState("");
-  const [carrierInput, setCarrierInput] = useState("BlueDart Express");
+  const [carrierInput, setCarrierInput] = useState("Shiprocket");
   const [selectedInvoiceOrder, setSelectedInvoiceOrder] = useState(null);
 
   const filtered = (orders || []).filter((o) => {
@@ -177,7 +177,7 @@ export default function AdminOrdersPage() {
                             onClick={() => {
                               setEditingAwbOrderId(ord.id);
                               setAwbInput(ord.trackingNumber || "");
-                              setCarrierInput(ord.carrier || "BlueDart Express");
+                              setCarrierInput(ord.carrier || "Shiprocket");
                             }}
                             style={{ background: "none", border: "none", color: "#f35c27", fontSize: 11, textDecoration: "underline", cursor: "pointer" }}
                           >

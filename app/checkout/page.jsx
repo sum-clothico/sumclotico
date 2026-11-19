@@ -450,7 +450,7 @@ function CheckoutContent() {
     }
 
     trackEvent("add_shipping_info", {
-      shipping_tier: "Express BlueDart Courier",
+      shipping_tier: "Express Shiprocket Courier",
       value: cartGrandTotal,
       currency: "INR",
       city: formData.city,
@@ -494,6 +494,13 @@ function CheckoutContent() {
               name: formData.name,
               email: formData.email,
               phone: cleanPhone,
+            },
+            shippingAddress: {
+              street: formData.street,
+              city: formData.city,
+              state: formData.state,
+              pincode: cleanPincode,
+              country: "India",
             },
             returnUrl: `${window.location.origin}/checkout/success?orderNumber=${tempOrderNumber}&cf_order_id={order_id}`
           }),

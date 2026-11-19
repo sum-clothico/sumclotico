@@ -92,7 +92,7 @@ export async function POST(request) {
               </tr>
               <tr>
                 <td><strong>Estimated Dispatch:</strong> Within 48 Hours</td>
-                <td style="text-align: right;"><strong>Delivery Carrier:</strong> BlueDart Express</td>
+                <td style="text-align: right;"><strong>Delivery Carrier:</strong> ${data.carrier || "Shiprocket"}</td>
               </tr>
             </table>
 
@@ -240,12 +240,12 @@ export async function POST(request) {
               Your handcrafted Khadi garment has been carefully packed and handed over to our courier partner.
             </p>
             <div style="background: #faf6f0; border: 1px solid #e6ddc8; border-radius: 8px; padding: 18px; margin: 20px 0;">
-              <p style="margin: 4px 0;"><strong>Tracking AWB:</strong> <code>${data.trackingNumber || "BD" + Math.floor(100000000 + Math.random() * 900000000)}</code></p>
-              <p style="margin: 4px 0;"><strong>Courier Partner:</strong> ${data.carrier || "BlueDart Express"}</p>
+              ${data.trackingNumber ? `<p style="margin: 4px 0;"><strong>Tracking AWB:</strong> <code>${data.trackingNumber}</code></p>` : `<p style="margin: 4px 0; color: #4b5563;"><strong>Tracking AWB:</strong> Awaiting assignment via Shiprocket</p>`}
+              <p style="margin: 4px 0;"><strong>Courier Partner:</strong> ${data.carrier || "Shiprocket"}</p>
               <p style="margin: 4px 0;"><strong>Expected Delivery:</strong> 2–4 Business Days</p>
             </div>
             <div style="text-align: center; margin-top: 24px;">
-              <a href="https://www.sumclothico.com/track-order?awb=${data.trackingNumber || ""}" style="background: #111; color: #fff; padding: 12px 28px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 14px; display: inline-block;">
+              <a href="https://www.sumclothico.com/track-order?order=${data.orderNumber || ''}" style="background: #111; color: #fff; padding: 12px 28px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 14px; display: inline-block;">
                 Track Live Shipment →
               </a>
             </div>
@@ -253,13 +253,13 @@ export async function POST(request) {
         </div>
       `;
 
-      adminSubject = `📦 [DISPATCHED] Order #${data.orderNumber} shipped via ${data.carrier || "BlueDart Express"}`;
+      adminSubject = `📦 [DISPATCHED] Order #${data.orderNumber} shipped via ${data.carrier || "Shiprocket"}`;
       adminHtml = `
         <div style="font-family: system-ui, sans-serif; padding: 20px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px;">
           <h2 style="color: #166534; margin-top: 0;">Order Dispatched Notice</h2>
           <p><strong>Order Ref:</strong> #${data.orderNumber}</p>
-          <p><strong>Carrier:</strong> ${data.carrier || "BlueDart Express"}</p>
-          <p><strong>AWB Code:</strong> ${data.trackingNumber || "Auto-assigned"}</p>
+          <p><strong>Carrier:</strong> ${data.carrier || "Shiprocket"}</p>
+          <p><strong>AWB Code:</strong> ${data.trackingNumber || "Pending assignment"}</p>
           <p><a href="https://www.sumclothico.com/admin/orders" style="color: #166534; font-weight: 700;">View in Admin Orders CRM →</a></p>
         </div>
       `;

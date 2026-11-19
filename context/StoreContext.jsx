@@ -135,7 +135,7 @@ const INITIAL_POLICIES = {
   shipping: {
     key: "shipping",
     title: "Shipping & Delivery Policy",
-    subtitle: "Pan-India Express Logistics with BlueDart & Delhivery",
+    subtitle: "Pan-India Express Logistics with Shiprocket",
     lastUpdated: "September 2026",
     sections: [
       {
@@ -160,7 +160,7 @@ const INITIAL_POLICIES = {
         id: "sec-4",
         title: "4. Carrier Partners & Live Tracking",
         content:
-          "We partner with premium tier-1 courier carriers including BlueDart Express, Delhivery, and DTDC. As soon as your shipment is picked up, an automated SMS/email with your Air Waybill (AWB) number is triggered, allowing real-time tracking via our Order Tracking Page.",
+          "We partner with Shiprocket to fulfill orders via top express courier partners. As soon as your shipment is picked up, an automated SMS/email with your live Shiprocket Air Waybill (AWB) number is triggered, allowing real-time tracking via our Order Tracking Page.",
       },
     ],
   },
@@ -1065,8 +1065,8 @@ export function StoreProvider({ children }) {
       transactionId: actualTxnId,
       paymentStatus,
       orderStatus: "CONFIRMED",
-      carrier: "BlueDart Express",
-      trackingNumber: `BD${Math.floor(100000000 + Math.random() * 900000000)}IN`,
+      carrier: "Shiprocket",
+      trackingNumber: null,
       estimatedDelivery: "3 - 5 business days",
       createdAt: new Date().toISOString(),
     };
@@ -1242,8 +1242,8 @@ export function StoreProvider({ children }) {
             data: {
               ...targetOrder,
               orderNumber: targetOrder.orderNumber,
-              carrier: carrierInfo.carrier || targetOrder.carrier || "BlueDart Express",
-              trackingNumber: carrierInfo.trackingNumber || targetOrder.trackingNumber || ("BD" + Date.now().toString().slice(-8)),
+              carrier: carrierInfo.carrier || targetOrder.carrier || "Shiprocket",
+              trackingNumber: carrierInfo.trackingNumber || targetOrder.trackingNumber || null,
               status: normalizedStatus,
             },
           }),
@@ -1256,11 +1256,11 @@ export function StoreProvider({ children }) {
           ? {
               ...o,
               ...(newStatus ? { orderStatus: newStatus } : {}),
-              carrier: carrierInfo.carrier || o.carrier || "BlueDart Express",
+              carrier: carrierInfo.carrier || o.carrier || "Shiprocket",
               trackingNumber:
-                carrierInfo.trackingNumber ||
-                o.trackingNumber ||
-                `TRK${Date.now().toString().slice(-8)}`,
+                carrierInfo.trackingNumber !== undefined
+                  ? carrierInfo.trackingNumber
+                  : (o.trackingNumber || null),
             }
           : o,
       ),

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useStore } from "@/context/StoreContext";
 import { fileToBase32, base32ToDataUrl } from "@/lib/base32";
 import { uploadApi } from "@/lib/api";
+import FormattedDescription from "@/components/FormattedDescription";
 import { FiEdit2, FiTrash2, FiPlus, FiCheck, FiFolderPlus, FiX, FiExternalLink, FiAlertTriangle } from "react-icons/fi";
 
 const DEFAULT_SIZE_PRESETS = ["XS", "S", "M", "L", "XL", "XXL", "Free Size"];
@@ -1725,15 +1726,30 @@ export default function AdminProductsPage() {
             </div>
 
             <div className="admin-form-group full-width">
-              <label className="admin-form-label">Product Description</label>
+              <label className="admin-form-label">
+                Product Description
+                <span style={{ fontSize: 11, fontWeight: 400, color: "#9ca3af", marginLeft: 8 }}>
+                  (Supports paragraphs with Enter, and sections like &quot;THE DETAILS&quot;, &quot;WEAR IT FOR&quot; with bullets • or *)
+                </span>
+              </label>
               <textarea
                 name="description"
-                rows="3"
+                rows="6"
                 className="admin-form-textarea"
-                placeholder="Detailed craft notes, feel, texture, and story..."
+                placeholder="Detailed craft notes, feel, texture, and story...&#10;&#10;THE DETAILS&#10;Khadi fabric • Wrap-around construction"
                 value={form.description}
                 onChange={handleChange}
               />
+              {form.description && (
+                <div style={{ marginTop: 8, padding: "10px 14px", background: "rgba(255,255,255,0.04)", borderRadius: 6, border: "1px dashed rgba(255,255,255,0.15)" }}>
+                  <div style={{ fontSize: 10, fontWeight: 800, textTransform: "uppercase", letterSpacing: "1px", color: "#f59e0b", marginBottom: 6 }}>
+                    Live Customer Preview (Formatted Spacing &amp; Bullets)
+                  </div>
+                  <div style={{ background: "#faf6f0", padding: "12px", borderRadius: 6 }}>
+                    <FormattedDescription description={form.description} />
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
@@ -2968,11 +2984,22 @@ export default function AdminProductsPage() {
                   <label className="auth-label">Product Description</label>
                   <textarea
                     name="description"
-                    rows="3"
+                    rows="6"
                     className="auth-input"
+                    placeholder="Detailed notes, feel, story...&#10;&#10;THE DETAILS&#10;Khadi fabric • Wrap-around construction"
                     value={editForm.description}
                     onChange={handleEditChange}
                   />
+                  {editForm.description && (
+                    <div style={{ marginTop: 8, padding: "10px 14px", background: "rgba(255,255,255,0.04)", borderRadius: 6, border: "1px dashed rgba(255,255,255,0.15)" }}>
+                      <div style={{ fontSize: 10, fontWeight: 800, textTransform: "uppercase", letterSpacing: "1px", color: "#f59e0b", marginBottom: 6 }}>
+                        Live Customer Preview (Formatted Spacing &amp; Bullets)
+                      </div>
+                      <div style={{ background: "#faf6f0", padding: "12px", borderRadius: 6 }}>
+                        <FormattedDescription description={editForm.description} />
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 

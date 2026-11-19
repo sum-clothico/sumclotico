@@ -8,7 +8,7 @@ export default function ShippingPolicyPage() {
   const { policies = {} } = useStore();
   const policy = policies.shipping || {
     title: "Shipping & Delivery Policy",
-    subtitle: "Pan-India Express Logistics with BlueDart & Delhivery",
+    subtitle: "Pan-India Express Logistics with Shiprocket",
     lastUpdated: "September 2026",
     sections: [],
   };

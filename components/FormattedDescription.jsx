@@ -10,29 +10,32 @@ import React from "react";
 export default function FormattedDescription({ description, className = "", style = {} }) {
   if (!description) return null;
 
-  // Split description if it contains known structured section headings
+  // Normalize any escaped literal newlines (\n or \r\n) from JSON/DB serialization
+  const normalizedDesc = typeof description === "string"
+    ? description.replace(/\\r\\n/g, "\n").replace(/\\n/g, "\n")
+    : String(description);
+
+  // Split description if it contains known structured section headings (sorted by length desc)
   const sectionKeywords = [
+    "STYLE IT YOUR WAY",
     "THE DETAILS",
     "WEAR IT FOR",
-    "STYLE IT YOUR WAY",
     "FABRIC & CARE",
     "HOW IT FITS",
-    "THE FIT",
-    "DETAILS",
     "SPECIFICATIONS",
+    "THE FIT",
+    "WASH CARE",
+    "DETAILS",
   ];
-
-  // Regex pattern matching any of the keywords
-  const regexPattern = new RegExp(`(${sectionKeywords.join("|")})[:\\s]`, "gi");
 
   // Check if any keyword exists
   const hasSections = sectionKeywords.some((kw) =>
-    description.toLowerCase().includes(kw.toLowerCase())
+    normalizedDesc.toLowerCase().includes(kw.toLowerCase())
   );
 
   if (!hasSections) {
     // Normal paragraphs preservation
-    const paragraphs = description.split(/\n\s*\n/).filter(Boolean);
+    const paragraphs = normalizedDesc.split(/\n\s*\n/).filter(Boolean);
     return (
       <div className={className} style={{ ...style, lineHeight: 1.75, color: "#4A3E36" }}>
         {paragraphs.map((p, idx) => (
@@ -46,10 +49,11 @@ export default function FormattedDescription({ description, className = "", styl
 
   // Parse structured sections
   // Step 1: Normalize keyword boundaries with special delimiters
-  let text = description;
+  let text = normalizedDesc;
   sectionKeywords.forEach((kw) => {
-    const r = new RegExp(`(${kw})[:\\s]`, "gi");
-    text = text.replace(r, `\n\n__SECTION__$1__TITLE__`);
+    // Matches keyword followed by colon, dash, newline or space
+    const r = new RegExp(`(?:^|[\\n\\s])(${kw})[:\\s—–\\-]+`, "gi");
+    text = text.replace(r, (match, p1) => `\n\n__SECTION__${p1}__TITLE__`);
   });
 
   const parts = text.split("__SECTION__").filter(Boolean);
@@ -62,12 +66,16 @@ export default function FormattedDescription({ description, className = "", styl
           const content = contentArr.join("").trim();
           const cleanTitle = title.trim().toUpperCase();
 
-          // Check if content has bullet delimiters (•, *, |)
-          const isBulleted = content.includes("•") || content.includes("*") || content.includes("|");
+          // Check if content has bullet delimiters (•, *, |, or newline dashes)
+          const isBulleted =
+            content.includes("•") ||
+            content.includes("*") ||
+            content.includes("|") ||
+            /\n\s*[-–•*]\s*/.test(content);
 
           if (isBulleted) {
             const items = content
-              .split(/[•*|]/)
+              .split(/(?:[•*|]|\n\s*[-–•*]\s*)/)
               .map((i) => i.trim())
               .filter(Boolean);
 
@@ -108,7 +116,7 @@ export default function FormattedDescription({ description, className = "", styl
                 ) : (
                   <ul style={{ margin: 0, paddingLeft: 18, fontSize: 13, color: "#4A3E36" }}>
                     {items.map((item, iIdx) => (
-                      <li key={iIdx} style={{ marginBottom: 4 }}>
+                      <li key={iIdx} style={{ marginBottom: 4, whiteSpace: "pre-line" }}>
                         {item}
                       </li>
                     ))}
@@ -143,7 +151,7 @@ export default function FormattedDescription({ description, className = "", styl
               >
                 {cleanTitle}
               </div>
-              <p style={{ margin: 0, fontSize: 13, color: "#4A3E36", lineHeight: 1.6 }}>
+              <p style={{ margin: 0, fontSize: 13, color: "#4A3E36", lineHeight: 1.6, whiteSpace: "pre-line" }}>
                 {content}
               </p>
             </div>
@@ -151,11 +159,20 @@ export default function FormattedDescription({ description, className = "", styl
         }
 
         // Introductory story paragraphs
-        const introParagraphs = part.split(/\n+/).filter(Boolean);
+        const introParagraphs = part.split(/\n\s*\n/).filter(Boolean);
         return (
           <div key={idx} style={{ marginBottom: 12 }}>
             {introParagraphs.map((p, pIdx) => (
-              <p key={pIdx} style={{ margin: "0 0 10px", lineHeight: 1.7, fontSize: 14, color: "#4A3E36" }}>
+              <p
+                key={pIdx}
+                style={{
+                  margin: "0 0 10px",
+                  lineHeight: 1.7,
+                  fontSize: 14,
+                  color: "#4A3E36",
+                  whiteSpace: "pre-line",
+                }}
+              >
                 {p}
               </p>
             ))}

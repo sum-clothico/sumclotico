@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 import { useStore } from "@/context/StoreContext";
 import Navbar from "@/components/Navbar";
 import {
@@ -13,6 +14,9 @@ import {
   FiAlertCircle,
   FiRefreshCw,
   FiExternalLink,
+  FiArrowRight,
+  FiLock,
+  FiShield,
 } from "react-icons/fi";
 import Link from "next/link";
 import { trackEvent } from "@/lib/analytics";
@@ -35,9 +39,21 @@ function getStageIndex(status) {
 }
 
 function TrackOrderContent() {
-  const { orders = [], requestReturn } = useStore();
+  const { orders = [], requestReturn, currentUser } = useStore();
   const searchParams = useSearchParams();
   const queryParam = searchParams ? (searchParams.get("order") || searchParams.get("awb") || searchParams.get("id")) : null;
+
+  let clerkUser = null;
+  let isClerkSignedIn = false;
+  let isClerkLoaded = true;
+  try {
+    const clerk = useUser();
+    clerkUser = clerk?.user;
+    isClerkSignedIn = !!clerk?.isSignedIn;
+    isClerkLoaded = clerk?.isLoaded !== false;
+  } catch {}
+
+  const isAuthenticated = isClerkSignedIn || !!currentUser;
 
   const [searchTerm, setSearchTerm] = useState(queryParam || "");
   const [activeOrder, setActiveOrder] = useState(null);
@@ -47,21 +63,52 @@ function TrackOrderContent() {
   const [returnReason, setReturnReason] = useState("Size fit issue");
   const [returnFeedback, setReturnFeedback] = useState("");
 
+  const userEmail = clerkUser?.primaryEmailAddress?.emailAddress || clerkUser?.emailAddresses?.[0]?.emailAddress || currentUser?.email;
+
+  useEffect(() => {
+    if (!activeOrder && !searchTerm && userEmail && orders.length > 0) {
+      const myOrder = orders.find((o) => (o.customer?.email || "").toLowerCase() === userEmail.toLowerCase());
+      if (myOrder) {
+        setSearchTerm(myOrder.orderNumber);
+        setActiveOrder(myOrder);
+      }
+    }
+  }, [userEmail, orders, activeOrder, searchTerm]);
+
   const runSearch = async (termToSearch) => {
     if (!termToSearch || !termToSearch.trim()) return;
 
     setIsLoading(true);
     setSearchError("");
-    const term = termToSearch.trim().toLowerCase();
+    const rawClean = termToSearch.trim();
+    const cleanTerm = rawClean.replace(/^#+/, "").trim().toLowerCase();
+    const numericPart = cleanTerm.replace(/^sum[-_]?/i, "");
+    const formattedSum = `sum-${numericPart}`;
+
+    const isMatch = (o) => {
+      if (!o) return false;
+      const num = (o.orderNumber || "").toLowerCase().trim();
+      const numClean = num.replace(/^#+/, "");
+      const numDigits = numClean.replace(/^sum[-_]?/i, "");
+      const email = (o.customer?.email || "").toLowerCase().trim();
+      const tracking = (o.trackingNumber || "").toLowerCase().trim();
+      const mongoId = (o._mongoId || o._id || "").toString().toLowerCase().trim();
+
+      return (
+        num === cleanTerm ||
+        numClean === cleanTerm ||
+        num === rawClean.toLowerCase() ||
+        numClean === rawClean.toLowerCase() ||
+        (numericPart.length >= 3 && numDigits === numericPart) ||
+        (numericPart.length >= 3 && (num === formattedSum || numClean === formattedSum)) ||
+        email === cleanTerm ||
+        (tracking && (tracking === cleanTerm || tracking === rawClean.toLowerCase())) ||
+        mongoId === cleanTerm
+      );
+    };
 
     // 1. Check in client store
-    let found = orders.find(
-      (o) =>
-        o.orderNumber?.toLowerCase() === term ||
-        o.orderNumber?.toLowerCase() === `sum-${term}` ||
-        o.customer?.email?.toLowerCase() === term ||
-        o.trackingNumber?.toLowerCase() === term,
-    );
+    let found = orders.find(isMatch);
 
     // 2. Check in localStorage directly
     if (!found) {
@@ -69,13 +116,7 @@ function TrackOrderContent() {
         const local = localStorage.getItem("sum_orders");
         if (local) {
           const parsed = JSON.parse(local);
-          found = (Array.isArray(parsed) ? parsed : []).find(
-            (o) =>
-              o.orderNumber?.toLowerCase() === term ||
-              o.orderNumber?.toLowerCase() === `sum-${term}` ||
-              o.customer?.email?.toLowerCase() === term ||
-              o.trackingNumber?.toLowerCase() === term,
-          );
+          found = (Array.isArray(parsed) ? parsed : []).find(isMatch);
         }
       } catch {}
     }
@@ -83,8 +124,13 @@ function TrackOrderContent() {
     // 3. If still not found, fetch from backend API
     if (!found) {
       try {
-        const orderQuery = term.startsWith("sum-") ? term.toUpperCase() : `SUM-${term.toUpperCase()}`;
-        const res = await fetch(`/api/orders/${encodeURIComponent(orderQuery)}`);
+        const primaryQuery = cleanTerm.startsWith("sum-")
+          ? cleanTerm.toUpperCase()
+          : numericPart.length >= 3
+            ? `SUM-${numericPart}`
+            : cleanTerm.toUpperCase();
+
+        const res = await fetch(`/api/orders/${encodeURIComponent(primaryQuery)}`);
         if (res.ok) {
           const data = await res.json();
           if (data.success && data.order) {
@@ -148,6 +194,167 @@ function TrackOrderContent() {
   const currentStageIndex = activeOrder
     ? getStageIndex(activeOrder.orderStatus)
     : 0;
+
+  if (!isClerkLoaded) {
+    return (
+      <>
+        <Navbar />
+        <div style={{ background: "#FAF6F0", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ width: 44, height: 44, border: "3px solid #ebd9cc", borderTopColor: "#660608", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
+        </div>
+      </>
+    );
+  }
+
+  // ── Authentication Gate for Track Order ──
+  if (!isAuthenticated) {
+    return (
+      <>
+        <Navbar />
+        <div
+          style={{
+            minHeight: "80vh",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "clamp(120px, 15vh, 160px) 20px 80px",
+            background: "#FAF6F0",
+          }}
+        >
+          <div
+            style={{
+              width: "100%",
+              maxWidth: 480,
+              background: "#ffffff",
+              borderRadius: 20,
+              padding: "clamp(28px, 5vw, 40px)",
+              boxShadow: "0 20px 50px rgba(44, 32, 22, 0.08)",
+              border: "1px solid #ebd9cc",
+              textAlign: "center",
+            }}
+          >
+            <div
+              style={{
+                width: 64,
+                height: 64,
+                borderRadius: "50%",
+                background: "#fdf2f2",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                margin: "0 auto 20px",
+              }}
+            >
+              <FiLock size={28} color="#660608" />
+            </div>
+
+            <span
+              style={{
+                fontSize: 11,
+                fontWeight: 800,
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                color: "#660608",
+                display: "block",
+                marginBottom: 6,
+              }}
+            >
+              Live Order Transit Portal
+            </span>
+
+            <h1
+              style={{
+                fontSize: "clamp(22px, 3vw, 26px)",
+                fontWeight: 800,
+                color: "#1a140e",
+                marginBottom: 10,
+                fontFamily: "Epilogue, sans-serif",
+              }}
+            >
+              Sign in to Track Your Order
+            </h1>
+
+            <p
+              style={{
+                fontSize: 14,
+                color: "#5C4A3E",
+                lineHeight: 1.6,
+                marginBottom: 26,
+              }}
+            >
+              Please sign in with your email or registered account to view live Shiprocket courier transit milestones, dispatch dates, and package status.
+            </p>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              <Link
+                href="/sign-in?redirect_url=/track-order"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 10,
+                  width: "100%",
+                  padding: "16px",
+                  borderRadius: 12,
+                  background: "#660608",
+                  color: "#EDE8DC",
+                  fontSize: 14,
+                  fontWeight: 700,
+                  textDecoration: "none",
+                  boxShadow: "0 4px 14px rgba(102, 6, 8, 0.22)",
+                }}
+              >
+                <span>Sign In to Continue</span>
+                <FiArrowRight size={16} />
+              </Link>
+
+              <Link
+                href="/sign-up?redirect_url=/track-order"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "100%",
+                  padding: "15px",
+                  borderRadius: 12,
+                  background: "#ffffff",
+                  color: "#1a140e",
+                  border: "1.5px solid #ebd9cc",
+                  fontSize: 14,
+                  fontWeight: 700,
+                  textDecoration: "none",
+                }}
+              >
+                Create Account
+              </Link>
+            </div>
+
+            <div
+              style={{
+                marginTop: 24,
+                paddingTop: 18,
+                borderTop: "1px solid #f3f4f6",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: 16,
+                fontSize: 12,
+                color: "#9ca3af",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <FiShield size={14} color="#166534" />
+                <span style={{ color: "#374151" }}>256-Bit SSL Encrypted</span>
+              </div>
+              <span>•</span>
+              <div style={{ color: "#374151" }}>Instant OTP / Google Login</div>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
@@ -437,13 +644,19 @@ function TrackOrderContent() {
                         color: "#111827",
                       }}
                     >
-                      Carrier: {activeOrder.carrier || "BlueDart Express"}
+                      Carrier: {activeOrder.carrier || "Shiprocket"}
                     </div>
                     <div style={{ fontSize: 12, color: "#6b7280" }}>
-                      AWB / Tracking Number:{" "}
-                      <strong>
-                        {activeOrder.trackingNumber || "BD98214710IN"}
-                      </strong>
+                      {activeOrder.trackingNumber ? (
+                        <>
+                          AWB / Tracking Number:{" "}
+                          <strong>{activeOrder.trackingNumber}</strong>
+                        </>
+                      ) : (
+                        <span style={{ color: "#6b7280" }}>
+                          AWB: Awaiting dispatch assignment via Shiprocket
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>
