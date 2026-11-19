@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { useStore } from "@/context/StoreContext";
 import Navbar from "@/components/Navbar";
 import {
@@ -33,9 +34,12 @@ function getStageIndex(status) {
   return 0; // CONFIRMED or PLACED
 }
 
-export default function TrackOrderPage() {
+function TrackOrderContent() {
   const { orders = [], requestReturn } = useStore();
-  const [searchTerm, setSearchTerm] = useState("");
+  const searchParams = useSearchParams();
+  const queryParam = searchParams ? (searchParams.get("order") || searchParams.get("awb") || searchParams.get("id")) : null;
+
+  const [searchTerm, setSearchTerm] = useState(queryParam || "");
   const [activeOrder, setActiveOrder] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [searchError, setSearchError] = useState("");
@@ -43,13 +47,12 @@ export default function TrackOrderPage() {
   const [returnReason, setReturnReason] = useState("Size fit issue");
   const [returnFeedback, setReturnFeedback] = useState("");
 
-  const handleSearch = async (e) => {
-    if (e) e.preventDefault();
-    if (!searchTerm.trim()) return;
+  const runSearch = async (termToSearch) => {
+    if (!termToSearch || !termToSearch.trim()) return;
 
     setIsLoading(true);
     setSearchError("");
-    const term = searchTerm.trim().toLowerCase();
+    const term = termToSearch.trim().toLowerCase();
 
     // 1. Check in client store
     let found = orders.find(
@@ -96,7 +99,7 @@ export default function TrackOrderPage() {
     setIsLoading(false);
 
     trackEvent("track_order_search", {
-      search_term: searchTerm,
+      search_term: termToSearch,
       found: Boolean(found),
       order_number: found?.orderNumber || undefined,
     });
@@ -107,9 +110,21 @@ export default function TrackOrderPage() {
     } else {
       setActiveOrder(null);
       setSearchError(
-        `No shipment found matching "${searchTerm}". Please verify your Order Reference (e.g. SUM-28211) or email address.`
+        `No shipment found matching "${termToSearch}". Please verify your Order Reference (e.g. SUM-28211) or email address.`
       );
     }
+  };
+
+  useEffect(() => {
+    if (queryParam) {
+      setSearchTerm(queryParam);
+      runSearch(queryParam);
+    }
+  }, [queryParam, orders.length]);
+
+  const handleSearch = async (e) => {
+    if (e) e.preventDefault();
+    runSearch(searchTerm);
   };
 
   const handleReturnSubmit = (e) => {
@@ -870,5 +885,13 @@ export default function TrackOrderPage() {
         </div>
       )}
     </>
+  );
+}
+
+export default function TrackOrderPage() {
+  return (
+    <Suspense fallback={null}>
+      <TrackOrderContent />
+    </Suspense>
   );
 }

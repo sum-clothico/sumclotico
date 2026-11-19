@@ -124,6 +124,12 @@ export async function POST(request) {
               Phone: ${data.customer?.phone || ""}
             </div>
 
+            <div style="text-align: center; margin: 26px 0 18px;">
+              <a href="https://www.sumclothico.com/track-order?order=${data.orderNumber}" style="background: #2C2016; color: #ffffff; padding: 14px 32px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 14px; display: inline-block; box-shadow: 0 4px 14px rgba(44, 32, 22, 0.2);">
+                Track Order Status Live →
+              </a>
+            </div>
+
             <div style="margin-top: 28px; padding: 16px; background: #f9fafb; border-radius: 8px; font-size: 12px; color: #6b7280; text-align: center;">
               Questions? Message us on WhatsApp (+91 9329587707) or email <a href="mailto:support@sumclothico.com" style="color: #660608; font-weight: 700;">support@sumclothico.com</a>
             </div>
@@ -344,7 +350,12 @@ export async function POST(request) {
             <div style="background: #faf6f0; border-radius: 8px; padding: 16px; margin: 20px 0; font-size: 13px; color: #5C4A3E;">
               <strong>Artisanal Care Tip:</strong> Handspun Khadi breathes with the weather. Hand wash or machine wash gentle in cold water with mild detergent and line dry in the shade to preserve natural dyes.
             </div>
-            <div style="text-align: center; margin: 28px 0;">
+            <div style="text-align: center; margin: 24px 0 12px;">
+              <a href="https://www.sumclothico.com/track-order?order=${data.orderNumber}" style="background: #2C2016; color: #ffffff; padding: 12px 28px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 14px; display: inline-block;">
+                View Order & Delivery Details →
+              </a>
+            </div>
+            <div style="text-align: center; margin: 12px 0 24px;">
               <a href="https://www.sumclothico.com/collection" style="background: #660608; color: #ffffff; padding: 12px 28px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 14px; display: inline-block;">
                 Explore More Silhouettes →
               </a>
@@ -376,6 +387,11 @@ export async function POST(request) {
             <p style="color: #4b5563; font-size: 14px; line-height: 1.6;">
               Namaste ${data.customer?.name || "Friend"}, if any online payment was completed, a full refund has been initiated to your original payment method via Cashfree and will credit back within 5–7 business days.
             </p>
+            <div style="text-align: center; margin: 24px 0 16px;">
+              <a href="https://www.sumclothico.com/track-order?order=${data.orderNumber}" style="background: #2C2016; color: #ffffff; padding: 12px 28px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 14px; display: inline-block;">
+                View Order Status & Refund Details →
+              </a>
+            </div>
             <p style="font-size: 12px; color: #6b7280; text-align: center; margin-top: 24px;">
               If you have any questions, reach out to us on WhatsApp (+91 9329587707) or email support@sumclothico.com
             </p>
