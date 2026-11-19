@@ -11,32 +11,32 @@ const STEPS = [
   {
     heading: "How Khadi Is Made",
     body: "Khadi is not rushed. That's what makes it special.",
-    img: "/assets/img/1.png",
+    img: "/assets/img/1.jpg",
   },
   {
     heading: "The Cotton",
     body: "Natural cotton is cleaned and prepared — raw, unbleached, and full of life.",
-    img: "/assets/img/3.png",
+    img: "/assets/img/3.jpg",
   },
   {
     heading: "Spinning",
     body: "Spun by hand on a charkha. The fibers stay airy and alive.",
-    img: "/assets/img/5.png",
+    img: "/assets/img/5.jpg",
   },
   {
     heading: "Weaving",
     body: "Woven on handlooms — each movement controlled by hand, no automation.",
-    img: "/assets/img/7.png",
+    img: "/assets/img/7.jpg",
   },
   {
     heading: "Fabric Comes to Life",
     body: "A fabric that breathes, moves, and feels different from anything machine-made.",
-    img: "/assets/img/9.png",
+    img: "/assets/img/9.jpg",
   },
   {
     heading: "The Beauty of Khadi",
     body: "No two fabrics are the same. Uneven patterns, unmatched weaving, unmatched comfort.",
-    img: "/assets/img/11.png",
+    img: "/assets/img/11.jpg",
   },
 ];
 

@@ -3,7 +3,7 @@
 import "../app/styles/marquee.css";
 
 const IMAGES = Array.from({ length: 11 }, (_, i) => ({
-  src: `/assets/img/${i + 1}.png`,
+  src: `/assets/img/${i + 1}.jpg`,
   alt: `SUM CLOTHICO ${i + 1}`,
 }));
 
