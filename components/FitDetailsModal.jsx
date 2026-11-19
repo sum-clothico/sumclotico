@@ -14,7 +14,8 @@ export default function FitDetailsModal({
   product,
   initialSize = "M",
   initialColor = "",
-  mode = "add_to_cart", // "add_to_cart" | "buy_now"
+  initialFitDetails = null,
+  mode = "add_to_cart", // "add_to_cart" | "buy_now" | "edit"
   onSaveAndProceed,
 }) {
   const [garmentType, setGarmentType] = useState("Dress");
@@ -27,9 +28,18 @@ export default function FitDetailsModal({
   const [notes, setNotes] = useState("");
   const [error, setError] = useState("");
 
-  // Preset garment type based on product category if available
+  // Preset garment type and pre-fill details if available
   useEffect(() => {
-    if (product?.category) {
+    if (initialFitDetails) {
+      if (initialFitDetails.bust) setBust(initialFitDetails.bust);
+      if (initialFitDetails.waist) setWaist(initialFitDetails.waist);
+      if (initialFitDetails.hips) setHips(initialFitDetails.hips);
+      if (initialFitDetails.fitPreference) setFitPreference(initialFitDetails.fitPreference);
+      if (initialFitDetails.lengthPreference) setLengthPreference(initialFitDetails.lengthPreference);
+      if (initialFitDetails.notes) setNotes(initialFitDetails.notes);
+      if (initialFitDetails.garmentType) setGarmentType(initialFitDetails.garmentType);
+      if (initialFitDetails.size) setSize(initialFitDetails.size);
+    } else if (product?.category) {
       const cat = product.category.toLowerCase();
       if (cat.includes("top") || cat.includes("shirt")) setGarmentType("Top");
       else if (cat.includes("bottom") || cat.includes("pant") || cat.includes("skirt")) setGarmentType("Bottom");
@@ -39,7 +49,7 @@ export default function FitDetailsModal({
     if (initialSize) {
       setSize(initialSize);
     }
-  }, [product, initialSize, isOpen]);
+  }, [product, initialSize, initialFitDetails, isOpen]);
 
   if (!isOpen) return null;
 
@@ -459,7 +469,13 @@ export default function FitDetailsModal({
             onMouseEnter={(e) => (e.currentTarget.style.background = "#484D35")}
             onMouseLeave={(e) => (e.currentTarget.style.background = "#595F43")}
           >
-            <span>{mode === "buy_now" ? "Save Fit Details & Proceed to Checkout" : "Save Fit Details & Add to Cart"}</span>
+            <span>
+              {mode === "edit"
+                ? "Save Fit Details ✓"
+                : mode === "buy_now"
+                  ? "Save Fit Details & Proceed to Checkout"
+                  : "Save Fit Details & Add to Cart"}
+            </span>
             <FiArrowRight size={16} />
           </button>
         </form>

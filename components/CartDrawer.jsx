@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useStore } from "@/context/StoreContext";
 import { FiShoppingBag, FiTrash2, FiPlus, FiMinus, FiX, FiArrowRight, FiShield, FiTag, FiCheck } from "react-icons/fi";
 import { trackViewCart, trackBeginCheckout, trackEvent } from "@/lib/analytics";
+import FitDetailsModal from "@/components/FitDetailsModal";
 
 export default function CartDrawer() {
   const {
@@ -13,6 +14,7 @@ export default function CartDrawer() {
     setIsCartOpen,
     removeFromCart,
     updateQuantity,
+    updateCartItemFit,
     cartSubtotal,
     cartTotalItems,
     isFreeShipping,
@@ -29,6 +31,7 @@ export default function CartDrawer() {
   } = useStore();
 
   const [couponCodeInput, setCouponCodeInput] = useState("");
+  const [editingFitItem, setEditingFitItem] = useState(null);
 
   useEffect(() => {
     if (isCartOpen && cart.length > 0) {
@@ -254,11 +257,44 @@ export default function CartDrawer() {
                         Size: <strong style={{ color: "#111827" }}>{item.selectedSize}</strong>
                         {item.selectedColor ? ` | ${item.selectedColor}` : ""}
                       </div>
-                      {item.fitDetails && (
-                        <div style={{ fontSize: 11, color: "#660608", marginTop: 4, background: "#FAF4EC", border: "1px solid rgba(136, 26, 28, 0.15)", padding: "4px 8px", borderRadius: 6, lineHeight: 1.4 }}>
-                          <span style={{ fontWeight: 800 }}>✦ Fits:</span> Bust {item.fitDetails.bust}&quot; • Waist {item.fitDetails.waist}&quot; • Hips {item.fitDetails.hips}&quot;
-                          {item.fitDetails.fitPreference && ` • ${item.fitDetails.fitPreference}`}
+                      {item.fitDetails ? (
+                        <div style={{ fontSize: 11, color: "#166534", marginTop: 4, background: "#f0fdf4", border: "1px solid #bbf7d0", padding: "4px 8px", borderRadius: 6, lineHeight: 1.4, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                          <span>
+                            <span style={{ fontWeight: 800 }}>✦ Fits:</span> Bust {item.fitDetails.bust}&quot; • Waist {item.fitDetails.waist}&quot; • Hips {item.fitDetails.hips}&quot;
+                            {item.fitDetails.fitPreference && ` • ${item.fitDetails.fitPreference}`}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => setEditingFitItem(item)}
+                            style={{ background: "none", border: "none", color: "#166534", fontWeight: 700, textDecoration: "underline", fontSize: 11, cursor: "pointer", padding: 0 }}
+                          >
+                            Edit ✎
+                          </button>
                         </div>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => setEditingFitItem(item)}
+                          style={{
+                            marginTop: 5,
+                            fontSize: 11,
+                            fontWeight: 700,
+                            color: "#660608",
+                            background: "#FAF4EC",
+                            border: "1px dashed rgba(102, 6, 8, 0.35)",
+                            padding: "4px 8px",
+                            borderRadius: 6,
+                            cursor: "pointer",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            width: "100%",
+                            textAlign: "left",
+                          }}
+                        >
+                          <span>✦ Add Custom Fit (Bust, Waist & Length)</span>
+                          <span style={{ textDecoration: "underline" }}>+ Add Fits</span>
+                        </button>
                       )}
                     </div>
 
@@ -509,6 +545,24 @@ export default function CartDrawer() {
           </div>
         )}
       </div>
+
+      {editingFitItem && (
+        <FitDetailsModal
+          isOpen={Boolean(editingFitItem)}
+          onClose={() => setEditingFitItem(null)}
+          product={editingFitItem}
+          initialSize={editingFitItem.selectedSize || "M"}
+          initialColor={editingFitItem.selectedColor || ""}
+          initialFitDetails={editingFitItem.fitDetails || null}
+          mode="edit"
+          onSaveAndProceed={(fitData) => {
+            if (updateCartItemFit) {
+              updateCartItemFit(editingFitItem, fitData);
+            }
+            setEditingFitItem(null);
+          }}
+        />
+      )}
     </div>
   );
 }

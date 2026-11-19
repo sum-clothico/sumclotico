@@ -47,8 +47,11 @@ export default function ProductPage() {
   const rawSlug = params?.slug;
   const slug = typeof rawSlug === "string" ? decodeURIComponent(rawSlug) : "";
   const {
+    cart = [],
     products = [],
     addToCart,
+    updateCartItemFit,
+    setIsCartOpen,
     setIsSizeGuideOpen,
     setIsFabricCareOpen,
     isLoadingProducts,
@@ -136,6 +139,19 @@ export default function ProductPage() {
   const [fitMode, setFitMode] = useState("add_to_cart");
   const [currentFitDetails, setCurrentFitDetails] = useState(null);
   const [isMainImgLoading, setIsMainImgLoading] = useState(true);
+
+  // Sync fit details if item is already present in bag
+  useEffect(() => {
+    if (!product) return;
+    const inCartItem = cart.find(
+      (item) =>
+        (item.id === product.id || item.id === product._id || item.slug === product.slug) &&
+        (!selectedSize || item.selectedSize === selectedSize)
+    );
+    if (inCartItem?.fitDetails) {
+      setCurrentFitDetails(inCartItem.fitDetails);
+    }
+  }, [cart, product, selectedSize]);
 
   useEffect(() => {
     setIsMainImgLoading(true);
@@ -1856,6 +1872,7 @@ export default function ProductPage() {
         product={product}
         initialSize={selectedSize}
         initialColor={selectedColor}
+        initialFitDetails={currentFitDetails}
         mode={fitMode}
         onSaveAndProceed={handleSaveFitAndProceed}
       />

@@ -18,6 +18,7 @@ import {
   FiArrowRight,
 } from "react-icons/fi";
 import { trackEvent } from "@/lib/analytics";
+import FitDetailsModal from "@/components/FitDetailsModal";
 
 function CheckoutContent() {
   const router = useRouter();
@@ -38,6 +39,7 @@ function CheckoutContent() {
     cartGstAmount = 0,
     currentUser,
     loginCustomer,
+    updateCartItemFit,
     setIsAuthModalOpen,
     createOrder,
     appliedCoupon,
@@ -45,6 +47,9 @@ function CheckoutContent() {
     applyCoupon,
     removeCoupon,
   } = useStore();
+
+  const [editingFitItem, setEditingFitItem] = useState(null);
+  const [isFitModalOpen, setIsFitModalOpen] = useState(false);
 
   let clerkUser = null;
   let isClerkSignedIn = false;
@@ -388,6 +393,210 @@ function CheckoutContent() {
           >
             BROWSE COLLECTION →
           </Link>
+        </div>
+      </>
+    );
+  }
+
+  // ── Strict Customer Authentication Gate (No Guest Checkout) ──
+  if (!isAuthenticated) {
+    return (
+      <>
+        <Navbar />
+        <div
+          style={{
+            minHeight: "80vh",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "clamp(120px, 15vh, 160px) 20px 80px",
+            background: "#FAF6F0",
+          }}
+        >
+          <div
+            style={{
+              width: "100%",
+              maxWidth: 480,
+              background: "#ffffff",
+              borderRadius: 20,
+              padding: "clamp(28px, 5vw, 40px)",
+              boxShadow: "0 20px 50px rgba(0,0,0,0.06)",
+              border: "1px solid rgba(44, 32, 22, 0.12)",
+              textAlign: "center",
+            }}
+          >
+            <div
+              style={{
+                width: 64,
+                height: 64,
+                borderRadius: "50%",
+                background: "#fdf2f2",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                margin: "0 auto 20px",
+              }}
+            >
+              <FiLock size={28} color="#881A1C" />
+            </div>
+
+            <span
+              style={{
+                fontSize: 11,
+                fontWeight: 800,
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                color: "#881A1C",
+                display: "block",
+                marginBottom: 6,
+              }}
+            >
+              Secure Customer Portal
+            </span>
+
+            <h1
+              style={{
+                fontSize: "clamp(22px, 3vw, 26px)",
+                fontWeight: 800,
+                color: "#111827",
+                marginBottom: 10,
+                letterSpacing: "-0.02em",
+              }}
+            >
+              Sign in to Checkout
+            </h1>
+
+            <p
+              style={{
+                fontSize: 14,
+                color: "#6b7280",
+                lineHeight: 1.6,
+                marginBottom: 24,
+              }}
+            >
+              Please sign in or create an account to proceed with checkout. Your account securely preserves your delivery address, live courier tracking, and GST tax invoice.
+            </p>
+
+            {/* Bag overview summary banner */}
+            <div
+              style={{
+                background: "#FAF4EC",
+                borderRadius: 12,
+                padding: "14px 16px",
+                marginBottom: 24,
+                border: "1px solid rgba(136, 26, 28, 0.15)",
+                textAlign: "left",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginBottom: 8,
+                }}
+              >
+                <span style={{ color: "#4b5563", fontSize: 13 }}>
+                  Items in your bag:{" "}
+                  <strong>
+                    {effectiveCart.reduce(
+                      (sum, item) => sum + (item.quantity || 1),
+                      0,
+                    )}
+                  </strong>
+                </span>
+                <span
+                  style={{ fontWeight: 800, color: "#111827", fontSize: 15 }}
+                >
+                  ₹{cartGrandTotal.toLocaleString("en-IN")}
+                </span>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 6,
+                  maxHeight: 120,
+                  overflowY: "auto",
+                }}
+              >
+                {effectiveCart.map((it, idx) => (
+                  <div
+                    key={idx}
+                    style={{
+                      fontSize: 12,
+                      color: "#374151",
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <span>
+                      {it.name} (<strong>{it.selectedSize}</strong>
+                      {it.selectedColor ? ` / ${it.selectedColor}` : ""}) ×{" "}
+                      {it.quantity}
+                    </span>
+                    <span style={{ fontWeight: 600 }}>
+                      ₹{(it.price * it.quantity).toLocaleString("en-IN")}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              <button
+                type="button"
+                onClick={() => {
+                  if (setIsAuthModalOpen) {
+                    setIsAuthModalOpen(true);
+                  }
+                }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 10,
+                  width: "100%",
+                  padding: "16px",
+                  borderRadius: 12,
+                  background: "#111111",
+                  color: "#ffffff",
+                  fontSize: 14,
+                  fontWeight: 700,
+                  border: "none",
+                  cursor: "pointer",
+                  boxShadow: "0 4px 14px rgba(0,0,0,0.14)",
+                }}
+              >
+                <span>Sign In to Continue</span>
+                <FiArrowRight size={16} />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  if (setIsAuthModalOpen) {
+                    setIsAuthModalOpen(true);
+                  }
+                }}
+                style={{
+                  display: "block",
+                  width: "100%",
+                  padding: "14px",
+                  borderRadius: 12,
+                  background: "#f3f4f6",
+                  color: "#111827",
+                  fontSize: 13,
+                  fontWeight: 700,
+                  border: "none",
+                  cursor: "pointer",
+                }}
+              >
+                Create New Account
+              </button>
+            </div>
+          </div>
         </div>
       </>
     );
@@ -1044,33 +1253,87 @@ function CheckoutContent() {
                             : ""}{" "}
                           × {item.quantity}
                         </div>
-                        {item.fitDetails && (
+                        {item.fitDetails ? (
                           <div
                             style={{
                               fontSize: 11,
-                              color: "#881A1C",
-                              marginTop: 2,
-                              background: "rgba(136, 26, 28, 0.05)",
-                              padding: "3px 6px",
-                              borderRadius: 4,
-                              display: "inline-block",
+                              color: "#166534",
+                              marginTop: 4,
+                              background: "#f0fdf4",
+                              border: "1px solid #bbf7d0",
+                              padding: "4px 8px",
+                              borderRadius: 6,
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "space-between",
+                              gap: 6,
                             }}
                           >
-                            ✦ Fit: Bust {item.fitDetails.bust}&quot; • Waist{" "}
-                            {item.fitDetails.waist}&quot; • Hips{" "}
-                            {item.fitDetails.hips}&quot;
-                            {item.fitDetails.fitPreference
-                              ? ` (${item.fitDetails.fitPreference})`
-                              : ""}
-                            {item.fitDetails.lengthPreference &&
-                            item.fitDetails.lengthPreference !==
-                              "Standard length (as per style)"
-                              ? ` • Length: ${item.fitDetails.lengthPreference}`
-                              : ""}
-                            {item.fitDetails.notes
-                              ? ` • Note: "${item.fitDetails.notes}"`
-                              : ""}
+                            <span>
+                              <strong>✦ Fit:</strong> Bust {item.fitDetails.bust}&quot; • Waist{" "}
+                              {item.fitDetails.waist}&quot; • Hips{" "}
+                              {item.fitDetails.hips}&quot;
+                              {item.fitDetails.fitPreference
+                                ? ` (${item.fitDetails.fitPreference})`
+                                : ""}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setEditingFitItem(item);
+                                setIsFitModalOpen(true);
+                              }}
+                              style={{
+                                background: "none",
+                                border: "none",
+                                color: "#166534",
+                                fontWeight: 700,
+                                textDecoration: "underline",
+                                fontSize: 11,
+                                cursor: "pointer",
+                                padding: 0,
+                                whiteSpace: "nowrap",
+                              }}
+                            >
+                              Edit ✎
+                            </button>
                           </div>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setEditingFitItem(item);
+                              setIsFitModalOpen(true);
+                            }}
+                            style={{
+                              marginTop: 5,
+                              fontSize: 11,
+                              fontWeight: 700,
+                              color: "#660608",
+                              background: "#FAF4EC",
+                              border: "1px dashed rgba(102, 6, 8, 0.4)",
+                              padding: "5px 8px",
+                              borderRadius: 6,
+                              cursor: "pointer",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "space-between",
+                              gap: 6,
+                              width: "100%",
+                              textAlign: "left",
+                              transition: "background 0.2s",
+                            }}
+                          >
+                            <span>✦ Add Custom Fit (Bust, Waist & Length)</span>
+                            <span
+                              style={{
+                                textDecoration: "underline",
+                                whiteSpace: "nowrap",
+                              }}
+                            >
+                              + Add Fits
+                            </span>
+                          </button>
                         )}
                       </div>
                       <div style={{ fontWeight: 700, fontSize: 14 }}>
@@ -1335,6 +1598,28 @@ function CheckoutContent() {
             refresh or press back.
           </p>
         </div>
+      )}
+
+      {editingFitItem && (
+        <FitDetailsModal
+          isOpen={isFitModalOpen}
+          onClose={() => {
+            setIsFitModalOpen(false);
+            setEditingFitItem(null);
+          }}
+          product={editingFitItem}
+          initialSize={editingFitItem.selectedSize || "M"}
+          initialColor={editingFitItem.selectedColor || ""}
+          initialFitDetails={editingFitItem.fitDetails || null}
+          mode="edit"
+          onSaveAndProceed={(fitData) => {
+            if (updateCartItemFit) {
+              updateCartItemFit(editingFitItem, fitData);
+            }
+            setIsFitModalOpen(false);
+            setEditingFitItem(null);
+          }}
+        />
       )}
     </>
   );

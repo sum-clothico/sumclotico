@@ -304,7 +304,14 @@ export function StoreProvider({ children }) {
   const [policies, setPolicies] = useState(INITIAL_POLICIES);
 
   // Customer Authentication state
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(() => {
+    if (typeof window === "undefined") return null;
+    try {
+      const saved = localStorage.getItem("sum_user");
+      if (saved) return JSON.parse(saved);
+    } catch {}
+    return null;
+  });
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   // Admin Authentication State
@@ -718,6 +725,21 @@ export function StoreProvider({ children }) {
         })
         .filter(Boolean);
     });
+  };
+
+  const updateCartItemFit = (cartItemOrKey, fitDetails) => {
+    setCart((prev) =>
+      prev.map((item) => {
+        const isMatch =
+          (item.cartKey && (item.cartKey === cartItemOrKey || item.cartKey === cartItemOrKey?.cartKey)) ||
+          (item.id === cartItemOrKey?.id && item.selectedSize === cartItemOrKey?.selectedSize && item.selectedColor === cartItemOrKey?.selectedColor) ||
+          item.id === cartItemOrKey;
+        if (isMatch) {
+          return { ...item, fitDetails };
+        }
+        return item;
+      })
+    );
   };
 
   const clearCart = () => {
@@ -1871,9 +1893,13 @@ export function StoreProvider({ children }) {
   // ─── CUSTOMER AUTHENTICATION ──────────────────────────────────────────────
 
   const loginCustomer = (userData) => {
-    setCurrentUser(userData);
+    const userObj =
+      typeof userData === "string"
+        ? { email: userData, name: userData.split("@")[0] }
+        : (userData || {});
+    setCurrentUser(userObj);
     try {
-      localStorage.setItem("sum_user", JSON.stringify(userData));
+      localStorage.setItem("sum_user", JSON.stringify(userObj));
     } catch {}
     setIsAuthModalOpen(false);
   };
@@ -1993,6 +2019,7 @@ export function StoreProvider({ children }) {
         addToCart,
         removeFromCart,
         updateQuantity,
+        updateCartItemFit,
         clearCart,
         cartSubtotal,
         cartTotalItems,
