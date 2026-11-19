@@ -37,6 +37,8 @@ function CheckoutContent() {
     cartGstPercent = 5,
     cartGstAmount = 0,
     currentUser,
+    loginCustomer,
+    setIsAuthModalOpen,
     createOrder,
     appliedCoupon,
     couponFeedback,
@@ -658,17 +660,46 @@ function CheckoutContent() {
               <form onSubmit={handleProceedToPayment}>
                 {/* 1. Contact Information */}
                 <div className="checkout-card">
-                  <h3
+                  <div
                     style={{
-                      fontSize: 17,
-                      fontWeight: 800,
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
                       margin: "0 0 16px",
                       borderBottom: "1px solid #f3f4f6",
                       paddingBottom: 10,
+                      flexWrap: "wrap",
+                      gap: 8,
                     }}
                   >
-                    1. Contact Information
-                  </h3>
+                    <h3
+                      style={{
+                        fontSize: 17,
+                        fontWeight: 800,
+                        margin: 0,
+                      }}
+                    >
+                      1. Contact Information
+                    </h3>
+                    {!isAuthenticated && (
+                      <button
+                        type="button"
+                        onClick={() => setIsAuthModalOpen && setIsAuthModalOpen(true)}
+                        style={{
+                          background: "none",
+                          border: "none",
+                          color: "#660608",
+                          fontSize: 13,
+                          fontWeight: 700,
+                          cursor: "pointer",
+                          textDecoration: "underline",
+                          padding: 0,
+                        }}
+                      >
+                        Already have an account? Sign In →
+                      </button>
+                    )}
+                  </div>
                   <div className="checkout-contact-grid">
                     <div className="auth-form-group">
                       <label className="auth-label">
