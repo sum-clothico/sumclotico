@@ -252,8 +252,20 @@ export default function ProductPage() {
           cartKey: `${product.id}-${fitData.size || selectedSize}-${selectedColor}-${Date.now()}`,
           sku: product.sku || "",
         };
-        const currentCart = JSON.parse(localStorage.getItem("sum_cart") || "[]");
-        const nextCart = [newItem, ...currentCart.filter((i) => !(i.id === newItem.id && i.selectedSize === newItem.selectedSize && i.selectedColor === newItem.selectedColor))];
+        const currentCart = JSON.parse(
+          localStorage.getItem("sum_cart") || "[]",
+        );
+        const nextCart = [
+          newItem,
+          ...currentCart.filter(
+            (i) =>
+              !(
+                i.id === newItem.id &&
+                i.selectedSize === newItem.selectedSize &&
+                i.selectedColor === newItem.selectedColor
+              ),
+          ),
+        ];
         localStorage.setItem("sum_cart", JSON.stringify(nextCart));
         sessionStorage.setItem("sum_cart_backup", JSON.stringify(nextCart));
         if (typeof document !== "undefined") {

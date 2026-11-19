@@ -26,6 +26,7 @@ function CheckoutContent() {
     cartGstPercent = 5,
     cartGstAmount = 0,
     currentUser,
+    loginCustomer,
     createOrder,
     appliedCoupon,
     couponFeedback,
@@ -57,7 +58,7 @@ function CheckoutContent() {
     pincode: currentUser?.addresses?.[0]?.pincode || "",
   });
 
-  // Pre-fill customer details from authenticated user
+  // Pre-fill customer details from authenticated user or saved customer info
   useEffect(() => {
     if (clerkUser) {
       const email = clerkUser.primaryEmailAddress?.emailAddress || clerkUser.emailAddresses?.[0]?.emailAddress || "";
@@ -75,7 +76,30 @@ function CheckoutContent() {
         name: prev.name || currentUser.name || "",
         email: prev.email || currentUser.email || "",
         phone: prev.phone || currentUser.phone || "",
+        street: prev.street || currentUser.addresses?.[0]?.street || "",
+        city: prev.city || currentUser.addresses?.[0]?.city || "",
+        state: prev.state || currentUser.addresses?.[0]?.state || "",
+        pincode: prev.pincode || currentUser.addresses?.[0]?.pincode || "",
       }));
+    } else if (typeof window !== "undefined") {
+      try {
+        const saved = localStorage.getItem("sum_customer_info");
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (parsed && typeof parsed === "object") {
+            setFormData((prev) => ({
+              ...prev,
+              name: prev.name || parsed.name || "",
+              email: prev.email || parsed.email || "",
+              phone: prev.phone || parsed.phone || "",
+              street: prev.street || parsed.street || "",
+              city: prev.city || parsed.city || "",
+              state: prev.state || parsed.state || "",
+              pincode: prev.pincode || parsed.pincode || "",
+            }));
+          }
+        }
+      } catch {}
     }
   }, [clerkUser, currentUser]);
 
@@ -279,184 +303,6 @@ function CheckoutContent() {
     );
   }
 
-  // ── Authentication Gate: Ask Customer to Log In / Sign Up Before Checkout ──
-  if (!isAuthenticated) {
-    return (
-      <>
-        <Navbar />
-        <div
-          style={{
-            minHeight: "80vh",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "clamp(120px, 15vh, 160px) 20px 80px",
-            background: "#fbfbfc",
-          }}
-        >
-          <div
-            style={{
-              width: "100%",
-              maxWidth: 480,
-              background: "#ffffff",
-              borderRadius: 20,
-              padding: "clamp(28px, 5vw, 40px)",
-              boxShadow: "0 20px 50px rgba(0,0,0,0.06)",
-              border: "1px solid #eef0f2",
-              textAlign: "center",
-            }}
-          >
-            <div
-              style={{
-                width: 64,
-                height: 64,
-                borderRadius: "50%",
-                background: "#fdf2f2",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                margin: "0 auto 20px",
-              }}
-            >
-              <FiLock size={28} color="#881A1C" />
-            </div>
-
-            <span
-              style={{
-                fontSize: 11,
-                fontWeight: 800,
-                letterSpacing: "0.14em",
-                textTransform: "uppercase",
-                color: "#881A1C",
-                display: "block",
-                marginBottom: 6,
-              }}
-            >
-              Secure Customer Portal
-            </span>
-
-            <h1
-              style={{
-                fontSize: "clamp(22px, 3vw, 26px)",
-                fontWeight: 800,
-                color: "#111827",
-                marginBottom: 10,
-                letterSpacing: "-0.02em",
-              }}
-            >
-              Sign in to Checkout
-            </h1>
-
-            <p
-              style={{
-                fontSize: 14,
-                color: "#6b7280",
-                lineHeight: 1.6,
-                marginBottom: 24,
-              }}
-            >
-              Please sign in or create an account to proceed with checkout. Your account securely preserves your delivery address, live courier tracking, and GST tax invoice.
-            </p>
-
-            {/* Bag overview summary banner */}
-            <div
-              style={{
-                background: "#f9fafb",
-                borderRadius: 12,
-                padding: "14px 16px",
-                marginBottom: 24,
-                border: "1px solid #f3f4f6",
-                textAlign: "left",
-              }}
-            >
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-                <span style={{ color: "#4b5563", fontSize: 13 }}>
-                  Items in your bag: <strong>{effectiveCart.reduce((sum, item) => sum + (item.quantity || 1), 0)}</strong>
-                </span>
-                <span style={{ fontWeight: 800, color: "#111827", fontSize: 15 }}>
-                  ₹{cartGrandTotal.toLocaleString("en-IN")}
-                </span>
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 6, maxHeight: 120, overflowY: "auto" }}>
-                {effectiveCart.map((it, idx) => (
-                  <div key={idx} style={{ fontSize: 12, color: "#374151", display: "flex", justifyContent: "space-between" }}>
-                    <span>
-                      {it.name} (<strong>{it.selectedSize}</strong>{it.selectedColor ? ` / ${it.selectedColor}` : ""}) × {it.quantity}
-                    </span>
-                    <span style={{ fontWeight: 600 }}>₹{(it.price * it.quantity).toLocaleString("en-IN")}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              <Link
-                href="/sign-in?redirect_url=/checkout"
-                onClick={() => {
-                  try {
-                    localStorage.setItem("sum_cart", JSON.stringify(effectiveCart));
-                    sessionStorage.setItem("sum_cart_backup", JSON.stringify(effectiveCart));
-                    if (typeof document !== "undefined") {
-                      document.cookie = `sum_cart=${encodeURIComponent(JSON.stringify(effectiveCart))}; path=/; max-age=2592000; SameSite=Lax`;
-                    }
-                  } catch {}
-                }}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 10,
-                  width: "100%",
-                  padding: "16px",
-                  borderRadius: 12,
-                  background: "#111111",
-                  color: "#ffffff",
-                  fontSize: 14,
-                  fontWeight: 700,
-                  textDecoration: "none",
-                  boxShadow: "0 4px 14px rgba(0,0,0,0.14)",
-                }}
-              >
-                <span>Sign In to Continue</span>
-                <FiArrowRight size={16} />
-              </Link>
-
-              <Link
-                href="/sign-up?redirect_url=/checkout"
-                onClick={() => {
-                  try {
-                    localStorage.setItem("sum_cart", JSON.stringify(effectiveCart));
-                    sessionStorage.setItem("sum_cart_backup", JSON.stringify(effectiveCart));
-                    if (typeof document !== "undefined") {
-                      document.cookie = `sum_cart=${encodeURIComponent(JSON.stringify(effectiveCart))}; path=/; max-age=2592000; SameSite=Lax`;
-                    }
-                  } catch {}
-                }}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: "100%",
-                  padding: "15px",
-                  borderRadius: 12,
-                  background: "#ffffff",
-                  color: "#111111",
-                  border: "1.5px solid #e5e7eb",
-                  fontSize: 14,
-                  fontWeight: 700,
-                  textDecoration: "none",
-                }}
-              >
-                Create New Account
-              </Link>
-            </div>
-          </div>
-        </div>
-      </>
-    );
-  }
-
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -501,6 +347,36 @@ function CheckoutContent() {
       setCheckoutError("Please enter a valid 6-digit Indian PIN code.");
       return;
     }
+
+    try {
+      localStorage.setItem(
+        "sum_customer_info",
+        JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: cleanPhone,
+          street: formData.street,
+          city: formData.city,
+          state: formData.state,
+          pincode: cleanPincode,
+        })
+      );
+      if (loginCustomer) {
+        loginCustomer({
+          name: formData.name,
+          email: formData.email,
+          phone: cleanPhone,
+          addresses: [
+            {
+              street: formData.street,
+              city: formData.city,
+              state: formData.state,
+              pincode: cleanPincode,
+            },
+          ],
+        });
+      }
+    } catch {}
 
     trackEvent("add_shipping_info", {
       shipping_tier: "Express Shiprocket Courier",
