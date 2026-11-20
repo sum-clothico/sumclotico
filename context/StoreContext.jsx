@@ -154,7 +154,7 @@ const INITIAL_POLICIES = {
         id: "sec-3",
         title: "3. Estimated Delivery Windows",
         content:
-          "• Metro Cities (Bengaluru, Delhi NCR, Mumbai, Kolkata, Hyderabad, Chennai, Pune): 3 – 4 business days.\n• Rest of India: 4 – 6 business days.\n• Remote / North-East Regions: 5 – 7 business days.",
+          "Because each Sum Clothico piece is handcrafted with custom artisan weaving and tailoring, our typical delivery window is 10 to 15 business days across India via Shiprocket Express partners.",
       },
       {
         id: "sec-4",

@@ -248,7 +248,7 @@ export async function POST(request) {
             <div style="background: #faf6f0; border: 1px solid #e6ddc8; border-radius: 8px; padding: 18px; margin: 20px 0;">
               ${data.trackingNumber ? `<p style="margin: 4px 0;"><strong>Tracking AWB:</strong> <code>${data.trackingNumber}</code></p>` : `<p style="margin: 4px 0; color: #4b5563;"><strong>Tracking AWB:</strong> Awaiting assignment via Shiprocket</p>`}
               <p style="margin: 4px 0;"><strong>Courier Partner:</strong> ${data.carrier || "Shiprocket"}</p>
-              <p style="margin: 4px 0;"><strong>Expected Delivery:</strong> 2–4 Business Days</p>
+              <p style="margin: 4px 0;"><strong>Expected Delivery:</strong> 10–15 Business Days</p>
             </div>
             <div style="text-align: center; margin-top: 24px;">
               <a href="https://www.sumclothico.com/track-order?order=${data.orderNumber || ''}" style="background: #111; color: #fff; padding: 12px 28px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 14px; display: inline-block;">
