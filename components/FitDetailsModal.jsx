@@ -39,11 +39,11 @@ export default function FitDetailsModal({
       if (initialFitDetails.notes) setNotes(initialFitDetails.notes);
       if (initialFitDetails.garmentType) setGarmentType(initialFitDetails.garmentType);
       if (initialFitDetails.size) setSize(initialFitDetails.size);
-    } else if (product?.category) {
-      const cat = product.category.toLowerCase();
-      if (cat.includes("top") || cat.includes("shirt")) setGarmentType("Top");
-      else if (cat.includes("bottom") || cat.includes("pant") || cat.includes("skirt")) setGarmentType("Bottom");
-      else if (cat.includes("co-ord") || cat.includes("set")) setGarmentType("Co-ord / Set");
+    } else {
+      const catOrTitle = ((product?.category || "") + " " + (product?.title || "") + " " + (product?.name || "")).toLowerCase();
+      if (catOrTitle.includes("top") || catOrTitle.includes("shirt") || catOrTitle.includes("kurta")) setGarmentType("Top");
+      else if (catOrTitle.includes("bottom") || catOrTitle.includes("pant") || catOrTitle.includes("skirt") || catOrTitle.includes("trouser")) setGarmentType("Bottom");
+      else if (catOrTitle.includes("co-ord") || catOrTitle.includes("coord") || catOrTitle.includes("set")) setGarmentType("Co-ord / Set");
       else setGarmentType("Dress");
     }
     if (initialSize) {

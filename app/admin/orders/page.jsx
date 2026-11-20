@@ -2,11 +2,12 @@
 
 import React, { useState } from "react";
 import GstInvoiceModal from "@/components/GstInvoiceModal";
+import FitDetailsModal from "@/components/FitDetailsModal";
 import { FiPrinter } from "react-icons/fi";
 import { useStore } from "@/context/StoreContext";
 
 export default function AdminOrdersPage() {
-  const { orders = [], updateOrderStatus, updatePaymentStatus } = useStore();
+  const { orders = [], updateOrderStatus, updatePaymentStatus, updateOrderItemFit } = useStore();
   const [filter, setFilter] = useState("ALL");
   const [gatewayFilter, setGatewayFilter] = useState("ALL");
   const [search, setSearch] = useState("");
@@ -14,6 +15,7 @@ export default function AdminOrdersPage() {
   const [awbInput, setAwbInput] = useState("");
   const [carrierInput, setCarrierInput] = useState("Shiprocket");
   const [selectedInvoiceOrder, setSelectedInvoiceOrder] = useState(null);
+  const [editingFitTarget, setEditingFitTarget] = useState(null);
 
   const filtered = (orders || []).filter((o) => {
     if (!o) return false;
@@ -248,13 +250,32 @@ export default function AdminOrdersPage() {
                                 lineHeight: 1.5,
                               }}
                             >
-                              <div style={{ display: "flex", alignItems: "center", gap: 6, fontWeight: 800, color: "#f97316", textTransform: "uppercase", letterSpacing: "0.5px", fontSize: 10 }}>
-                                <span>✦ Tailored Measurements &amp; Fit Data:</span>
-                                {fit.garmentType && (
-                                  <span style={{ background: "#ea580c", color: "#fff", padding: "1px 6px", borderRadius: 3, fontSize: 9 }}>
-                                    {fit.garmentType}
-                                  </span>
-                                )}
+                              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 6, fontWeight: 800, color: "#f97316", textTransform: "uppercase", letterSpacing: "0.5px", fontSize: 10 }}>
+                                <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                                  <span>✦ Tailored Measurements &amp; Fit Data:</span>
+                                  {fit.garmentType && (
+                                    <span style={{ background: "#ea580c", color: "#fff", padding: "1px 6px", borderRadius: 3, fontSize: 9 }}>
+                                      {fit.garmentType}
+                                    </span>
+                                  )}
+                                </div>
+                                <button
+                                  type="button"
+                                  onClick={() => setEditingFitTarget({ order: ord, itemIndex: i, item: it, fit })}
+                                  style={{
+                                    background: "rgba(249, 115, 22, 0.2)",
+                                    border: "1px solid rgba(249, 115, 22, 0.4)",
+                                    color: "#fed7aa",
+                                    fontSize: 10,
+                                    padding: "2px 7px",
+                                    borderRadius: 4,
+                                    cursor: "pointer",
+                                    fontWeight: 700,
+                                  }}
+                                  title="Edit custom fit measurements"
+                                >
+                                  Edit Fit ✎
+                                </button>
                               </div>
 
                               {(fit.bust || fit.waist || fit.hips) && (
@@ -280,6 +301,40 @@ export default function AdminOrdersPage() {
                                   Additional Notes: &quot;{fit.notes}&quot;
                                 </div>
                               )}
+                            </div>
+                          )}
+
+                          {!hasFitData && (
+                            <div style={{ marginTop: 6 }}>
+                              <button
+                                type="button"
+                                onClick={() => setEditingFitTarget({ order: ord, itemIndex: i, item: it, fit: null })}
+                                style={{
+                                  background: "rgba(249, 115, 22, 0.1)",
+                                  border: "1px dashed rgba(249, 115, 22, 0.4)",
+                                  color: "#fb923c",
+                                  fontSize: 11,
+                                  fontWeight: 700,
+                                  padding: "3px 8px",
+                                  borderRadius: 5,
+                                  cursor: "pointer",
+                                  display: "inline-flex",
+                                  alignItems: "center",
+                                  gap: 5,
+                                  transition: "all 0.2s ease",
+                                }}
+                                onMouseEnter={(e) => {
+                                  e.currentTarget.style.background = "rgba(249, 115, 22, 0.2)";
+                                  e.currentTarget.style.borderColor = "#f97316";
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.currentTarget.style.background = "rgba(249, 115, 22, 0.1)";
+                                  e.currentTarget.style.borderColor = "rgba(249, 115, 22, 0.4)";
+                                }}
+                              >
+                                <span>✦</span>
+                                <span>+ Add Fit Details (Form)</span>
+                              </button>
                             </div>
                           )}
                         </div>
@@ -375,6 +430,28 @@ export default function AdminOrdersPage() {
         isOpen={Boolean(selectedInvoiceOrder)}
         onClose={() => setSelectedInvoiceOrder(null)}
       />
+
+      {editingFitTarget && (
+        <FitDetailsModal
+          isOpen={Boolean(editingFitTarget)}
+          onClose={() => setEditingFitTarget(null)}
+          product={editingFitTarget.item}
+          initialSize={editingFitTarget.item.selectedSize || "M"}
+          initialColor={editingFitTarget.item.selectedColor || ""}
+          initialFitDetails={editingFitTarget.fit || null}
+          mode="edit"
+          onSaveAndProceed={(fitData) => {
+            if (updateOrderItemFit) {
+              updateOrderItemFit(
+                editingFitTarget.order.id || editingFitTarget.order.orderNumber,
+                editingFitTarget.itemIndex,
+                fitData
+              );
+            }
+            setEditingFitTarget(null);
+          }}
+        />
+      )}
     </div>
   );
 }

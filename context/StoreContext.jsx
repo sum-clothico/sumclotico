@@ -1446,6 +1446,62 @@ export function StoreProvider({ children }) {
     }
   };
 
+  const updateOrderItemFit = async (orderId, itemIndex, fitData) => {
+    let updatedOrder = null;
+    let updatedItems = [];
+
+    setOrders((prev) =>
+      prev.map((o) => {
+        if (o.id === orderId || o.orderNumber === orderId) {
+          const newItems = (o.items || []).map((it, idx) => {
+            if (idx === itemIndex) {
+              return {
+                ...it,
+                fitDetails: fitData,
+              };
+            }
+            return it;
+          });
+          updatedItems = newItems;
+          updatedOrder = {
+            ...o,
+            items: newItems,
+          };
+          return updatedOrder;
+        }
+        return o;
+      })
+    );
+
+    try {
+      const targetOrder = updatedOrder || orders.find((o) => o.id === orderId || o.orderNumber === orderId);
+      const queryId = targetOrder?._mongoId || targetOrder?.orderNumber || (orderId && !orderId.startsWith("ord-") ? orderId : null);
+      if (queryId && updatedItems.length > 0) {
+        await apiFetch(`/checkout/orders/${encodeURIComponent(queryId)}/status`, {
+          method: "PUT",
+          body: JSON.stringify({
+            items: updatedItems.map((item) => ({
+              productId: item.productId && item.productId.length === 24 ? item.productId : undefined,
+              title: item.title || item.name || "Handloom Garment",
+              price: Number(item.price) || 0,
+              quantity: Math.max(1, Number(item.quantity) || 1),
+              selectedSize: item.selectedSize || "Standard",
+              selectedColor: item.selectedColor || "",
+              fitDetails: item.fitDetails || null,
+              image: item.image || "",
+            })),
+          }),
+        });
+        console.log(
+          `%c[Backend: ✓ Order items/fit updated in MongoDB for ${queryId}]`,
+          "background: #16a34a; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;"
+        );
+      }
+    } catch (err) {
+      console.warn("[Backend: ⚠ Could not update order item fit in DB]", err.message);
+    }
+  };
+
   const requestReturn = async (orderNumber, reason, requestedItems = []) => {
     setOrders((prev) =>
       prev.map((o) => {
@@ -2100,6 +2156,7 @@ export function StoreProvider({ children }) {
         createOrder,
         updateOrderStatus,
         updatePaymentStatus,
+        updateOrderItemFit,
         requestReturn,
 
         // Customer Auth
