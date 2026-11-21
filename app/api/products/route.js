@@ -14,9 +14,16 @@ export async function GET(request) {
 
     const { searchParams } = new URL(request.url);
     const qs = searchParams.toString();
-    const res = await fetch(`${backend}/products${qs ? `?${qs}` : ""}`, { cache: "no-store" });
+    const res = await fetch(`${backend}/products${qs ? `?${qs}` : ""}`, {
+      next: { revalidate: 30 },
+    });
     const data = await res.json();
-    return Response.json(data, { status: res.status });
+    return Response.json(data, {
+      status: res.status,
+      headers: {
+        "Cache-Control": "public, s-maxage=30, stale-while-revalidate=120",
+      },
+    });
   } catch (err) {
     return Response.json({ success: false, error: err.message }, { status: 500 });
   }

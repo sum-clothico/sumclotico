@@ -70,6 +70,7 @@ export default function CollectionClient() {
   const {
     products = [],
     isLoadingProducts = false,
+    isRevalidatingProducts = false,
     addToCart,
     setQuickViewProduct,
     setIsCartOpen,
@@ -81,6 +82,9 @@ export default function CollectionClient() {
   } = useStore();
   const [selectedSizes, setSelectedSizes] = useState({});
   const [addedFeedback, setAddedFeedback] = useState({});
+
+  const hasCachedProducts = Array.isArray(products) && products.length > 0;
+  const showColdSkeletons = isLoadingProducts && !hasCachedProducts;
 
   // Multi-facet Filter States
   const [selectedCategory, setSelectedCategory] = useState("ALL");
@@ -362,15 +366,37 @@ export default function CollectionClient() {
         {/* Product Count Banner */}
         <div style={{ marginTop: 14, display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 13, color: "#6b7280" }}>
           <div>
-            {isLoadingProducts ? (
+            {showColdSkeletons ? (
               <span style={{ display: "inline-flex", alignItems: "center", gap: 8, color: "#660608", fontWeight: 700 }}>
                 <span className="col-loading-spinner" style={{ width: 14, height: 14, borderWidth: 2 }} />
                 <span>Loading new collection...</span>
               </span>
             ) : (
-              <>
-                Showing <strong>{filtered.length}</strong> {filtered.length === 1 ? "piece" : "pieces"}
-              </>
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+                <span>
+                  Showing <strong>{filtered.length}</strong> {filtered.length === 1 ? "piece" : "pieces"}
+                </span>
+                {isRevalidatingProducts && (
+                  <span
+                    style={{
+                      fontSize: 11,
+                      color: "#92400e",
+                      background: "rgba(245, 158, 11, 0.12)",
+                      border: "1px solid rgba(245, 158, 11, 0.25)",
+                      padding: "1px 8px",
+                      borderRadius: 12,
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 5,
+                      fontWeight: 600,
+                    }}
+                    title="Syncing latest catalog and stock updates from server"
+                  >
+                    <span className="col-loading-spinner" style={{ width: 8, height: 8, borderWidth: 1.5, borderColor: "#b45309 transparent transparent transparent" }} />
+                    <span>Updating...</span>
+                  </span>
+                )}
+              </span>
             )}
           </div>
           <div style={{ fontSize: 12 }}>
@@ -381,7 +407,7 @@ export default function CollectionClient() {
 
       {/* ─── PRODUCTS GRID ─── */}
       <section className="prod-grid" style={{ maxWidth: 1360, margin: "0 auto 60px", padding: "0 24px 100px" }}>
-        {isLoadingProducts ? (
+        {showColdSkeletons ? (
           <>
             {/* Loading Banner */}
             <div

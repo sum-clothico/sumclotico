@@ -295,7 +295,20 @@ export function StoreProvider({ children }) {
     return [];
   });
   const [orders, setOrders] = useState([]);
-  const [isLoadingProducts, setIsLoadingProducts] = useState(true);
+  const [isLoadingProducts, setIsLoadingProducts] = useState(() => {
+    if (typeof window === "undefined") return true;
+    try {
+      const cached = localStorage.getItem("sum_products");
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed) && parsed.length > 0) return false;
+      }
+    } catch {}
+    return true;
+  });
+  const [isRevalidatingProducts, setIsRevalidatingProducts] = useState(false);
+  const lastProductsFetchedAtRef = useRef(0);
+  const PRODUCTS_CACHE_TTL = 60 * 1000; // 60 seconds SWR TTL
 
   // Dynamic Categories State
   const [categories, setCategories] = useState(INITIAL_CATEGORIES);
@@ -320,49 +333,100 @@ export function StoreProvider({ children }) {
 
   // ─── LOAD STATE ON MOUNT ──────────────────────────────────────────────────
 
-  // 1. Load products from MongoDB backend (source of truth)
-  useEffect(() => {
-    const loadProducts = async () => {
+  // 1. Load products from MongoDB backend with Stale-While-Revalidate (SWR) caching
+  const loadProducts = useCallback(async (force = false) => {
+    const now = Date.now();
+    let cachedTime = 0;
+    try {
+      cachedTime = Number(localStorage.getItem("sum_products_time") || 0);
+    } catch {}
+
+    const hasCachedData = products && products.length > 0;
+    const isWithinTTL = now - Math.max(lastProductsFetchedAtRef.current, cachedTime) < PRODUCTS_CACHE_TTL;
+
+    // If cache is fresh and not forced, serve immediately from memory with 0 network calls
+    if (!force && hasCachedData && isWithinTTL) {
+      console.log(
+        "%c[Catalog SWR: Cache fresh (<60s) — served with 0ms delay]",
+        "background: #0284c7; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
+      );
+      setIsLoadingProducts(false);
+      return;
+    }
+
+    // If we have cached products, keep them visible and revalidate in background (no skeletons)
+    if (!hasCachedData) {
       setIsLoadingProducts(true);
-      try {
-        console.log(
-          "%c[Backend: Loading products from MongoDB...]",
-          "background: #7c3aed; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
-        );
-        const data = await apiFetch("/products");
-        if (
-          data.success &&
-          Array.isArray(data.products) &&
-          data.products.length > 0
-        ) {
-          const normalized = data.products.map((p) => ({
-            ...p,
-            colors: (p.colors && p.colors.length > 0)
-              ? p.colors
-              : (p.colorVariants && p.colorVariants.length > 0)
-                ? p.colorVariants.map((cv) => cv.color)
-                : [],
-          }));
-          setProducts(normalized);
+    } else {
+      setIsRevalidatingProducts(true);
+    }
+
+    try {
+      console.log(
+        hasCachedData
+          ? "%c[Catalog SWR: Revalidating products in background...]"
+          : "%c[Catalog SWR: Cold start — fetching products from MongoDB...]",
+        "background: #7c3aed; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
+      );
+
+      const data = await apiFetch("/products");
+      if (
+        data.success &&
+        Array.isArray(data.products) &&
+        data.products.length > 0
+      ) {
+        const normalized = data.products.map((p) => ({
+          ...p,
+          colors: (p.colors && p.colors.length > 0)
+            ? p.colors
+            : (p.colorVariants && p.colorVariants.length > 0)
+              ? p.colorVariants.map((cv) => cv.color)
+              : [],
+        }));
+
+        setProducts((prev) => {
+          const isIdentical =
+            prev &&
+            prev.length === normalized.length &&
+            JSON.stringify(prev) === JSON.stringify(normalized);
+
+          if (isIdentical) {
+            console.log(
+              "%c[Catalog SWR: ✓ Cache verified fresh — no catalog changes detected]",
+              "background: #16a34a; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
+            );
+            return prev; // keep previous reference to avoid unnecessary component re-renders
+          }
+
+          console.log(
+            `%c[Catalog SWR: ✓ Background update applied (${normalized.length} products updated)]`,
+            "background: #16a34a; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
+          );
           try {
             localStorage.setItem("sum_products", JSON.stringify(normalized));
           } catch {}
-          console.log(
-            `%c[Backend: ✓ Loaded ${data.products.length} products from MongoDB]`,
-            "background: #16a34a; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
-          );
-        }
-      } catch (err) {
-        console.warn(
-          "%c[Backend: ⚠ Could not load products]",
-          "background: #d97706; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
-          err.message,
-        );
-      } finally {
-        setIsLoadingProducts(false);
+          return normalized;
+        });
+
+        lastProductsFetchedAtRef.current = Date.now();
+        try {
+          localStorage.setItem("sum_products_time", String(Date.now()));
+        } catch {}
       }
-    };
-    loadProducts();
+    } catch (err) {
+      console.warn(
+        "%c[Catalog SWR: ⚠ Revalidation failed, serving cached products]",
+        "background: #d97706; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 4px;",
+        err.message,
+      );
+    } finally {
+      setIsLoadingProducts(false);
+      setIsRevalidatingProducts(false);
+    }
+  }, [products]);
+
+  useEffect(() => {
+    loadProducts(false);
   }, []);
 
   // 2. Load live orders from MongoDB backend (source of truth)
@@ -562,11 +626,12 @@ export function StoreProvider({ children }) {
     } catch {}
   }, [cart, isCartHydrated]);
 
-  // Cache products in localStorage as fallback
+  // Cache products in localStorage as fallback & update cache timestamp
   useEffect(() => {
     if (products.length > 0) {
       try {
         localStorage.setItem("sum_products", JSON.stringify(products));
+        localStorage.setItem("sum_products_time", String(Date.now()));
       } catch {}
     }
   }, [products]);
@@ -2147,6 +2212,8 @@ export function StoreProvider({ children }) {
         // Products & Orders
         products,
         isLoadingProducts,
+        isRevalidatingProducts,
+        refreshProducts: () => loadProducts(true),
         addProduct,
         updateProduct,
         deleteProduct,
