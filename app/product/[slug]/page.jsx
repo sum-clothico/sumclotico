@@ -973,33 +973,7 @@ export default function ProductPage() {
                       >
                         Out of Stock
                       </span>
-                    ) : colorStock <= (product.lowStockThreshold || 5) ? (
-                      <span
-                        style={{
-                          fontSize: 10,
-                          fontWeight: 700,
-                          color: "#d97706",
-                          background: "#fef3c7",
-                          padding: "2px 8px",
-                          borderRadius: 4,
-                        }}
-                      >
-                        Only {colorStock} left!
-                      </span>
-                    ) : (
-                      <span
-                        style={{
-                          fontSize: 10,
-                          fontWeight: 600,
-                          color: "#16a34a",
-                          background: "#dcfce7",
-                          padding: "2px 8px",
-                          borderRadius: 4,
-                        }}
-                      >
-                        In Stock ({colorStock})
-                      </span>
-                    )}
+                    ) : null}
                   </span>
                   <div
                     style={{
@@ -1028,7 +1002,7 @@ export default function ProductPage() {
                           key={color}
                           type="button"
                           onClick={() => setSelectedColor(color)}
-                          title={`${color} (${stackForColor} in stock)`}
+                          title={outOfStock ? `${color} (Out of Stock)` : color}
                           aria-label={`Select color ${color}`}
                           style={{
                             position: "relative",

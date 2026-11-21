@@ -490,20 +490,22 @@ export default function ProductQuickView() {
               >
                 Collection / {quickViewProduct.category || "Tops"}
               </span>
-              <span
-                style={{
-                  background: (quickViewProduct.stock || 20) <= 5 ? "#fef2f2" : "#dcfce7",
-                  color: (quickViewProduct.stock || 20) <= 5 ? "#dc2626" : "#15803d",
-                  fontSize: 11,
-                  fontWeight: 700,
-                  padding: "3px 10px",
-                  borderRadius: 999,
-                  display: "inline-flex",
-                  alignItems: "center",
-                }}
-              >
-                {(quickViewProduct.stock || 20) <= 5 ? `Only ${quickViewProduct.stock} Left` : `In Stock (${quickViewProduct.stock || 20} units)`}
-              </span>
+              {quickViewProduct.stock !== undefined && quickViewProduct.stock <= 0 && (
+                <span
+                  style={{
+                    background: "#fef2f2",
+                    color: "#dc2626",
+                    fontSize: 11,
+                    fontWeight: 700,
+                    padding: "3px 10px",
+                    borderRadius: 999,
+                    display: "inline-flex",
+                    alignItems: "center",
+                  }}
+                >
+                  Out of Stock
+                </span>
+              )}
             </div>
 
             {/* Product Title */}
